@@ -1,0 +1,13 @@
+{
+  "name": "monash-hack",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "gateway:setup": "npx -y vercel@latest ai-gateway setup"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
+
