@@ -3,6 +3,8 @@ import type { MailSource } from "./adapters.js";
 
 export interface QueueItem {
   source: MailSource;
+  context?: string;
+  bypassCache?: boolean;
   rowKey: string;
   fingerprint: string;
   email: PreviewEmail;
@@ -30,8 +32,9 @@ export interface RowResultMessage {
 
 export type ExtensionMessage =
   | { type: "CLASSIFY_ROWS"; items: QueueItem[]; epoch: number }
-  | { type: "RETRY_ROW"; item: QueueItem; epoch: number }
-  | { type: "CLASSIFY_RESULTS"; items: RowResultMessage[]; epoch: number }
+  | { type: "RETRY_ROW"; item: QueueItem; epoch: number; bypassCache?: boolean }
+  | { type: "CHECK_REVISION" }
+  | { type: "CLASSIFY_RESULTS"; items: RowResultMessage[]; epoch: number; revision?: string }
   | { type: "TOGGLE_ENABLED" }
   | { type: "GET_SETTINGS" }
   | { type: "SET_ENABLED"; enabled: boolean }

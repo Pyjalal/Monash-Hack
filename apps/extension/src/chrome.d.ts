@@ -26,7 +26,7 @@ interface CargoLensChromeCommands {
 
 declare const chrome: {
   runtime: CargoLensChromeRuntime;
-  storage: { sync: CargoLensChromeStorageArea };
+  storage: { sync: CargoLensChromeStorageArea; session: CargoLensChromeStorageArea };
   tabs: CargoLensChromeTabs;
   commands: CargoLensChromeCommands;
 };

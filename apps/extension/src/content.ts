@@ -42,14 +42,17 @@ export class CargoLensController {
   private readonly root: Document;
   private readonly adapter: InboxAdapter;
   private readonly runtime: ContentRuntime;
+  private cacheContext: string | undefined;
   private enabled = true;
   private observer: MutationObserver | null = null;
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
+  private revisionTimer: ReturnType<typeof setInterval> | null = null;
   private scanToken = 0;
   private settingsReady = false;
   private settingsEpoch = 0;
   private apiUrl = "http://127.0.0.1:3001";
+  private knownRevision: string | undefined;
   private trayCollapsed = false;
   private readonly current = new Map<string, RowRecord>();
   private readonly pending = new Map<string, RowRecord>();
@@ -62,11 +65,13 @@ export class CargoLensController {
     this.root = root;
     this.adapter = adapter;
     this.runtime = runtime;
+    this.cacheContext = cacheContext(root);
   }
 
   async start(): Promise<void> {
     this.removeRuntimeListener = this.runtime.onMessage((message) => this.handleMessage(message));
     this.root.addEventListener("keydown", this.handleKeydown);
+    this.root.addEventListener("visibilitychange", this.handleVisibilityChange);
     this.observer = new MutationObserver(() => {
       if (!this.settingsReady) return;
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
@@ -90,6 +95,7 @@ export class CargoLensController {
       }
     }).catch(() => undefined);
     this.settingsReady = true;
+    this.revisionTimer = setInterval(() => this.checkRevision(), 30_000);
     if (this.enabled) await this.scan();
   }
 
@@ -97,8 +103,10 @@ export class CargoLensController {
     this.observer?.disconnect();
     if (this.debounceTimer) clearTimeout(this.debounceTimer);
     if (this.flushTimer) clearTimeout(this.flushTimer);
+    if (this.revisionTimer) clearInterval(this.revisionTimer);
     this.removeRuntimeListener?.();
     this.root.removeEventListener("keydown", this.handleKeydown);
+    this.root.removeEventListener("visibilitychange", this.handleVisibilityChange);
     this.clearPresentation();
   }
 
@@ -108,6 +116,7 @@ export class CargoLensController {
 
   async scan(): Promise<void> {
     if (!this.enabled) return;
+    this.syncContext();
     const token = ++this.scanToken;
     const candidates = this.adapter.extractRows(this.root);
     const candidateKeys = new Set(candidates.map((candidate) => candidate.rowKey));
@@ -138,6 +147,7 @@ export class CargoLensController {
       for (let index = 0; index < rows.length; index += 20) {
         const chunk = rows.slice(index, index + 20).map(({ candidate, fingerprint, email }) => ({
           source: candidate.source,
+          context: this.cacheContext,
           rowKey: candidate.rowKey,
           fingerprint,
           email,
@@ -154,6 +164,42 @@ export class CargoLensController {
     }, 40);
   }
 
+  private queueRevisionCheck(): void {
+    if (!this.enabled || this.root.visibilityState === "hidden") return;
+    if (this.syncContext()) {
+      void this.scan();
+      return;
+    }
+    for (const record of this.current.values()) {
+      if (isVisible(record.element)) this.pending.set(`${record.candidate.rowKey}\u241f${record.fingerprint}`, record);
+    }
+    this.scheduleFlush();
+  }
+
+  private checkRevision(): void {
+    if (!this.enabled || this.root.visibilityState === "hidden") return;
+    void this.runtime.sendMessage({ type: "CHECK_REVISION" }).then((response) => {
+      if (!this.enabled || !response || typeof response !== "object" || !("revision" in response) || typeof response.revision !== "string") return;
+      const shouldRefresh = this.knownRevision === undefined || this.knownRevision !== response.revision;
+      this.knownRevision = response.revision;
+      if (shouldRefresh) this.queueRevisionCheck();
+    }).catch(() => undefined);
+  }
+
+  private handleVisibilityChange = (): void => {
+    if (this.root.visibilityState !== "visible") return;
+    if (this.syncContext()) void this.scan();
+    else this.checkRevision();
+  };
+
+  private syncContext(): boolean {
+    const nextContext = cacheContext(this.root);
+    if (nextContext === this.cacheContext) return false;
+    this.cacheContext = nextContext;
+    this.clearPresentation();
+    return true;
+  }
+
   private handleMessage(message: ExtensionMessage): void {
     if (message.type === "TOGGLE_ENABLED") {
       this.setEnabled(!this.enabled);
@@ -165,6 +211,7 @@ export class CargoLensController {
       return;
     }
     if (message.type !== "CLASSIFY_RESULTS" || message.epoch !== this.settingsEpoch) return;
+    if (message.revision) this.knownRevision = message.revision;
     for (const item of message.items) this.applyResult(item);
   }
 
@@ -276,7 +323,7 @@ export class CargoLensController {
       retry.addEventListener("click", (event) => {
         event.stopPropagation();
         this.renderBadge(record, { kind: "loading" });
-        void this.runtime.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, item: { source: record.candidate.source, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => undefined);
+        void this.runtime.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, bypassCache: true, item: { source: record.candidate.source, context: this.cacheContext, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => undefined);
       });
       badge.append(retry);
     }
@@ -354,6 +401,12 @@ export class CargoLensController {
 
 function isUrgent(urgency: { level: string; confidence: number } | null): boolean {
   return urgency !== null && urgency.confidence >= 0.6 && (urgency.level === "blocking" || urgency.level === "today");
+}
+
+function cacheContext(root: Document): string | undefined {
+  const href = root.defaultView?.location?.href ?? "";
+  const match = href.match(/\/mail\/u\/([^/?#]+)/i);
+  return match?.[1] ? `gmail:${match[1]}` : undefined;
 }
 
 const categoryLabels: Record<string, string> = {

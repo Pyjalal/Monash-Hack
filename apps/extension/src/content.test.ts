@@ -78,6 +78,7 @@ it("ignores stale fingerprints, prunes virtual rows, and leaves native row click
     await flush();
     const firstRequest = state.sent.find((message) => message.type === "CLASSIFY_ROWS") as Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }>;
     expect(firstRequest.items).toHaveLength(1);
+    expect(firstRequest.items[0].context).toBe("gmail:0");
     const firstItem = firstRequest.items[0];
     state.listeners.forEach((listener) => listener({ type: "CLASSIFY_RESULTS", epoch: 0, items: [{ rowKey: firstItem.rowKey, fingerprint: firstItem.fingerprint, result: result(firstItem.email.id, 0.92, { level: "blocking", score: 3, confidence: 0.9 }) }] }));
     expect(firstRow.querySelector("[data-cargolens-badge]")).not.toBeNull();
@@ -136,6 +137,26 @@ it("invalidates pending results across endpoint and enabled-setting races", asyn
     const third = state.sent.filter((message): message is Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }> => message.type === "CLASSIFY_ROWS").at(-1)?.items[0];
     expect(third).toBeDefined();
     expect(state.sent.filter((message): message is Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }> => message.type === "CLASSIFY_ROWS").at(-1)?.epoch).toBe(3);
+  } finally {
+    globalThis.MutationObserver = prior;
+    state.controller.stop();
+  }
+});
+
+it("refreshes the cache context after a Gmail account switch", async () => {
+  const state = setup(true);
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  try {
+    await state.controller.start();
+    await flush();
+    const first = state.sent.filter((message): message is Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }> => message.type === "CLASSIFY_ROWS")[0];
+    expect(first.items[0].context).toBe("gmail:0");
+    state.window.history.pushState({}, "", "https://mail.google.com/mail/u/1/#inbox");
+    await state.controller.scan();
+    await flush();
+    const requests = state.sent.filter((message): message is Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }> => message.type === "CLASSIFY_ROWS");
+    expect(requests.at(-1)?.items[0].context).toBe("gmail:1");
   } finally {
     globalThis.MutationObserver = prior;
     state.controller.stop();
