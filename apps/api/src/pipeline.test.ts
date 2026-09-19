@@ -44,6 +44,21 @@ describe('classification pipeline', () => {
 });
 
 describe('API boundaries', () => {
+  it('publishes a stable cache revision that changes with classifier configuration', async () => {
+    const store = new Store(':memory:');
+    const health = async (configurationKey: string) => {
+      const service = new ClassificationService({ store, classifier: async source => result(source), configurationKey });
+      const app = createApp({ store, service, dashboardToken: 'private-dashboard-token' });
+      return (await app.request('/health')).json() as Promise<{ classifierRevision: string }>;
+    };
+    const first = await health('model-a:questions-v1');
+    expect(first.classifierRevision).toMatch(/^[a-f0-9]{64}$/);
+    expect((await health('model-a:questions-v1')).classifierRevision).toBe(first.classifierRevision);
+    expect((await health('model-b:questions-v1')).classifierRevision).not.toBe(first.classifierRevision);
+    expect((await health('model-a:questions-v2')).classifierRevision).not.toBe(first.classifierRevision);
+    expect(JSON.stringify(first)).not.toContain('private-dashboard-token');
+    store.close();
+  });
   it('exposes Gmail only through privileged routes and validates sync limits', async () => {
     const store = new Store(':memory:');
     const service = new ClassificationService({ store, classifier: async source => result(source), configurationKey: 'v1' });

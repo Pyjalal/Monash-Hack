@@ -34,7 +34,7 @@ export function createApp(options: AppOptions): Hono {
     await next();
   });
   app.onError((_error, c) => c.json({ error: 'INTERNAL_ERROR' }, 500));
-  app.get('/health', c => c.json({ service: 'CargoLens', apiVersion: 1, status: 'ready' }));
+  app.get('/health', c => c.json({ service: 'CargoLens', apiVersion: 1, status: 'ready', classifierRevision: service.configurationRevision }));
   app.post('/classify', async c => {
     if (!/^application\/json(?:;|$)/i.test(c.req.header('Content-Type') ?? '')) return c.json({ error: 'JSON_REQUIRED' }, 415);
     const parsed = ClassifyRequestSchema.safeParse(await c.req.json().catch(() => null));

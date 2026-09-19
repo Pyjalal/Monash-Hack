@@ -17,7 +17,7 @@ Set `TYPESAFE_API_KEY` and replace `DASHBOARD_TOKEN` with a long random token in
 npm run dev
 ```
 
-The API binds to `http://127.0.0.1:3001`. `GET /health` and `POST /classify` are public local endpoints. Other routes require `Authorization: Bearer <DASHBOARD_TOKEN>`. The extension never receives API keys or this token. Local environment files, SQLite databases, and evaluation outputs are ignored by Git.
+The API binds to `http://127.0.0.1:3001`. `GET /health` and `POST /classify` are public local endpoints. Health includes a `classifierRevision` hash so preview clients can invalidate cached results when the model, questions or packing configuration changes. Other routes require `Authorization: Bearer <DASHBOARD_TOKEN>`. The extension never receives API keys or this token. Local environment files, SQLite databases, and evaluation outputs are ignored by Git.
 
 `POST /import` imports the configured dataset and returns a job immediately. Follow `GET /events` for results or use `GET /emails`; `GET /cases/:id` includes the full operational state. SSE reconnects accept `Last-Event-ID`. `GET /usage` is the authoritative request-level token total; packed classifications have `usage: null` and reference their shared `usageRequestId`. Response-level request usage can overlap across concurrent preview calls, so do not sum it for billing.
 

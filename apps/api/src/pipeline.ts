@@ -50,10 +50,15 @@ export class ClassificationService {
     this.flushMs = options.flushMs ?? 8;
   }
 
+  private cacheConfiguration() {
+    return { config: this.options.configurationKey,
+      packing: this.options.batchClassifier ? { policy: 'packed-v1', size: this.batchSize } : 'individual' };
+  }
+
+  get configurationRevision(): string { return hash(this.cacheConfiguration()); }
+
   async classify(email: Email): Promise<Classification> {
-    const key = hash({ config: this.options.configurationKey,
-      packing: this.options.batchClassifier ? { policy: 'packed-v1', size: this.batchSize } : 'individual',
-      state: buildClassificationState(email) });
+    const key = hash({ ...this.cacheConfiguration(), state: buildClassificationState(email) });
     const cached = this.options.store.getCached(key);
     if (cached) return { ...cached, id: email.id, cached: true, elapsedMs: 0, usage: null };
     const existing = this.pending.get(key);
