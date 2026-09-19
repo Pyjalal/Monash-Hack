@@ -53,6 +53,7 @@ export class CargoLensController {
   private settingsEpoch = 0;
   private apiUrl = "http://127.0.0.1:3001";
   private knownRevision: string | undefined;
+  private revisionNeedsRefresh = false;
   private trayCollapsed = false;
   private readonly current = new Map<string, RowRecord>();
   private readonly pending = new Map<string, RowRecord>();
@@ -173,14 +174,17 @@ export class CargoLensController {
     for (const record of this.current.values()) {
       if (isVisible(record.element)) this.pending.set(`${record.candidate.rowKey}\u241f${record.fingerprint}`, record);
     }
+    this.revisionNeedsRefresh = false;
     this.scheduleFlush();
   }
 
   private checkRevision(): void {
     if (!this.enabled || this.root.visibilityState === "hidden") return;
+    const epoch = this.settingsEpoch;
+    const context = this.cacheContext;
     void this.runtime.sendMessage({ type: "CHECK_REVISION" }).then((response) => {
-      if (!this.enabled || !response || typeof response !== "object" || !("revision" in response) || typeof response.revision !== "string") return;
-      const shouldRefresh = this.knownRevision === undefined || this.knownRevision !== response.revision;
+      if (!this.enabled || epoch !== this.settingsEpoch || context !== this.cacheContext || !response || typeof response !== "object" || !("revision" in response) || typeof response.revision !== "string") return;
+      const shouldRefresh = this.revisionNeedsRefresh || this.knownRevision === undefined || this.knownRevision !== response.revision;
       this.knownRevision = response.revision;
       if (shouldRefresh) this.queueRevisionCheck();
     }).catch(() => undefined);
@@ -211,8 +215,13 @@ export class CargoLensController {
       return;
     }
     if (message.type !== "CLASSIFY_RESULTS" || message.epoch !== this.settingsEpoch) return;
+    const revisionChanged = !!message.revision && !!this.knownRevision && message.revision !== this.knownRevision;
     if (message.revision) this.knownRevision = message.revision;
     for (const item of message.items) this.applyResult(item);
+    if (revisionChanged) {
+      this.revisionNeedsRefresh = true;
+      this.queueRevisionCheck();
+    }
   }
 
   private applyResult(item: RowResultMessage): void {

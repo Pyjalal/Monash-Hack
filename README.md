@@ -41,6 +41,8 @@ In Chrome's extension manager, enable Developer mode, choose **Load unpacked**, 
 
 Badges classify visible subject/snippet text; the urgent tray provides shortcuts to native rows. No mailbox OAuth token is needed for these previews. Full-thread retrieval and outbound automation use the separate Gmail API connector below. Gmail and Outlook selectors still need checking against the team's actual mailbox layouts.
 
+Successful previews are cached for five minutes in browser session storage, up to 200 entries. Cache keys include the mailbox context, local API endpoint, classifier revision and content fingerprint, and are stored as hashes. The cache stores classification metadata, not email subjects, senders or snippets. Changed content or classifier configuration triggers a new classification; **Retry** bypasses the cached result. API failures remain visible and are not cached as successful classifications.
+
 ## Implemented and remaining
 
 - Typed Jev category, urgency and document-expectation questions; batches of eight, bounded concurrency/retries, content caching and durable events.

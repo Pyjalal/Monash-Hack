@@ -163,6 +163,34 @@ it("refreshes the cache context after a Gmail account switch", async () => {
   }
 });
 
+it("refreshes older visible rows when a new row first reveals a changed classifier revision", async () => {
+  const state = setup(true);
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  const requests = () => state.sent.filter((message): message is Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }> => message.type === "CLASSIFY_ROWS");
+  try {
+    await state.controller.start();
+    await flush();
+    const first = requests()[0].items[0];
+    state.listeners.forEach(listener => listener({ type: "CLASSIFY_RESULTS", epoch: 0, revision: "a".repeat(64), items: [{ rowKey: first.rowKey, fingerprint: first.fingerprint, result: result(first.email.id) }] }));
+    const newRow = state.window.document.querySelector("tr.zA")!.cloneNode(true) as HTMLElement;
+    newRow.querySelectorAll("[data-cargolens-badge]").forEach(badge => badge.remove());
+    newRow.setAttribute("data-thread-id", "thread-new");
+    newRow.querySelector(".y6")!.textContent = "New arrival after model update";
+    state.window.document.querySelector("tbody")!.append(newRow);
+    await state.controller.scan();
+    await flush();
+    const newlyClassified = requests().at(-1)!.items[0];
+    expect(newlyClassified.rowKey).not.toBe(first.rowKey);
+    state.listeners.forEach(listener => listener({ type: "CLASSIFY_RESULTS", epoch: 0, revision: "b".repeat(64), items: [{ rowKey: newlyClassified.rowKey, fingerprint: newlyClassified.fingerprint, result: result(newlyClassified.email.id) }] }));
+    await flush();
+    expect(requests().at(-1)!.items.some(item => item.rowKey === first.rowKey)).toBe(true);
+  } finally {
+    state.controller.stop();
+    globalThis.MutationObserver = prior;
+  }
+});
+
 it("does not restore a badge when a pending transport rejects after disabling", async () => {
   const state = setup(true);
   const prior = globalThis.MutationObserver;

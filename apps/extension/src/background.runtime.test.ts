@@ -83,6 +83,8 @@ it("loads a custom API URL before a cold-worker classify request", async () => {
   const message: ExtensionMessage = { type: "CLASSIFY_ROWS", epoch: 1, items: [item()] };
   listener?.(message, { tab: { id: 41 } }, sendResponse);
   await vi.waitFor(() => expect(sendResponse).toHaveBeenCalled());
+  await vi.waitFor(() => expect(state.chromeMock.tabs.sendMessage).toHaveBeenCalledWith(41,
+    expect.objectContaining({ type: "CLASSIFY_RESULTS", epoch: 1 })));
   expect(fetchMock).toHaveBeenCalledWith("http://localhost:4555/classify", expect.any(Object));
   expect(sendResponse).toHaveBeenCalledWith({ accepted: 1, rejected: 0 });
 });
