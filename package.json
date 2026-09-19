@@ -4,10 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "gateway:setup": "npx -y vercel@latest ai-gateway setup"
+    "classify": "node src/classification/cli.js",
+    "classify:evaluate": "node src/classification/evaluate.js",
+    "viewer": "node src/viewer/server.js",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.1"
   }
 }
-

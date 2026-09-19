@@ -8,4 +8,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 dist/
+outputs/
+__pycache__/
+*.py[cod]
 

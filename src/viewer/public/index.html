@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SDOC Jev email classification results" />
+    <title>SDOC Classification Review</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__inner">
+        <div>
+          <p class="eyebrow">Monash × Averis · Stage 1</p>
+          <h1>Email classification review</h1>
+          <p class="hero__copy">Jev predictions compared with the organizer ground truth.</p>
+        </div>
+        <div class="model-pill">
+          <span class="model-pill__dot"></span>
+          <span id="modelName">Loading model…</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="metrics" aria-label="Classification summary">
+        <article class="metric metric--primary">
+          <p>Category accuracy</p>
+          <strong id="accuracy">—</strong>
+          <span id="generatedAt">Latest run</span>
+        </article>
+        <article class="metric">
+          <p>Correct</p>
+          <strong id="correctCount">—</strong>
+          <span class="metric__success">Matches ground truth</span>
+        </article>
+        <article class="metric">
+          <p>Incorrect</p>
+          <strong id="incorrectCount">—</strong>
+          <span class="metric__danger">Needs investigation</span>
+        </article>
+        <article class="metric">
+          <p>Total emails</p>
+          <strong id="totalCount">—</strong>
+          <span>Across five categories</span>
+        </article>
+      </section>
+
+      <section class="category-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow eyebrow--dark">Category performance</p>
+            <h2>Accuracy by workflow</h2>
+          </div>
+          <p>Each bar compares Jev’s prediction with the labeled category.</p>
+        </div>
+        <div id="categoryBars" class="category-bars"></div>
+      </section>
+
+      <section class="results-panel">
+        <div class="results-toolbar">
+          <div>
+            <p class="eyebrow eyebrow--dark">Email results</p>
+            <h2 id="resultHeading">All emails</h2>
+          </div>
+          <div class="toolbar-controls">
+            <label class="search-box">
+              <span class="sr-only">Search emails</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.1-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+              <input id="searchInput" type="search" placeholder="Search subject, sender, or ID" />
+            </label>
+            <select id="categoryFilter" aria-label="Filter by category">
+              <option value="all">All categories</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-tabs" role="group" aria-label="Filter by correctness">
+          <button class="filter-tab is-active" data-filter="all">All <span id="allTabCount">0</span></button>
+          <button class="filter-tab" data-filter="correct">Correct <span id="correctTabCount">0</span></button>
+          <button class="filter-tab" data-filter="incorrect">Incorrect <span id="incorrectTabCount">0</span></button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Result</th>
+                <th>Email</th>
+                <th>Predicted</th>
+                <th>Ground truth</th>
+                <th>Confidence</th>
+                <th>Files</th>
+              </tr>
+            </thead>
+            <tbody id="emailRows"></tbody>
+          </table>
+          <div id="emptyState" class="empty-state" hidden>No emails match these filters.</div>
+        </div>
+        <div class="results-footer">
+          <span id="visibleCount">Showing 0 emails</span>
+          <span>Click any row to inspect the message and attachments.</span>
+        </div>
+      </section>
+    </main>
+
+    <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+    <aside id="emailDrawer" class="drawer" aria-hidden="true" aria-label="Email details">
+      <div class="drawer__header">
+        <div>
+          <p id="drawerId" class="eyebrow eyebrow--dark"></p>
+          <h2 id="drawerSubject">Email details</h2>
+        </div>
+        <button id="closeDrawer" class="icon-button" aria-label="Close email details">×</button>
+      </div>
+      <div id="drawerContent" class="drawer__content"></div>
+    </aside>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
