@@ -102,6 +102,12 @@ OCR processing is intentionally bounded:
 - Allowed rendering resolution: 72–400 DPI
 - Maximum PDF pages per request: 20
 - Maximum input file size: 25 MB
+- Maximum rendered/decoded page size: 25 million pixels
+- Tesseract timeout per page: 15 seconds
+
+Documents exceeding the page/frame limit fail explicitly; they are never silently truncated. Multi-frame images are processed frame by frame. Every successful request includes `input.sha256` computed over the immutable bytes actually processed. Word bounding boxes use rendered-image pixels; page width/height and PDF rendering DPI supply the coordinate scale. `ok: true` means the request produced page outcomes, not that every page is readable: inspect each status and `summary.unresolved_pages`.
+
+Run the deterministic regression tests with `python -m unittest discover -s tools/ocr-sidecar -p 'test_*.py'`. Native Tesseract is needed for real OCR, but not these unit tests.
 
 These limits prevent unexpectedly large documents from consuming unbounded OCR resources.
 
