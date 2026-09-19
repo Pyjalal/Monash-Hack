@@ -34,7 +34,26 @@ export type ExtensionMessage =
   | { type: "CLASSIFY_RESULTS"; items: RowResultMessage[] }
   | { type: "TOGGLE_ENABLED" }
   | { type: "GET_SETTINGS" }
-  | { type: "SET_ENABLED"; enabled: boolean };
+  | { type: "SET_ENABLED"; enabled: boolean }
+  | { type: "SET_SETTINGS"; enabled: boolean; apiUrl: string }
+  | { type: "SETTINGS_UPDATED"; enabled: boolean; apiUrl: string };
+
+const categories = new Set(["BL_COMPARISON", "SI_REQUEST", "INVOICE_QUERY", "GENERAL", "SPAM", "UNCERTAIN"]);
+const urgencyLevels = new Set(["routine", "week", "today", "blocking"]);
+const expectations = new Set(["FUTURE_DRAFT", "VERIFY_NOW", "REPORTS_MISSING", "UNCLEAR"]);
+
+function finiteProbability(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1;
+}
+
+function finiteUrgencyScore(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 3;
+}
+
+function probabilityRecord(value: unknown): boolean {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  return Object.values(value).every((entry) => finiteProbability(entry));
+}
 
 export function isClassifyResult(value: unknown): value is RowClassifyResult {
   if (!value || typeof value !== "object") return false;
@@ -43,13 +62,23 @@ export function isClassifyResult(value: unknown): value is RowClassifyResult {
   if (result.status === "classified") {
     if (!result.classification || typeof result.classification !== "object") return false;
     const classification = result.classification as Record<string, unknown>;
-    const confidence = classification.confidence;
-    if (typeof classification.category !== "string" || typeof confidence !== "number" || !Number.isFinite(confidence) || confidence < 0 || confidence > 1) return false;
-    if (classification.urgency !== null && classification.urgency !== undefined) {
+    if (classification.id !== result.id || typeof classification.id !== "string" || !categories.has(classification.category as string) || !finiteProbability(classification.confidence)) return false;
+    if (!probabilityRecord(classification.probabilities)) return false;
+    if (classification.urgency !== null) {
       if (typeof classification.urgency !== "object") return false;
       const urgency = classification.urgency as Record<string, unknown>;
-      if (typeof urgency.level !== "string" || typeof urgency.score !== "number" || !Number.isFinite(urgency.score)) return false;
+      if (!urgencyLevels.has(urgency.level as string) || !finiteUrgencyScore(urgency.score) || !finiteProbability(urgency.confidence) || !probabilityRecord(urgency.probabilities)) return false;
     }
+    if (classification.expectation !== null && !expectations.has(classification.expectation as string)) return false;
+    if (classification.expectationConfidence !== null && !finiteProbability(classification.expectationConfidence)) return false;
+    if (typeof classification.model !== "string" || classification.model.length === 0 || !finiteProbability(classification.confidence)) return false;
+    if (classification.usage !== null) {
+      if (typeof classification.usage !== "object") return false;
+      const usage = classification.usage as Record<string, unknown>;
+      if (!Number.isInteger(usage.input_tokens) || !Number.isInteger(usage.output_tokens) || (usage.input_tokens as number) < 0 || (usage.output_tokens as number) < 0) return false;
+    }
+    if (typeof classification.elapsedMs !== "number" || !Number.isFinite(classification.elapsedMs) || classification.elapsedMs < 0 || typeof classification.questionVersion !== "string" || classification.questionVersion.length === 0 || typeof classification.cached !== "boolean") return false;
+    if (classification.usageRequestId !== undefined && typeof classification.usageRequestId !== "string") return false;
     return true;
   }
   if (!result.error || typeof result.error !== "object") return false;

@@ -17,7 +17,7 @@ interface CargoLensChromeStorageArea {
 
 interface CargoLensChromeTabs {
   sendMessage(tabId: number, message: unknown): Promise<unknown>;
-  query(queryInfo: { active?: boolean; currentWindow?: boolean }): Promise<Array<{ id?: number }>>;
+  query(queryInfo: Record<string, unknown>): Promise<Array<{ id?: number }>>;
 }
 
 interface CargoLensChromeCommands {

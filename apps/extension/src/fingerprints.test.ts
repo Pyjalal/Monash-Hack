@@ -1,16 +1,15 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-import { fingerprintCandidate } from "./fingerprints.ts";
+import { expect, it } from "vitest";
+import { fingerprintCandidate } from "./fingerprints.js";
 
-test("fingerprints visible content while keeping row correlation opaque", async () => {
+it("fingerprints visible content while keeping row correlation opaque", async () => {
   const first = await fingerprintCandidate({ source: "gmail", rowKey: "thread-1", subject: "Draft BL", from: "ops@example.test", snippet: "Please send the draft" });
   const sameContent = await fingerprintCandidate({ source: "gmail", rowKey: "thread-2", subject: "Draft BL", from: "ops@example.test", snippet: "Please send the draft" });
   const changed = await fingerprintCandidate({ source: "gmail", rowKey: "thread-1", subject: "Draft BL", from: "ops@example.test", snippet: "Please send the signed draft" });
 
-  assert.equal(first.fingerprint, sameContent.fingerprint);
-  assert.notEqual(first.email.id, sameContent.email.id);
-  assert.notEqual(first.fingerprint, changed.fingerprint);
-  assert.equal(first.email.contentScope, "inbox_snippet");
-  assert.deepEqual(first.email.attachments, []);
-  assert.equal(first.email.id.includes("thread-1"), false);
+  expect(first.fingerprint).toBe(sameContent.fingerprint);
+  expect(first.email.id).not.toBe(sameContent.email.id);
+  expect(first.fingerprint).not.toBe(changed.fingerprint);
+  expect(first.email.contentScope).toBe("inbox_snippet");
+  expect(first.email.attachments).toEqual([]);
+  expect(first.email.id.includes("thread-1")).toBe(false);
 });

@@ -1,4 +1,4 @@
-import type { InboxAdapter, InboxRowCandidate, MailSource } from "./adapters.js";
+import type { InboxAdapter } from "./adapters.js";
 import { adapterForHost } from "./adapters.js";
 import type { ClassificationPreview, ExtensionMessage, RowClassifyResult, RowResultMessage } from "./messages.js";
 import { fingerprintCandidate, type FingerprintedRow } from "./fingerprints.js";
@@ -32,6 +32,7 @@ const badgeStyle = `
 .badge { align-items: center; border: 1px solid ${palette.wash}; border-radius: 999px; background: ${palette.bg}; color: ${palette.ink}; display: inline-flex; gap: 5px; line-height: 1; max-width: 230px; padding: 5px 8px; font-size: 11px; font-weight: 650; }
 .badge.urgent { background: ${palette.accent}; border-color: ${palette.accent}; color: ${palette.surface}; }
 .badge.error { color: ${palette.accent}; }
+.badge.uncertain { border-color: ${palette.accent}; color: ${palette.accent}; }
 .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 button { border: 0; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; font: inherit; padding: 2px 4px; }
 button:focus-visible { outline: 2px solid ${palette.accent}; outline-offset: 2px; }
@@ -46,6 +47,7 @@ export class CargoLensController {
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
   private scanToken = 0;
+  private settingsReady = false;
   private trayCollapsed = false;
   private readonly current = new Map<string, RowRecord>();
   private readonly pending = new Map<string, RowRecord>();
@@ -60,22 +62,30 @@ export class CargoLensController {
     this.runtime = runtime;
   }
 
-  start(): void {
+  async start(): Promise<void> {
     this.removeRuntimeListener = this.runtime.onMessage((message) => this.handleMessage(message));
     this.root.addEventListener("keydown", this.handleKeydown);
     this.observer = new MutationObserver(() => {
+      if (!this.settingsReady) return;
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
       this.debounceTimer = setTimeout(() => void this.scan(), 250);
     });
     const target = this.root.body ?? this.root.documentElement;
-    if (target) this.observer.observe(target, { childList: true, subtree: true, characterData: true });
-    void this.runtime.sendMessage({ type: "GET_SETTINGS" }).then((response) => {
+    if (target) this.observer.observe(target, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: ["aria-hidden", "class", "data-conversation-id", "data-convid", "data-from", "data-preview", "data-snippet", "data-subject", "data-thread-id", "hidden", "role", "style"],
+    });
+    await this.runtime.sendMessage({ type: "GET_SETTINGS" }).then((response) => {
       if (response && typeof response === "object" && "enabled" in response && typeof response.enabled === "boolean") {
         this.enabled = response.enabled;
         if (!this.enabled) this.clearPresentation();
       }
     }).catch(() => undefined);
-    void this.scan();
+    this.settingsReady = true;
+    if (this.enabled) await this.scan();
   }
 
   stop(): void {
@@ -95,6 +105,8 @@ export class CargoLensController {
     if (!this.enabled) return;
     const token = ++this.scanToken;
     const candidates = this.adapter.extractRows(this.root);
+    const candidateKeys = new Set(candidates.map((candidate) => candidate.rowKey));
+    this.prune(candidateKeys);
     const rows = await Promise.all(candidates.map((candidate) => fingerprintCandidate(candidate)));
     if (token !== this.scanToken || !this.enabled) return;
     for (let index = 0; index < rows.length; index += 1) {
@@ -103,6 +115,7 @@ export class CargoLensController {
       if (!element) continue;
       const prior = this.current.get(row.candidate.rowKey);
       if (prior?.fingerprint === row.fingerprint && prior.element === element) continue;
+      this.removePending(row.candidate.rowKey);
       const record: RowRecord = { ...row, element };
       this.current.set(row.candidate.rowKey, record);
       this.pending.set(`${row.candidate.rowKey}\u241f${row.fingerprint}`, record);
@@ -136,11 +149,16 @@ export class CargoLensController {
       this.setEnabled(!this.enabled);
       return;
     }
+    if (message.type === "SETTINGS_UPDATED") {
+      if (message.enabled !== this.enabled) this.setEnabledFromStorage(message.enabled);
+      return;
+    }
     if (message.type !== "CLASSIFY_RESULTS") return;
     for (const item of message.items) this.applyResult(item);
   }
 
   private applyResult(item: RowResultMessage): void {
+    if (!this.enabled) return;
     const record = this.current.get(item.rowKey);
     if (!record || record.fingerprint !== item.fingerprint) return;
     record.result = item.result;
@@ -156,7 +174,43 @@ export class CargoLensController {
     else this.clearPresentation();
   }
 
+  private setEnabledFromStorage(enabled: boolean): void {
+    this.enabled = enabled;
+    if (enabled) void this.scan();
+    else this.clearPresentation();
+  }
+
+  private prune(candidateKeys: Set<string>): void {
+    for (const [rowKey, record] of this.current) {
+      if (!candidateKeys.has(rowKey) || !isVisible(record.element)) this.removeRecord(rowKey);
+    }
+    for (const [rowKey, record] of this.urgent) {
+      if (!this.current.has(rowKey) || !isVisible(record.element)) this.urgent.delete(rowKey);
+    }
+    for (const [rowKey, host] of this.badgeHosts) {
+      if (!this.current.has(rowKey) || host.isConnected === false) {
+        host.remove();
+        this.badgeHosts.delete(rowKey);
+      }
+    }
+    this.renderTray();
+  }
+
+  private removePending(rowKey: string): void {
+    for (const [key, row] of this.pending) if (row.candidate.rowKey === rowKey) this.pending.delete(key);
+  }
+
+  private removeRecord(rowKey: string): void {
+    this.current.delete(rowKey);
+    this.removePending(rowKey);
+    this.urgent.delete(rowKey);
+    const host = this.badgeHosts.get(rowKey);
+    host?.remove();
+    this.badgeHosts.delete(rowKey);
+  }
+
   private clearPresentation(): void {
+    this.scanToken += 1;
     this.pending.clear();
     if (this.flushTimer) clearTimeout(this.flushTimer);
     this.flushTimer = null;
@@ -170,13 +224,14 @@ export class CargoLensController {
 
   private renderBadge(record: RowRecord, state: BadgeState): void {
     const document = this.root;
+    const target = record.candidate.badgeTarget ?? record.element;
     let host = this.badgeHosts.get(record.candidate.rowKey);
-    if (!host || host.parentElement !== (record.element.querySelector("td") ?? record.element)) {
+    if (!host || host.parentElement !== target) {
       host?.remove();
       host = document.createElement("span");
       host.dataset.cargolensBadge = "true";
       host.style.pointerEvents = "auto";
-      (record.element.querySelector("td") ?? record.element).append(host);
+      target.append(host);
       this.badgeHosts.set(record.candidate.rowKey, host);
     }
     const shadow = host.shadowRoot ?? host.attachShadow({ mode: "open" });
@@ -185,14 +240,15 @@ export class CargoLensController {
     style.textContent = badgeStyle;
     shadow.append(style);
     const badge = document.createElement("span");
-    badge.className = `badge${state.kind === "classified" && isUrgent(state.classification.urgency) ? " urgent" : ""}${state.kind === "error" ? " error" : ""}`;
+    const uncertain = state.kind === "classified" && state.classification.confidence < 0.8;
+    badge.className = `badge${state.kind === "classified" && isUrgent(state.classification.urgency) ? " urgent" : ""}${uncertain ? " uncertain" : ""}${state.kind === "error" ? " error" : ""}`;
     const label = document.createElement("span");
     label.className = "label";
     label.textContent = state.kind === "loading"
       ? "CargoLens · scanning"
       : state.kind === "error"
         ? `CargoLens · ${state.code}`
-        : `CargoLens · ${state.classification.category.replaceAll("_", " ")} · ${Math.round(state.classification.confidence * 100)}% preview`;
+        : `CargoLens · ${state.classification.category.replaceAll("_", " ")} · ${uncertain ? "uncertain · " : ""}model ${Math.round(state.classification.confidence * 100)}% preview`;
     badge.append(label);
     if (state.kind === "error") {
       const retry = document.createElement("button");
@@ -206,7 +262,7 @@ export class CargoLensController {
       });
       badge.append(retry);
     }
-    badge.title = state.kind === "classified" ? "CargoLens preview only; this does not verify shipping documents." : "CargoLens preview state";
+    badge.title = state.kind === "classified" ? "CargoLens preview only; model confidence is not document verification." : "CargoLens preview state";
     shadow.append(badge);
     if (state.kind === "classified" && isUrgent(state.classification.urgency)) this.urgent.set(record.candidate.rowKey, record);
     else this.urgent.delete(record.candidate.rowKey);
@@ -283,8 +339,14 @@ export function startContentScript(document: Document = window.document, runtime
   const adapter = adapterForHost(window.location.hostname);
   if (!adapter) return null;
   const controller = new CargoLensController(document, adapter, runtime);
-  controller.start();
+  void controller.start();
   return controller;
+}
+
+function isVisible(element: Element): boolean {
+  if (element.isConnected === false || element.hasAttribute("hidden") || element.getAttribute("aria-hidden") === "true") return false;
+  const style = element.ownerDocument.defaultView?.getComputedStyle(element);
+  return style?.display !== "none" && style?.visibility !== "hidden";
 }
 
 function chromeRuntime(): ContentRuntime {

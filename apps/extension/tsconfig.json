@@ -8,7 +8,6 @@
     "skipLibCheck": true,
     "noEmit": true,
     "types": ["node"],
-    "typeRoots": ["../../../Monash-Hack/node_modules/@types"],
     "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
   "include": ["src/**/*.ts"],

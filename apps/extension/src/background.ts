@@ -1,7 +1,7 @@
 import type { QueueItem, RowClassifyResult, RowResultMessage } from "./messages.js";
 import { isClassifyResult } from "./messages.js";
+import { classifyEndpoint, DEFAULT_API_URL, normalizeApiUrl, parseSettings } from "./settings.js";
 
-const API_URL = "http://127.0.0.1:3001/classify";
 const MAX_BATCH_SIZE = 20;
 const MAX_QUEUE_SIZE = 120;
 const FETCH_TIMEOUT_MS = 8_000;
@@ -48,10 +48,10 @@ export class ClassificationQueue {
   private readonly pending: QueueEntry[] = [];
   private readonly keys = new Set<string>();
   private readonly transport: QueueTransport;
-  private readonly apiUrl: string;
+  private readonly apiUrl: string | (() => string);
   private pumpPromise: Promise<void> | null = null;
 
-  constructor(transport: QueueTransport, apiUrl = API_URL) {
+  constructor(transport: QueueTransport, apiUrl: string | (() => string) = () => classifyEndpoint(DEFAULT_API_URL)) {
     this.transport = transport;
     this.apiUrl = apiUrl;
   }
@@ -65,7 +65,7 @@ export class ClassificationQueue {
         rejected.push({ item, error: { code: "INVALID_ROW", message: "The visible row did not match the preview contract." } });
         continue;
       }
-      const key = `${item.rowKey}\u241f${item.fingerprint}`;
+      const key = `${tabId}\u241f${item.source}\u241f${item.rowKey}\u241f${item.fingerprint}`;
       if (this.keys.has(key)) continue;
       if (this.pending.length >= MAX_QUEUE_SIZE) {
         rejected.push({ item, error: { code: "QUEUE_FULL", message: "CargoLens preview queue is full; retry this row." } });
@@ -111,10 +111,21 @@ export class ClassificationQueue {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
       try {
-        const response = await this.transport.request(this.apiUrl, {
+        const endpoint = typeof this.apiUrl === "function" ? this.apiUrl() : this.apiUrl;
+        const uniqueEntries: QueueEntry[] = [];
+        const aliases = new Map<string, QueueEntry[]>();
+        for (const entry of batch) {
+          const existing = aliases.get(entry.email.id);
+          if (existing) existing.push(entry);
+          else {
+            aliases.set(entry.email.id, [entry]);
+            uniqueEntries.push(entry);
+          }
+        }
+        const response = await this.transport.request(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ emails: batch.map(({ email }) => email) }),
+          body: JSON.stringify({ emails: uniqueEntries.map(({ email }) => email) }),
           signal: controller.signal,
         });
         if (!response.ok) throw new Error(`HTTP_${response.status}`);
@@ -127,7 +138,7 @@ export class ClassificationQueue {
     } catch (error) {
       const code = error instanceof DOMException && error.name === "AbortError" ? "TIMEOUT" : "PREVIEW_UNAVAILABLE";
       await this.sendResults(batch, batch.map((entry) => errorResult(entry, code, "CargoLens could not reach the local preview service.")));
-      for (const entry of batch) this.keys.delete(`${entry.rowKey}\u241f${entry.fingerprint}`);
+      for (const entry of batch) this.keys.delete(this.keyFor(entry));
       return;
     }
 
@@ -139,7 +150,11 @@ export class ClassificationQueue {
         : errorResult(entry, "MISSING_RESULT", "The preview service did not return this row.");
     });
     await this.sendResults(batch, messages);
-    for (const entry of batch) this.keys.delete(`${entry.rowKey}\u241f${entry.fingerprint}`);
+    for (const entry of batch) this.keys.delete(this.keyFor(entry));
+  }
+
+  private keyFor(entry: QueueEntry): string {
+    return `${entry.tabId}\u241f${entry.source}\u241f${entry.rowKey}\u241f${entry.fingerprint}`;
   }
 
   private async sendResults(batch: QueueEntry[], messages: RowResultMessage[]): Promise<void> {
@@ -157,16 +172,25 @@ export class ClassificationQueue {
   }
 }
 
+let configuredApiUrl = DEFAULT_API_URL;
+
 const runtimeQueue = typeof chrome === "undefined"
   ? null
   : new ClassificationQueue({
       request: (input, init) => fetch(input, init),
       send: (tabId, message) => chrome.tabs.sendMessage(tabId, message),
-    });
+    }, () => classifyEndpoint(configuredApiUrl));
+
+async function broadcastSettings(enabled: boolean, apiUrl: string): Promise<void> {
+  const tabs = await chrome.tabs.query({});
+  await Promise.allSettled(tabs.flatMap((tab) => typeof tab.id === "number"
+    ? [chrome.tabs.sendMessage(tab.id, { type: "SETTINGS_UPDATED", enabled, apiUrl })]
+    : []));
+}
 
 if (typeof chrome !== "undefined" && runtimeQueue) {
   chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse) => {
-    const value = message as { type?: string; items?: unknown[]; item?: unknown; enabled?: boolean };
+    const value = message as { type?: string; items?: unknown[]; item?: unknown; enabled?: boolean; apiUrl?: unknown };
     const tabId = sender.tab?.id;
     if (value.type === "CLASSIFY_ROWS" || value.type === "RETRY_ROW") {
       if (typeof tabId !== "number") {
@@ -180,11 +204,32 @@ if (typeof chrome !== "undefined" && runtimeQueue) {
       return false;
     }
     if (value.type === "GET_SETTINGS") {
-      void chrome.storage.sync.get({ enabled: true }).then((settings) => sendResponse({ enabled: settings.enabled !== false }));
+      void chrome.storage.sync.get({ enabled: true, apiUrl: DEFAULT_API_URL }).then((settings) => {
+        const parsed = parseSettings(settings);
+        configuredApiUrl = parsed.apiUrl;
+        sendResponse(parsed);
+      });
       return true;
     }
     if (value.type === "SET_ENABLED" && typeof value.enabled === "boolean") {
-      void chrome.storage.sync.set({ enabled: value.enabled }).then(() => sendResponse({ enabled: value.enabled }));
+      void chrome.storage.sync.set({ enabled: value.enabled }).then(async () => {
+        configuredApiUrl = parseSettings(await chrome.storage.sync.get({ apiUrl: DEFAULT_API_URL })).apiUrl;
+        await broadcastSettings(value.enabled as boolean, configuredApiUrl);
+        sendResponse({ enabled: value.enabled, apiUrl: configuredApiUrl });
+      });
+      return true;
+    }
+    if (value.type === "SET_SETTINGS" && typeof value.enabled === "boolean" && typeof value.apiUrl === "string") {
+      const apiUrl = normalizeApiUrl(value.apiUrl);
+      if (apiUrl !== value.apiUrl.trim().replace(/\/$/, "")) {
+        sendResponse({ error: "INVALID_API_URL" });
+        return false;
+      }
+      void chrome.storage.sync.set({ enabled: value.enabled, apiUrl }).then(async () => {
+        configuredApiUrl = apiUrl;
+        await broadcastSettings(value.enabled as boolean, apiUrl);
+        sendResponse({ enabled: value.enabled, apiUrl });
+      });
       return true;
     }
     return false;

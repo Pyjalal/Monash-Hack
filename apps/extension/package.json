@@ -5,10 +5,13 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node ../../../Monash-Hack/node_modules/tsx/dist/cli.mjs --test src/*.test.ts",
-    "typecheck": "node ../../../Monash-Hack/node_modules/typescript/bin/tsc --noEmit -p tsconfig.json"
+    "test": "vitest run --config vitest.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@cargolens/shared": "*"
+  },
+  "devDependencies": {
+    "happy-dom": "20.14.5"
   }
 }

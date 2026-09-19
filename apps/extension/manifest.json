@@ -5,7 +5,8 @@
   "description": "A local, read-only shipping-document preview for visible inbox rows.",
   "permissions": ["storage"],
   "host_permissions": [
-    "http://127.0.0.1:3001/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*",
     "https://mail.google.com/*",
     "https://outlook.live.com/*",
     "https://outlook.office.com/*"
@@ -26,5 +27,5 @@
       "description": "Toggle CargoLens preview"
     }
   },
-  "action": { "default_title": "CargoLens" }
+  "action": { "default_title": "CargoLens", "default_popup": "popup.html" }
 }
