@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EmailSchema, ClassifyRequestSchema, OperationalDecisionSchema } from './index.js';
+import { EmailSchema, ClassifyRequestSchema, OperationalDecisionSchema, SubmissionSchema } from './index.js';
 
 describe('public boundaries', () => {
   it('keeps snippet classification separate from full-message processing', () => {
@@ -13,5 +13,10 @@ describe('public boundaries', () => {
   });
   it('does not accept verified completion with a missing field', () => {
     expect(OperationalDecisionSchema.safeParse({ category: 'BL_COMPARISON', requestedAction: 'VERIFY_DOCUMENTS', documentExpectation: 'EXPECTED_NOW', verificationState: 'COMPLETE', workflowState: 'VERIFIED', knownMismatches: [], blockers: [], fieldResults: [], nextAction: 'CONFIRM_MATCH', sourceVersion: 'v1', decisionVersion: 1 }).success).toBe(false);
+  });
+  it('keeps external benchmark status constraints separate from operational verification', () => {
+    expect(SubmissionSchema.safeParse({ example: { category: 'BL_COMPARISON', status: 'OK', review_reason: null, defect_fields: [], has_defect: false } }).success).toBe(true);
+    expect(SubmissionSchema.safeParse({ example: { category: 'BL_COMPARISON', status: 'MISMATCH', review_reason: null, defect_fields: [], has_defect: true } }).success).toBe(false);
+    expect(SubmissionSchema.safeParse({ example: { category: 'BL_COMPARISON', status: 'NEEDS_REVIEW', review_reason: null, defect_fields: [], has_defect: false } }).success).toBe(false);
   });
 });

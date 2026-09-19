@@ -1,22 +1,25 @@
 import Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
 import { EventEmitter } from 'node:events';
-import { ClassificationSchema, EmailSchema, OperationalDecisionSchema, type CaseEvent, type Classification, type Email, type OperationalDecision } from '@cargolens/shared';
+import { ClassificationSchema, EmailSchema, OperationalDecisionSchema, type CaseEvent, type Classification, type Email, type OperationalDecision, type Usage } from '@cargolens/shared';
+import { getClassificationRecoverySignals } from './ai/classify.js';
 
 export function hash(value: unknown): string { return createHash('sha256').update(JSON.stringify(value)).digest('hex'); }
 export type CaseRecord = { email: Email; sourceVersion: string; classification: Classification | null; decision: OperationalDecision | null; status: string; updatedAt: string };
 type CaseRow = { source_json: string; source_version: string; classification_json: string | null; decision_json: string | null; status: string; updated_at: string };
+export type RequestUsage = { requestId: string; model: string; usage: Usage; elapsedMs: number; emailCount: number };
 
 export function initialDecision(classification: Classification, sourceVersion: string): OperationalDecision {
   const comparison = classification.category === 'BL_COMPARISON';
   const deferred = comparison && classification.expectation === 'FUTURE_DRAFT' && (classification.expectationConfidence ?? 0) >= 0.8;
   const immediate = comparison && ['VERIFY_NOW', 'REPORTS_MISSING'].includes(classification.expectation ?? '') && (classification.expectationConfidence ?? 0) >= 0.8;
-  const uncertain = classification.category === 'UNCERTAIN' || comparison && !deferred && !immediate;
+  const recovery = getClassificationRecoverySignals(classification);
+  const uncertain = recovery.length > 0 || classification.category === 'UNCERTAIN' || comparison && !deferred && !immediate;
   return OperationalDecisionSchema.parse({
-    category: classification.category, requestedAction: deferred ? 'REQUEST_DRAFT' : immediate ? 'VERIFY_DOCUMENTS' : uncertain ? 'UNCERTAIN' : 'OTHER',
-    documentExpectation: deferred ? 'DEFERRED' : immediate ? 'EXPECTED_NOW' : 'UNCERTAIN',
+    category: classification.category, requestedAction: uncertain ? 'UNCERTAIN' : deferred ? 'REQUEST_DRAFT' : immediate ? 'VERIFY_DOCUMENTS' : 'OTHER',
+    documentExpectation: uncertain ? 'UNCERTAIN' : deferred ? 'DEFERRED' : immediate ? 'EXPECTED_NOW' : 'UNCERTAIN',
     verificationState: uncertain ? 'BLOCKED' : 'NOT_STARTED', workflowState: uncertain ? 'BLOCKED' : comparison ? 'AWAITING_DOCUMENTS' : 'NOT_APPLICABLE',
-    knownMismatches: [], blockers: uncertain ? ['UNCERTAIN_INTENT'] : [], fieldResults: [], nextAction: comparison ? 'FETCH_THREAD' : uncertain ? 'REQUEST_CLARIFICATION' : 'NONE', sourceVersion, decisionVersion: 1,
+    knownMismatches: [], blockers: uncertain ? [...recovery, 'UNCERTAIN_INTENT'] : [], fieldResults: [], nextAction: recovery.length ? 'RECOVER_FIELDS' : comparison ? 'FETCH_THREAD' : uncertain ? 'REQUEST_CLARIFICATION' : 'NONE', sourceVersion, decisionVersion: 1,
   });
 }
 
@@ -33,6 +36,7 @@ export class Store {
       CREATE TABLE IF NOT EXISTS classification_cache (key TEXT PRIMARY KEY, result_json TEXT NOT NULL, created_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS events (sequence INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL, case_id TEXT, at TEXT NOT NULL, data_json TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS flows (id TEXT PRIMARY KEY, flow_json TEXT NOT NULL, updated_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS ai_requests (request_id TEXT PRIMARY KEY, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
     `);
   }
   close(): void { this.db.close(); }
@@ -64,7 +68,11 @@ export class Store {
     const decision = initialDecision(classification, sourceVersion);
     const changed = this.db.prepare(`UPDATE cases SET classification_json=?,decision_json=?,status='classified',updated_at=? WHERE id=? AND source_version=?`)
       .run(JSON.stringify(ClassificationSchema.parse(classification)), JSON.stringify(decision), new Date().toISOString(), id, sourceVersion).changes;
-    if (changed) this.emit('case.classified', id, { sourceVersion, classification, decision });
+    if (changed) {
+      this.emit('case.classified', id, { sourceVersion, classification, decision });
+      const signals = getClassificationRecoverySignals(classification);
+      if (signals.length) this.emit('classification.recovery.required', id, { sourceVersion, signals });
+    }
     return !!changed;
   }
   saveDecision(id: string, decision: OperationalDecision): boolean {
@@ -85,6 +93,19 @@ export class Store {
   }
   cache(key: string, result: Classification): void {
     this.db.prepare('INSERT OR REPLACE INTO classification_cache VALUES (?,?,?)').run(key, JSON.stringify(ClassificationSchema.parse(result)), new Date().toISOString());
+  }
+  recordUsage(request: RequestUsage): void {
+    this.db.prepare('INSERT OR IGNORE INTO ai_requests VALUES (?,?,?)').run(request.requestId, JSON.stringify(request), new Date().toISOString());
+  }
+  getRequestUsage(requestId: string): RequestUsage | null {
+    const row = this.db.prepare('SELECT payload_json FROM ai_requests WHERE request_id=?').get(requestId) as {payload_json:string} | undefined;
+    return row ? JSON.parse(row.payload_json) as RequestUsage : null;
+  }
+  usageSummary(): Usage & { requests: number } {
+    const requests = this.db.prepare('SELECT payload_json FROM ai_requests').all() as {payload_json:string}[];
+    return requests.reduce((sum, row) => { const request = JSON.parse(row.payload_json) as RequestUsage;
+      return { requests: sum.requests + 1, input_tokens: sum.input_tokens + request.usage.input_tokens, output_tokens: sum.output_tokens + request.usage.output_tokens };
+    }, { requests: 0, input_tokens: 0, output_tokens: 0 });
   }
   emit(type: string, caseId: string | null, data: unknown): CaseEvent {
     const at = new Date().toISOString();

@@ -1,8 +1,17 @@
 import type { Questions } from "@typesafe-ai/sdk";
-import type { Category, Classification, Email, Expectation, Urgency } from "@cargolens/shared";
+import type { Category, Classification, Email, Expectation, Urgency, Usage } from "@cargolens/shared";
 import type { ClassificationMode } from "@cargolens/shared/questions";
 
 export type Classifier = (email: Email) => Promise<Classification>;
+
+export type ClassificationRecoverySignal = "LOW_CATEGORY_CONFIDENCE" | "CATEGORY_EXPECTATION_CONFLICT";
+export function getClassificationRecoverySignals(classification: Classification): ClassificationRecoverySignal[] {
+  const signals: ClassificationRecoverySignal[] = [];
+  if (classification.confidence < 0.8) signals.push("LOW_CATEGORY_CONFIDENCE");
+  if (classification.category !== "BL_COMPARISON" && classification.expectation === "VERIFY_NOW" &&
+      (classification.expectationConfidence ?? 0) >= 0.5) signals.push("CATEGORY_EXPECTATION_CONFLICT");
+  return signals;
+}
 
 export class InvalidJevResponseError extends Error {
   readonly code = "INVALID_JEV_RESPONSE";
@@ -19,7 +28,7 @@ interface ClassificationMetadata {
   questionVersion: string;
 }
 
-export function parseClassification(raw: unknown, email: Email, meta: ClassificationMetadata): Classification {
+export function parseClassification(raw: unknown, email: Email, meta: ClassificationMetadata): Classification & { usage: Usage } {
   const response = record(raw, "response");
   if (typeof response.model !== "string" || !response.model.trim()) fail("model");
   const usage = record(response.usage, "usage");
@@ -46,8 +55,10 @@ export function parseClassification(raw: unknown, email: Email, meta: Classifica
     for (const key of keys)
       if (JSON.stringify(legend[key]) !== JSON.stringify(expectedUrgency.criteria[Number(key)])) fail(`urgency.legend.${key}`);
     const expectedScore = keys.reduce((sum, key) => sum + Number(key) * probabilities[key], 0);
+    // Live Jev rounds each displayed probability and the score independently to two decimals.
+    const scoreRoundingBudget = 0.005 * (keys.reduce((sum, key) => sum + Number(key), 0) + 1) + 1e-9;
     if (typeof answer.score !== "number" || !Number.isFinite(answer.score) || answer.score < 0 ||
-        answer.score > keys.length - 1 || Math.abs(answer.score - expectedScore) > 0.015) fail("urgency.score");
+        answer.score > keys.length - 1 || Math.abs(answer.score - expectedScore) > scoreRoundingBudget) fail("urgency.score");
     const levels = ["routine", "week", "today", "blocking"] as const;
     urgency = { score: answer.score, confidence, probabilities, level: levels[Math.round(answer.score)] };
     const expectedExpectation = meta.questions.expectation;
@@ -85,7 +96,8 @@ function probabilityDistribution(raw: unknown, keys: string[], path: string) {
   sameKeys(values, keys, path);
   const checked: Record<string, number> = {};
   for (const key of keys) checked[key] = probability(values[key], `${path}.${key}`);
-  if (Math.abs(Object.values(checked).reduce((sum, value) => sum + value, 0) - 1) > 0.001) fail(`${path}.sum`);
+  const roundingBudget = keys.length * 0.005 + 1e-9;
+  if (Math.abs(Object.values(checked).reduce((sum, value) => sum + value, 0) - 1) > roundingBudget) fail(`${path}.sum`);
   return checked;
 }
 

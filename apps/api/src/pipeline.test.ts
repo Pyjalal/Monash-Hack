@@ -44,6 +44,18 @@ describe('classification pipeline', () => {
 });
 
 describe('API boundaries', () => {
+  it('exposes Gmail only through privileged routes and validates sync limits', async () => {
+    const store = new Store(':memory:');
+    const service = new ClassificationService({ store, classifier: async source => result(source), configurationKey: 'v1' });
+    const gmail = { sync: vi.fn(async () => ({ processed: 0, skipped: 0, errors: [] })), status: () => ({ enabled: false, busy: false, pending: 0, unknown: 0 }), outbox: () => [], validateDecision: async () => {}, processDecision: async () => null, dispatchPending: async () => [] };
+    const app = createApp({ store, service, dashboardToken: 'local-test-token', gmail });
+    expect((await app.request('/gmail/status')).status).toBe(401);
+    const headers = { Authorization: 'Bearer local-test-token', 'Content-Type': 'application/json' };
+    expect((await app.request('/gmail/sync', { method: 'POST', headers, body: JSON.stringify({ maxMessages: 1000 }) })).status).toBe(400);
+    expect((await app.request('/gmail/sync', { method: 'POST', headers, body: JSON.stringify({ maxMessages: 10 }) })).status).toBe(202);
+    expect(gmail.sync).toHaveBeenCalledWith({ maxMessages: 10 });
+    await new Promise(resolve => setTimeout(resolve, 0)); store.close();
+  });
   it('protects case data, limits preview batches, and preserves per-item failures', async () => {
     const store = new Store(':memory:'); store.upsertEmail(email);
     const service = new ClassificationService({ store, classifier: async source => { if (source.id === 'bad') throw new Error('secret upstream detail'); return result(source); }, configurationKey: 'v1' });

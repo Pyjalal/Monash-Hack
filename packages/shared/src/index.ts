@@ -14,7 +14,7 @@ export const EmailSchema = z.object({
   id: z.string().min(1).max(512), subject: z.string().max(4096), from: z.string().max(512),
   snippet: z.string().max(8192).optional(), body: z.string().max(128000).optional(),
   contentScope: z.enum(['full_message', 'inbox_snippet']).default('full_message'),
-  attachments: z.array(AttachmentSchema).max(100).default([]), threadId: z.string().max(512).optional(),
+  attachments: z.array(AttachmentSchema).max(100).default([]), threadId: z.string().max(512).optional(), sourceMessageId: z.string().max(512).optional(),
 });
 export type Email = z.infer<typeof EmailSchema>;
 const probability = z.number().finite().min(0).max(1);
@@ -28,7 +28,7 @@ export type Usage = z.infer<typeof UsageSchema>;
 export const ClassificationSchema = z.object({
   id: z.string(), category: CategorySchema, confidence: probability, probabilities: z.record(probability),
   urgency: UrgencySchema.nullable(), expectation: ExpectationSchema.nullable(), expectationConfidence: probability.nullable(),
-  model: z.string().min(1), usage: UsageSchema, elapsedMs: z.number().finite().nonnegative(),
+  model: z.string().min(1), usage: UsageSchema.nullable(), usageRequestId: z.string().optional(), elapsedMs: z.number().finite().nonnegative(),
   questionVersion: z.string().min(1), cached: z.boolean(), raw: z.unknown().optional(),
 });
 export type Classification = z.infer<typeof ClassificationSchema>;
@@ -40,7 +40,8 @@ export const ClassifyResultSchema = z.discriminatedUnion('status', [
   z.object({ id: z.string(), status: z.literal('error'), error: z.object({ code: z.string(), message: z.string() }) }),
 ]);
 export type ClassifyResult = z.infer<typeof ClassifyResultSchema>;
-export const ClassifyResponseSchema = z.object({ results: z.array(ClassifyResultSchema), elapsedMs: z.number().nonnegative() });
+export const ClassifyResponseSchema = z.object({ results: z.array(ClassifyResultSchema), elapsedMs: z.number().nonnegative(),
+  usage: UsageSchema.extend({ requests: z.number().int().nonnegative() }).optional() });
 
 export const FIELD_NAMES = ['shipper', 'consignee', 'notify_party', 'port_of_loading', 'port_of_discharge', 'container_count', 'gross_weight_kg'] as const;
 export const FieldNameSchema = z.enum(FIELD_NAMES);
@@ -52,6 +53,7 @@ export const FieldResultSchema = z.object({
   field: FieldNameSchema, outcome: z.enum(['MATCH', 'MISMATCH', 'MISSING', 'AMBIGUOUS', 'UNREADABLE']),
   si: SourceSpanSchema.optional(), bl: SourceSpanSchema.optional(),
 });
+export type FieldResult = z.infer<typeof FieldResultSchema>;
 export const OperationalDecisionSchema = z.object({
   category: CategorySchema,
   requestedAction: z.enum(['REQUEST_DRAFT', 'VERIFY_DOCUMENTS', 'AMEND_DOCUMENTS', 'OTHER', 'UNCERTAIN']),
@@ -76,6 +78,30 @@ export const OperationalDecisionSchema = z.object({
   }
 });
 export type OperationalDecision = z.infer<typeof OperationalDecisionSchema>;
+
+export const CaseSchema = z.object({
+  email: EmailSchema, sourceVersion: z.string().min(1), classification: ClassificationSchema.nullable(),
+  decision: OperationalDecisionSchema.nullable(), status: z.enum(['queued', 'classified', 'failed']), updatedAt: z.string().datetime(),
+}).superRefine((value, ctx) => {
+  if (value.classification && value.classification.id !== value.email.id) ctx.addIssue({ code: 'custom', message: 'Classification belongs to another case' });
+  if (value.decision && value.decision.sourceVersion !== value.sourceVersion) ctx.addIssue({ code: 'custom', message: 'Decision source version is stale' });
+});
+export type Case = z.infer<typeof CaseSchema>;
+export const SubmissionRowSchema = z.object({
+  category: z.enum(['BL_COMPARISON', 'SI_REQUEST', 'INVOICE_QUERY', 'GENERAL', 'SPAM']),
+  status: z.enum(['OK', 'MISMATCH', 'NEEDS_REVIEW']),
+  review_reason: z.enum(['missing_attachment', 'wrong_doc_type', 'unreadable', 'missing_value']).nullable(),
+  defect_fields: z.array(FieldNameSchema), has_defect: z.boolean(),
+}).strict().superRefine((row, ctx) => {
+  const mismatched = row.status === 'MISMATCH';
+  if (row.has_defect !== mismatched || (row.defect_fields.length > 0) !== mismatched || new Set(row.defect_fields).size !== row.defect_fields.length) {
+    ctx.addIssue({ code: 'custom', message: 'Defect flags must agree with benchmark status' });
+  }
+  if ((row.review_reason !== null) !== (row.status === 'NEEDS_REVIEW')) ctx.addIssue({ code: 'custom', message: 'Review status requires one explicit reason' });
+});
+export type SubmissionRow = z.infer<typeof SubmissionRowSchema>;
+export const SubmissionSchema = z.record(SubmissionRowSchema);
+export type Submission = z.infer<typeof SubmissionSchema>;
 
 export const CaseEventSchema = z.object({ sequence: z.number().int(), type: z.string(), caseId: z.string().nullable(), at: z.string(), data: z.unknown() });
 export type CaseEvent = z.infer<typeof CaseEventSchema>;

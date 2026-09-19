@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Email } from "@cargolens/shared";
 import { buildQuestions } from "@cargolens/shared/questions";
-import { InvalidJevResponseError, parseClassification } from "./classify.js";
+import { getClassificationRecoverySignals, InvalidJevResponseError, parseClassification } from "./classify.js";
 
 const email: Email = { id: "record-1", subject: "Please check BL", from: "a@example.test", body: "Check the BL.", contentScope: "full_message", attachments: [] };
 const questions = buildQuestions("concise", "full");
@@ -50,5 +50,38 @@ describe("Jev response validation", () => {
     expect(result.urgency).toBeNull();
     expect(result.expectation).toBeNull();
     expect(result.expectationConfidence).toBeNull();
+  });
+
+  it("accepts provider probabilities rounded independently to two decimal places", () => {
+    const response = valid();
+    response.answers.intent.probabilities.BL_COMPARISON = 0.94;
+    expect(parseClassification(response, email, metadata).category).toBe("BL_COMPARISON");
+  });
+
+  it("accepts a provider score computed before displayed probabilities were rounded", () => {
+    const response = valid();
+    response.answers.urgency.probabilities = { "0": 0.97, "1": 0, "2": 0, "3": 0.03 };
+    response.answers.urgency.score = 0.11;
+    expect(parseClassification(response, email, metadata).urgency?.score).toBe(0.11);
+  });
+});
+
+describe("classification recovery signals", () => {
+  it("flags low confidence without changing the category", () => {
+    const result = { ...parseClassification(valid(), email, metadata), confidence: 0.79 };
+    expect(getClassificationRecoverySignals(result)).toEqual(["LOW_CATEGORY_CONFIDENCE"]);
+    expect(result.category).toBe("BL_COMPARISON");
+  });
+
+  it("flags disagreement between intent and an independently supported verification request", () => {
+    const result = { ...parseClassification(valid(), email, metadata), category: "SI_REQUEST" as const, expectationConfidence: 0.6 };
+    expect(getClassificationRecoverySignals(result)).toEqual(["CATEGORY_EXPECTATION_CONFLICT"]);
+    expect(result.category).toBe("SI_REQUEST");
+  });
+
+  it("does not invent conflict from weak or absent expectation evidence", () => {
+    const result = { ...parseClassification(valid(), email, metadata), category: "SI_REQUEST" as const, confidence: 0.8 };
+    expect(getClassificationRecoverySignals({ ...result, expectationConfidence: 0.49 })).toEqual([]);
+    expect(getClassificationRecoverySignals({ ...result, expectation: null, expectationConfidence: null })).toEqual([]);
   });
 });
