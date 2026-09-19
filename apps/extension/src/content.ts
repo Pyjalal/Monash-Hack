@@ -344,9 +344,13 @@ export function startContentScript(document: Document = window.document, runtime
 }
 
 function isVisible(element: Element): boolean {
-  if (element.isConnected === false || element.hasAttribute("hidden") || element.getAttribute("aria-hidden") === "true") return false;
-  const style = element.ownerDocument.defaultView?.getComputedStyle(element);
-  return style?.display !== "none" && style?.visibility !== "hidden";
+  const view = element.ownerDocument.defaultView;
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    if (current.isConnected === false || current.hasAttribute("hidden") || current.getAttribute("aria-hidden") === "true") return false;
+    const style = view?.getComputedStyle(current);
+    if (style?.display === "none" || style?.visibility === "hidden") return false;
+  }
+  return true;
 }
 
 function chromeRuntime(): ContentRuntime {

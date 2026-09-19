@@ -29,6 +29,18 @@ The API binds to `http://127.0.0.1:3001`. `GET /health` and `POST /classify` are
 
 Preview results use only the visible subject/snippet and cannot establish document verification. Public previews do not overwrite imported cases.
 
+## Load the extension
+
+With the local API running:
+
+```sh
+npm run build:extension
+```
+
+In Chrome's extension manager, enable Developer mode, choose **Load unpacked**, and select `apps/extension/dist`. Open the CargoLens popup to check the local API and enable previews. The supported inbox hosts are Gmail, Outlook Live and Outlook Office. `Ctrl+Shift+L` toggles previews. Reload existing mailbox tabs after loading or updating the extension.
+
+Badges classify visible subject/snippet text; the urgent tray provides shortcuts to native rows. No mailbox OAuth token is needed for these previews. Full-thread retrieval and outbound automation use the separate Gmail API connector below. Gmail and Outlook selectors still need checking against the team's actual mailbox layouts.
+
 ## Implemented and remaining
 
 - Typed Jev category, urgency and document-expectation questions; batches of eight, bounded concurrency/retries, content caching and durable events.

@@ -29,10 +29,13 @@ function firstAttribute(element: Element | null | undefined, names: string[]): s
 }
 
 function isVisibleElement(element: Element): boolean {
-  if (element.isConnected === false || (typeof element.hasAttribute === "function" && element.hasAttribute("hidden")) || element.getAttribute("aria-hidden") === "true") return false;
   const view = element.ownerDocument?.defaultView;
-  const style = view?.getComputedStyle(element);
-  return style?.display !== "none" && style?.visibility !== "hidden";
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    if (current.isConnected === false || (typeof current.hasAttribute === "function" && current.hasAttribute("hidden")) || current.getAttribute("aria-hidden") === "true") return false;
+    const style = view?.getComputedStyle(current);
+    if (style?.display === "none" || style?.visibility === "hidden") return false;
+  }
+  return true;
 }
 
 function uniqueRows(root: Document, selectors: string[]): Element[] {
