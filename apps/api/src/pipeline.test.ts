@@ -49,7 +49,9 @@ describe('API boundaries', () => {
     const health = async (configurationKey: string) => {
       const service = new ClassificationService({ store, classifier: async source => result(source), configurationKey });
       const app = createApp({ store, service, dashboardToken: 'private-dashboard-token' });
-      return (await app.request('/health')).json() as Promise<{ classifierRevision: string }>;
+      const response = await app.request('/health');
+      expect(response.headers.get('Cache-Control')).toBe('no-store');
+      return response.json() as Promise<{ classifierRevision: string }>;
     };
     const first = await health('model-a:questions-v1');
     expect(first.classifierRevision).toMatch(/^[a-f0-9]{64}$/);
