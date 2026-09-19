@@ -28,7 +28,7 @@ it("Gmail adapter extracts visible row fields and deduplicates overlapping selec
     "[email]": new FixtureElement("Operations", { email: "ops@example.test" }), ".bog": new FixtureElement("Draft BL"), ".y2": new FixtureElement("Please send the draft for checking"),
   });
   const root = new FixtureDocument(new Map([["tr.zA", [row]], ['[role="main"] tr.zA', [row]]]));
-  expect(gmailAdapter.extractRows(root as unknown as Document)).toEqual([{ source: "gmail", rowKey: "thread-1", subject: "Draft BL", from: "ops@example.test", snippet: "Please send the draft for checking", element: row, badgeTarget: row }]);
+  expect(gmailAdapter.extractRows(root as unknown as Document)).toEqual([{ source: "gmail", rowKey: "thread-1", subject: "Draft BL", from: "ops@example.test", snippet: "Please send the draft for checking", element: row, badgeTarget: row.querySelector(".bog") }]);
 });
 
 it("Outlook adapter reads data attributes and host routing is explicit", () => {

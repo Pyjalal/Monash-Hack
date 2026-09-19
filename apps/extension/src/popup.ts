@@ -12,7 +12,7 @@ function setStatus(message: string, kind: "ok" | "error" | "" = ""): void {
   status.className = `status${kind ? ` ${kind}` : ""}`;
 }
 
-async function notifyTabs(settings: { enabled: boolean; apiUrl: string }): Promise<void> {
+async function notifyTabs(settings: { enabled: boolean; apiUrl: string; epoch: number }): Promise<void> {
   const tabs = await chrome.tabs.query({});
   await Promise.allSettled(tabs.flatMap((tab) => typeof tab.id === "number"
     ? [chrome.tabs.sendMessage(tab.id, { type: "SETTINGS_UPDATED", ...settings })]
@@ -40,7 +40,8 @@ async function saveSettings(): Promise<void> {
     return;
   }
   await chrome.storage.sync.set(settings);
-  await notifyTabs(settings);
+  const epoch = response && typeof response === "object" && "epoch" in response && typeof response.epoch === "number" ? response.epoch : 0;
+  await notifyTabs({ ...settings, epoch });
   if (apiUrl) apiUrl.value = settings.apiUrl;
   setStatus("Saved for this browser profile.", "ok");
   await checkHealth(settings.apiUrl);

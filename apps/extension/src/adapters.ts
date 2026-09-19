@@ -84,7 +84,7 @@ export const gmailAdapter: InboxAdapter = {
   extractRows(root) {
     return uniqueRows(root, gmailSelectors).flatMap((row, index) => {
       if (!isVisibleElement(row)) return [];
-      const subjectElement = row.querySelector(".bog, .y6, [data-subject]");
+      const subjectElement = row.querySelector(".bog") ?? row.querySelector(".y6") ?? row.querySelector("[data-subject]");
       const subject = firstAttribute(row, ["data-subject"]) || textOf(subjectElement) || descendantText(row, [".bog", ".y6", "[data-subject]"]);
       if (!subject) return [];
       return [{
@@ -105,7 +105,7 @@ export const outlookAdapter: InboxAdapter = {
   extractRows(root) {
     return uniqueRows(root, outlookSelectors).flatMap((row, index) => {
       if (!isVisibleElement(row)) return [];
-      const subjectElement = row.querySelector("[role=heading], [data-subject]");
+      const subjectElement = row.querySelector("[role=heading]") ?? row.querySelector("[data-subject]");
       const subject = firstAttribute(row, ["data-subject"]) || textOf(subjectElement) || descendantText(row, ["[role=heading]", "[data-subject]"]);
       if (!subject) return [];
       return [{

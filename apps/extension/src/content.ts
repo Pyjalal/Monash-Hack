@@ -29,7 +29,7 @@ const palette = {
 
 const badgeStyle = `
 :host { all: initial; display: inline-flex; vertical-align: middle; margin-inline-start: 8px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-.badge { align-items: center; border: 1px solid ${palette.wash}; border-radius: 999px; background: ${palette.bg}; color: ${palette.ink}; display: inline-flex; gap: 5px; line-height: 1; max-width: 230px; padding: 5px 8px; font-size: 11px; font-weight: 650; }
+.badge { align-items: center; border: 1px solid ${palette.wash}; border-radius: 999px; background: ${palette.bg}; color: ${palette.ink}; display: inline-flex; gap: 5px; line-height: 1; max-width: 300px; padding: 5px 8px; font-size: 11px; font-weight: 650; }
 .badge.urgent { background: ${palette.accent}; border-color: ${palette.accent}; color: ${palette.surface}; }
 .badge.error { color: ${palette.accent}; }
 .badge.uncertain { border-color: ${palette.accent}; color: ${palette.accent}; }
@@ -48,6 +48,8 @@ export class CargoLensController {
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
   private scanToken = 0;
   private settingsReady = false;
+  private settingsEpoch = 0;
+  private apiUrl = "http://127.0.0.1:3001";
   private trayCollapsed = false;
   private readonly current = new Map<string, RowRecord>();
   private readonly pending = new Map<string, RowRecord>();
@@ -80,7 +82,10 @@ export class CargoLensController {
     });
     await this.runtime.sendMessage({ type: "GET_SETTINGS" }).then((response) => {
       if (response && typeof response === "object" && "enabled" in response && typeof response.enabled === "boolean") {
-        this.enabled = response.enabled;
+        const value = response as { enabled: boolean; apiUrl?: unknown; epoch?: unknown };
+        this.enabled = value.enabled;
+        if (typeof value.apiUrl === "string") this.apiUrl = value.apiUrl;
+        if (typeof value.epoch === "number" && Number.isInteger(value.epoch)) this.settingsEpoch = value.epoch;
         if (!this.enabled) this.clearPresentation();
       }
     }).catch(() => undefined);
@@ -137,7 +142,7 @@ export class CargoLensController {
           fingerprint,
           email,
         }));
-        void this.runtime.sendMessage({ type: "CLASSIFY_ROWS", items: chunk }).catch(() => {
+        void this.runtime.sendMessage({ type: "CLASSIFY_ROWS", epoch: this.settingsEpoch, items: chunk }).catch(() => {
           for (const row of rows.slice(index, index + 20)) this.renderBadge(row, { kind: "error", code: "PREVIEW_UNAVAILABLE", message: "Preview unavailable" });
         });
       }
@@ -150,10 +155,11 @@ export class CargoLensController {
       return;
     }
     if (message.type === "SETTINGS_UPDATED") {
-      if (message.enabled !== this.enabled) this.setEnabledFromStorage(message.enabled);
+      const changed = message.enabled !== this.enabled || message.apiUrl !== this.apiUrl || message.epoch !== this.settingsEpoch;
+      if (changed) this.applySettings(message.enabled, message.apiUrl, message.epoch);
       return;
     }
-    if (message.type !== "CLASSIFY_RESULTS") return;
+    if (message.type !== "CLASSIFY_RESULTS" || message.epoch !== this.settingsEpoch) return;
     for (const item of message.items) this.applyResult(item);
   }
 
@@ -169,15 +175,18 @@ export class CargoLensController {
 
   private setEnabled(enabled: boolean): void {
     this.enabled = enabled;
+    this.settingsEpoch += 1;
+    this.clearPresentation();
     void this.runtime.sendMessage({ type: "SET_ENABLED", enabled }).catch(() => undefined);
     if (enabled) void this.scan();
-    else this.clearPresentation();
   }
 
-  private setEnabledFromStorage(enabled: boolean): void {
+  private applySettings(enabled: boolean, apiUrl: string, epoch: number): void {
     this.enabled = enabled;
+    this.apiUrl = apiUrl;
+    this.settingsEpoch = epoch;
+    this.clearPresentation();
     if (enabled) void this.scan();
-    else this.clearPresentation();
   }
 
   private prune(candidateKeys: Set<string>): void {
@@ -240,15 +249,19 @@ export class CargoLensController {
     style.textContent = badgeStyle;
     shadow.append(style);
     const badge = document.createElement("span");
-    const uncertain = state.kind === "classified" && state.classification.confidence < 0.8;
-    badge.className = `badge${state.kind === "classified" && isUrgent(state.classification.urgency) ? " urgent" : ""}${uncertain ? " uncertain" : ""}${state.kind === "error" ? " error" : ""}`;
+    const categoryUncertain = state.kind === "classified" && (state.classification.category === "UNCERTAIN" || state.classification.confidence < 0.8);
+    const urgencyUnclear = state.kind === "classified" && (!state.classification.urgency || state.classification.urgency.confidence < 0.6);
+    badge.className = `badge${state.kind === "classified" && isUrgent(state.classification.urgency) ? " urgent" : ""}${categoryUncertain ? " uncertain" : ""}${state.kind === "error" ? " error" : ""}`;
     const label = document.createElement("span");
     label.className = "label";
+    const categoryLabel = state.kind === "classified" ? categoryLabels[state.classification.category] ?? state.classification.category.replaceAll("_", " ") : "";
+    const urgencyLabel = state.kind === "classified" && state.classification.urgency ? urgencyLabels[state.classification.urgency.level] : "";
+    const confidenceLabel = categoryUncertain && state.classification.category !== "UNCERTAIN" ? "Uncertain" : "";
     label.textContent = state.kind === "loading"
       ? "CargoLens · scanning"
       : state.kind === "error"
         ? `CargoLens · ${state.code}`
-        : `CargoLens · ${state.classification.category.replaceAll("_", " ")} · ${uncertain ? "uncertain · " : ""}model ${Math.round(state.classification.confidence * 100)}% preview`;
+        : ["CargoLens", categoryLabel, urgencyUnclear ? "Urgency unclear" : urgencyLabel, confidenceLabel].filter(Boolean).join(" · ");
     badge.append(label);
     if (state.kind === "error") {
       const retry = document.createElement("button");
@@ -258,11 +271,14 @@ export class CargoLensController {
       retry.addEventListener("click", (event) => {
         event.stopPropagation();
         this.renderBadge(record, { kind: "loading" });
-        void this.runtime.sendMessage({ type: "RETRY_ROW", item: { source: record.candidate.source, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => undefined);
+        void this.runtime.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, item: { source: record.candidate.source, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => undefined);
       });
       badge.append(retry);
     }
-    badge.title = state.kind === "classified" ? "CargoLens preview only; model confidence is not document verification." : "CargoLens preview state";
+    badge.title = state.kind === "classified"
+      ? `CargoLens preview only. Model confidence ${Math.round(state.classification.confidence * 100)}%; ${urgencyUnclear ? "urgency is unclear; " : ""}this does not verify shipping documents.`
+      : "CargoLens preview state";
+    badge.setAttribute("aria-label", badge.title);
     shadow.append(badge);
     if (state.kind === "classified" && isUrgent(state.classification.urgency)) this.urgent.set(record.candidate.rowKey, record);
     else this.urgent.delete(record.candidate.rowKey);
@@ -331,9 +347,25 @@ export class CargoLensController {
   };
 }
 
-function isUrgent(urgency: { level: string } | null): boolean {
-  return urgency?.level === "blocking" || urgency?.level === "today";
+function isUrgent(urgency: { level: string; confidence: number } | null): boolean {
+  return urgency !== null && urgency.confidence >= 0.6 && (urgency.level === "blocking" || urgency.level === "today");
 }
+
+const categoryLabels: Record<string, string> = {
+  BL_COMPARISON: "BL check",
+  SI_REQUEST: "Shipping instructions",
+  INVOICE_QUERY: "Invoice",
+  GENERAL: "General",
+  SPAM: "Spam",
+  UNCERTAIN: "Uncertain",
+};
+
+const urgencyLabels: Record<string, string> = {
+  routine: "Routine",
+  week: "This week",
+  today: "Today",
+  blocking: "Blocking",
+};
 
 export function startContentScript(document: Document = window.document, runtime: ContentRuntime = chromeRuntime()): CargoLensController | null {
   const adapter = adapterForHost(window.location.hostname);

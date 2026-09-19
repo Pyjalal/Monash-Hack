@@ -29,14 +29,14 @@ export interface RowResultMessage {
 }
 
 export type ExtensionMessage =
-  | { type: "CLASSIFY_ROWS"; items: QueueItem[] }
-  | { type: "RETRY_ROW"; item: QueueItem }
-  | { type: "CLASSIFY_RESULTS"; items: RowResultMessage[] }
+  | { type: "CLASSIFY_ROWS"; items: QueueItem[]; epoch: number }
+  | { type: "RETRY_ROW"; item: QueueItem; epoch: number }
+  | { type: "CLASSIFY_RESULTS"; items: RowResultMessage[]; epoch: number }
   | { type: "TOGGLE_ENABLED" }
   | { type: "GET_SETTINGS" }
   | { type: "SET_ENABLED"; enabled: boolean }
   | { type: "SET_SETTINGS"; enabled: boolean; apiUrl: string }
-  | { type: "SETTINGS_UPDATED"; enabled: boolean; apiUrl: string };
+  | { type: "SETTINGS_UPDATED"; enabled: boolean; apiUrl: string; epoch: number };
 
 const categories = new Set(["BL_COMPARISON", "SI_REQUEST", "INVOICE_QUERY", "GENERAL", "SPAM", "UNCERTAIN"]);
 const urgencyLevels = new Set(["routine", "week", "today", "blocking"]);

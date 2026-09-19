@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { ClassificationQueue } from "./background.js";
 import type { QueueItem } from "./messages.js";
 
@@ -53,4 +53,20 @@ it("returns per-row errors when preview service is unavailable", async () => {
   expect(sent[0].type).toBe("CLASSIFY_RESULTS");
   expect(sent[0].items[0].result.status).toBe("error");
   expect(sent[0].items[0].result.error?.code).toBe("PREVIEW_UNAVAILABLE");
+});
+
+it("drops queued and in-flight work when disabled", async () => {
+  const sent: unknown[] = [];
+  let resolveRequest: ((response: Response) => void) | undefined;
+  const queue = new ClassificationQueue({
+    request: vi.fn(() => new Promise<Response>((resolve) => { resolveRequest = resolve; })),
+    send: async (_tabId, message) => { sent.push(message); },
+  });
+  queue.enqueue(3, [item(1)]);
+  await vi.waitFor(() => expect(resolveRequest).toBeDefined());
+  queue.setEnabled(false);
+  resolveRequest?.(new Response(JSON.stringify({ results: [classified("source:1")] }), { status: 200 }));
+  await queue.drain();
+  expect(sent).toEqual([]);
+  expect(queue.enqueue(3, [item(2)]).rejected[0].error.code).toBe("DISABLED");
 });
