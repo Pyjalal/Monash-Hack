@@ -4,6 +4,11 @@ import { extname, isAbsolute, relative, resolve, sep } from "node:path";
 import ExcelJS from "exceljs";
 import mammoth from "mammoth";
 import * as pdfjs from "pdfjs-dist/legacy/build/pdf.mjs";
+import { splitLabelValueCandidates, type CandidateOptions, type LabelValueCandidate } from "./candidates.js";
+import { assessReadability, type ReadabilityFacts } from "./readability.js";
+
+export { splitLabelValueCandidates } from "./candidates.js";
+export type { LabelValueCandidate } from "./candidates.js";
 
 export type AttachmentStatus =
   | "READABLE"
@@ -12,6 +17,7 @@ export type AttachmentStatus =
   | "INVALID_PATH"
   | "NOT_FOUND"
   | "EMPTY"
+  | "GARBLED"
   | "PARSE_ERROR"
   | "TOO_LARGE";
 
@@ -32,6 +38,8 @@ export interface AttachmentReadResult {
   spans: SourceSpan[];
   status: AttachmentStatus;
   pagesNeedingOcr?: number[];
+  candidates?: LabelValueCandidate[];
+  readability?: ReadabilityFacts;
 }
 
 const TEXT_MIME_TYPES = new Set(["text/plain", "text/csv", "text/tab-separated-values"]);
@@ -47,11 +55,18 @@ function digest(bytes: Uint8Array): string {
 }
 
 function emptyResult(status: AttachmentStatus): AttachmentReadResult {
-  return { sha256: "", text: "", spans: [], status };
+  return { sha256: "", text: "", spans: [], status, candidates: [], readability: assessReadability("").facts };
 }
 
 function resultWithHash(sha256: string, status: AttachmentStatus): AttachmentReadResult {
-  return { sha256, text: "", spans: [], status };
+  return { ...emptyResult(status), sha256 };
+}
+
+function withCandidates(result: AttachmentReadResult, options: CandidateOptions = {}): AttachmentReadResult {
+  const reading = assessReadability(result.text);
+  const status = reading.status === "GARBLED" ? "GARBLED" : result.status === "READABLE" ? reading.status : result.status;
+  return { ...result, status, readability: reading.facts,
+    candidates: status === "READABLE" || status === "OCR_REQUIRED" ? splitLabelValueCandidates(result, options) : [] };
 }
 
 function lineSpans(text: string): SourceSpan[] {
@@ -113,10 +128,10 @@ function attachmentKind(filePath: string, mimeType?: string): AttachmentKind {
   }
 }
 
-function textResult(sha256: string, text: string): AttachmentReadResult {
+function textResult(sha256: string, text: string, options: CandidateOptions = {}): AttachmentReadResult {
   if (text.length === 0) return resultWithHash(sha256, "EMPTY");
   const spans = lineSpans(text);
-  return { sha256, text, spans, status: text.trim().length === 0 ? "EMPTY" : "READABLE" };
+  return withCandidates({ sha256, text, spans, status: text.trim().length === 0 ? "EMPTY" : "READABLE" }, options);
 }
 
 async function readPdf(bytes: Buffer, sha256: string): Promise<AttachmentReadResult> {
@@ -140,9 +155,9 @@ async function readPdf(bytes: Buffer, sha256: string): Promise<AttachmentReadRes
         .trim();
       pages.push({ page: pageNumber, text: pageText });
     }
-    const pagesNeedingOcr = pages.filter(({ text }) => text.length === 0).map(({ page }) => page);
+    const pagesNeedingOcr = pages.filter(({ text }) => assessReadability(text).status !== "READABLE").map(({ page }) => page);
 
-    if (pagesNeedingOcr.length === pages.length) return { ...resultWithHash(sha256, "OCR_REQUIRED"), pagesNeedingOcr };
+    if (pages.every(page => !page.text.trim())) return { ...resultWithHash(sha256, "OCR_REQUIRED"), pagesNeedingOcr };
 
     let text = "";
     const spans: SourceSpan[] = [];
@@ -153,9 +168,9 @@ async function readPdf(bytes: Buffer, sha256: string): Promise<AttachmentReadRes
       text += page.text;
       spans.push({ kind: "page", start, end: text.length, page: page.page, text: page.text });
     }
-    return pagesNeedingOcr.length > 0
+    return withCandidates(pagesNeedingOcr.length > 0
       ? { sha256, text, spans, status: "OCR_REQUIRED", pagesNeedingOcr }
-      : { sha256, text, spans, status: "READABLE" };
+      : { sha256, text, spans, status: "READABLE" });
   } catch {
     return resultWithHash(sha256, "PARSE_ERROR");
   } finally {
@@ -166,7 +181,7 @@ async function readPdf(bytes: Buffer, sha256: string): Promise<AttachmentReadRes
 async function readDocx(bytes: Buffer, sha256: string): Promise<AttachmentReadResult> {
   try {
     const extracted = await mammoth.extractRawText({ buffer: bytes });
-    return textResult(sha256, extracted.value);
+    return textResult(sha256, extracted.value, { adjacentParagraphs: true });
   } catch {
     return resultWithHash(sha256, "PARSE_ERROR");
   }
@@ -183,8 +198,9 @@ async function readXlsx(bytes: Buffer, sha256: string): Promise<AttachmentReadRe
       worksheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row) => {
         const values: Array<{ text: string; sheet: string; cell: string }> = [];
         row.eachCell({ includeEmpty: false }, (cell: ExcelJS.Cell) => {
-          const text = cell.text.trim();
-          if (text) values.push({ text, sheet: worksheet.name, cell: cell.address });
+          if (cell.isMerged && cell.master.address !== cell.address) return;
+          const text = cell.text;
+          if (text.trim()) values.push({ text, sheet: worksheet.name, cell: cell.address });
         });
         if (values.length) rows.push(values);
       });
@@ -220,7 +236,7 @@ async function readXlsx(bytes: Buffer, sha256: string): Promise<AttachmentReadRe
       }
       if (rowIndex < rows.length - 1) offset += 1;
     }
-    return { sha256, text, spans, status: "READABLE" };
+    return withCandidates({ sha256, text, spans, status: "READABLE" });
   } catch {
     return resultWithHash(sha256, "PARSE_ERROR");
   }

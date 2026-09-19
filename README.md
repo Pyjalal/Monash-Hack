@@ -44,7 +44,7 @@ Badges classify visible subject/snippet text; the urgent tray provides shortcuts
 ## Implemented and remaining
 
 - Typed Jev category, urgency and document-expectation questions; batches of eight, bounded concurrency/retries, content caching and durable events.
-- TXT/CSV/TSV, XLSX, DOCX and native PDF readers with byte hashes and source locations. Scanned pages are explicitly marked for OCR.
+- TXT/CSV/TSV, XLSX, DOCX and native PDF [readers and label/value candidates](apps/api/src/documents/README.md) with byte hashes and exact source locations. Candidate pairings are structural hypotheses for the field selector. Scanned pages are explicitly marked for OCR.
 - Gmail OAuth client, thread/reference lookup, durable outbound queue, four reply templates, stale-source checks and resume fixtures.
 - Source proof validation before saving a comparison claim or queueing a confirmation. This checks bytes, excerpts and source pairs; the trusted role classifier and field comparator must establish their meaning.
 

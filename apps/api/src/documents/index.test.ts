@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promis
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import ExcelJS from "exceljs";
 import { readAttachment } from "./index.js";
 
 const temporaryRoots: string[] = [];
@@ -18,6 +19,43 @@ async function createRoot() {
 }
 
 describe("readAttachment", () => {
+  it("exposes readable Unicode candidates and stable IDs independently of filenames", async () => {
+    const root = await createRoot();
+    const text = "收货人：上海公司\n重量: 1,250 公斤\n";
+    await writeFile(join(root, "first.txt"), text, "utf8");
+    await writeFile(join(root, "unrelated-name.txt"), text, "utf8");
+    const first = await readAttachment({ root, relativePath: "first.txt" });
+    const second = await readAttachment({ root, relativePath: "unrelated-name.txt" });
+    expect(first.status).toBe("READABLE");
+    expect(first.candidates?.map(candidate => candidate.value)).toEqual(["上海公司", "1,250 公斤"]);
+    expect(first.candidates).toEqual(second.candidates);
+    expect(first.readability?.replacementCharacters).toBe(0);
+  });
+
+  it("distinguishes replacement-corrupted text from empty, unsupported and parser failures", async () => {
+    const root = await createRoot();
+    const text = "Name: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\n";
+    await writeFile(join(root, "corrupt.txt"), text, "utf8");
+    const result = await readAttachment({ root, relativePath: "corrupt.txt" });
+    expect(result.status).toBe("GARBLED");
+    expect(result.text).toBe(text);
+    expect(result.candidates).toEqual([]);
+    expect(result.readability?.replacementCharacters).toBe(6);
+    expect(result.spans[0].text).toContain("\ufffd");
+  });
+
+  it("extracts spreadsheet pairs while preserving spaces and exact cells", async () => {
+    const root = await createRoot(); const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Original");
+    sheet.getCell("A1").value = "Name"; sheet.getCell("B1").value = "  公司甲  ";
+    sheet.getCell("A2").value = "Quantity"; sheet.getCell("B2").value = 0;
+    await workbook.xlsx.writeFile(join(root, "data.xlsx"));
+    const result = await readAttachment({ root, relativePath: "data.xlsx" });
+    expect(result.spans.find(span => span.kind === "cell" && span.cell === "B1")?.text).toBe("  公司甲  ");
+    expect(result.candidates?.map(({ label, value }) => ({ label, value }))).toEqual([{ label: "Name", value: "公司甲" }, { label: "Quantity", value: "0" }]);
+    expect(result.candidates?.[0].source.valueSpans[0]).toMatchObject({ kind: "cell", sheet: "Original", cell: "B1", text: "公司甲" });
+  });
+
   it("returns a hash, text, and one-based line spans for a UTF-8 text attachment", async () => {
     const root = await createRoot();
     const relativePath = "attachments/si.txt";
@@ -27,7 +65,7 @@ describe("readAttachment", () => {
 
     const result = await readAttachment({ root, relativePath, mimeType: "text/plain" });
 
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       sha256: createHash("sha256").update(text).digest("hex"),
       text,
       spans: [
@@ -42,7 +80,7 @@ describe("readAttachment", () => {
     const root = await createRoot();
     const result = await readAttachment({ root, relativePath: "../outside.txt", mimeType: "text/plain" });
 
-    expect(result).toEqual({ sha256: "", text: "", spans: [], status: "INVALID_PATH" });
+    expect(result).toMatchObject({ sha256: "", text: "", spans: [], status: "INVALID_PATH", candidates: [] });
   });
 
   it("rejects a symlink that resolves outside the configured dataset root", async () => {
@@ -61,7 +99,7 @@ describe("readAttachment", () => {
 
     const result = await readAttachment({ root, relativePath: "linked.txt", mimeType: "text/plain" });
 
-    expect(result).toEqual({ sha256: "", text: "", spans: [], status: "INVALID_PATH" });
+    expect(result).toMatchObject({ sha256: "", text: "", spans: [], status: "INVALID_PATH", candidates: [] });
   });
 
   it("reports an empty text attachment explicitly", async () => {
@@ -156,6 +194,8 @@ describe("readAttachment", () => {
     expect(result.text.length).toBeGreaterThan(0);
     expect(result.spans.every((span) => span.kind === "line")).toBe(true);
     expect(result.spans.some((span) => span.start < span.end)).toBe(true);
+    expect(result.candidates?.some(candidate => candidate.label === "Consignee (收货人)" && candidate.value.startsWith("AL GURG STATIONERY"))).toBe(true);
+    expect(result.candidates?.every(candidate => [...candidate.source.labelSpans, ...candidate.source.valueSpans].every(span => result.text.slice(span.start, span.end) === span.text))).toBe(true);
   });
 
   it("extracts XLSX values with sheet and cell provenance", async () => {
