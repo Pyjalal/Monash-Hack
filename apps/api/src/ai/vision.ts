@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { FieldNameSchema } from "@cargolens/shared";
 import type { z } from "zod";
 
@@ -82,6 +83,7 @@ export interface VisionRecoverySuccess {
   usage: VisionRecoveryUsage;
   candidates: VisionRecoveredCandidate[];
   unresolvedFields: FieldName[];
+  sourceImageHashes: Array<{ page: number; sha256: string }>;
 }
 
 export interface VisionRecoveryFailure {
@@ -140,12 +142,7 @@ type ModelAttemptResult =
 const OPENROUTER_CHAT_URL =
   "https://openrouter.ai/api/v1/chat/completions";
 
-/**
- * Verified during Issue #42 integration testing as accepting image input
- * through OpenRouter. Keep configurable so deployments can select another
- * verified vision-capable model without changing recovery logic.
- */
-const DEFAULT_VISION_MODEL = "google/gemini-3.5-flash";
+const DEFAULT_VISION_MODEL = "google/gemini-2.5-flash-lite";
 
 const DEFAULT_TIMEOUT_MS = 15_000;
 const DEFAULT_MAX_RETRIES = 1;
@@ -161,8 +158,8 @@ function validateProviderOptions(
   const maxOutputTokens =
     options.maxOutputTokens ?? DEFAULT_MAX_OUTPUT_TOKENS;
 
-  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
-    throw new Error("timeoutMs must be greater than zero.");
+  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 120_000) {
+    throw new Error("timeoutMs must be between 1 and 120000 ms.");
   }
 
   if (
@@ -187,10 +184,10 @@ function validateProviderOptions(
 
   if (
     !Number.isSafeInteger(maxOutputTokens) ||
-    maxOutputTokens <= 0
+    maxOutputTokens <= 0 || maxOutputTokens > 4096
   ) {
     throw new Error(
-      "maxOutputTokens must be a positive integer.",
+      "maxOutputTokens must be an integer between 1 and 4096.",
     );
   }
 
@@ -240,7 +237,17 @@ function validateVisionRequest(
     );
   }
 
+  if (request.unresolvedPages.some((page) => !Number.isSafeInteger(page) || page < 1) ||
+      new Set(request.unresolvedPages).size !== request.unresolvedPages.length ||
+      request.unresolvedFields.some((field) => !FieldNameSchema.safeParse(field).success) ||
+      new Set(request.unresolvedFields).size !== request.unresolvedFields.length) {
+    throw new Error("Pages and fields must be valid and unique.");
+  }
+  let totalImageBytes = 0;
   const unresolvedPageSet = new Set(request.unresolvedPages);
+  if (request.pageImages.length !== request.unresolvedPages.length) {
+    throw new Error("Supply every declared unresolved page; scope the request to the pages being processed.");
+  }
   const suppliedPages = new Set<number>();
 
   for (const image of request.pageImages) {
@@ -258,6 +265,19 @@ function validateVisionRequest(
 
     suppliedPages.add(image.page);
 
+    if (!["image/png", "image/jpeg"].includes(image.mimeType) ||
+        image.base64.length > 8 * 1024 * 1024 ||
+        (image.base64.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(image.base64))) {
+      throw new Error("Image evidence must be bounded base64 PNG or JPEG.");
+    }
+    const bytes = Buffer.from(image.base64, "base64");
+    const validMagic = image.mimeType === "image/png"
+      ? bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
+      : bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
+    totalImageBytes += bytes.length;
+    if (!validMagic || totalImageBytes > 12 * 1024 * 1024) {
+      throw new Error("Invalid image signature or total image budget exceeded.");
+    }
     if (!image.base64.trim()) {
       throw new Error(
         `Page ${image.page} does not contain image evidence.`,
@@ -344,7 +364,7 @@ export function parseVisionCandidate(
   }
 
   /*
-   * A candidate is source-backed only when its page corresponds to
+   * Candidate provenance requires a page corresponding to
    * evidence that was actually supplied to the vision model.
    *
    * Merely appearing in unresolvedPages is not enough: a caller may
@@ -371,6 +391,8 @@ export function parseVisionCandidate(
       ? candidate.confidence
       : null;
 
+  if (confidence === null || confidence < 0.8) return null;
+
   return {
     field: fieldResult.data,
     value: candidate.value.trim(),
@@ -385,11 +407,14 @@ function parseModelPayload(
   try {
     const parsed: unknown = JSON.parse(content);
 
-    if (typeof parsed !== "object" || parsed === null) {
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
       return null;
     }
 
-    return parsed as VisionModelPayload;
+    const payload = parsed as VisionModelPayload;
+    if (!Array.isArray(payload.candidates) || !Array.isArray(payload.unresolvedFields) ||
+        payload.unresolvedFields.some((field) => !FieldNameSchema.safeParse(field).success)) return null;
+    return payload;
   } catch {
     return null;
   }
@@ -471,12 +496,14 @@ async function fetchWithTimeout(
                 type: "text",
                 text: buildVisionPrompt(request),
               },
-              ...request.pageImages.map((image) => ({
+              ...request.pageImages.flatMap((image) => [{
+                type: "text", text: `Source document page ${image.page}:`,
+              }, {
                 type: "image_url",
                 image_url: {
                   url: `data:${image.mimeType};base64,${image.base64}`,
                 },
-              })),
+              }]),
             ],
           },
         ],
@@ -484,6 +511,7 @@ async function fetchWithTimeout(
     });
 
     if (!response.ok) {
+      void response.body?.cancel().catch(() => undefined);
       if (isModelUnavailableStatus(response.status)) {
         return {
           ok: false,
@@ -501,10 +529,34 @@ async function fetchWithTimeout(
       };
     }
 
-    return {
-      ok: true,
-      response,
-    };
+    const reader = response.body?.getReader();
+    const chunks: Uint8Array[] = [];
+    let length = 0;
+    let onAbort: (() => void) | undefined;
+    const aborted = new Promise<never>((_, reject) => {
+      onAbort = () => { void reader?.cancel().catch(() => undefined); reject(new DOMException("Timed out", "AbortError")); };
+      if (controller.signal.aborted) onAbort();
+      else controller.signal.addEventListener("abort", onAbort, { once: true });
+    });
+    try {
+      if (reader) {
+        while (true) {
+          const part = await Promise.race([reader.read(), aborted]);
+          if (controller.signal.aborted) throw new DOMException("Timed out", "AbortError");
+          if (part.done) break;
+          length += part.value.length;
+          if (length > 1024 * 1024) {
+            void reader.cancel().catch(() => undefined);
+            return { ok: false, code: "invalid_response", message: "Vision response exceeds 1 MiB.", retryable: false };
+          }
+          chunks.push(part.value);
+        }
+      }
+    } finally {
+      if (onAbort) controller.signal.removeEventListener("abort", onAbort);
+      reader?.releaseLock();
+    }
+    return { ok: true, response: new Response(Buffer.concat(chunks), { status: 200 }) };
   } catch (error) {
     if (
       controller.signal.aborted ||
@@ -674,37 +726,26 @@ async function parseSuccessfulResponse(
     );
   }
 
+  if (!data || typeof data !== "object" || Array.isArray(data)) {
+    return visionFailure("invalid_response", "Invalid OpenRouter response object.", startedAt, model, attempts, usedFallback);
+  }
   const content = data.choices?.[0]?.message?.content;
 
   if (
     typeof content !== "string" ||
     content.trim().length === 0
   ) {
-    return visionFailure(
-      "invalid_response",
-      "OpenRouter response did not contain vision recovery content.",
-      startedAt,
-      model,
-      attempts,
-      usedFallback,
-    );
+    return { ...visionFailure("invalid_response", "OpenRouter response did not contain vision recovery content.", startedAt, model, attempts, usedFallback), usage: usageFromResponse(data.usage) };
   }
 
   const payload = parseModelPayload(content);
 
   if (!payload) {
-    return visionFailure(
-      "invalid_response",
-      "Vision model returned malformed recovery JSON.",
-      startedAt,
-      model,
-      attempts,
-      usedFallback,
-    );
+    return { ...visionFailure("invalid_response", "Vision model returned malformed recovery JSON.", startedAt, model, attempts, usedFallback), usage: usageFromResponse(data.usage) };
   }
 
   const resolved = resolveCandidates(
-    payload.candidates,
+    (payload.candidates as unknown[]).filter((item) => !((payload.unresolvedFields as unknown[]).includes((item as { field?: unknown } | null)?.field))),
     request,
   );
 
@@ -721,12 +762,16 @@ async function parseSuccessfulResponse(
     usage: usageFromResponse(data.usage),
     candidates: resolved.candidates,
     unresolvedFields: resolved.unresolvedFields,
+    sourceImageHashes: request.pageImages.map((image) => ({
+      page: image.page, sha256: createHash("sha256").update(Buffer.from(image.base64, "base64")).digest("hex"),
+    })),
   };
 }
 
 export function createVisionProvider(
   options: VisionProviderOptions,
 ): VisionProvider {
+  options = { ...options };
   const model = options.model ?? DEFAULT_VISION_MODEL;
   const fallbackModel = options.fallbackModel?.trim() || null;
   const maxPages = options.maxPages ?? DEFAULT_MAX_PAGES;
@@ -743,7 +788,7 @@ export function createVisionProvider(
         : "Invalid vision provider configuration.";
   }
 
-  return {
+  const provider: VisionProvider = {
     recover: async (request) => {
       const startedAt = performance.now();
 
@@ -845,6 +890,34 @@ export function createVisionProvider(
         primary.attempts,
         false,
       );
+    },
+  };
+  return {
+    recover: async (request) => {
+      let snapshot: VisionRecoveryRequest;
+      try { snapshot = structuredClone(request); }
+      catch { return visionFailure("invalid_request", "Request must be cloneable evidence.", performance.now(), model); }
+      const startedAt = performance.now();
+      const first = await provider.recover(snapshot);
+      if (!first.ok || first.candidates.length === 0) return first;
+      const verification = await requestModelWithRetries(fetchImpl, first.model, snapshot, { ...options, maxRetries: 0 });
+      const second = verification.result.ok
+        ? await parseSuccessfulResponse(verification.result.response, snapshot, first.model, startedAt, verification.attempts, first.usedFallback)
+        : visionFailure(verification.result.code, verification.result.message, startedAt, first.model, verification.attempts);
+      const candidates = second.ok ? first.candidates.filter((candidate) => second.candidates.some((other) =>
+        other.field === candidate.field && other.page === candidate.page && other.value === candidate.value)) : [];
+      const usage = Object.fromEntries(Object.keys(first.usage).map((key) => {
+        const field = key as keyof VisionRecoveryUsage;
+        const a = first.usage[field], b = second.usage[field];
+        return [field, a === null || b === null ? null : a + b];
+      })) as unknown as VisionRecoveryUsage;
+      const unresolvedFields = snapshot.unresolvedFields.filter((field) => !candidates.some((candidate) => candidate.field === field));
+      return {
+        ...first, candidates, unresolvedFields, usage,
+        profile: unresolvedFields.length ? "vision_partial" : "vision_recovered",
+        attempts: first.attempts + second.attempts,
+        latencyMs: performance.now() - startedAt,
+      };
     },
   };
 }
