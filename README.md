@@ -47,10 +47,11 @@ Successful previews are cached for five minutes in browser session storage, up t
 
 - Typed Jev category, urgency and document-expectation questions; batches of eight, bounded concurrency/retries, content caching and durable events.
 - TXT/CSV/TSV, XLSX, DOCX and native PDF [readers and label/value candidates](apps/api/src/documents/README.md) with byte hashes and exact source locations. Candidate pairings are structural hypotheses for the field selector. Scanned pages are explicitly marked for OCR.
+- An optional Python/Tesseract OCR sidecar and Node recovery reader preserve native evidence separately, validate source hashes, and bound process concurrency, output size and timeouts. See the [recovery reader contract](apps/api/src/documents/README.md#optional-ocr-recovery).
 - Gmail OAuth client, thread/reference lookup, durable outbound queue, four reply templates, stale-source checks and resume fixtures.
 - Source proof validation before saving a comparison claim or queueing a confirmation. This checks bytes, excerpts and source pairs; the trusted role classifier and field comparator must establish their meaning.
 
-The document-role/field comparator, OCR recovery, cheap-LLM recovery, organizer export/scorer integration, dashboard and workflow builder remain assigned integration work. Low-confidence or conflicting classifications emit recovery signals; a recovery model is not yet connected. A request for a future draft remains awaiting documents, never verified solely because the benchmark labels it `OK`.
+The document-role/field comparator, OCR-aware field integration and vision escalation, cheap-LLM recovery, organizer export/scorer integration, dashboard and workflow builder remain assigned integration work. Low-confidence or conflicting classifications emit recovery signals; a recovery model is not yet connected. A request for a future draft remains awaiting documents, never verified solely because the benchmark labels it `OK`.
 
 ## Gmail configuration
 
