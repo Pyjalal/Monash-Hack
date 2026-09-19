@@ -1,0 +1,91 @@
+import { timingSafeEqual } from 'node:crypto';
+import { Hono } from 'hono';
+import { bodyLimit } from 'hono/body-limit';
+import { cors } from 'hono/cors';
+import { streamSSE } from 'hono/streaming';
+import { ClassifyRequestSchema, OperationalDecisionSchema, type ClassifyResult } from '@cargolens/shared';
+import { loadDataset } from './dataset.js';
+import { ClassificationService, QueueFullError } from './pipeline.js';
+import { Store } from './store.js';
+
+export type AppOptions = { store: Store; service: ClassificationService; dashboardToken: string; datasetRoot?: string; allowedOrigins?: string[] };
+function tokenMatches(value: string, expected: string): boolean {
+  const actual = Buffer.from(value); const wanted = Buffer.from(`Bearer ${expected}`);
+  return expected.length > 0 && actual.length === wanted.length && timingSafeEqual(actual, wanted);
+}
+function boundedInteger(value: string | undefined, fallback: number, max: number): number {
+  const n = Number(value ?? fallback); return Number.isInteger(n) && n >= 0 ? Math.min(n, max) : fallback;
+}
+
+export function createApp(options: AppOptions): Hono {
+  const app = new Hono(); const { store, service } = options;
+  const origins = options.allowedOrigins ?? ['http://localhost:5173', 'http://127.0.0.1:5173'];
+  let previewBudget = 600; let refillAt = Date.now(); let importing = false;
+  app.use('*', cors({ origin: origin => origins.includes(origin) || /^chrome-extension:\/\/[a-p]{32}$/.test(origin) ? origin : undefined,
+    allowHeaders: ['Content-Type', 'Authorization', 'Last-Event-ID'], allowMethods: ['GET', 'POST', 'OPTIONS'], maxAge: 600 }));
+  app.use('*', bodyLimit({ maxSize: 1024 * 1024, onError: c => c.json({ error: 'PAYLOAD_TOO_LARGE' }, 413) }));
+  app.use('*', async (c, next) => {
+    if (c.req.path === '/health' || (c.req.path === '/classify' && c.req.method === 'POST') || c.req.method === 'OPTIONS') return next();
+    if (!tokenMatches(c.req.header('Authorization') ?? '', options.dashboardToken)) return c.json({ error: 'UNAUTHORIZED' }, 401);
+    await next();
+  });
+  app.onError((_error, c) => c.json({ error: 'INTERNAL_ERROR' }, 500));
+  app.get('/health', c => c.json({ service: 'CargoLens', apiVersion: 1, status: 'ready' }));
+  app.post('/classify', async c => {
+    const parsed = ClassifyRequestSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'INVALID_BATCH', details: parsed.error.flatten() }, 400);
+    previewBudget = Math.min(600, previewBudget + (Date.now() - refillAt) / 6000); refillAt = Date.now();
+    if (previewBudget < parsed.data.emails.length) return c.json({ error: 'PREVIEW_BUDGET_EXHAUSTED', retryAfterSeconds: 60 }, 429);
+    previewBudget -= parsed.data.emails.length;
+    const start = performance.now();
+    const results: ClassifyResult[] = await Promise.all(parsed.data.emails.map(async source => {
+      const email = { id: source.id, subject: source.subject, from: source.from, snippet: source.snippet ?? '', contentScope: 'inbox_snippet' as const, attachments: [] };
+      try { return { id: email.id, status: 'classified' as const, classification: await service.classify(email) }; }
+      catch (error) { return { id: email.id, status: 'error' as const, error: { code: error instanceof QueueFullError ? 'QUEUE_FULL' : 'CLASSIFICATION_FAILED', message: 'Classification unavailable; retry this row.' } }; }
+    }));
+    return c.json({ results, elapsedMs: performance.now() - start });
+  });
+  app.get('/emails', c => {
+    const cases = store.listCases(boundedInteger(c.req.query('limit'), 520, 1000), boundedInteger(c.req.query('offset'), 0, 1_000_000));
+    return c.json({ emails: cases.map(record => ({ id: record.email.id, subject: record.email.subject, from: record.email.from, status: record.status,
+      classification: record.classification ? { ...record.classification, raw: undefined } : null, workflowState: record.decision?.workflowState ?? 'PROCESSING', sourceVersion: record.sourceVersion })), queue: service.stats() });
+  });
+  app.get('/cases/:id', c => { const record = store.getCase(c.req.param('id')); return record ? c.json(record) : c.json({ error: 'NOT_FOUND' }, 404); });
+  app.post('/import', async c => {
+    if (!options.datasetRoot) return c.json({ error: 'DATASET_NOT_CONFIGURED' }, 503);
+    if (importing) return c.json({ error: 'IMPORT_RUNNING' }, 409);
+    importing = true;
+    try {
+      const emails = await loadDataset(options.datasetRoot);
+      for (const email of emails) store.upsertEmail(email);
+      const job = `import-${Date.now()}`;
+      store.emit('import.started', null, { job, count: emails.length });
+      void Promise.all(emails.map(email => service.processCase(email))).then(() => store.emit('import.completed', null, { job, count: emails.length }))
+        .catch(() => store.emit('import.failed', null, { job })).finally(() => { importing = false; });
+      return c.json({ job, queued: emails.length, events: '/events' }, 202);
+    } catch { importing = false; return c.json({ error: 'IMPORT_FAILED' }, 400); }
+  });
+  app.post('/cases/:id/retry', async c => {
+    const record = store.getCase(c.req.param('id'));
+    if (!record) return c.json({ error: 'NOT_FOUND' }, 404);
+    await service.processCase(record.email); return c.json(store.getCase(record.email.id));
+  });
+  app.post('/cases/:id/decision', async c => {
+    const parsed = OperationalDecisionSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'INVALID_DECISION', details: parsed.error.flatten() }, 400);
+    return store.saveDecision(c.req.param('id'), parsed.data) ? c.json({ saved: true }) : c.json({ error: 'STALE_OR_MISSING_CASE' }, 409);
+  });
+  app.get('/events', c => streamSSE(c, async stream => {
+    let cursor = boundedInteger(c.req.header('Last-Event-ID') ?? c.req.query('after'), 0, Number.MAX_SAFE_INTEGER);
+    let open = true; stream.onAbort(() => { open = false; });
+    while (open) {
+      const events = store.eventsAfter(cursor);
+      for (const event of events) {
+        if (!open) break;
+        await stream.writeSSE({ id: String(event.sequence), event: event.type, data: JSON.stringify(event) }); cursor = event.sequence;
+      }
+      if (events.length === 0) { await stream.writeSSE({ event: 'heartbeat', data: '{}' }); await stream.sleep(1000); }
+    }
+  }));
+  return app;
+}
