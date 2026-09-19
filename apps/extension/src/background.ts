@@ -240,7 +240,7 @@ async function broadcastSettings(enabled: boolean, apiUrl: string, epoch: number
 
 if (typeof chrome !== "undefined" && runtimeQueue) {
   chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse) => {
-    const value = message as { type?: string; items?: unknown[]; item?: unknown; enabled?: boolean; apiUrl?: unknown };
+    const value = message as { type?: string; items?: unknown[]; item?: unknown; enabled?: boolean; apiUrl?: unknown; epoch?: unknown };
     const tabId = sender.tab?.id;
     if (value.type === "CLASSIFY_ROWS" || value.type === "RETRY_ROW") {
       if (typeof tabId !== "number") {
@@ -250,7 +250,13 @@ if (typeof chrome !== "undefined" && runtimeQueue) {
       const items = value.type === "CLASSIFY_ROWS" ? value.items ?? [] : [value.item];
       void ensureSettings().then(() => {
         if (!configuredEnabled) {
+          void chrome.tabs.sendMessage(tabId, { type: "SETTINGS_UPDATED", enabled: false, apiUrl: configuredApiUrl, epoch: settingsEpoch }).catch(() => undefined);
           sendResponse({ accepted: 0, rejected: items.length, disabled: true });
+          return;
+        }
+        if (value.epoch !== settingsEpoch) {
+          void chrome.tabs.sendMessage(tabId, { type: "SETTINGS_UPDATED", enabled: configuredEnabled, apiUrl: configuredApiUrl, epoch: settingsEpoch }).catch(() => undefined);
+          sendResponse({ accepted: 0, rejected: items.length, staleSettings: true });
           return;
         }
         const outcome = runtimeQueue.enqueue(tabId, items, settingsEpoch);

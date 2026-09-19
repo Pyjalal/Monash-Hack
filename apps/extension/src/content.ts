@@ -142,8 +142,13 @@ export class CargoLensController {
           fingerprint,
           email,
         }));
-        void this.runtime.sendMessage({ type: "CLASSIFY_ROWS", epoch: this.settingsEpoch, items: chunk }).catch(() => {
-          for (const row of rows.slice(index, index + 20)) this.renderBadge(row, { kind: "error", code: "PREVIEW_UNAVAILABLE", message: "Preview unavailable" });
+        const epoch = this.settingsEpoch;
+        void this.runtime.sendMessage({ type: "CLASSIFY_ROWS", epoch, items: chunk }).catch(() => {
+          if (!this.enabled || epoch !== this.settingsEpoch) return;
+          for (const row of rows.slice(index, index + 20)) {
+            if (this.current.get(row.candidate.rowKey) === row && isVisible(row.element))
+              this.renderBadge(row, { kind: "error", code: "PREVIEW_UNAVAILABLE", message: "Preview unavailable" });
+          }
         });
       }
     }, 40);

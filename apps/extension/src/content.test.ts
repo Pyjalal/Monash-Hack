@@ -141,3 +141,25 @@ it("invalidates pending results across endpoint and enabled-setting races", asyn
     state.controller.stop();
   }
 });
+
+it("does not restore a badge when a pending transport rejects after disabling", async () => {
+  const state = setup(true);
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  let rejectRequest: (reason: Error) => void = () => undefined;
+  vi.mocked(state.runtime.sendMessage).mockImplementation(async message => {
+    if (message.type === "GET_SETTINGS") return { enabled: true, apiUrl: "http://127.0.0.1:3001", epoch: 0 };
+    return new Promise((_resolve, reject) => { rejectRequest = reject; });
+  });
+  try {
+    await state.controller.start();
+    await flush();
+    state.listeners.forEach(listener => listener({ type: "SETTINGS_UPDATED", enabled: false, apiUrl: "http://127.0.0.1:3001", epoch: 1 }));
+    rejectRequest(new Error("Worker disconnected"));
+    await flush();
+    expect(state.window.document.querySelector("[data-cargolens-badge]")).toBeNull();
+  } finally {
+    state.controller.stop();
+    globalThis.MutationObserver = prior;
+  }
+});

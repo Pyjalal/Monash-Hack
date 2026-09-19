@@ -72,11 +72,30 @@ it("loads a custom API URL before a cold-worker classify request", async () => {
   const listener = state.getListener();
   expect(listener).toBeDefined();
   const sendResponse = vi.fn();
-  const message: ExtensionMessage = { type: "CLASSIFY_ROWS", epoch: 0, items: [item()] };
+  const message: ExtensionMessage = { type: "CLASSIFY_ROWS", epoch: 1, items: [item()] };
   listener?.(message, { tab: { id: 41 } }, sendResponse);
   await vi.waitFor(() => expect(sendResponse).toHaveBeenCalled());
   expect(fetchMock).toHaveBeenCalledWith("http://localhost:4555/classify", expect.any(Object));
   expect(sendResponse).toHaveBeenCalledWith({ accepted: 1, rejected: 0 });
+});
+
+it("resynchronizes an existing tab after its background worker restarts", async () => {
+  const state = installChrome({ enabled: true, apiUrl: "http://localhost:4555" });
+  const fetchMock = vi.fn(async () => new Response(JSON.stringify({ results: [responseFor(item().email.id)] })));
+  vi.stubGlobal("fetch", fetchMock);
+  await import("./background.js");
+  const staleResponse = vi.fn();
+  state.getListener()?.({ type: "CLASSIFY_ROWS", epoch: 7, items: [item()] }, { tab: { id: 41 } }, staleResponse);
+  await vi.waitFor(() => expect(staleResponse).toHaveBeenCalled());
+  expect(fetchMock).not.toHaveBeenCalled();
+  expect(state.chromeMock.tabs.sendMessage).toHaveBeenCalledWith(41, {
+    type: "SETTINGS_UPDATED", enabled: true, apiUrl: "http://localhost:4555", epoch: 1,
+  });
+  const currentResponse = vi.fn();
+  state.getListener()?.({ type: "CLASSIFY_ROWS", epoch: 1, items: [item()] }, { tab: { id: 41 } }, currentResponse);
+  await vi.waitFor(() => expect(currentResponse).toHaveBeenCalledWith({ accepted: 1, rejected: 0 }));
+  await vi.waitFor(() => expect(state.chromeMock.tabs.sendMessage).toHaveBeenCalledWith(41,
+    expect.objectContaining({ type: "CLASSIFY_RESULTS", epoch: 1 })));
 });
 
 it("does not fetch when a cold worker loads disabled settings", async () => {
