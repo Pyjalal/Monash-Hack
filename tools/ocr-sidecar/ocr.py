@@ -8,8 +8,10 @@ Example:
 """
 
 import argparse
+import hashlib
 import io
 import json
+import math
 import shutil
 import sys
 from pathlib import Path
@@ -25,6 +27,12 @@ from pytesseract import Output
 DEFAULT_DPI = 200
 DEFAULT_MAX_PAGES = 20
 MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024  # 25 MB
+MAX_PAGE_PIXELS = 25_000_000
+PAGE_TIMEOUT_SECONDS = 15
+
+
+class OcrLimitError(ValueError):
+    pass
 
 SUPPORTED_IMAGE_EXTENSIONS = {
     ".png",
@@ -85,12 +93,15 @@ def ocr_image(
     """OCR one image and return text with confidence/coordinates."""
 
     # RGB gives Tesseract a predictable image format.
+    if image.width * image.height > MAX_PAGE_PIXELS:
+        raise OcrLimitError("Page exceeds the 25 million pixel limit.")
     image = image.convert("RGB")
 
     data = pytesseract.image_to_data(
         image,
         output_type=Output.DICT,
         config="--oem 3 --psm 6",
+        timeout=PAGE_TIMEOUT_SECONDS,
     )
 
     words: list[dict[str, Any]] = []
@@ -159,6 +170,8 @@ def render_pdf_page(
     """Render a PDF page into a Pillow image."""
 
     scale = dpi / 72.0
+    if math.ceil(page.rect.width * scale) * math.ceil(page.rect.height * scale) > MAX_PAGE_PIXELS:
+        raise OcrLimitError("Rendered page exceeds the 25 million pixel limit.")
     matrix = fitz.Matrix(scale, scale)
 
     pixmap = page.get_pixmap(
@@ -172,7 +185,7 @@ def render_pdf_page(
 
 
 def process_pdf(
-    path: Path,
+    source: bytes,
     dpi: int,
     max_pages: int,
 ) -> list[dict[str, Any]]:
@@ -180,8 +193,12 @@ def process_pdf(
 
     pages: list[dict[str, Any]] = []
 
-    with fitz.open(path) as document:
-        page_limit = min(len(document), max_pages)
+    with fitz.open(stream=source, filetype="pdf") as document:
+        if not len(document):
+            raise ValueError("PDF has no pages.")
+        if len(document) > max_pages:
+            raise OcrLimitError("PDF exceeds max-pages; no pages were silently omitted.")
+        page_limit = len(document)
 
         for index in range(page_limit):
             try:
@@ -190,6 +207,8 @@ def process_pdf(
                 result = ocr_image(image, index + 1)
                 pages.append(result)
 
+            except pytesseract.TesseractNotFoundError:
+                raise
             except Exception as exc:
                 # A failed page must remain visible rather than disappearing.
                 pages.append(
@@ -207,11 +226,18 @@ def process_pdf(
     return pages
 
 
-def process_image(path: Path) -> list[dict[str, Any]]:
+def process_image(source: bytes, max_pages: int) -> list[dict[str, Any]]:
     """OCR a standalone image."""
 
-    with Image.open(path) as image:
-        return [ocr_image(image, 1)]
+    with Image.open(io.BytesIO(source)) as image:
+        frames = getattr(image, "n_frames", 1)
+        if frames > max_pages:
+            raise OcrLimitError("Image exceeds max-pages; no frames were silently omitted.")
+        pages = []
+        for index in range(frames):
+            image.seek(index)
+            pages.append(ocr_image(image, index + 1))
+        return pages
 
 
 def run_ocr(
@@ -278,11 +304,15 @@ def run_ocr(
     suffix = path.suffix.lower()
 
     try:
+        with path.open("rb") as source_file:
+            source = source_file.read(MAX_FILE_SIZE_BYTES + 1)
+        if len(source) > MAX_FILE_SIZE_BYTES:
+            raise OcrLimitError("Input exceeds the file size limit.")
         if suffix == ".pdf":
-            pages = process_pdf(path, dpi, max_pages)
+            pages = process_pdf(source, dpi, max_pages)
 
         elif suffix in SUPPORTED_IMAGE_EXTENSIONS:
-            pages = process_image(path)
+            pages = process_image(source, max_pages)
 
         else:
             return error_result(
@@ -293,6 +323,8 @@ def run_ocr(
                 ),
             )
 
+    except OcrLimitError as exc:
+        return error_result("ocr_resource_limit", str(exc))
     except pytesseract.TesseractNotFoundError:
         return error_result(
             "tesseract_missing",
@@ -320,7 +352,8 @@ def run_ocr(
         "input": {
             "path": str(path),
             "type": suffix.lstrip("."),
-            "size_bytes": file_size,
+            "size_bytes": len(source),
+            "sha256": hashlib.sha256(source).hexdigest(),
         },
         "engine": {
             "name": "tesseract",
@@ -330,6 +363,8 @@ def run_ocr(
             "dpi": dpi,
             "max_pages": max_pages,
             "max_file_size_bytes": MAX_FILE_SIZE_BYTES,
+            "max_page_pixels": MAX_PAGE_PIXELS,
+            "page_timeout_seconds": PAGE_TIMEOUT_SECONDS,
         },
         "summary": {
             "pages_processed": len(pages),
@@ -342,6 +377,8 @@ def run_ocr(
 
 def main() -> int:
     """CLI entry point."""
+
+    sys.stdout.reconfigure(encoding="utf-8")
 
     parser = argparse.ArgumentParser(
         description=(
