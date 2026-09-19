@@ -11,14 +11,20 @@ import { fileURLToPath } from 'node:url';
 const execFileAsync = promisify(execFile);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '../..');
-const DATA_DIR = path.join(
-  ROOT,
-  'training_data/sdoc-hackathon-docker/extracted/data_v2',
-);
-const INBOX_DIR = path.join(DATA_DIR, 'inbox');
-const ATTACHMENT_DIR = path.join(DATA_DIR, 'attachments');
-const SUBMISSION_PATH = path.join(ROOT, 'outputs/jev-classification-submission.json');
-const DETAILS_PATH = path.join(ROOT, 'outputs/jev-classification-details.json');
+const DATASETS = {
+  data_v2: {
+    label: 'data_v2',
+    dataDir: path.join(ROOT, 'training_data/sdoc-hackathon-docker/extracted/data_v2'),
+    submissionPath: path.join(ROOT, 'outputs/jev-classification-submission.json'),
+    detailsPath: path.join(ROOT, 'outputs/jev-classification-details.json'),
+  },
+  data_v3: {
+    label: 'dataset_v3',
+    dataDir: path.join(ROOT, 'data_v3'),
+    submissionPath: path.join(ROOT, 'outputs/jev-v3-submission.json'),
+    detailsPath: path.join(ROOT, 'outputs/jev-v3-details.json'),
+  },
+};
 const STATIC_DIR = path.join(HERE, 'public');
 const EXTRACTOR_PATH = path.join(HERE, 'extract_attachment.py');
 const PORT = Number(process.env.VIEWER_PORT ?? 4173);
@@ -47,26 +53,36 @@ function validateEmailId(value) {
   return /^email_\d{3}$/.test(value);
 }
 
-function resolveAttachment(requestedPath) {
+function datasetConfig(datasetId) {
+  const config = DATASETS[datasetId];
+  if (!config) throw new Error('Invalid dataset');
+  return config;
+}
+
+function resolveAttachment(datasetId, requestedPath) {
+  const { dataDir } = datasetConfig(datasetId);
+  const attachmentDir = path.join(dataDir, 'attachments');
   const normalised = requestedPath.replaceAll('\\', '/');
   const relative = normalised.startsWith('attachments/')
     ? normalised.slice('attachments/'.length)
     : normalised;
-  const target = path.resolve(ATTACHMENT_DIR, relative);
-  const base = `${path.resolve(ATTACHMENT_DIR)}${path.sep}`;
+  const target = path.resolve(attachmentDir, relative);
+  const base = `${path.resolve(attachmentDir)}${path.sep}`;
   if (!target.startsWith(base)) throw new Error('Invalid attachment path');
   return target;
 }
 
-async function loadDashboard() {
+async function loadDataset(datasetId) {
+  const config = datasetConfig(datasetId);
+  const inboxDir = path.join(config.dataDir, 'inbox');
   const [truth, submission, names] = await Promise.all([
-    readJson(path.join(DATA_DIR, 'ground_truth.json')),
-    readJson(SUBMISSION_PATH),
-    readdir(INBOX_DIR),
+    readJson(path.join(config.dataDir, 'ground_truth.json')),
+    readJson(config.submissionPath),
+    readdir(inboxDir),
   ]);
   let details = { model: null, generated_at: null, predictions: [] };
   try {
-    details = await readJson(DETAILS_PATH);
+    details = await readJson(config.detailsPath);
   } catch {
     // Confidence details are optional; category results remain usable.
   }
@@ -78,7 +94,7 @@ async function loadDashboard() {
     names
       .filter(name => /^email_\d+\.json$/.test(name))
       .sort()
-      .map(name => readJson(path.join(INBOX_DIR, name))),
+      .map(name => readJson(path.join(inboxDir, name))),
   );
 
   const rows = emails.map(email => {
@@ -86,6 +102,9 @@ async function loadDashboard() {
     const predicted = submission[email.email_id]?.category ?? null;
     const detail = detailById.get(email.email_id);
     return {
+      dataset: datasetId,
+      dataset_label: config.label,
+      record_id: `${datasetId}:${email.email_id}`,
       email_id: email.email_id,
       from: email.from,
       subject: email.subject,
@@ -98,44 +117,73 @@ async function loadDashboard() {
     };
   });
 
-  const correct = rows.filter(row => row.correct).length;
-  const categoryNames = [...new Set(Object.values(truth).map(item => item.category))];
-  const categories = categoryNames.map(category => {
-    const categoryRows = rows.filter(row => row.expected === category);
-    const categoryCorrect = categoryRows.filter(row => row.correct).length;
-    return {
-      category,
-      total: categoryRows.length,
-      correct: categoryCorrect,
-      accuracy: categoryRows.length ? categoryCorrect / categoryRows.length : 0,
-    };
-  });
-
   return {
+    id: datasetId,
+    label: config.label,
     model: details.model,
     generated_at: details.generated_at,
-    summary: {
-      total: rows.length,
-      correct,
-      incorrect: rows.length - correct,
-      accuracy: rows.length ? correct / rows.length : 0,
-    },
-    categories,
     emails: rows,
   };
 }
 
-async function emailDetail(emailId) {
+function summariseRows(rows) {
+  const correct = rows.filter(row => row.correct).length;
+  return {
+    total: rows.length,
+    correct,
+    incorrect: rows.length - correct,
+    accuracy: rows.length ? correct / rows.length : 0,
+  };
+}
+
+function summariseCategories(rows) {
+  const categoryNames = [...new Set(rows.map(row => row.expected))];
+  return categoryNames.map(category => {
+    const categoryRows = rows.filter(row => row.expected === category);
+    const summary = summariseRows(categoryRows);
+    return { category, ...summary };
+  });
+}
+
+async function loadDashboard() {
+  const datasets = await Promise.all(
+    Object.keys(DATASETS).map(datasetId => loadDataset(datasetId)),
+  );
+  const emails = datasets.flatMap(dataset => dataset.emails);
+  const generatedDates = datasets
+    .map(dataset => dataset.generated_at)
+    .filter(Boolean)
+    .sort();
+  return {
+    model: [...new Set(datasets.map(dataset => dataset.model).filter(Boolean))].join(', '),
+    generated_at: generatedDates.at(-1) ?? null,
+    summary: summariseRows(emails),
+    categories: summariseCategories(emails),
+    datasets: datasets.map(dataset => ({
+      id: dataset.id,
+      label: dataset.label,
+      model: dataset.model,
+      generated_at: dataset.generated_at,
+      ...summariseRows(dataset.emails),
+    })),
+    emails,
+  };
+}
+
+async function emailDetail(datasetId, emailId) {
   if (!validateEmailId(emailId)) throw new Error('Invalid email ID');
-  const [email, truth, submission, dashboard] = await Promise.all([
-    readJson(path.join(INBOX_DIR, `${emailId}.json`)),
-    readJson(path.join(DATA_DIR, 'ground_truth.json')),
-    readJson(SUBMISSION_PATH),
-    loadDashboard(),
+  const config = datasetConfig(datasetId);
+  const [email, truth, submission, dataset] = await Promise.all([
+    readJson(path.join(config.dataDir, 'inbox', `${emailId}.json`)),
+    readJson(path.join(config.dataDir, 'ground_truth.json')),
+    readJson(config.submissionPath),
+    loadDataset(datasetId),
   ]);
-  const row = dashboard.emails.find(item => item.email_id === emailId);
+  const row = dataset.emails.find(item => item.email_id === emailId);
   return {
     ...email,
+    dataset: datasetId,
+    dataset_label: config.label,
     predicted: submission[emailId]?.category ?? null,
     expected: truth[emailId]?.category ?? null,
     correct: row?.correct ?? false,
@@ -144,8 +192,8 @@ async function emailDetail(emailId) {
   };
 }
 
-async function attachmentPreview(requestedPath) {
-  const target = resolveAttachment(requestedPath);
+async function attachmentPreview(datasetId, requestedPath) {
+  const target = resolveAttachment(datasetId, requestedPath);
   await stat(target);
   const extension = path.extname(target).toLowerCase();
   if (extension === '.txt') {
@@ -159,7 +207,7 @@ async function attachmentPreview(requestedPath) {
     return {
       kind: 'pdf',
       format: 'PDF',
-      url: `/api/attachments/file?path=${encodeURIComponent(requestedPath)}`,
+      url: `/api/attachments/file?dataset=${encodeURIComponent(datasetId)}&path=${encodeURIComponent(requestedPath)}`,
     };
   }
   if (extension === '.docx' || extension === '.xlsx') {
@@ -200,19 +248,22 @@ async function route(request, response) {
 
   const emailMatch = url.pathname.match(/^\/api\/emails\/(email_\d{3})$/);
   if (request.method === 'GET' && emailMatch) {
-    return json(response, 200, await emailDetail(emailMatch[1]));
+    const datasetId = url.searchParams.get('dataset') ?? 'data_v2';
+    return json(response, 200, await emailDetail(datasetId, emailMatch[1]));
   }
 
   if (request.method === 'GET' && url.pathname === '/api/attachments/preview') {
     const requestedPath = url.searchParams.get('path');
+    const datasetId = url.searchParams.get('dataset') ?? 'data_v2';
     if (!requestedPath) return json(response, 400, { error: 'path is required' });
-    return json(response, 200, await attachmentPreview(requestedPath));
+    return json(response, 200, await attachmentPreview(datasetId, requestedPath));
   }
 
   if (request.method === 'GET' && url.pathname === '/api/attachments/file') {
     const requestedPath = url.searchParams.get('path');
+    const datasetId = url.searchParams.get('dataset') ?? 'data_v2';
     if (!requestedPath) return json(response, 400, { error: 'path is required' });
-    const target = resolveAttachment(requestedPath);
+    const target = resolveAttachment(datasetId, requestedPath);
     const shouldDownload = url.searchParams.get('download') === '1';
     return serveFile(response, target, { attachment: shouldDownload });
   }

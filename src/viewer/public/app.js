@@ -1,5 +1,6 @@
 const state = {
   dashboard: null,
+  datasetFilter: 'all',
   resultFilter: 'all',
   categoryFilter: 'all',
   search: '',
@@ -18,6 +19,7 @@ const elements = {
   drawerContent: document.querySelector('#drawerContent'),
   drawerId: document.querySelector('#drawerId'),
   drawerSubject: document.querySelector('#drawerSubject'),
+  datasetFilter: document.querySelector('#datasetFilter'),
   emailRows: document.querySelector('#emailRows'),
   emptyState: document.querySelector('#emptyState'),
   generatedAt: document.querySelector('#generatedAt'),
@@ -53,8 +55,40 @@ function showToast(message) {
   showToast.timeout = setTimeout(() => (elements.toast.hidden = true), 2600);
 }
 
+function summarise(rows) {
+  const correct = rows.filter(row => row.correct).length;
+  return {
+    total: rows.length,
+    correct,
+    incorrect: rows.length - correct,
+    accuracy: rows.length ? correct / rows.length : 0,
+  };
+}
+
+function scopedEmails() {
+  return state.datasetFilter === 'all'
+    ? state.dashboard.emails
+    : state.dashboard.emails.filter(email => email.dataset === state.datasetFilter);
+}
+
+function scopedCategories() {
+  const rows = scopedEmails();
+  return [...new Set(rows.map(row => row.expected))].map(category => {
+    const categoryRows = rows.filter(row => row.expected === category);
+    return { category, ...summarise(categoryRows) };
+  });
+}
+
 function renderSummary() {
-  const { summary, model, generated_at: generatedAt } = state.dashboard;
+  const selectedDataset = state.dashboard.datasets.find(
+    item => item.id === state.datasetFilter,
+  );
+  const model = selectedDataset?.model ?? state.dashboard.model;
+  const generatedAt = selectedDataset?.generated_at ?? state.dashboard.generated_at;
+  const summary = summarise(scopedEmails());
+  const scopeLabel = state.datasetFilter === 'all'
+    ? 'all datasets'
+    : selectedDataset?.label;
   elements.accuracy.textContent = percent(summary.accuracy);
   elements.correctCount.textContent = summary.correct.toLocaleString();
   elements.incorrectCount.textContent = summary.incorrect.toLocaleString();
@@ -64,13 +98,13 @@ function renderSummary() {
   elements.incorrectTabCount.textContent = summary.incorrect;
   elements.modelName.textContent = model ?? 'Jev classification';
   elements.generatedAt.textContent = generatedAt
-    ? `Run ${new Date(generatedAt).toLocaleString()}`
-    : 'Latest run';
+    ? `${scopeLabel} · run ${new Date(generatedAt).toLocaleString()}`
+    : scopeLabel;
 }
 
 function renderCategoryBars() {
   elements.categoryBars.replaceChildren();
-  for (const category of state.dashboard.categories) {
+  for (const category of scopedCategories()) {
     const card = node('article', 'category-bar');
     const top = node('div', 'category-bar__top');
     top.append(
@@ -91,16 +125,28 @@ function renderCategoryBars() {
 }
 
 function populateCategoryFilter() {
-  for (const { category } of state.dashboard.categories) {
+  elements.categoryFilter.replaceChildren();
+  const allOption = node('option', '', 'All categories');
+  allOption.value = 'all';
+  elements.categoryFilter.append(allOption);
+  for (const { category } of scopedCategories()) {
     const option = node('option', '', categoryLabel(category));
     option.value = category;
     elements.categoryFilter.append(option);
   }
 }
 
+function populateDatasetFilter() {
+  for (const dataset of state.dashboard.datasets) {
+    const option = node('option', '', `${dataset.label} (${dataset.total})`);
+    option.value = dataset.id;
+    elements.datasetFilter.append(option);
+  }
+}
+
 function filteredEmails() {
   const query = state.search.toLowerCase();
-  return state.dashboard.emails.filter(email => {
+  return scopedEmails().filter(email => {
     const resultMatches =
       state.resultFilter === 'all' ||
       (state.resultFilter === 'correct' && email.correct) ||
@@ -118,9 +164,10 @@ function filteredEmails() {
 
 function renderRows() {
   const emails = filteredEmails();
+  const scopedTotal = scopedEmails().length;
   elements.emailRows.replaceChildren();
   elements.emptyState.hidden = emails.length !== 0;
-  elements.visibleCount.textContent = `Showing ${emails.length} of ${state.dashboard.summary.total} emails`;
+  elements.visibleCount.textContent = `Showing ${emails.length} of ${scopedTotal} emails`;
   elements.resultHeading.textContent =
     state.resultFilter === 'all'
       ? 'All emails'
@@ -142,6 +189,8 @@ function renderRows() {
     );
     const mailCell = node('td', 'email-cell');
     mailCell.append(node('strong', '', email.subject), node('span', '', `${email.email_id} · ${email.from}`));
+    const datasetCell = document.createElement('td');
+    datasetCell.append(node('span', 'dataset-badge', email.dataset_label));
     const predictedCell = document.createElement('td');
     predictedCell.append(node('span', 'badge', categoryLabel(email.predicted)));
     const expectedCell = document.createElement('td');
@@ -156,10 +205,10 @@ function renderRows() {
       'attachment-count',
       email.attachment_count ? `${email.attachment_count} files` : '—',
     );
-    row.append(resultCell, mailCell, predictedCell, expectedCell, confidenceCell, fileCell);
-    row.addEventListener('click', () => openEmail(email.email_id));
+    row.append(resultCell, datasetCell, mailCell, predictedCell, expectedCell, confidenceCell, fileCell);
+    row.addEventListener('click', () => openEmail(email.dataset, email.email_id));
     row.addEventListener('keydown', event => {
-      if (event.key === 'Enter' || event.key === ' ') openEmail(email.email_id);
+      if (event.key === 'Enter' || event.key === ' ') openEmail(email.dataset, email.email_id);
     });
     elements.emailRows.append(row);
   }
@@ -174,6 +223,7 @@ function comparisonItem(label, value, truth = false) {
 function mailMetadata(email) {
   const wrapper = node('div', 'mail-meta');
   for (const [label, value] of [
+    ['Dataset', email.dataset_label],
     ['From', email.from],
     ['Subject', email.subject],
   ]) {
@@ -184,7 +234,7 @@ function mailMetadata(email) {
   return wrapper;
 }
 
-function attachmentCard(attachmentPath) {
+function attachmentCard(datasetId, attachmentPath) {
   const filename = attachmentPath.split('/').at(-1);
   const extension = filename.split('.').at(-1).toUpperCase();
   const card = node('article', 'attachment-card');
@@ -195,7 +245,7 @@ function attachmentCard(attachmentPath) {
   const previewButton = node('button', 'small-button', 'Preview');
   previewButton.type = 'button';
   const download = node('a', 'small-button', 'Download');
-  download.href = `/api/attachments/file?path=${encodeURIComponent(attachmentPath)}&download=1`;
+  download.href = `/api/attachments/file?dataset=${encodeURIComponent(datasetId)}&path=${encodeURIComponent(attachmentPath)}&download=1`;
   download.addEventListener('click', event => event.stopPropagation());
   actions.append(previewButton, download);
   header.append(title, actions);
@@ -212,7 +262,7 @@ function attachmentCard(attachmentPath) {
       return;
     }
     try {
-      const response = await fetch(`/api/attachments/preview?path=${encodeURIComponent(attachmentPath)}`);
+      const response = await fetch(`/api/attachments/preview?dataset=${encodeURIComponent(datasetId)}&path=${encodeURIComponent(attachmentPath)}`);
       if (!response.ok) throw new Error((await response.json()).error ?? 'Preview failed');
       const data = await response.json();
       preview = renderAttachmentPreview(data);
@@ -258,17 +308,18 @@ function renderAttachmentPreview(data) {
   return wrapper;
 }
 
-async function openEmail(emailId) {
+async function openEmail(datasetId, emailId) {
   elements.drawerBackdrop.hidden = false;
   elements.drawer.classList.add('is-open');
   elements.drawer.setAttribute('aria-hidden', 'false');
-  elements.drawerId.textContent = emailId;
+  const datasetLabel = state.dashboard.datasets.find(item => item.id === datasetId)?.label ?? datasetId;
+  elements.drawerId.textContent = `${datasetLabel} · ${emailId}`;
   elements.drawerSubject.textContent = 'Loading email…';
   elements.drawerContent.replaceChildren(node('p', 'preview-message', 'Loading message and attachment details…'));
   document.body.style.overflow = 'hidden';
 
   try {
-    const response = await fetch(`/api/emails/${emailId}`);
+    const response = await fetch(`/api/emails/${emailId}?dataset=${encodeURIComponent(datasetId)}`);
     if (!response.ok) throw new Error((await response.json()).error ?? 'Could not load email');
     const email = await response.json();
     elements.drawerSubject.textContent = email.subject;
@@ -291,7 +342,7 @@ async function openEmail(emailId) {
     attachmentsSection.append(node('h3', '', `Attachments (${email.attachments.length})`));
     const list = node('div', 'attachment-list');
     if (email.attachments.length) {
-      for (const attachment of email.attachments) list.append(attachmentCard(attachment));
+      for (const attachment of email.attachments) list.append(attachmentCard(email.dataset, attachment));
     } else {
       list.append(node('p', 'preview-message', 'This email has no attachments.'));
     }
@@ -313,6 +364,7 @@ async function initialise() {
   const response = await fetch('/api/dashboard');
   if (!response.ok) throw new Error((await response.json()).error ?? 'Could not load dashboard');
   state.dashboard = await response.json();
+  populateDatasetFilter();
   renderSummary();
   renderCategoryBars();
   populateCategoryFilter();
@@ -329,6 +381,14 @@ document.querySelectorAll('.filter-tab').forEach(button => {
 });
 elements.searchInput.addEventListener('input', event => {
   state.search = event.target.value.trim();
+  renderRows();
+});
+elements.datasetFilter.addEventListener('change', event => {
+  state.datasetFilter = event.target.value;
+  state.categoryFilter = 'all';
+  populateCategoryFilter();
+  renderSummary();
+  renderCategoryBars();
   renderRows();
 });
 elements.categoryFilter.addEventListener('change', event => {

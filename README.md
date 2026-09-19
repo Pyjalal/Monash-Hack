@@ -63,4 +63,15 @@ npm run viewer
 
 The dashboard can filter correct and incorrect predictions, search by email,
 show category-level accuracy, inspect complete message bodies, and preview or
-download TXT, PDF, DOCX, and XLSX attachments.
+download TXT, PDF, DOCX, and XLSX attachments. When `data_v3` predictions are
+available, the dashboard combines both datasets and provides a dataset filter
+and dataset badge for every email.
+
+Classify and evaluate the synthetic v3 dataset separately:
+
+```bash
+npm run classify -- --data-dir data_v3 \
+  --output outputs/jev-v3-submission.json \
+  --details outputs/jev-v3-details.json
+npm run classify:evaluate -- outputs/jev-v3-submission.json data_v3/ground_truth.json
+```

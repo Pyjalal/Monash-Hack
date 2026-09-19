@@ -1,0 +1,18 @@
+BILL OF LADING (DRAFT)
+========================================
+
+Shipper/Exporter: APRIL FAR EAST (M) SDN BHD
+  TOWER 2, AVENUE 5, LEVEL 6; BANGSAR SOUTH CITY, NO. 8 JALAN KERINCHI; 59200 KUALA LUMPUR, MALAYSIA
+Consignee (Non-Negotiable): INTERNATIONAL FOREST PRODUCTS LLC
+  6 HOLLIS STREET; SUITE 100; FRAMINGHAM, MA 01702, USA
+Notify Party/Intermediate Consignee: INTERNATIONAL FOREST PRODUCTS LLC
+Port of Loading: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+POD: CALLAO, PERU (PECLL)
+No. of Containers or Packages: 1 x 40'HC
+Gross Wt (kgs): 21,395 KG
+Vessel Name: NAP 914 V.BS007
+Voyage: 2545E
+Kinds of Packages; Description of Goods: PAPERBOARD
+B/L NUMBER: SIJ4571115
+Booking Ref: SIJ7896273
+Freight: PREPAID

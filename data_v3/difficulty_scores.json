@@ -1,0 +1,3648 @@
+{
+  "metadata": {
+    "dataset_version": "data_v3",
+    "total_emails": 220,
+    "seed": 2026,
+    "created_for": "BL_COMPARISON classification & extraction benchmark"
+  },
+  "summary": {
+    "total_emails": 220,
+    "average_difficulty": 80.0,
+    "min_difficulty": 45,
+    "max_difficulty": 98,
+    "count_difficulty_ge_70": 179,
+    "percentage_ge_70": 81.36,
+    "tier_distribution": {
+      "easy (0-45)": 15,
+      "medium (46-69)": 26,
+      "hard (70-84)": 73,
+      "adversarial (85-100)": 106
+    }
+  },
+  "scores": {
+    "email_001": {
+      "score": 70,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_002": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_003": {
+      "score": 96,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_004": {
+      "score": 75,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_005": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_006": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_007": {
+      "score": 94,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_008": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_009": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_010": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "mobile_device_signature",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_011": {
+      "score": 53,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_012": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_013": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_014": {
+      "score": 78,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_015": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "GENERAL",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_general",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_016": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_017": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_018": {
+      "score": 70,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_019": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_020": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_021": {
+      "score": 96,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_022": {
+      "score": 75,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_023": {
+      "score": 87,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_024": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "SPAM",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_spam",
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_025": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_026": {
+      "score": 60,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_027": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_028": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_029": {
+      "score": 95,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_030": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_031": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "boundary_bl_intent_conflict",
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_032": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_033": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_034": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_035": {
+      "score": 98,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_036": {
+      "score": 96,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_037": {
+      "score": 70,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_038": {
+      "score": 70,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_039": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_040": {
+      "score": 93,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_041": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "SPAM",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_spam",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_042": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_043": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_044": {
+      "score": 98,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_045": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_046": {
+      "score": 63,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_047": {
+      "score": 71,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_048": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_049": {
+      "score": 94,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_050": {
+      "score": 97,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "boundary_bl_intent_conflict",
+        "deep_forwarded_thread_with_distractor_topics",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_051": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_052": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "INVOICE_QUERY",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_invoice_query",
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_053": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_054": {
+      "score": 73,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_055": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_056": {
+      "score": 83,
+      "tier": "hard",
+      "category": "INVOICE_QUERY",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_invoice_query",
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_057": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_058": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "GENERAL",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_general",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_059": {
+      "score": 80,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_060": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_061": {
+      "score": 53,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_062": {
+      "score": 69,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_063": {
+      "score": 79,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_064": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_065": {
+      "score": 87,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_066": {
+      "score": 88,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_067": {
+      "score": 65,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_068": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "GENERAL",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_general",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_069": {
+      "score": 72,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_070": {
+      "score": 70,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_071": {
+      "score": 71,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_072": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_073": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_074": {
+      "score": 83,
+      "tier": "hard",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_075": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_076": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "INVOICE_QUERY",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_invoice_query",
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_077": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_078": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_079": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_080": {
+      "score": 80,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_081": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_082": {
+      "score": 98,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "external_security_warning_banner",
+        "mobile_device_signature",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_083": {
+      "score": 81,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_084": {
+      "score": 63,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_085": {
+      "score": 63,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_086": {
+      "score": 80,
+      "tier": "hard",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "deep_forwarded_thread_with_distractor_topics",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_087": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "INVOICE_QUERY",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_invoice_query",
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_088": {
+      "score": 75,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_089": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_090": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_091": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_092": {
+      "score": 95,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_093": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_094": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_095": {
+      "score": 79,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_096": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "INVOICE_QUERY",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_invoice_query",
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_097": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "external_security_warning_banner",
+        "mobile_device_signature",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_098": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_099": {
+      "score": 80,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_100": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_101": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_102": {
+      "score": 53,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_103": {
+      "score": 93,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_104": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_105": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_106": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_107": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_108": {
+      "score": 80,
+      "tier": "hard",
+      "category": "GENERAL",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_general",
+        "deep_forwarded_thread_with_distractor_topics",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_109": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_110": {
+      "score": 83,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_111": {
+      "score": 53,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_112": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_113": {
+      "score": 80,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_114": {
+      "score": 87,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_115": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "GENERAL",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_general",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_116": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_117": {
+      "score": 68,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_118": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_119": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_120": {
+      "score": 58,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_121": {
+      "score": 78,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_122": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_123": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_124": {
+      "score": 94,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_125": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_126": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_127": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "mobile_device_signature",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_128": {
+      "score": 65,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_129": {
+      "score": 79,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_130": {
+      "score": 93,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "boundary_bl_intent_conflict",
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_131": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_132": {
+      "score": 83,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_133": {
+      "score": 75,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_134": {
+      "score": 83,
+      "tier": "hard",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_135": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_136": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_137": {
+      "score": 87,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_138": {
+      "score": 81,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_139": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_140": {
+      "score": 63,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_141": {
+      "score": 93,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_142": {
+      "score": 63,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_143": {
+      "score": 98,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "binary_format_pdf_table_parsing",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_144": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_145": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_146": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_147": {
+      "score": 55,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_148": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_149": {
+      "score": 93,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_150": {
+      "score": 75,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_151": {
+      "score": 87,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_152": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_153": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "mobile_device_signature",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_154": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_155": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_156": {
+      "score": 69,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_157": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "INVOICE_QUERY",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_invoice_query",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_158": {
+      "score": 72,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_159": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_160": {
+      "score": 75,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_161": {
+      "score": 81,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_162": {
+      "score": 70,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_163": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_164": {
+      "score": 81,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_165": {
+      "score": 60,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_166": {
+      "score": 72,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_167": {
+      "score": 83,
+      "tier": "hard",
+      "category": "GENERAL",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_general",
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_168": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "SPAM",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_spam",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_169": {
+      "score": 86,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "multiple_defect_fields"
+      ]
+    },
+    "email_170": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_171": {
+      "score": 70,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_172": {
+      "score": 87,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_173": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "external_security_warning_banner",
+        "mobile_device_signature",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_174": {
+      "score": 87,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "external_security_warning_banner",
+        "mobile_device_signature",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_175": {
+      "score": 98,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "external_security_warning_banner",
+        "mobile_device_signature",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_176": {
+      "score": 93,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_177": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_178": {
+      "score": 81,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_179": {
+      "score": 60,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_180": {
+      "score": 89,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_181": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_182": {
+      "score": 98,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_183": {
+      "score": 53,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_184": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "INVOICE_QUERY",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_invoice_query",
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_185": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "SPAM",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_spam",
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_186": {
+      "score": 75,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_187": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_188": {
+      "score": 63,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_189": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_190": {
+      "score": 95,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "mobile_device_signature",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_191": {
+      "score": 69,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_192": {
+      "score": 88,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_193": {
+      "score": 93,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_194": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_195": {
+      "score": 63,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_196": {
+      "score": 87,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_197": {
+      "score": 75,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_198": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_199": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "external_security_warning_banner",
+        "mobile_device_signature",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_200": {
+      "score": 68,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_201": {
+      "score": 72,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_202": {
+      "score": 85,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "mobile_device_signature",
+        "plain_text_attachment",
+        "wrong_doc_type_invoice_coo_packing_list"
+      ]
+    },
+    "email_203": {
+      "score": 90,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_container_count_delta_1"
+      ]
+    },
+    "email_204": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_205": {
+      "score": 81,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_206": {
+      "score": 94,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "urgent_amendment_pressure_and_noise",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_207": {
+      "score": 92,
+      "tier": "adversarial",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_208": {
+      "score": 79,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_209": {
+      "score": 66,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "plain_text_attachment",
+        "missing_attachment_missing_bl"
+      ]
+    },
+    "email_210": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "external_security_warning_banner",
+        "mobile_device_signature",
+        "unreadable_document_ocr_or_garbled"
+      ]
+    },
+    "email_211": {
+      "score": 80,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "xlsx"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "cryptic_dense_coded_subject",
+        "binary_format_excel_sheet_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_212": {
+      "score": 53,
+      "tier": "medium",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_213": {
+      "score": 97,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "colloquial_mobile_abbreviations_and_typos",
+        "mobile_device_signature",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "subtle_weight_delta_500kg"
+      ]
+    },
+    "email_214": {
+      "score": 84,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "forwarded_thread",
+        "multilingual_chinese_or_arabic_annotations",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_215": {
+      "score": 96,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "pdf",
+        "pdf"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "external_security_warning_banner",
+        "binary_format_pdf_table_parsing",
+        "label_synonym_normalization_differing_headers",
+        "subtle_subsidiary_address_delta"
+      ]
+    },
+    "email_216": {
+      "score": 91,
+      "tier": "adversarial",
+      "category": "BL_COMPARISON",
+      "status": "MISMATCH",
+      "attachment_formats": [
+        "xlsx",
+        "docx"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "cryptic_dense_coded_subject",
+        "external_security_warning_banner",
+        "cross_application_ooxml_parsing_docx_xlsx",
+        "label_synonym_normalization_differing_headers",
+        "standard_defect_detection"
+      ]
+    },
+    "email_217": {
+      "score": 80,
+      "tier": "hard",
+      "category": "SI_REQUEST",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_si_request",
+        "deep_forwarded_thread_with_distractor_topics",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_218": {
+      "score": 45,
+      "tier": "easy",
+      "category": "BL_COMPARISON",
+      "status": "OK",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    },
+    "email_219": {
+      "score": 82,
+      "tier": "hard",
+      "category": "BL_COMPARISON",
+      "status": "NEEDS_REVIEW",
+      "attachment_formats": [
+        "txt",
+        "txt"
+      ],
+      "factors": [
+        "deep_forwarded_thread_with_distractor_topics",
+        "multilingual_chinese_or_arabic_annotations",
+        "plain_text_attachment",
+        "missing_value_tba_blank_field"
+      ]
+    },
+    "email_220": {
+      "score": 83,
+      "tier": "hard",
+      "category": "INVOICE_QUERY",
+      "status": "OK",
+      "attachment_formats": [],
+      "factors": [
+        "boundary_non_bl_invoice_query",
+        "forwarded_thread",
+        "urgent_amendment_pressure_and_noise",
+        "plain_text_attachment",
+        "label_synonym_normalization_differing_headers",
+        "full_match_clean_verification"
+      ]
+    }
+  }
+}

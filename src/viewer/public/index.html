@@ -42,7 +42,7 @@
         <article class="metric">
           <p>Total emails</p>
           <strong id="totalCount">—</strong>
-          <span>Across five categories</span>
+          <span>Across selected datasets</span>
         </article>
       </section>
 
@@ -69,6 +69,9 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.1-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
               <input id="searchInput" type="search" placeholder="Search subject, sender, or ID" />
             </label>
+            <select id="datasetFilter" aria-label="Filter by dataset">
+              <option value="all">All datasets</option>
+            </select>
             <select id="categoryFilter" aria-label="Filter by category">
               <option value="all">All categories</option>
             </select>
@@ -86,6 +89,7 @@
             <thead>
               <tr>
                 <th>Result</th>
+                <th>Dataset</th>
                 <th>Email</th>
                 <th>Predicted</th>
                 <th>Ground truth</th>
