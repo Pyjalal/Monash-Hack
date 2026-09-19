@@ -1,1 +1,14 @@
-{ "name": "@cargolens/extension", "version": "0.1.0", "private": true, "type": "module", "dependencies": { "@cargolens/shared": "*" } }
+{
+  "name": "@cargolens/extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node ../../../Monash-Hack/node_modules/tsx/dist/cli.mjs --test src/*.test.ts",
+    "typecheck": "node ../../../Monash-Hack/node_modules/typescript/bin/tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@cargolens/shared": "*"
+  }
+}

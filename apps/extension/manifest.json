@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "CargoLens",
+  "version": "0.1.0",
+  "description": "A local, read-only shipping-document preview for visible inbox rows.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "http://127.0.0.1:3001/*",
+    "https://mail.google.com/*",
+    "https://outlook.live.com/*",
+    "https://outlook.office.com/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{
+    "matches": [
+      "https://mail.google.com/*",
+      "https://outlook.live.com/*",
+      "https://outlook.office.com/*"
+    ],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }],
+  "commands": {
+    "toggle-cargolens": {
+      "suggested_key": { "default": "Ctrl+Shift+L", "mac": "MacCtrl+Shift+L" },
+      "description": "Toggle CargoLens preview"
+    }
+  },
+  "action": { "default_title": "CargoLens" }
+}
