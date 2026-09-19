@@ -13,7 +13,7 @@ function requestFixture(): VisionRecoveryRequest {
       {
         page: 2,
         mimeType: "image/png",
-        base64: "unresolved-page-image",
+        base64: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD2sAAAAASUVORK5CYII=",
       },
     ],
   };
@@ -87,7 +87,7 @@ describe("vision recovery provider", () => {
         {
           page: 2,
           mimeType: "image/png",
-          base64: "test-image",
+          base64: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD2sAAAAASUVORK5CYII=",
         },
       ],
     });
@@ -111,7 +111,7 @@ describe("vision recovery provider", () => {
         {
           page: 1,
           mimeType: "image/png",
-          base64: "test-image",
+          base64: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD2sAAAAASUVORK5CYII=",
         },
       ],
     };
@@ -166,7 +166,7 @@ describe("vision recovery provider", () => {
         {
           page: 1,
           mimeType: "image/png",
-          base64: "page-one-evidence",
+          base64: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD2sAAAAASUVORK5CYII=",
         },
       ],
     };
@@ -218,7 +218,7 @@ describe("vision recovery provider", () => {
     await provider.recover(requestFixture());
 
     expect(capturedBody).toContain(
-      "unresolved-page-image",
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD2sAAAAASUVORK5CYII=",
     );
     expect(capturedBody).toContain("shipper");
     expect(capturedBody).not.toContain(
@@ -241,7 +241,7 @@ describe("vision recovery provider", () => {
     if (result.ok) {
       expect(result.model).toBe("test-vision-model");
       expect(result.profile).toBe("vision_recovered");
-      expect(result.attempts).toBe(1);
+      expect(result.attempts).toBe(2);
       expect(result.usedFallback).toBe(false);
 
       expect(result.candidates).toEqual([
@@ -256,10 +256,10 @@ describe("vision recovery provider", () => {
       expect(result.unresolvedFields).toEqual([]);
 
       expect(result.usage).toEqual({
-        promptTokens: 100,
-        completionTokens: 20,
-        totalTokens: 120,
-        estimatedCostUsd: 0.001,
+        promptTokens: 200,
+        completionTokens: 40,
+        totalTokens: 240,
+        estimatedCostUsd: 0.002,
       });
     }
   });
@@ -346,10 +346,10 @@ describe("vision recovery provider", () => {
     const result = await provider.recover(requestFixture());
 
     expect(result.ok).toBe(true);
-    expect(calls).toBe(2);
+    expect(calls).toBe(3);
 
     if (result.ok) {
-      expect(result.attempts).toBe(2);
+      expect(result.attempts).toBe(3);
       expect(result.usedFallback).toBe(false);
     }
   });
@@ -446,6 +446,7 @@ describe("vision recovery provider", () => {
     expect(models).toEqual([
       "primary-model",
       "fallback-model",
+      "fallback-model",
     ]);
 
     expect(result.ok).toBe(true);
@@ -453,7 +454,7 @@ describe("vision recovery provider", () => {
     if (result.ok) {
       expect(result.model).toBe("fallback-model");
       expect(result.usedFallback).toBe(true);
-      expect(result.attempts).toBe(2);
+      expect(result.attempts).toBe(3);
     }
   });
 
@@ -538,4 +539,88 @@ describe("vision recovery provider", () => {
       );
     }
   });
+});
+
+describe("vision review regressions", () => {
+  it("labels original page numbers and never feeds first-pass answers into revalidation", async () => {
+    const bodies: string[] = [];
+    const request = Object.assign(requestFixture(), { targetValues: { shipper: "SECRET TARGET" } });
+    const result = await createVisionProvider({ apiKey: "test", fetch: async (_, init) => {
+      bodies.push(String(init?.body)); return successResponse();
+    } }).recover(request);
+    expect(result.profile).toBe("vision_recovered");
+    expect(bodies).toHaveLength(2);
+    for (const body of bodies) {
+      expect(body).toContain("Source document page 2:");
+      expect(body).not.toContain("Acme Shipping");
+      expect(body).not.toContain("SECRET TARGET");
+    }
+  });
+  it("keeps disagreeing blind transcriptions unresolved", async () => {
+    let calls = 0;
+    const result = await createVisionProvider({ apiKey: "test", fetch: async () => {
+      calls++; return calls === 1 ? successResponse() : successResponse([{ field: "shipper", value: "Different", page: 2, confidence: 0.99 }]);
+    } }).recover(requestFixture());
+    expect(result).toMatchObject({ profile: "vision_partial", candidates: [], unresolvedFields: ["shipper"], attempts: 2 });
+  });
+  it("keeps failed revalidation unresolved and unknown cost unknown", async () => {
+    let calls = 0;
+    const result = await createVisionProvider({ apiKey: "test", fetch: async () => ++calls === 1 ? successResponse() : new Response("failed", { status: 503 }) }).recover(requestFixture());
+    expect(result).toMatchObject({ profile: "vision_partial", candidates: [], attempts: 2, usage: { estimatedCostUsd: null } });
+  });
+  it.each([0, null, 0.79])("rejects insufficient confidence %s", async (confidence) => {
+    const result = await createVisionProvider({ apiKey: "test", fetch: async () => successResponse([{ field: "shipper", value: "Guess", page: 2, confidence }]) }).recover(requestFixture());
+    expect(result).toMatchObject({ profile: "vision_partial", candidates: [] });
+  });
+  it("honors an explicitly unresolved field even with a candidate", async () => {
+    const response = await successResponse().json();
+    response.choices[0].message.content = JSON.stringify({ candidates: [{ field: "shipper", value: "Guess", page: 2, confidence: 0.99 }], unresolvedFields: ["shipper"] });
+    const result = await createVisionProvider({ apiKey: "test", fetch: async () => Response.json(response) }).recover(requestFixture());
+    expect(result).toMatchObject({ profile: "vision_partial", candidates: [], attempts: 1 });
+  });
+  it("bounds a response body that stalls after headers and cancels it", async () => {
+    let cancelled = false;
+    const result = await createVisionProvider({ apiKey: "test", timeoutMs: 20, maxRetries: 0, fetch: async () => new Response(new ReadableStream({ cancel() { cancelled = true; } })) }).recover(requestFixture());
+    expect(result).toMatchObject({ ok: false, error: { code: "timeout" } });
+    expect(cancelled).toBe(true);
+  });
+  it("rejects oversized responses", async () => {
+    const result = await createVisionProvider({ apiKey: "test", maxRetries: 0, fetch: async () => new Response("x".repeat(1024 * 1024 + 1)) }).recover(requestFixture());
+    expect(result).toMatchObject({ ok: false, error: { code: "invalid_response" } });
+  });
+  it.each([null, [], { choices: [] }])("handles malformed top-level response %j", async (body) => {
+    const result = await createVisionProvider({ apiKey: "test", fetch: async () => Response.json(body) }).recover(requestFixture());
+    expect(result).toMatchObject({ ok: false, error: { code: "invalid_response" } });
+  });
+  it("retains paid usage when model JSON is malformed", async () => {
+    const result = await createVisionProvider({ apiKey: "test", fetch: async () => Response.json({ choices: [{ message: { content: "not json" } }], usage: { cost: 0.002 } }) }).recover(requestFixture());
+    expect(result).toMatchObject({ ok: false, usage: { estimatedCostUsd: 0.002 } });
+  });
+  it("rejects invalid fields, page identifiers and image bytes before calling provider", async () => {
+    for (const mutate of [
+      (r: VisionRecoveryRequest) => { r.unresolvedPages = [0]; },
+      (r: VisionRecoveryRequest) => { r.unresolvedFields = ["target value" as never]; },
+      (r: VisionRecoveryRequest) => { r.pageImages[0].base64 = "not-an-image"; },
+      (r: VisionRecoveryRequest) => { r.pageImages[0].base64 = "a".repeat(8 * 1024 * 1024 + 1); },
+    ]) {
+      const request = requestFixture(); mutate(request);
+      const result = await createVisionProvider({ apiKey: "test", fetch: async () => { throw new Error("must not call"); } }).recover(request);
+      expect(result).toMatchObject({ ok: false, attempts: 0, error: { code: "invalid_request" } });
+    }
+  });
+});
+
+it("retains original evidence despite caller mutation while the request is pending", async () => {
+  const request = requestFixture();
+  let calls = 0;
+  const result = await createVisionProvider({ apiKey: "test", fetch: async (_, init) => {
+    calls++;
+    if (calls === 1) {
+      request.pageImages[0].base64 = "mutated";
+      request.unresolvedFields = ["consignee"];
+    }
+    expect(String(init?.body)).not.toContain("mutated");
+    return successResponse();
+  } }).recover(request);
+  expect(result).toMatchObject({ profile: "vision_recovered", unresolvedFields: [], sourceImageHashes: [{ page: 2, sha256: expect.stringMatching(/^[a-f0-9]{64}$/) }] });
 });
