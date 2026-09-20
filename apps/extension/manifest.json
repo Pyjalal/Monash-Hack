@@ -9,14 +9,16 @@
     "http://localhost/*",
     "https://mail.google.com/*",
     "https://outlook.live.com/*",
-    "https://outlook.office.com/*"
+    "https://outlook.office.com/*",
+    "https://outlook.office365.com/*"
   ],
   "background": { "service_worker": "background.js" },
   "content_scripts": [{
     "matches": [
       "https://mail.google.com/*",
       "https://outlook.live.com/*",
-      "https://outlook.office.com/*"
+      "https://outlook.office.com/*",
+    "https://outlook.office365.com/*"
     ],
     "js": ["content.js"],
     "run_at": "document_idle"
@@ -27,5 +29,6 @@
       "description": "Toggle CargoLens preview"
     }
   },
+  "options_ui": { "page": "options.html", "open_in_tab": true },
   "action": { "default_title": "CargoLens", "default_popup": "popup.html" }
 }

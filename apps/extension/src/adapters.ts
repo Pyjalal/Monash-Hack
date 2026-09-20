@@ -32,6 +32,8 @@ function isVisibleElement(element: Element): boolean {
   const view = element.ownerDocument?.defaultView;
   for (let current: Element | null = element; current; current = current.parentElement) {
     if (current.isConnected === false || (typeof current.hasAttribute === "function" && current.hasAttribute("hidden")) || current.getAttribute("aria-hidden") === "true") return false;
+    // Rows CargoLens itself hid must stay extractable, otherwise they would be pruned, restored and re-hidden in a loop.
+    if (current.getAttribute("data-cargolens-hidden") === "true") continue;
     const style = view?.getComputedStyle(current);
     if (style?.display === "none" || style?.visibility === "hidden") return false;
   }
@@ -59,8 +61,15 @@ function descendantText(row: Element, selectors: string[]): string {
   return "";
 }
 
-function fallbackKey(source: MailSource, row: Element, index: number): string {
-  return firstAttribute(row, ["data-thread-id", "data-convid", "data-conversation-id", "aria-label"]) || `${source}-row-${index}`;
+const localRowKeys = new WeakMap<Element, string>();
+let nextLocalRow = 0;
+function fallbackKey(source: MailSource, row: Element): string {
+  const native = firstAttribute(row, ["data-thread-id", "data-convid", "data-conversation-id"])
+    || firstAttribute(row.querySelector("[data-thread-id]"), ["data-thread-id", "data-legacy-thread-id"]);
+  if (native) return native;
+  let key = localRowKeys.get(row);
+  if (!key) { key = `${source}-local-${++nextLocalRow}`; localRowKeys.set(row, key); }
+  return key;
 }
 
 const gmailSelectors = [
@@ -82,14 +91,14 @@ const outlookSelectors = [
 export const gmailAdapter: InboxAdapter = {
   source: "gmail",
   extractRows(root) {
-    return uniqueRows(root, gmailSelectors).flatMap((row, index) => {
+    return uniqueRows(root, gmailSelectors).filter(row => !row.closest || row.closest("tr.zA, tr[role=row]") === row).flatMap((row) => {
       if (!isVisibleElement(row)) return [];
       const subjectElement = row.querySelector(".bog") ?? row.querySelector(".y6") ?? row.querySelector("[data-subject]");
       const subject = firstAttribute(row, ["data-subject"]) || textOf(subjectElement) || descendantText(row, [".bog", ".y6", "[data-subject]"]);
       if (!subject) return [];
       return [{
         source: "gmail" as const,
-        rowKey: fallbackKey("gmail", row, index),
+        rowKey: fallbackKey("gmail", row),
         subject,
         from: firstAttribute(row, ["data-from", "email"]) || firstAttribute(row.querySelector("[email]"), ["email"]) || descendantText(row, [".yW", ".yX"]),
         snippet: firstAttribute(row, ["data-snippet"]) || descendantText(row, [".y2", "[data-snippet]"]),
@@ -103,17 +112,17 @@ export const gmailAdapter: InboxAdapter = {
 export const outlookAdapter: InboxAdapter = {
   source: "outlook",
   extractRows(root) {
-    return uniqueRows(root, outlookSelectors).flatMap((row, index) => {
+    return uniqueRows(root, outlookSelectors).flatMap((row) => {
       if (!isVisibleElement(row)) return [];
-      const subjectElement = row.querySelector("[role=heading]") ?? row.querySelector("[data-subject]");
+      const subjectElement = row.querySelector("[data-subject]") ?? row.querySelector("[role=heading]") ?? (row.hasAttribute("data-convid") ? row.querySelector(".TtcXM") : null);
       const subject = firstAttribute(row, ["data-subject"]) || textOf(subjectElement) || descendantText(row, ["[role=heading]", "[data-subject]"]);
       if (!subject) return [];
       return [{
         source: "outlook" as const,
-        rowKey: fallbackKey("outlook", row, index),
+        rowKey: fallbackKey("outlook", row),
         subject,
-        from: firstAttribute(row, ["data-from"]) || descendantText(row, ["[data-from]", "[data-sender]"]),
-        snippet: firstAttribute(row, ["data-snippet", "data-preview"]) || descendantText(row, ["[data-snippet]", "[data-preview]"]),
+        from: firstAttribute(row, ["data-from"]) || firstAttribute(row.querySelector("[data-from]"), ["data-from"]) || descendantText(row, ["[data-from]", "[data-sender]", ".ESO13"]),
+        snippet: firstAttribute(row, ["data-snippet", "data-preview"]) || firstAttribute(row.querySelector("[data-preview]"), ["data-preview"]) || descendantText(row, ["[data-snippet]", "[data-preview]", ".ASFJj"]),
         element: row,
         badgeTarget: subjectElement?.parentElement ?? subjectElement ?? row,
       }];
@@ -124,6 +133,6 @@ export const outlookAdapter: InboxAdapter = {
 export function adapterForHost(hostname: string): InboxAdapter | null {
   const host = hostname.toLowerCase();
   if (host === "mail.google.com" || host.endsWith(".mail.google.com")) return gmailAdapter;
-  if (host === "outlook.live.com" || host === "outlook.office.com" || host.endsWith(".outlook.office.com")) return outlookAdapter;
+  if (host === "outlook.live.com" || host === "outlook.office.com" || host.endsWith(".outlook.office.com") || host === "outlook.office365.com") return outlookAdapter;
   return null;
 }

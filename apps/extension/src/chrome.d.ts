@@ -4,6 +4,7 @@ interface CargoLensChromeMessageSender {
 
 interface CargoLensChromeRuntime {
   sendMessage(message: unknown): Promise<unknown>;
+  openOptionsPage(): Promise<void>;
   onMessage: {
     addListener(listener: (message: unknown, sender: CargoLensChromeMessageSender, sendResponse: (response: unknown) => void) => void | boolean): void;
     removeListener(listener: (message: unknown, sender: CargoLensChromeMessageSender, sendResponse: (response: unknown) => void) => void | boolean): void;

@@ -37,6 +37,10 @@ export class Store {
       CREATE TABLE IF NOT EXISTS events (sequence INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL, case_id TEXT, at TEXT NOT NULL, data_json TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS flows (id TEXT PRIMARY KEY, flow_json TEXT NOT NULL, updated_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS ai_requests (request_id TEXT PRIMARY KEY, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS rule_cache (key TEXT PRIMARY KEY, probability REAL NOT NULL, created_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS document_comparisons (case_id TEXT NOT NULL, source_version TEXT NOT NULL,
+        decision_version INTEGER NOT NULL, evidence_json TEXT NOT NULL, created_at TEXT NOT NULL,
+        PRIMARY KEY(case_id, source_version, decision_version));
     `);
   }
   close(): void { this.db.close(); }
@@ -87,12 +91,34 @@ export class Store {
     const changed = this.db.prepare("UPDATE cases SET status='failed',updated_at=? WHERE id=? AND source_version=?").run(new Date().toISOString(), id, sourceVersion).changes;
     if (changed) this.emit('case.failed', id, { code, sourceVersion });
   }
+  saveDocumentComparison(id: string, decision: OperationalDecision, evidence: unknown): boolean {
+    return this.db.transaction(() => {
+      if (!this.saveDecision(id, decision)) return false;
+      this.db.prepare('INSERT INTO document_comparisons VALUES (?,?,?,?,?)')
+        .run(id, decision.sourceVersion, decision.decisionVersion, JSON.stringify(evidence), new Date().toISOString());
+      return true;
+    })();
+  }
+  getDocumentComparison(id: string): { sourceVersion: string; decisionVersion: number; evidence: unknown } | null {
+    const current = this.getCase(id);
+    const row = this.db.prepare('SELECT evidence_json FROM document_comparisons WHERE case_id=? AND source_version=? AND decision_version=?')
+      .get(id, current?.sourceVersion ?? '', current?.decision?.decisionVersion ?? 0) as { evidence_json: string } | undefined;
+    return row && current?.decision ? { sourceVersion: current.sourceVersion, decisionVersion: current.decision.decisionVersion, evidence: JSON.parse(row.evidence_json) } : null;
+  }
   getCached(key: string): Classification | null {
     const row = this.db.prepare('SELECT result_json FROM classification_cache WHERE key=?').get(key) as {result_json: string} | undefined;
     return row ? ClassificationSchema.parse(JSON.parse(row.result_json)) : null;
   }
   cache(key: string, result: Classification): void {
     this.db.prepare('INSERT OR REPLACE INTO classification_cache VALUES (?,?,?)').run(key, JSON.stringify(ClassificationSchema.parse(result)), new Date().toISOString());
+  }
+  getCachedRule(key: string): number | null {
+    const row = this.db.prepare('SELECT probability FROM rule_cache WHERE key=?').get(key) as { probability: number } | undefined;
+    return row && Number.isFinite(row.probability) ? row.probability : null;
+  }
+  cacheRule(key: string, probability: number): void {
+    if (!Number.isFinite(probability) || probability < 0 || probability > 1) throw new RangeError('Rule probability must be within [0, 1]');
+    this.db.prepare('INSERT OR REPLACE INTO rule_cache VALUES (?,?,?)').run(key, probability, new Date().toISOString());
   }
   recordUsage(request: RequestUsage): void {
     this.db.prepare('INSERT OR IGNORE INTO ai_requests VALUES (?,?,?)').run(request.requestId, JSON.stringify(request), new Date().toISOString());

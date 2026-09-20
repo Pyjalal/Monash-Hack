@@ -137,7 +137,19 @@ async function main() {
   const rows = await loadRows();
   const split = await prepare(rows);
   if (validPhase === "prepare") { console.log(JSON.stringify({ count: rows.length, dev: split.dev.length, holdout: split.holdout.length, independent: INDEPENDENT_CASES.length })); return; }
-  const tuningRows = sample(split.dev, 64);
+  // Evaluation-only quarantine/overlay produced from a source-validated dispute ledger.
+  // Official full and holdout references below remain unchanged.
+  let reliableDevelopment = split.dev;
+  if (process.env.EVAL_TARGETS_PATH) {
+    const targets = JSON.parse(await readFile(resolve(process.env.EVAL_TARGETS_PATH), 'utf8')) as {
+      truthSha256: string; excluded: Record<string, string[]>; correctedCategories: Record<string, unknown>;
+    };
+    if (targets.truthSha256 !== createHash('sha256').update(await readFile(resolve(datasetRoot, 'ground_truth.json'))).digest('hex')) throw new Error('Optimization targets belong to different official references');
+    reliableDevelopment = split.dev.filter(row => !targets.excluded[row.id]?.includes('category'))
+      .map(row => ({ ...row, category: CategorySchema.parse(targets.correctedCategories[row.id]) }));
+    await jsonFile('optimization-reference.json', { path: resolve(process.env.EVAL_TARGETS_PATH), sha256: hash(targets), excludedDevelopmentCount: split.dev.length - reliableDevelopment.length });
+  }
+  const tuningRows = sample(reliableDevelopment, 64);
   let best: RunConfig;
   let bestFull: RunConfig;
   if (["all", "tune"].includes(validPhase)) {
@@ -156,7 +168,7 @@ async function main() {
   }
   if (["all", "speed"].includes(validPhase)) {
     const excluded = new Set(tuningRows.map(row => hash(buildClassificationState(row.email))));
-    const speedRows = sample(split.dev.filter(row => !excluded.has(hash(buildClassificationState(row.email)))), 96);
+    const speedRows = sample(reliableDevelopment.filter(row => !excluded.has(hash(buildClassificationState(row.email)))), 96);
     for (const [index, concurrency] of [4, 16, 32].entries())
       await run(`speed-${concurrency}`, speedRows.slice(index * 32, (index + 1) * 32), { ...best, concurrency });
     if (validPhase === "speed") return;
