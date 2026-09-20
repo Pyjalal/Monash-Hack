@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 2,
+  "scope": "Evaluation-only disagreement with the unreadable reason; no corrected status or match authorization.",
+  "observations": {
+    "path": "tools/eval/ocr-verification/observations.json",
+    "sha256": "316e583c16306cd525c3d43d9a46f93a1eb983e3a220fba46dd868663f33fdf6"
+  },
+  "officialLabels": {
+    "path": "training_data/sdoc-hackathon-docker/extracted/data_v2/ground_truth.json",
+    "sha256": "e9062d0036cc60e767b71eafd8447e05622d9fecb81511b4a4180809e1bf3a86",
+    "unchanged": true
+  },
+  "cases": [
+    {
+      "id": "email_511",
+      "official": {
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable"
+      },
+      "observationKeys": [
+        "email_511_SI",
+        "email_511_BL"
+      ],
+      "readabilityDisagreement": false
+    },
+    {
+      "id": "email_512",
+      "official": {
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable"
+      },
+      "observationKeys": [
+        "email_512_SI",
+        "email_512_BL"
+      ],
+      "readabilityDisagreement": true
+    },
+    {
+      "id": "email_513",
+      "official": {
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable"
+      },
+      "observationKeys": [
+        "email_513_SI",
+        "email_513_BL"
+      ],
+      "readabilityDisagreement": true
+    },
+    {
+      "id": "email_514",
+      "official": {
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable"
+      },
+      "observationKeys": [
+        "email_514_SI",
+        "email_514_BL"
+      ],
+      "readabilityDisagreement": true
+    },
+    {
+      "id": "email_515",
+      "official": {
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable"
+      },
+      "observationKeys": [
+        "email_515_SI",
+        "email_515_BL"
+      ],
+      "readabilityDisagreement": false
+    }
+  ]
+}
