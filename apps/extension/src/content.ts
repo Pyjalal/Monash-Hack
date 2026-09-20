@@ -129,7 +129,11 @@ export class CargoLensController {
       const element = candidates[index].element;
       if (!element) continue;
       const prior = this.current.get(row.candidate.rowKey);
-      if (prior?.fingerprint === row.fingerprint && prior.element === element) continue;
+      if (prior?.fingerprint === row.fingerprint && prior.element === element) {
+        prior.candidate.badgeTarget = row.candidate.badgeTarget;
+        if (!this.badgeAttached(prior)) this.renderBadge(prior, this.badgeStateFor(prior));
+        continue;
+      }
       this.removePending(row.candidate.rowKey);
       const record: RowRecord = { ...row, element };
       this.current.set(row.candidate.rowKey, record);
@@ -231,9 +235,21 @@ export class CargoLensController {
     const fresh = this.adapter.extractRows(this.root).find(row => row.element === record.element && row.rowKey === item.rowKey);
     if (!fresh || fresh.subject !== record.candidate.subject || fresh.from !== record.candidate.from || fresh.snippet !== record.candidate.snippet) return;
     record.result = item.result;
-    this.renderBadge(record, item.result.status === "classified"
-      ? { kind: "classified", classification: item.result.classification }
-      : { kind: "error", code: item.result.error.code, message: item.result.error.message });
+    this.renderBadge(record, this.badgeStateFor(record));
+  }
+
+  private badgeStateFor(record: RowRecord): BadgeState {
+    const result = record.result;
+    if (!result) return { kind: "loading" };
+    return result.status === "classified"
+      ? { kind: "classified", classification: result.classification }
+      : { kind: "error", code: result.error.code, message: result.error.message };
+  }
+
+  private badgeAttached(record: RowRecord): boolean {
+    const host = this.badgeHosts.get(record.candidate.rowKey);
+    const target = record.candidate.badgeTarget ?? record.element;
+    return !!host && host.isConnected !== false && host.parentElement === target;
   }
 
   private setEnabled(enabled: boolean): void {
