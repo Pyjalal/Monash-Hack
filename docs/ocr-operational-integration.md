@@ -64,9 +64,8 @@ tests cover these guarantees.
 - Missing OCR engines and timeouts retain explicit failure codes. Existing
   bounded vision-provider tests cover unavailable providers, malformed responses,
   timeouts, retry limits and unresolved-region scope.
-- The full integrated suite passed 304 tests before the additional partial-evidence
-  regression; the final targeted comparison and irrecoverable-source suites pass
-  all 27 cases. Type checking and lint passed.
+- The full integrated suite passed all 305 tests across 39 suites. The Python
+  sidecar passed all six tests. Type checking and lint passed.
 
 ## Limits
 
