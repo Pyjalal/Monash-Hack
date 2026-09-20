@@ -1,10 +1,12 @@
 import type { GmailMessage, GmailPart, ReplyInput } from './message.js';
 import { buildReplyRaw, decodeGmailMessage, header, isTextBodyPart, mailboxAddress, replyMessageId } from './message.js';
+import { GmailAuthorizationError } from './oauth.js';
 
 export interface GmailClientConfig {
   clientId: string;
   clientSecret: string;
-  refreshToken: string;
+  refreshToken: string | (() => string);
+  onAuthorizationRevoked?: () => void;
   mailboxAddress: string;
   aliases?: string[];
   authorizedAdditionalRecipients?: string[];
@@ -24,37 +26,47 @@ export class GmailClient {
   private token: { value: string; expiresAt: number } | null = null;
   private refreshing: Promise<string> | null = null;
   constructor(readonly config: GmailClientConfig) {
-    if (![config.clientId, config.clientSecret, config.refreshToken, config.mailboxAddress].every(value => value.trim())) throw new Error('Gmail credentials are not configured');
+    if (![config.clientId, config.clientSecret, config.mailboxAddress].every(value => value.trim()) || (typeof config.refreshToken === 'string' && !config.refreshToken.trim())) throw new Error('Gmail credentials are not configured');
     mailboxAddress(config.mailboxAddress);
     this.fetchImpl = config.fetchImpl ?? fetch;
   }
 
   private async accessToken(): Promise<string> {
+    const refreshToken = typeof this.config.refreshToken === 'function' ? this.config.refreshToken() : this.config.refreshToken;
     if (this.token && this.token.expiresAt > Date.now() + 30_000) return this.token.value;
     if (this.refreshing) return this.refreshing;
     this.refreshing = (async () => {
       const response = await this.fetchImpl('https://oauth2.googleapis.com/token', {
         method: 'POST', signal: AbortSignal.timeout(this.config.timeoutMs ?? 15_000),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ client_id: this.config.clientId, client_secret: this.config.clientSecret, refresh_token: this.config.refreshToken, grant_type: 'refresh_token' }),
+        body: new URLSearchParams({ client_id: this.config.clientId, client_secret: this.config.clientSecret, refresh_token: refreshToken, grant_type: 'refresh_token' }),
       });
-      if (!response.ok) throw new GmailApiError(response.status);
+      if (!response.ok) {
+        const failure = await response.json().catch(() => ({})) as { error?: string };
+        if (failure.error === 'invalid_grant') { this.token = null; this.config.onAuthorizationRevoked?.(); throw new GmailAuthorizationError('GMAIL_REAUTHORIZATION_REQUIRED'); }
+        throw new GmailApiError(response.status);
+      }
       const data = await response.json() as { access_token?: string; expires_in?: number };
-      if (!data.access_token || typeof data.expires_in !== 'number') throw new Error('Malformed Gmail token response');
+      if (typeof data.access_token !== 'string' || !data.access_token || typeof data.expires_in !== 'number' || !Number.isFinite(data.expires_in) || data.expires_in <= 0) throw new Error('Malformed Gmail token response');
       this.token = { value: data.access_token, expiresAt: Date.now() + data.expires_in * 1000 };
       return data.access_token;
     })();
     try { return await this.refreshing; } finally { this.refreshing = null; }
   }
 
-  private async request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  private async request<T>(path: string, init: RequestInit = {}, retried = false): Promise<T> {
     const accessToken = await this.accessToken();
     const response = await this.fetchImpl(`https://gmail.googleapis.com/gmail/v1/users/me/${path}`, {
       ...init, signal: AbortSignal.timeout(this.config.timeoutMs ?? 15_000),
       headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
     });
     if (!response.ok) {
-      if (response.status === 401) this.token = null;
+      if (response.status === 401) {
+        this.token = null;
+        if (!retried && (!init.method || init.method === 'GET')) return this.request<T>(path, init, true);
+        this.config.onAuthorizationRevoked?.();
+        throw new GmailAuthorizationError('GMAIL_REAUTHORIZATION_REQUIRED');
+      }
       throw new GmailApiError(response.status);
     }
     return await response.json() as T;
@@ -64,6 +76,7 @@ export class GmailClient {
     const params = new URLSearchParams({ q: options.query ?? 'in:inbox', maxResults: String(Math.max(1, Math.min(options.maxResults ?? 100, 100))) });
     if (options.pageToken) params.set('pageToken', options.pageToken);
     const data = await this.request<Partial<MessagePage>>(`messages?${params}`);
+    if (!data || typeof data !== 'object' || (data.messages !== undefined && (!Array.isArray(data.messages) || data.messages.some(item => !item || typeof item.id !== 'string' || typeof item.threadId !== 'string')))) throw new Error('Malformed Gmail message list');
     return { messages: data.messages ?? [], ...(data.nextPageToken ? { nextPageToken: data.nextPageToken } : {}) };
   }
 

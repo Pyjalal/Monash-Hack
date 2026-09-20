@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { Window } from "happy-dom";
 import { expect, it, vi } from "vitest";
 import { CargoLensController } from "./content.js";
-import { gmailAdapter } from "./adapters.js";
+import { gmailAdapter, outlookAdapter } from "./adapters.js";
 import type { ContentRuntime } from "./content.js";
 import type { ExtensionMessage, RowResultMessage } from "./messages.js";
 
@@ -32,9 +32,10 @@ function result(id: string, confidence = 0.92, urgency: { level: string; score: 
   };
 }
 
-function setup(enabled: boolean) {
+function setup(enabled: boolean, outlook = false) {
   const window = new Window({ url: "https://mail.google.com/mail/u/0/#inbox" });
   window.document.body.innerHTML = fixture();
+  if (outlook) window.document.body.innerHTML = '<div role="listbox"><div role="option" data-convid="conversation-1"><input type="checkbox"><div class="ESO13">Operations</div><div><span class="TtcXM">Verify draft BL</span></div><span class="ASFJj">SI attached</span></div></div>';
   const listeners: Array<(message: ExtensionMessage) => void> = [];
   const sent: ExtensionMessage[] = [];
   const runtime: ContentRuntime = {
@@ -45,7 +46,7 @@ function setup(enabled: boolean) {
     }),
     onMessage: (listener) => { listeners.push(listener); return () => undefined; },
   };
-  return { window, sent, listeners, runtime, controller: new CargoLensController(window.document, gmailAdapter, runtime) };
+  return { window, sent, listeners, runtime, controller: new CargoLensController(window.document, outlook ? outlookAdapter : gmailAdapter, runtime) };
 }
 
 async function flush(): Promise<void> {
@@ -211,4 +212,47 @@ it("does not restore a badge when a pending transport rejects after disabling", 
     state.controller.stop();
     globalThis.MutationObserver = prior;
   }
+});
+
+it('rejects Outlook results arriving after a row is recycled but before the observer scans', async () => {
+  const state = setup(true, true);
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  try {
+    await state.controller.start(); await flush();
+    const request = state.sent.find(message => message.type === 'CLASSIFY_ROWS') as Extract<ExtensionMessage, { type: 'CLASSIFY_ROWS' }>;
+    const item = request.items[0];
+    const row = state.window.document.querySelector('[data-convid]')!;
+    row.querySelector('.TtcXM')!.textContent = 'Different shipment';
+    state.listeners.forEach(listener => listener({ type: 'CLASSIFY_RESULTS', epoch: 0, items: [{ rowKey: item.rowKey, fingerprint: item.fingerprint, result: result(item.email.id) }] }));
+    expect(row.querySelector('[data-cargolens-badge]')?.shadowRoot?.textContent).toContain('scanning');
+    await state.controller.scan(); await flush();
+    expect(row.querySelectorAll('[data-cargolens-badge]')).toHaveLength(1);
+    expect(state.sent.filter(message => message.type === 'CLASSIFY_ROWS')).toHaveLength(2);
+  } finally { state.controller.stop(); globalThis.MutationObserver = prior; }
+});
+
+it('keeps Outlook retry failures visible without triggering native row actions', async () => {
+  const state = setup(true, true);
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  try {
+    await state.controller.start(); await flush();
+    const request = state.sent.find(message => message.type === 'CLASSIFY_ROWS') as Extract<ExtensionMessage, { type: 'CLASSIFY_ROWS' }>;
+    const item = request.items[0];
+    const row = state.window.document.querySelector('[data-convid]')!;
+    let clicks = 0; let keys = 0;
+    row.addEventListener('click', () => { clicks++; });
+    row.addEventListener('keydown', () => { keys++; });
+    state.listeners.forEach(listener => listener({ type: 'CLASSIFY_RESULTS', epoch: 0, items: [{ rowKey: item.rowKey, fingerprint: item.fingerprint, result: { id: item.email.id, status: 'error', error: { code: 'PREVIEW_UNAVAILABLE', message: 'Offline' } } }] }));
+    vi.mocked(state.runtime.sendMessage).mockRejectedValue(new Error('Worker unavailable'));
+    const retry = row.querySelector('[data-cargolens-badge]')!.shadowRoot!.querySelector('button')!;
+    retry.dispatchEvent(new state.window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+    retry.click(); await flush();
+    expect(clicks).toBe(0); expect(keys).toBe(0);
+    expect(row.querySelector('[data-cargolens-badge]')!.shadowRoot!.textContent).toContain('PREVIEW_UNAVAILABLE');
+    const checkbox = row.querySelector('input')!;
+    checkbox.click();
+    expect(checkbox.checked).toBe(true); expect(clicks).toBe(1);
+  } finally { state.controller.stop(); globalThis.MutationObserver = prior; }
 });

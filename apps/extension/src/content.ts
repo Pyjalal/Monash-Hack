@@ -84,7 +84,7 @@ export class CargoLensController {
       subtree: true,
       characterData: true,
       attributes: true,
-      attributeFilter: ["aria-hidden", "class", "data-conversation-id", "data-convid", "data-from", "data-preview", "data-snippet", "data-subject", "data-thread-id", "hidden", "role", "style"],
+      attributeFilter: ["aria-hidden", "class", "data-conversation-id", "data-convid", "data-from", "data-preview", "data-snippet", "data-subject", "data-thread-id", "data-legacy-thread-id", "email", "aria-label", "hidden", "role", "style"],
     });
     await this.runtime.sendMessage({ type: "GET_SETTINGS" }).then((response) => {
       if (response && typeof response === "object" && "enabled" in response && typeof response.enabled === "boolean") {
@@ -228,6 +228,8 @@ export class CargoLensController {
     if (!this.enabled) return;
     const record = this.current.get(item.rowKey);
     if (!record || record.fingerprint !== item.fingerprint) return;
+    const fresh = this.adapter.extractRows(this.root).find(row => row.element === record.element && row.rowKey === item.rowKey);
+    if (!fresh || fresh.subject !== record.candidate.subject || fresh.from !== record.candidate.from || fresh.snippet !== record.candidate.snippet) return;
     record.result = item.result;
     this.renderBadge(record, item.result.status === "classified"
       ? { kind: "classified", classification: item.result.classification }
@@ -329,10 +331,13 @@ export class CargoLensController {
       retry.type = "button";
       retry.textContent = "Retry";
       retry.setAttribute("aria-label", `Retry CargoLens preview for ${record.candidate.subject || "this row"}`);
+      retry.addEventListener("keydown", event => event.stopPropagation());
       retry.addEventListener("click", (event) => {
-        event.stopPropagation();
+        event.preventDefault(); event.stopPropagation();
         this.renderBadge(record, { kind: "loading" });
-        void this.runtime.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, bypassCache: true, item: { source: record.candidate.source, context: this.cacheContext, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => undefined);
+        void this.runtime.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, bypassCache: true, item: { source: record.candidate.source, context: this.cacheContext, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => {
+          if (this.enabled && this.current.get(record.candidate.rowKey) === record) this.renderBadge(record, { kind: "error", code: "PREVIEW_UNAVAILABLE", message: "Preview unavailable" });
+        });
       });
       badge.append(retry);
     }
