@@ -10,8 +10,11 @@ import { ClassificationService, QueueFullError } from './pipeline.js';
 import { Store } from './store.js';
 import type { GmailAutomation } from './gmail/automation.js';
 import { verifyOperationalEvidence } from './gmail/evidence-validation.js';
+import { GmailAuthorizationError, type GmailAuthorization } from './gmail/oauth.js';
+import type { GmailPoller } from './gmail/polling.js';
 
 export type AppOptions = { store: Store; service: ClassificationService; dashboardToken: string; datasetRoot?: string; allowedOrigins?: string[];
+  gmailAuthorization?: GmailAuthorization; gmailPoller?: GmailPoller;
   gmail?: Pick<GmailAutomation, 'sync' | 'status' | 'outbox' | 'validateDecision' | 'processDecision' | 'dispatchPending'> };
 function tokenMatches(value: string, expected: string): boolean {
   const actual = Buffer.from(value); const wanted = Buffer.from(`Bearer ${expected}`);
@@ -29,6 +32,7 @@ export function createApp(options: AppOptions): Hono {
     allowHeaders: ['Content-Type', 'Authorization', 'Last-Event-ID'], allowMethods: ['GET', 'POST', 'OPTIONS'], maxAge: 600 }));
   app.use('*', bodyLimit({ maxSize: 1024 * 1024, onError: c => c.json({ error: 'PAYLOAD_TOO_LARGE' }, 413) }));
   app.use('*', async (c, next) => {
+    if (c.req.method === 'GET' && ['/gmail/oauth/callback', '/gmail/connection-result'].includes(c.req.path)) return next();
     if (c.req.path === '/health' || (c.req.path === '/classify' && c.req.method === 'POST') || c.req.method === 'OPTIONS') return next();
     if (!tokenMatches(c.req.header('Authorization') ?? '', options.dashboardToken)) return c.json({ error: 'UNAUTHORIZED' }, 401);
     await next();
@@ -102,10 +106,39 @@ export function createApp(options: AppOptions): Hono {
     }
     return c.json({ saved: true });
   });
-  app.get('/gmail/status', c => c.json(options.gmail ? { configured: true, ...options.gmail.status() } : { configured: false, enabled: false }));
+  app.post('/gmail/oauth/start', c => {
+    if (!options.gmailAuthorization) return c.json({ error: 'GMAIL_OAUTH_NOT_CONFIGURED' }, 503);
+    c.header('Cache-Control', 'no-store');
+    return c.json(options.gmailAuthorization.begin());
+  });
+  app.get('/gmail/oauth/callback', async c => {
+    c.header('Cache-Control', 'no-store'); c.header('Referrer-Policy', 'no-referrer');
+    if (!options.gmailAuthorization) return c.text('Gmail OAuth is not configured.', 503);
+    try {
+      await options.gmailAuthorization.complete({ state: c.req.query('state'), code: c.req.query('code'), error: c.req.query('error') });
+      return c.redirect('/gmail/connection-result?status=connected', 303);
+    } catch (error) {
+      const code = error instanceof GmailAuthorizationError ? error.code : 'OAUTH_CONNECTION_FAILED';
+      return c.redirect(`/gmail/connection-result?status=${encodeURIComponent(code)}`, 303);
+    }
+  });
+  app.get('/gmail/connection-result', c => {
+    c.header('Cache-Control', 'no-store'); c.header('Referrer-Policy', 'no-referrer');
+    return c.text(c.req.query('status') === 'connected'
+      ? 'CargoLens Gmail connected. You can close this tab. Ingestion uses server-held authorization; sending remains controlled by GMAIL_AUTOMATION_ENABLED.'
+      : 'CargoLens Gmail connection was not completed. Check the local connector status and restart authorization.');
+  });
+  app.post('/gmail/disconnect', async c => {
+    if (!options.gmailAuthorization) return c.json({ error: 'GMAIL_OAUTH_NOT_CONFIGURED' }, 503);
+    try { await options.gmailAuthorization.disconnect(); return c.json({ authorization: 'disconnected' }); }
+    catch { return c.json({ authorization: 'disconnected', error: 'REMOTE_REVOCATION_UNCONFIRMED' }, 502); }
+  });
+  app.get('/gmail/status', c => c.json({ ...(options.gmail ? { configured: true, ...options.gmail.status() } : { configured: false, enabled: false }),
+    ...(options.gmailAuthorization?.status() ?? {}), ...(options.gmailPoller?.status() ?? {}) }));
   app.get('/gmail/outbox', c => options.gmail ? c.json({ items: options.gmail.outbox() }) : c.json({ error: 'GMAIL_NOT_CONFIGURED' }, 503));
   app.post('/gmail/sync', async c => {
     if (!options.gmail) return c.json({ error: 'GMAIL_NOT_CONFIGURED' }, 503);
+    if (options.gmailAuthorization && options.gmailAuthorization.status().authorization !== 'connected') return c.json({ error: 'GMAIL_AUTHORIZATION_REQUIRED', ...options.gmailAuthorization.status() }, 409);
     const parsed = z.object({ query: z.string().max(1000).optional(), pageToken: z.string().max(2000).optional(), maxMessages: z.number().int().min(1).max(100).optional() })
       .strict().safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'INVALID_SYNC_REQUEST' }, 400);

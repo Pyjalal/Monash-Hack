@@ -9,6 +9,7 @@ import { GmailOutbox, type OutboundAction, type OutboxItem } from './outbox.js';
 import { decodeGmailMessage, mailboxAddress, type DecodedGmailMessage } from './message.js';
 import { collectGmailEvidence, GmailResumeStore, planMissingEvidence, type CollectedEvidence, type DocumentRole } from './evidence.js';
 import { verifyOperationalEvidence } from './evidence-validation.js';
+import { GmailAuthorizationError } from './oauth.js';
 
 export interface GmailAutomationOptions { store: Store; service: ClassificationService; client: GmailClient; attachmentRoot: string; enabled: boolean; documentationContact?: string }
 export interface GmailSyncResult { processed: number; skipped: number; errors: { threadId: string; code: string }[]; nextPageToken?: string }
@@ -54,7 +55,8 @@ export class GmailAutomation {
           try {
             if (await this.ingestThread(message.threadId)) result.processed++;
             else result.skipped++;
-          } catch {
+          } catch (error) {
+            if (error instanceof GmailAuthorizationError) throw error;
             result.errors.push({ threadId: message.threadId, code: 'THREAD_PROCESSING_FAILED' });
             this.options.store.emit('gmail.thread.failed', null, { threadId: message.threadId, code: 'THREAD_PROCESSING_FAILED' });
           }
