@@ -298,10 +298,10 @@ it("hides spam, pins urgent and rule-matched rows to the top in rank order, and 
     expect(spam.style.display).toBe("none");
     expect(state.sent.filter(message => message.type === "CLASSIFY_ROWS")).toHaveLength(1);
 
-    tray.querySelector<HTMLElement>("button.reveal")!.click();
+    (tray.querySelector("button.reveal") as unknown as HTMLElement).click();
     expect(spam.style.display).toBe("");
     expect(state.controller.hiddenCount).toBe(0);
-    state.window.document.querySelector("#cargolens-urgent-tray")!.shadowRoot!.querySelector<HTMLElement>("button.reveal")!.click();
+    (state.window.document.querySelector("#cargolens-urgent-tray")!.shadowRoot!.querySelector("button.reveal") as unknown as HTMLElement).click();
     expect(spam.style.display).toBe("none");
 
     state.listeners.forEach(listener => listener({ type: "TOGGLE_ENABLED" }));
@@ -326,7 +326,7 @@ it("leaves rows untouched when hiding and pinning are switched off", async () =>
       return { rowKey: item.rowKey, fingerprint: item.fingerprint, result: { ...base, classification } as RowResultMessage["result"] };
     });
     state.listeners.forEach(listener => listener({ type: "CLASSIFY_RESULTS", epoch: 0, items }));
-    const rows = [...state.window.document.querySelectorAll<HTMLElement>("tr")];
+    const rows = [...state.window.document.querySelectorAll("tr")] as unknown as HTMLElement[];
     expect(rows.map(row => row.getAttribute("data-thread-id"))).toEqual(["t1", "t2"]);
     expect(rows.every(row => !row.style.display && !row.hasAttribute("data-cargolens-hidden"))).toBe(true);
     expect(state.controller.hiddenCount).toBe(0);
