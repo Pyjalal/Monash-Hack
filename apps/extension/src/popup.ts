@@ -66,6 +66,7 @@ async function checkHealth(value = apiUrl?.value.trim() ?? DEFAULT_API_URL): Pro
   }
 }
 
+document.querySelector<HTMLButtonElement>("#open-settings")?.addEventListener("click", () => { void chrome.runtime.openOptionsPage(); });
 save?.addEventListener("click", () => { void saveSettings(); });
 health?.addEventListener("click", () => { void checkHealth(); });
 void load().catch(() => setStatus("Could not load CargoLens settings.", "error"));

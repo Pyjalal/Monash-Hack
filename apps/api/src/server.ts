@@ -5,12 +5,14 @@ import { serve } from '@hono/node-server';
 import { questionVersion } from '@cargolens/shared/questions';
 import { createJevProvider } from './ai/jev.js';
 import { createJevBatchProvider } from './ai/jev-batch.js';
+import { createJevRuleEvaluator, RuleService } from './ai/rules.js';
 import { createApp } from './app.js';
 import { ClassificationService } from './pipeline.js';
 import { Store } from './store.js';
 import { GmailAutomation, GmailClient } from './gmail/index.js';
 import { GmailAuthorization } from './gmail/oauth.js';
 import { GmailPoller } from './gmail/polling.js';
+import { TextRecovery } from './ai/text-recovery.js';
 
 if (!process.env.TYPESAFE_API_KEY || !process.env.DASHBOARD_TOKEN) throw new Error('Set TYPESAFE_API_KEY and DASHBOARD_TOKEN in the local .env file');
 const dbPath = resolve(process.env.DATABASE_PATH ?? 'runtime/cargolens.sqlite');
@@ -35,7 +37,13 @@ const gmail = gmailConfigured ? new GmailAutomation({ store, service,
   attachmentRoot: resolve(process.env.GMAIL_ATTACHMENT_ROOT ?? 'runtime/gmail-attachments'), enabled: gmailEnabled,
   documentationContact: process.env.GMAIL_DOCUMENTATION_CONTACT }) : undefined;
 const gmailPoller = gmail ? new GmailPoller(store, gmail, process.env.GMAIL_MAILBOX_ADDRESS!, process.env.GMAIL_SYNC_QUERY) : undefined;
-const app = createApp({ store, service, dashboardToken: process.env.DASHBOARD_TOKEN,
+const rules = new RuleService({ store, model, evaluator: createJevRuleEvaluator({ apiKey: process.env.TYPESAFE_API_KEY, model }) });
+const app = createApp({ store, service, rules, dashboardToken: process.env.DASHBOARD_TOKEN,
+  textRecovery: new TextRecovery({ store, apiKey: process.env.OPENROUTER_API_KEY, model: process.env.OPENROUTER_TEXT_MODEL,
+    maxCaseAttempts: Number(process.env.RECOVERY_MAX_CASE_ATTEMPTS ?? 3), maxCaseTokens: Number(process.env.RECOVERY_MAX_CASE_TOKENS ?? 30000),
+    maxCaseUsd: Number(process.env.RECOVERY_MAX_CASE_USD ?? 0.02) }),
+  gmailAttachmentRoot: resolve(process.env.GMAIL_ATTACHMENT_ROOT ?? 'runtime/gmail-attachments'),
+  documentationContact: process.env.GMAIL_DOCUMENTATION_CONTACT,
   datasetRoot: resolve(process.env.DATASET_ROOT ?? 'training_data/sdoc-hackathon-docker/extracted/data_v2'),
   allowedOrigins: process.env.ALLOWED_ORIGINS?.split(','), gmail, gmailAuthorization, gmailPoller });
 let poll: NodeJS.Timeout | undefined;

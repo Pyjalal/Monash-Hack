@@ -32,6 +32,8 @@ function isVisibleElement(element: Element): boolean {
   const view = element.ownerDocument?.defaultView;
   for (let current: Element | null = element; current; current = current.parentElement) {
     if (current.isConnected === false || (typeof current.hasAttribute === "function" && current.hasAttribute("hidden")) || current.getAttribute("aria-hidden") === "true") return false;
+    // Rows CargoLens itself hid must stay extractable, otherwise they would be pruned, restored and re-hidden in a loop.
+    if (current.getAttribute("data-cargolens-hidden") === "true") continue;
     const style = view?.getComputedStyle(current);
     if (style?.display === "none" || style?.visibility === "hidden") return false;
   }

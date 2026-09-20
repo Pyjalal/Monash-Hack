@@ -1,6 +1,6 @@
 import type { QueueItem, RowClassifyResult, RowResultMessage } from "./messages.js";
 import { isClassifyResult } from "./messages.js";
-import { classifyEndpoint, DEFAULT_API_URL, normalizeApiUrl, parseSettings } from "./settings.js";
+import { activeRules, classifyEndpoint, DEFAULT_API_URL, defaultInboxPolicy, normalizeApiUrl, parseInboxPolicy, parseSettings, rulesKey, type InboxPolicy } from "./settings.js";
 import { PreviewCache, resultForEmail } from "./preview-cache.js";
 
 const MAX_BATCH_SIZE = 20;
@@ -47,22 +47,26 @@ function errorResult(item: Partial<QueueItem> | undefined, code: string, message
   };
 }
 
+type RuleList = Array<{ id: string; condition: string }>;
+
 export class ClassificationQueue {
   private readonly pending: QueueEntry[] = [];
   private readonly keys = new Set<string>();
   private readonly transport: QueueTransport;
   private readonly apiUrl: string | (() => string);
   private readonly cache: PreviewCache | null;
+  private readonly rules: () => RuleList;
   private readonly activeControllers = new Set<AbortController>();
   private pumpPromise: Promise<void> | null = null;
   private accepting = true;
   private generation = 0;
   private cacheRevision: string | null = null;
 
-  constructor(transport: QueueTransport, apiUrl: string | (() => string) = () => classifyEndpoint(DEFAULT_API_URL), cache: PreviewCache | null = null) {
+  constructor(transport: QueueTransport, apiUrl: string | (() => string) = () => classifyEndpoint(DEFAULT_API_URL), cache: PreviewCache | null = null, rules: () => RuleList = () => []) {
     this.transport = transport;
     this.apiUrl = apiUrl;
     this.cache = cache;
+    this.rules = rules;
   }
 
   enqueue(tabId: number, items: unknown[], settingsEpoch = 0, bypassCache = false): { accepted: QueueItem[]; rejected: QueueRejection[] } {
@@ -177,9 +181,11 @@ export class ClassificationQueue {
     const resultByGroup = new Map<string, RowClassifyResult>();
     const groupEntries = new Map<string, QueueEntry[]>();
     const cachedGroups = new Set<string>();
-    const cacheKey = (entry: QueueEntry): string => `cache\u241f${entry.context || `tab:${entry.tabId}`}\u241f${endpoint}\u241f${revision ?? "no-revision"}\u241f${entry.fingerprint}`;
+    const rules = this.rules();
+    const rulesTag = rules.map((rule) => `${rule.id}=${rule.condition}`).sort().join("\u241e");
+    const cacheKey = (entry: QueueEntry): string => `cache\u241f${entry.context || `tab:${entry.tabId}`}\u241f${endpoint}\u241f${revision ?? "no-revision"}\u241f${rulesTag}\u241f${entry.fingerprint}`;
     const groupKey = (entry: QueueEntry): string => entry.bypassCache
-      ? `retry:${entry.rowKey}\u241f${entry.context || `tab:${entry.tabId}`}\u241f${endpoint}\u241f${revision ?? "no-revision"}\u241f${entry.fingerprint}`
+      ? `retry:${entry.rowKey}\u241f${entry.context || `tab:${entry.tabId}`}\u241f${endpoint}\u241f${revision ?? "no-revision"}\u241f${rulesTag}\u241f${entry.fingerprint}`
       : cacheKey(entry);
 
     if (revision && this.cache) {
@@ -255,6 +261,8 @@ export class ClassificationQueue {
           const resultIds = new Set(body.results.map((result) => (result as RowClassifyResult).id));
           if (resultIds.size !== body.results.length || [...resultIds].some((id) => !expectedIds.has(id))) throw new Error("INVALID_RESPONSE");
           const byId = new Map(body.results.map((result) => [result.id, result]));
+          if (rules.length) await this.attachRules(endpoint, requestBatch.emails, rules, byId, controller.signal);
+          if (generation !== this.generation) return;
           for (const [key, entries] of requestBatch.groups) {
             const result = byId.get(entries[0].email.id);
             if (result) {
@@ -300,6 +308,32 @@ export class ClassificationQueue {
     for (const entry of batch) this.keys.delete(this.keyFor(entry));
   }
 
+  /** Smart filters are best-effort: a failed evaluation leaves the classification untouched rather than erroring the row. */
+  private async attachRules(endpoint: string, emails: QueueItem["email"][], rules: RuleList, byId: Map<string, RowClassifyResult>, signal: AbortSignal): Promise<void> {
+    const url = endpoint.endsWith("/classify") ? `${endpoint.slice(0, -"/classify".length)}/rules/evaluate` : `${endpoint}/rules/evaluate`;
+    try {
+      const response = await this.transport.request(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ emails: emails.map(({ id, subject, from, snippet }) => ({ id, subject, from, snippet })), rules }),
+        signal,
+      });
+      if (!response.ok) return;
+      const body = await response.json() as { results?: unknown };
+      if (!Array.isArray(body.results)) return;
+      for (const raw of body.results) {
+        const result = raw as { id?: unknown; status?: unknown; rules?: unknown };
+        if (typeof result.id !== "string" || result.status !== "evaluated" || !result.rules || typeof result.rules !== "object") continue;
+        const target = byId.get(result.id);
+        if (!target || target.status !== "classified") continue;
+        const probabilities = Object.fromEntries(Object.entries(result.rules).filter(([key, value]) => rules.some((rule) => rule.id === key) && typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1));
+        byId.set(result.id, { ...target, classification: { ...target.classification, rules: probabilities } });
+      }
+    } catch {
+      return;
+    }
+  }
+
   private keyFor(entry: QueueEntry): string {
     return `${entry.tabId}\u241f${entry.source}\u241f${entry.rowKey}\u241f${entry.fingerprint}`;
   }
@@ -326,6 +360,7 @@ export class ClassificationQueue {
 
 let configuredApiUrl = DEFAULT_API_URL;
 let configuredEnabled = true;
+let configuredInbox: InboxPolicy = defaultInboxPolicy();
 let settingsEpoch = 0;
 let settingsReady: Promise<void> | null = null;
 let settingsInitialized = false;
@@ -337,13 +372,19 @@ const runtimeQueue = typeof chrome === "undefined"
   : new ClassificationQueue({
       request: (input, init) => fetch(input, init),
       send: (tabId, message) => chrome.tabs.sendMessage(tabId, message),
-    }, () => classifyEndpoint(configuredApiUrl), runtimeCache);
+    }, () => classifyEndpoint(configuredApiUrl), runtimeCache, () => activeRules(configuredInbox));
 
-function applySettings(enabled: boolean, apiUrl: string): void {
-  const changed = configuredEnabled !== enabled || configuredApiUrl !== apiUrl;
-  const invalidateCache = settingsInitialized && changed;
+function settingsSnapshot() {
+  return { enabled: configuredEnabled, apiUrl: configuredApiUrl, inbox: configuredInbox, epoch: settingsEpoch };
+}
+
+function applySettings(enabled: boolean, apiUrl: string, inbox: InboxPolicy = configuredInbox): void {
+  const transportChanged = configuredEnabled !== enabled || configuredApiUrl !== apiUrl || rulesKey(inbox) !== rulesKey(configuredInbox);
+  const changed = transportChanged || JSON.stringify(inbox) !== JSON.stringify(configuredInbox);
+  const invalidateCache = settingsInitialized && transportChanged;
   configuredEnabled = enabled;
   configuredApiUrl = apiUrl;
+  configuredInbox = inbox;
   settingsInitialized = true;
   if (changed) {
     settingsEpoch += 1;
@@ -353,8 +394,8 @@ function applySettings(enabled: boolean, apiUrl: string): void {
 }
 
 async function loadSettings(): Promise<void> {
-  const settings = parseSettings(await chrome.storage.sync.get({ enabled: true, apiUrl: DEFAULT_API_URL }));
-  applySettings(settings.enabled, settings.apiUrl);
+  const settings = parseSettings(await chrome.storage.sync.get({ enabled: true, apiUrl: DEFAULT_API_URL, inbox: null }));
+  applySettings(settings.enabled, settings.apiUrl, settings.inbox);
 }
 
 function ensureSettings(): Promise<void> {
@@ -362,16 +403,16 @@ function ensureSettings(): Promise<void> {
   return settingsReady;
 }
 
-async function broadcastSettings(enabled: boolean, apiUrl: string, epoch: number): Promise<void> {
+async function broadcastSettings(): Promise<void> {
   const tabs = await chrome.tabs.query({});
   await Promise.allSettled(tabs.flatMap((tab) => typeof tab.id === "number"
-    ? [chrome.tabs.sendMessage(tab.id, { type: "SETTINGS_UPDATED", enabled, apiUrl, epoch })]
+    ? [chrome.tabs.sendMessage(tab.id, { type: "SETTINGS_UPDATED", ...settingsSnapshot() })]
     : []));
 }
 
 if (typeof chrome !== "undefined" && runtimeQueue) {
   chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse) => {
-    const value = message as { type?: string; items?: unknown[]; item?: unknown; enabled?: boolean; apiUrl?: unknown; epoch?: unknown; bypassCache?: unknown };
+    const value = message as { type?: string; items?: unknown[]; item?: unknown; enabled?: boolean; apiUrl?: unknown; inbox?: unknown; epoch?: unknown; bypassCache?: unknown };
     const tabId = sender.tab?.id;
     if (value.type === "CLASSIFY_ROWS" || value.type === "RETRY_ROW") {
       if (typeof tabId !== "number") {
@@ -381,12 +422,12 @@ if (typeof chrome !== "undefined" && runtimeQueue) {
       const items = value.type === "CLASSIFY_ROWS" ? value.items ?? [] : [value.item];
       void ensureSettings().then(() => {
         if (!configuredEnabled) {
-          void chrome.tabs.sendMessage(tabId, { type: "SETTINGS_UPDATED", enabled: false, apiUrl: configuredApiUrl, epoch: settingsEpoch }).catch(() => undefined);
+          void chrome.tabs.sendMessage(tabId, { type: "SETTINGS_UPDATED", ...settingsSnapshot() }).catch(() => undefined);
           sendResponse({ accepted: 0, rejected: items.length, disabled: true });
           return;
         }
         if (value.epoch !== settingsEpoch) {
-          void chrome.tabs.sendMessage(tabId, { type: "SETTINGS_UPDATED", enabled: configuredEnabled, apiUrl: configuredApiUrl, epoch: settingsEpoch }).catch(() => undefined);
+          void chrome.tabs.sendMessage(tabId, { type: "SETTINGS_UPDATED", ...settingsSnapshot() }).catch(() => undefined);
           sendResponse({ accepted: 0, rejected: items.length, staleSettings: true });
           return;
         }
@@ -403,16 +444,16 @@ if (typeof chrome !== "undefined" && runtimeQueue) {
       return true;
     }
     if (value.type === "GET_SETTINGS") {
-      void ensureSettings().then(() => sendResponse({ enabled: configuredEnabled, apiUrl: configuredApiUrl, epoch: settingsEpoch }));
+      void ensureSettings().then(() => sendResponse(settingsSnapshot()));
       return true;
     }
     if (value.type === "SET_ENABLED" && typeof value.enabled === "boolean") {
       void chrome.storage.sync.set({ enabled: value.enabled }).then(async () => {
         await ensureSettings();
-        const settings = parseSettings(await chrome.storage.sync.get({ enabled: value.enabled, apiUrl: configuredApiUrl }));
-        applySettings(settings.enabled, settings.apiUrl);
-        await broadcastSettings(configuredEnabled, configuredApiUrl, settingsEpoch);
-        sendResponse({ enabled: configuredEnabled, apiUrl: configuredApiUrl, epoch: settingsEpoch });
+        const settings = parseSettings(await chrome.storage.sync.get({ enabled: value.enabled, apiUrl: configuredApiUrl, inbox: configuredInbox }));
+        applySettings(settings.enabled, settings.apiUrl, settings.inbox);
+        await broadcastSettings();
+        sendResponse(settingsSnapshot());
       });
       return true;
     }
@@ -423,10 +464,12 @@ if (typeof chrome !== "undefined" && runtimeQueue) {
         sendResponse({ error: "INVALID_API_URL" });
         return false;
       }
-      void chrome.storage.sync.set({ enabled, apiUrl }).then(async () => {
-        applySettings(enabled, apiUrl);
-        await broadcastSettings(configuredEnabled, configuredApiUrl, settingsEpoch);
-        sendResponse({ enabled: configuredEnabled, apiUrl: configuredApiUrl, epoch: settingsEpoch });
+      void ensureSettings().then(async () => {
+        const inbox = value.inbox === undefined ? configuredInbox : parseInboxPolicy(value.inbox);
+        await chrome.storage.sync.set({ enabled, apiUrl, inbox });
+        applySettings(enabled, apiUrl, inbox);
+        await broadcastSettings();
+        sendResponse(settingsSnapshot());
       });
       return true;
     }
