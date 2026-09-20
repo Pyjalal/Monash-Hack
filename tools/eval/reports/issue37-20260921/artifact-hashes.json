@@ -1,0 +1,9 @@
+{
+  "manifest.json": "12eb02526c9aa8c7d4be7a36bf197c5a9bb7a7643b543afaa60cb16bc3806727",
+  "organizer-scorer.json": "579e426cb4dc5b2e8ec73cec2e18a067c07691709429c07ce2c60a797d35fc3b",
+  "reader-profiles.json": "26b516dcb9c6652e3e0e8583fe31edc8536a836349e4d75f66801a82d108080c",
+  "row-diagnostics.json": "ddb831aa72a6e4e519bdc2540bec8fb6ea71809c7be4abfccb9d6864d960fc88",
+  "scorecards.json": "f2135916a810b9873949c2a584d744674d2e4e5d87dadefdc141d5503a95a290",
+  "submission-provenance.json": "fe1083a76f601bfe1bd927fd650417b5986eeca51131ad3d3f369139ad6a0805",
+  "submission.json": "89e8f1267d28f18c67d6e437d4e80140f4af4efd7386c6a31749bdcf16dc64b7"
+}

@@ -17,6 +17,7 @@ import { exportCases, EXPORT_VERSION } from './export.js';
 import { adjudicate, DisputeLedgerSchema, targetMetrics } from './disputes.js';
 import { classificationMetrics, groupedSplit, templateGroup, quantile } from './metrics.js';
 import { INDEPENDENT_CASES } from './independent.js';
+import { evaluationDiagnostics } from './diagnostics.js';
 
 const exec = promisify(execFile);
 const sha = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
@@ -33,6 +34,10 @@ async function sourceBytes(root: string, path: string) {
   const actual = await realpath(resolve(root, path)); const within = relative(await realpath(root), actual);
   if (within.startsWith('..') || isAbsolute(within)) throw new Error('Evaluation source escapes dataset');
   return readFile(actual);
+}
+async function runtimeVersion(executable: string) {
+  try { const result = await exec(executable, ['--version'], { timeout: 5000, maxBuffer: 10000, windowsHide: true }); return (result.stdout || result.stderr).trim().split(/\r?\n/)[0]; }
+  catch { return 'UNAVAILABLE'; }
 }
 
 async function main() {
@@ -60,11 +65,14 @@ async function main() {
   const variant = process.env.JEV_PROMPT_VARIANT === 'concise' ? 'concise' : 'boundaries';
   const implementationPaths = ['apps/api/src/store.ts', 'apps/api/src/pipeline.ts', 'apps/api/src/ai/classify.ts', 'apps/api/src/ai/jev.ts', 'apps/api/src/ai/jev-batch.ts',
     'apps/api/src/documents/index.ts', 'apps/api/src/documents/candidates.ts', 'apps/api/src/documents/readability.ts', 'packages/shared/src/index.ts', 'packages/shared/src/questions.ts',
-    'tools/eval/src/evaluate.ts', 'tools/eval/src/export.ts', 'tools/eval/src/disputes.ts', 'tools/eval/src/metrics.ts', 'tools/eval/src/independent.ts', 'package-lock.json'];
+    'tools/eval/src/evaluate.ts', 'tools/eval/src/export.ts', 'tools/eval/src/disputes.ts', 'tools/eval/src/metrics.ts', 'tools/eval/src/independent.ts', 'tools/eval/src/diagnostics.ts',
+    'apps/api/src/documents/comparison.ts', 'apps/api/src/documents/recovery.ts', 'apps/api/src/documents/ocr.ts', 'apps/api/src/gmail/evidence-validation.ts', 'tools/ocr-sidecar/ocr.py', 'package-lock.json'];
   const implementations = Object.fromEntries(await Promise.all(implementationPaths.map(async path => [path, sha(await readFile(path))])));
+  const runtime = { node: process.version, platform: process.platform,
+    scorerPython: await runtimeVersion(values.python ?? process.env.PYTHON ?? 'python'), ocrPython: await runtimeVersion('python'), tesseract: await runtimeVersion('tesseract') };
   const config = { model, variant, questionVersion: questionVersion(variant, 'full'), exportVersion: EXPORT_VERSION,
-    reader: 'native-v1', policy: 'initial-decision-v1', batchSize: Number(process.env.JEV_BATCH_SIZE ?? 8),
-    concurrency: Number(process.env.JEV_CONCURRENCY ?? 8), requestsPerMinute: Number(process.env.JEV_REQUESTS_PER_MINUTE ?? 1100), implementations };
+    reader: 'native-with-ocr-v1', policy: 'dataset-comparison-v1', documentConcurrency: 2, batchSize: Number(process.env.JEV_BATCH_SIZE ?? 8),
+    concurrency: Number(process.env.JEV_CONCURRENCY ?? 8), requestsPerMinute: Number(process.env.JEV_REQUESTS_PER_MINUTE ?? 1100), maxProviderAttempts: 300, runtime, implementations };
   const rows = emails.map(email => ({ id: email.id, group: templateGroup(buildClassificationState(email).email.body_current), category: truth[email.id].category,
     format: [...new Set(email.attachments.map(attachment => attachment.mimeType))].sort().join('+') || 'no-attachments' }));
   const split = groupedSplit(rows);
@@ -97,33 +105,52 @@ async function main() {
   const store = new Store(resolve(runDir, 'cases.sqlite'));
   try {
     let providerAttempts = 0;
-    const measuredFetch: typeof fetch = (...args) => { providerAttempts++; return fetch(...args); };
+    const measuredFetch: typeof fetch = (...args) => {
+      if (providerAttempts >= config.maxProviderAttempts) throw new Error('Evaluation provider-attempt budget exhausted');
+      providerAttempts++; return fetch(...args);
+    };
     const provider = createJevProvider({ apiKey: apiKey ?? 'unconfigured', model, variant, mode: 'full', fetch: measuredFetch });
     const batch = createJevBatchProvider({ apiKey: apiKey ?? 'unconfigured', model, variant, mode: 'full', fetch: measuredFetch });
     const service = new ClassificationService({ store, classifier: provider.classify, batchClassifier: batch.classifyBatch,
       configurationKey: `${model}:${config.questionVersion}:packed-v1`, batchSize: config.batchSize, concurrency: config.concurrency, requestsPerMinute: config.requestsPerMinute });
     const selected = values.scope === 'development' ? emails.filter(email => split.dev.some(row => row.id === email.id)) : emails;
-    const timings: number[] = []; const started = performance.now(); let firstResultMs: number | null = null;
+    const timings: number[] = []; const started = performance.now(); let firstResultMs: number | null = null; let completed = 0;
     await Promise.all(selected.map(async email => {
       const start = performance.now();
       if (values.offline) { const record = store.upsertEmail(email); store.markFailed(email.id, record.sourceVersion, 'LIVE_INFERENCE_NOT_RUN'); }
-      else await service.processCase(email);
+      else await service.processCase(email, root);
       timings.push(performance.now() - start); firstResultMs ??= performance.now() - started;
+      completed++;
+      if (completed % 50 === 0 || completed === selected.length) console.error(`Processed ${completed}/${selected.length} cases`);
     }));
     const wallMs = performance.now() - started;
     const records = selected.map(email => store.getCase(email.id)!);
     // Any future comparison integration must pass the same source proof as API decisions.
-    for (const record of records) if (record.decision && (record.decision.verificationState === 'COMPLETE' || record.decision.knownMismatches.length)) await verifyOperationalEvidence(record, record.decision, root);
-    const exported = exportCases(records);
+    const proofFailures: { id: string; code: string }[] = [];
+    for (const record of records) if (record.decision && (record.decision.verificationState === 'COMPLETE' || record.decision.knownMismatches.length)) {
+      try { await verifyOperationalEvidence(record, record.decision, root); }
+      catch { proofFailures.push({ id: record.email.id, code: 'SOURCE_EVIDENCE_VALIDATION_FAILED' }); }
+    }
+    const exported = exportCases(records.filter(record => !proofFailures.some(failure => failure.id === record.email.id)));
+    exported.failures.push(...proofFailures); exported.complete = exported.failures.length === 0;
     await json(resolve(runDir, 'submission.json'), exported.submission);
     await json(resolve(runDir, 'submission-provenance.json'), { version: exported.version, datasetSha256, profileSha256: hash(config), rows: exported.provenance, failures: exported.failures });
     const selectedTruth = Object.fromEntries(selected.map(email => [email.id, truth[email.id]]));
     const selectedOverlay = Object.fromEntries(selected.map(email => [email.id, adjudicated.overlay[email.id]]));
+    const diagnostics = evaluationDiagnostics(records, selectedTruth, exported.submission);
+    await json(resolve(runDir, 'row-diagnostics.json'), diagnostics);
+    await json(resolve(runDir, 'reader-profiles.json'), Object.fromEntries(records.flatMap(record => {
+      const comparison = store.getDocumentComparison(record.email.id);
+      if (!comparison) return [];
+      const evidence = comparison.evidence as { attachmentId: string; recovery: { before: { sha256: string }; profile: unknown } }[];
+      return [[record.email.id, evidence.map(item => ({ attachmentId: item.attachmentId, sha256: item.recovery.before.sha256, profile: item.recovery.profile }))]];
+    })));
     let scorer: unknown = null; let scorerError: string | null = null;
     try {
       const result = await exec(values.python ?? process.env.PYTHON ?? 'python', [resolve(scorerRoot, 'score_cli.py'), resolve(runDir, 'submission.json'), '--ground-truth', resolve(root, 'ground_truth.json'), '--json'], { timeout: 60000, maxBuffer: 2_000_000, windowsHide: true, env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' } });
       scorer = JSON.parse(result.stdout); await json(resolve(runDir, 'organizer-scorer.json'), scorer);
     } catch { scorerError = 'ORGANIZER_SCORER_FAILED'; }
+    const fullInboxWallMs = performance.now() - started;
     const officialUsage = store.usageSummary(); const officialAttempts = providerAttempts;
     const category = classificationMetrics(records.map(record => ({ expected: truth[record.email.id].category, predicted: record.classification?.category ?? null })));
     const independentRows = [];
@@ -133,9 +160,11 @@ async function main() {
         expectationCorrect: fixture.expectedExpectation ? record.classification?.expectation === fixture.expectedExpectation : null,
         falseClear: record.decision?.workflowState === 'VERIFIED', automated: record.decision?.workflowState === 'VERIFIED' || record.decision?.workflowState === 'NOT_APPLICABLE' });
     }
-    const operationalFalseClears = records.filter(record => record.decision?.workflowState === 'VERIFIED' && (truth[record.email.id].status !== 'OK' || record.decision.verificationState !== 'COMPLETE')).map(record => record.email.id);
+    const operationalFalseClears = [...new Set([...diagnostics.operationalFalseClearIdsAgainstReference, ...proofFailures.filter(failure =>
+      records.some(record => record.email.id === failure.id && (record.decision?.workflowState === 'VERIFIED' || record.decision?.nextAction === 'CONFIRM_MATCH'))).map(failure => failure.id)])];
     const report = { runId, scope: values.scope, mode: values.offline ? 'blocked-offline' : 'live', datasetSha256, profileSha256: hash(config), config,
       sourceCount: emails.length, evaluatedCount: selected.length, exportedCount: Object.keys(exported.submission).length, failures: exported.failures,
+      diagnostics: { ...diagnostics, rows: 'row-diagnostics.json' },
       official: { valid: exported.complete && selected.length === 520 && !scorerError, score: exported.complete && selected.length === 520 ? scorer : null,
         diagnosticScorer: 'organizer-scorer.json', warning: exported.complete && selected.length === 520 ? null : 'Partial submissions trigger organizer defaults. Diagnostic numbers are not a valid headline score.',
         targets: { categoryMacroF1: 0.85, endToEndDefectRate: 0.80, reviewRecallCount: '15/20' }, category, exactTargets: targetMetrics(selectedTruth, exported.submission), scorerError },
@@ -146,15 +175,19 @@ async function main() {
         falseClears: independentRows.length ? independentRows.filter(row => row.falseClear).length : null,
         automationCoverage: independentRows.length ? independentRows.filter(row => row.automated).length / independentRows.length : null,
         documentStatusReasonChecks: 'NOT_RUN: independently authored document comparator fixtures are not integrated' },
-      operational: { falseClearIdsAgainstOfficialReference: operationalFalseClears, automationCoverage: records.filter(record => ['VERIFIED', 'NOT_APPLICABLE'].includes(record.decision?.workflowState ?? '')).length / records.length,
-        sentMessages: 0, limitation: 'No live delivery evaluated; comparison pipeline remains pending integration.' },
-      performance: { wallMs, firstResultMs, p50Ms: quantile(timings, 0.5), p95Ms: quantile(timings, 0.95), coldDatabase: true,
+      operational: { falseClearIdsAgainstOfficialReference: diagnostics.operationalFalseClearIdsAgainstReference, unsafeClearIds: operationalFalseClears,
+        sourceProofFailureIds: proofFailures.map(failure => failure.id), automationCoverage: records.filter(record => !operationalFalseClears.includes(record.email.id) && ['VERIFIED', 'NOT_APPLICABLE'].includes(record.decision?.workflowState ?? '')).length / records.length,
+        sentMessages: 0, limitation: 'No live delivery evaluated. Conservative comparator leaves unsupported layouts and uncertain classifications blocked.' },
+      performance: { wallMs, fullInboxWallMs, firstResultMs, p50Ms: quantile(timings, 0.5), p95Ms: quantile(timings, 0.95), coldDatabase: true,
         classificationCacheHits: records.filter(record => record.classification?.cached).length, providerCache: 'unknown', usage: officialUsage,
         providerAttempts: officialAttempts, totalUsageIncludingIndependent: store.usageSummary(), failedCallUsage: 'unknown' } };
     await json(resolve(runDir, 'scorecards.json'), report);
     await json(resolve(runDir, 'decisions.json'), records);
     await json(resolve(output, 'latest-run.json'), { runDir, runId });
-    console.log(JSON.stringify({ runDir, ...report }, null, 2));
+    console.log(JSON.stringify({ runDir, mode: report.mode, evaluated: records.length, exported: report.exportedCount, failed: exported.failures.length,
+      officialScoreValid: report.official.valid, categoryMacroF1: category.macroF1, categoryMacroF1Target: 0.85,
+      endToEndDefects: diagnostics.endToEndDefects, reviewRecall: diagnostics.reviewRecall, operationalFalseClears: operationalFalseClears.length,
+      fullInboxWallMs, usage: officialUsage, scorerError, report: resolve(runDir, 'scorecards.json') }, null, 2));
     if (!report.official.valid || values.offline) process.exitCode = 1;
   } finally { store.close(); }
 }
