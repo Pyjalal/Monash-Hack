@@ -1,6 +1,6 @@
 # PR #69 acceptance review
 
-Reviewed against the current main branch and the extension work committed as 4e083a1 on 2026-09-20.
+Reviewed against the current main branch and the extension work committed as 4e083a1 and 2ff4ccd on 2026-09-20.
 
 ## Corrections made during review
 
@@ -35,4 +35,4 @@ Offline execution accounted for all 520 official rows, invoked the organizer sco
 
 ## Test scope
 
-Regression, type, lint and build results for the combined backend/extension tree are recorded in the PR. Synthetic mailbox content, credentials, runtime databases and provider payloads are excluded from Git. Provider catalog contract reference: https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties
+The combined backend/extension tree passed 258 tests across 36 suites, root/extension TypeScript checks, ESLint and the extension build. A fresh 520-row manifest produced 381 development and 139 final rows. A pre-existing final-consumed marker rejected a repeated final run before model calls and remained unchanged. Synthetic mailbox content, credentials, runtime databases and provider payloads are excluded from Git. Provider catalog contract reference: https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties
