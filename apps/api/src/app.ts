@@ -18,8 +18,10 @@ import { draftCase, DraftError } from './drafts.js';
 import { RecoveryError, type TextRecovery } from './ai/text-recovery.js';
 import { readAttachment } from './documents/index.js';
 import { compareDocuments } from './documents/comparison.js';
+import { dashboardReports } from './dashboard.js';
 
 export type AppOptions = { store: Store; service: ClassificationService; dashboardToken: string; datasetRoot?: string; allowedOrigins?: string[];
+  dataMode?: 'operational' | 'synthetic';
   documentationContact?: string;
   textRecovery?: TextRecovery; gmailAttachmentRoot?: string;
   rules?: RuleService; gmailAuthorization?: GmailAuthorization; gmailPoller?: GmailPoller;
@@ -34,6 +36,7 @@ function boundedInteger(value: string | undefined, fallback: number, max: number
 
 export function createApp(options: AppOptions): Hono {
   const app = new Hono(); const { store, service } = options;
+  const reports = dashboardReports(store);
   const origins = options.allowedOrigins ?? ['http://localhost:5173', 'http://127.0.0.1:5173'];
   let previewBudget = 600; let refillAt = Date.now(); let importing = false;
   app.use('*', cors({ origin: origin => origins.includes(origin) || /^chrome-extension:\/\/[a-p]{32}$/.test(origin) ? origin : undefined,
@@ -79,6 +82,30 @@ export function createApp(options: AppOptions): Hono {
     return c.json({ results, elapsedMs: performance.now() - start, rulesVersion: options.rules.rulesVersion });
   });
   app.get('/usage', c => c.json({ ...store.usageSummary(), coverage: 'successful_provider_requests' }));
+  app.get('/dashboard', c => c.json({ ...reports.snapshot(), mode: options.dataMode ?? 'operational' }));
+  app.get('/runs/:id', c => {
+    const report = reports.all().find(row => row.id === c.req.param('id'));
+    return report ? c.json(report) : c.json({ error: 'NOT_FOUND' }, 404);
+  });
+  app.get('/cases/:id/activity', c => {
+    if (!store.getCase(c.req.param('id'))) return c.json({ error: 'NOT_FOUND' }, 404);
+    const events = store.db.prepare('SELECT sequence,type,at,data_json FROM events WHERE case_id=? ORDER BY sequence DESC LIMIT 100').all(c.req.param('id')) as { sequence: number; type: string; at: string; data_json: string }[];
+    return c.json({ events: events.map(row => ({ sequence: row.sequence, type: row.type, at: row.at, data: JSON.parse(row.data_json) })) });
+  });
+  app.get('/cases/:id/sources', async c => {
+    const record = store.getCase(c.req.param('id')); if (!record) return c.json({ error: 'NOT_FOUND' }, 404);
+    const root = record.email.id.startsWith('gmail:') ? options.gmailAttachmentRoot : options.datasetRoot;
+    if (!root) return c.json({ error: 'EVIDENCE_READER_NOT_CONFIGURED' }, 503);
+    const sources = [];
+    for (const attachment of record.email.attachments) {
+      if (!attachment.relativePath) continue;
+      const reading = await readAttachment({ root, relativePath: attachment.relativePath, mimeType: attachment.mimeType });
+      sources.push({ id: attachment.id, name: attachment.name ?? attachment.id, ...reading,
+        hashMatches: !attachment.sha256 || attachment.sha256 === reading.sha256 });
+    }
+    if (store.getCase(record.email.id)?.sourceVersion !== record.sourceVersion) return c.json({ error: 'STALE_DECISION' }, 409);
+    return c.json({ sourceVersion: record.sourceVersion, sources });
+  });
   app.get('/emails', c => {
     const cases = store.listCases(boundedInteger(c.req.query('limit'), 520, 1000), boundedInteger(c.req.query('offset'), 0, 1_000_000));
     return c.json({ emails: cases.map(record => ({ id: record.email.id, subject: record.email.subject, from: record.email.from, status: record.status,
@@ -93,9 +120,10 @@ export function createApp(options: AppOptions): Hono {
       const emails = await loadDataset(options.datasetRoot);
       for (const email of emails) store.upsertEmail(email);
       const job = `import-${Date.now()}`;
+      const run = reports.begin(emails.map(email => email.id), service.configurationRevision, options.dataMode);
       store.emit('import.started', null, { job, count: emails.length });
-      void Promise.all(emails.map(email => service.processCase(email))).then(() => store.emit('import.completed', null, { job, count: emails.length }))
-        .catch(() => store.emit('import.failed', null, { job })).finally(() => { importing = false; });
+      void Promise.all(emails.map(email => service.processCase(email))).then(() => { run.finish(); store.emit('import.completed', null, { job, count: emails.length, runId: run.id }); })
+        .catch(() => { run.finish(true); store.emit('import.failed', null, { job }); }).finally(() => { importing = false; });
       return c.json({ job, queued: emails.length, events: '/events' }, 202);
     } catch { importing = false; return c.json({ error: 'IMPORT_FAILED' }, 400); }
   });
