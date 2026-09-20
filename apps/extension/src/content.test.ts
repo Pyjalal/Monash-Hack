@@ -53,6 +53,54 @@ async function flush(): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 60));
 }
 
+it.each([false, true])("stops permanently when messaging loses extension context (async=%s)", async (asyncFailure) => {
+  const state = setup(true, true);
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  try {
+    vi.useFakeTimers();
+    await state.controller.start();
+    await vi.advanceTimersByTimeAsync(60);
+    const request = state.sent.find((message) => message.type === "CLASSIFY_ROWS") as Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }>;
+    const item = request.items[0];
+    state.listeners[0]({ type: "CLASSIFY_RESULTS", epoch: 0, items: [{ rowKey: item.rowKey, fingerprint: item.fingerprint, result: result(item.email.id) }] });
+    expect(state.window.document.querySelector("[data-cargolens-badge]")).not.toBeNull();
+    vi.mocked(state.runtime.sendMessage).mockImplementation(() => {
+      const error = new Error("Extension context invalidated.");
+      if (asyncFailure) return Promise.reject(error);
+      throw error;
+    });
+    await vi.advanceTimersByTimeAsync(30_000);
+    expect(state.controller.isEnabled).toBe(false);
+    expect(state.window.document.querySelector("[data-cargolens-badge]")).toBeNull();
+    state.listeners[0]({ type: "TOGGLE_ENABLED" });
+    expect(state.controller.isEnabled).toBe(false);
+    const count = vi.mocked(state.runtime.sendMessage).mock.calls.length;
+    await vi.advanceTimersByTimeAsync(60_000);
+    expect(state.runtime.sendMessage).toHaveBeenCalledTimes(count);
+  } finally {
+    vi.useRealTimers();
+    state.controller.stop();
+    globalThis.MutationObserver = prior;
+  }
+});
+
+it("handles synchronous context loss during startup and listener cleanup", async () => {
+  const state = setup(true);
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  state.runtime.onMessage = () => () => { throw new Error("Extension context invalidated."); };
+  vi.mocked(state.runtime.sendMessage).mockImplementation(() => { throw new Error("Extension context invalidated."); });
+  try {
+    await expect(state.controller.start()).resolves.toBeUndefined();
+    expect(state.controller.isEnabled).toBe(false);
+    await state.controller.scan();
+    expect(state.runtime.sendMessage).toHaveBeenCalledTimes(1);
+  } finally {
+    globalThis.MutationObserver = prior;
+  }
+});
+
 it("waits for stored disabled settings before scanning or sending rows", async () => {
   const state = setup(false);
   const prior = globalThis.MutationObserver;
@@ -258,7 +306,7 @@ function gmailRow(thread: string, subject: string): string {
   return `<tr class="zA" data-thread-id="${thread}"><td class="message-cell"><span class="yW" email="ops@example.test">Ops</span><span class="y6">${subject}</span><span class="y2">snippet ${thread}</span></td></tr>`;
 }
 
-it("hides spam, pins urgent and rule-matched rows to the top in rank order, and restores everything on disable", async () => {
+it.each(["disable", "context loss"])("hides spam, pins urgent rows, and restores native layout on %s", async (shutdown) => {
   const html = `<div role="main"><table><tbody>${gmailRow("t1", "Newsletter")}${gmailRow("t2", "Routine SI")}${gmailRow("t3", "Reply needed")}${gmailRow("t4", "Release blocked")}</tbody></table></div>`;
   const inbox = { hideSpam: true, spamThreshold: 0.8, pinUrgent: true, rules: [{ id: "needs_reply_now", condition: "sender waits on a reply today", action: "pin", threshold: 0.7, enabled: true }] };
   const state = setup(true, false, { html, inbox });
@@ -304,7 +352,14 @@ it("hides spam, pins urgent and rule-matched rows to the top in rank order, and 
     (state.window.document.querySelector("#cargolens-urgent-tray")!.shadowRoot!.querySelector("button.reveal") as unknown as HTMLElement).click();
     expect(spam.style.display).toBe("none");
 
-    state.listeners.forEach(listener => listener({ type: "TOGGLE_ENABLED" }));
+    if (shutdown === "disable") {
+      state.listeners.forEach(listener => listener({ type: "TOGGLE_ENABLED" }));
+    } else {
+      vi.mocked(state.runtime.sendMessage).mockImplementation(() => { throw new Error("Extension context invalidated."); });
+      state.window.document.dispatchEvent(new state.window.Event("visibilitychange"));
+      await flush();
+      expect(state.controller.isEnabled).toBe(false);
+    }
     expect(spam.style.display).toBe("");
     expect(spam.hasAttribute("data-cargolens-hidden")).toBe(false);
     expect(order()).toEqual(["t1", "t2", "t3", "t4"]);

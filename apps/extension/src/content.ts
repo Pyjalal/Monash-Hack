@@ -90,8 +90,27 @@ export class CargoLensController {
     this.cacheContext = cacheContext(root);
   }
 
+  private stopped = false;
+
+  private async sendMessage(message: ExtensionMessage): Promise<unknown> {
+    if (this.stopped) return undefined;
+    try {
+      return await this.runtime.sendMessage(message);
+    } catch (error) {
+      if (isContextInvalidated(error)) this.stop();
+      throw error;
+    }
+  }
+
   async start(): Promise<void> {
-    this.removeRuntimeListener = this.runtime.onMessage((message) => this.handleMessage(message));
+    if (this.stopped) return;
+    try {
+      this.removeRuntimeListener = this.runtime.onMessage((message) => this.handleMessage(message));
+    } catch (error) {
+      this.stop();
+      if (!isContextInvalidated(error)) throw error;
+      return;
+    }
     this.root.addEventListener("keydown", this.handleKeydown);
     this.root.addEventListener("visibilitychange", this.handleVisibilityChange);
     this.observer = new MutationObserver(() => {
@@ -107,7 +126,8 @@ export class CargoLensController {
       attributes: true,
       attributeFilter: ["aria-hidden", "class", "data-conversation-id", "data-convid", "data-from", "data-preview", "data-snippet", "data-subject", "data-thread-id", "data-legacy-thread-id", "email", "aria-label", "hidden", "role", "style"],
     });
-    await this.runtime.sendMessage({ type: "GET_SETTINGS" }).then((response) => {
+    await this.sendMessage({ type: "GET_SETTINGS" }).then((response) => {
+      if (this.stopped) return;
       if (response && typeof response === "object" && "enabled" in response && typeof response.enabled === "boolean") {
         const value = response as { enabled: boolean; apiUrl?: unknown; epoch?: unknown; inbox?: unknown };
         this.enabled = value.enabled;
@@ -117,20 +137,31 @@ export class CargoLensController {
         if (!this.enabled) this.clearPresentation();
       }
     }).catch(() => undefined);
+    if (this.stopped) return;
     this.settingsReady = true;
     this.revisionTimer = setInterval(() => this.checkRevision(), 30_000);
     if (this.enabled) await this.scan();
   }
 
   stop(): void {
+    if (this.stopped) return;
+    this.stopped = true;
+    this.enabled = false;
+    this.settingsReady = false;
     this.observer?.disconnect();
     if (this.debounceTimer) clearTimeout(this.debounceTimer);
     if (this.flushTimer) clearTimeout(this.flushTimer);
     if (this.revisionTimer) clearInterval(this.revisionTimer);
-    this.removeRuntimeListener?.();
-    this.root.removeEventListener("keydown", this.handleKeydown);
-    this.root.removeEventListener("visibilitychange", this.handleVisibilityChange);
-    this.clearPresentation();
+    try {
+      this.removeRuntimeListener?.();
+    } catch (error) {
+      if (!isContextInvalidated(error)) throw error;
+    } finally {
+      this.removeRuntimeListener = null;
+      this.root.removeEventListener("keydown", this.handleKeydown);
+      this.root.removeEventListener("visibilitychange", this.handleVisibilityChange);
+      this.clearPresentation();
+    }
   }
 
   get isEnabled(): boolean {
@@ -181,7 +212,7 @@ export class CargoLensController {
           email,
         }));
         const epoch = this.settingsEpoch;
-        void this.runtime.sendMessage({ type: "CLASSIFY_ROWS", epoch, items: chunk }).catch(() => {
+        void this.sendMessage({ type: "CLASSIFY_ROWS", epoch, items: chunk }).catch(() => {
           if (!this.enabled || epoch !== this.settingsEpoch) return;
           for (const row of rows.slice(index, index + 20)) {
             if (this.current.get(row.candidate.rowKey) === row && isVisible(row.element))
@@ -209,7 +240,7 @@ export class CargoLensController {
     if (!this.enabled || this.root.visibilityState === "hidden") return;
     const epoch = this.settingsEpoch;
     const context = this.cacheContext;
-    void this.runtime.sendMessage({ type: "CHECK_REVISION" }).then((response) => {
+    void this.sendMessage({ type: "CHECK_REVISION" }).then((response) => {
       if (!this.enabled || epoch !== this.settingsEpoch || context !== this.cacheContext || !response || typeof response !== "object" || !("revision" in response) || typeof response.revision !== "string") return;
       const shouldRefresh = this.revisionNeedsRefresh || this.knownRevision === undefined || this.knownRevision !== response.revision;
       this.knownRevision = response.revision;
@@ -232,6 +263,7 @@ export class CargoLensController {
   }
 
   private handleMessage(message: ExtensionMessage): void {
+    if (this.stopped) return;
     if (message.type === "TOGGLE_ENABLED") {
       this.setEnabled(!this.enabled);
       return;
@@ -281,7 +313,7 @@ export class CargoLensController {
     this.enabled = enabled;
     this.settingsEpoch += 1;
     this.clearPresentation();
-    void this.runtime.sendMessage({ type: "SET_ENABLED", enabled }).catch(() => undefined);
+    void this.sendMessage({ type: "SET_ENABLED", enabled }).catch(() => undefined);
     if (enabled) void this.scan();
   }
 
@@ -486,7 +518,7 @@ export class CargoLensController {
       retry.addEventListener("click", (event) => {
         event.preventDefault(); event.stopPropagation();
         this.renderBadge(record, { kind: "loading" });
-        void this.runtime.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, bypassCache: true, item: { source: record.candidate.source, context: this.cacheContext, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => {
+        void this.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, bypassCache: true, item: { source: record.candidate.source, context: this.cacheContext, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => {
           if (this.enabled && this.current.get(record.candidate.rowKey) === record) this.renderBadge(record, { kind: "error", code: "PREVIEW_UNAVAILABLE", message: "Preview unavailable" });
         });
       });
@@ -572,6 +604,10 @@ export class CargoLensController {
       this.setEnabled(!this.enabled);
     }
   };
+}
+
+function isContextInvalidated(error: unknown): boolean {
+  return /extension context invalidated/i.test(error instanceof Error ? error.message : String(error));
 }
 
 function cacheContext(root: Document): string | undefined {
