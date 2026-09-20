@@ -1,0 +1,1219 @@
+{
+  "runId": "2026-09-20T17-26-51.910Z-47c3f12a",
+  "scope": "final",
+  "mode": "live",
+  "datasetSha256": "f70c26b3c6780f71403b1bc00a562a84f33ae035aa9cd5a0dd6ba59eceab7680",
+  "profileSha256": "93355c33d331571f12e11d44d1c78d0e4bbc4ff2c61ecd833e3f175d5160ba86",
+  "config": {
+    "model": "jev-1.13.0",
+    "variant": "boundaries",
+    "questionVersion": "cargolens-email-v3:boundaries:full",
+    "exportVersion": "conservative-projection-v2",
+    "reader": "native-with-ocr-v1",
+    "policy": "dataset-comparison-v1",
+    "documentConcurrency": 2,
+    "batchSize": 8,
+    "concurrency": 8,
+    "requestsPerMinute": 1100,
+    "maxProviderAttempts": 300,
+    "runtime": {
+      "node": "v24.19.0",
+      "platform": "win32",
+      "scorerPython": "Python 3.12.14",
+      "ocrPython": "Python 3.12.14",
+      "tesseract": "tesseract v5.5.3.20260724"
+    },
+    "implementations": {
+      "apps/api/src/store.ts": "faece90163a0ed7e300885fb5301cf751bf0ef469f60d600e4749929d78cf661",
+      "apps/api/src/pipeline.ts": "66932dfcaf9139c55accbd4558da6645df2d34f87cb4ce7cef5df4d9dd001f8b",
+      "apps/api/src/ai/classify.ts": "7f279881b18b072b00db09976b5ffd419b5fcb1a64de53db0ff0a7f157d6d51e",
+      "apps/api/src/ai/jev.ts": "6c5d4b58ae9bddfab5603557afcd081250f495f7398b2a433c98f0e687a938e9",
+      "apps/api/src/ai/jev-batch.ts": "9b9bf6a2823b78eb97ac6a3d3fbbb989b7ce237759934d3e2bfc1b4c041c1a8a",
+      "apps/api/src/documents/index.ts": "07de28c3c917e52e3398dc7ea0aea46a6b209e9759b8023b7d0bf151a0d30460",
+      "apps/api/src/documents/candidates.ts": "0bb503c8c2aeb77c7691bd68565636d83064810c116c6d98f5c75a72c8c46a39",
+      "apps/api/src/documents/readability.ts": "d7568d8ebe2f6bae3f82e4dba424646be8fea3127b13f02cde536c66129a8c74",
+      "packages/shared/src/index.ts": "0a129d18466a65f0dc1591f02c2904a15ed17b5936bdba250b3f85960f8f84e9",
+      "packages/shared/src/questions.ts": "0017d032d171b4ddb734d3ae9881c9a7b6d9377c2ef9aa315bb927a7836c396c",
+      "tools/eval/src/evaluate.ts": "281f05937f53c1c0addb41d5648b0b8261a4e83416cc2f68d09995079efb0597",
+      "tools/eval/src/export.ts": "4cc8dd3112e7e8ec1615131ae7b5961450e2c8d57aaa4ca8b930d6757afb52aa",
+      "tools/eval/src/disputes.ts": "525de98f398005bfd50a6906e22d46d037d4c071ef106db5f6d8a2aa1560a77c",
+      "tools/eval/src/metrics.ts": "7159c09839a21aa1d3f48847720b8abc051fe3c846547cb8f9097de98e28bbd5",
+      "tools/eval/src/independent.ts": "42ed58a0293be5578c8232593a0a7491fd1103718df8fcc6e4be695136a32009",
+      "tools/eval/src/diagnostics.ts": "e8978bbe6aea33b27f91100d1a55b7a2f4403f3a330ef12e4ad91cf3f67eaf9d",
+      "apps/api/src/documents/comparison.ts": "ddccc600868e6456b15c7eebb6050514e9c7cbd3d4c2d07002b9b3b8e17642c5",
+      "apps/api/src/documents/recovery.ts": "cab5fcd8bbf8075a413f7dfaa7860727a0a8fd53b0223d1eed62c136976096c7",
+      "apps/api/src/documents/ocr.ts": "da838beb67e8d4eee13e9a224b54c592fca41eec9e07e306ef4b2635a958fc6d",
+      "apps/api/src/gmail/evidence-validation.ts": "57dc2b512abfef57d2db74afe4f64a8c0246c525e2bb2c35aff43ab99c854a3e",
+      "tools/ocr-sidecar/ocr.py": "ef6bb2a1ecd6dbfb4747552f5df3631d80416accf5b5bcaca949d870225bf144",
+      "package-lock.json": "83f00dd88866bf5f5679e0253e87afbd5438fa6f666c8d9e26acec3df69751ce"
+    }
+  },
+  "sourceCount": 520,
+  "evaluatedCount": 520,
+  "exportedCount": 359,
+  "failures": [
+    {
+      "id": "email_001",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_004",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_005",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_009",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_013",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_025",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_031",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_032",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_034",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_038",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_040",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_043",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_044",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_046",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_051",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_052",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_055",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_056",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_058",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_059",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_064",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_065",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_068",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_071",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_077",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_082",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_087",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_090",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_091",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_096",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_097",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_098",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_099",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_100",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_101",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_102",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_103",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_104",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_107",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_109",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_111",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_113",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_118",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_119",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_121",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_128",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_129",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_132",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_133",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_143",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_144",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_145",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_146",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_160",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_167",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_169",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_170",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_171",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_174",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_175",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_178",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_182",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_197",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_198",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_208",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_211",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_216",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_223",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_225",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_227",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_235",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_237",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_239",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_242",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_243",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_247",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_249",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_256",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_270",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_273",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_275",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_284",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_285",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_291",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_296",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_300",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_302",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_307",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_312",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_313",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_314",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_324",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_334",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_335",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_342",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_343",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_348",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_349",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_351",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_354",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_361",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_364",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_367",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_377",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_378",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_379",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_383",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_391",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_398",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_405",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_407",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_408",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_409",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_410",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_411",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_416",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_421",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_422",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_424",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_426",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_428",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_432",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_434",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_435",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_444",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_452",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_453",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_454",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_456",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_459",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_462",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_468",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_474",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_479",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_481",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_483",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_491",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_494",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_496",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_498",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_499",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_501",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_502",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_503",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_504",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_505",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_506",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_507",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_508",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_509",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_510",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_511",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_512",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_513",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_514",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_515",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_516",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_517",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_518",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_519",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_520",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    }
+  ],
+  "diagnostics": {
+    "endToEndDefects": {
+      "caught": 0,
+      "total": 46,
+      "rate": 0,
+      "targetRate": 0.8
+    },
+    "reviewRecall": {
+      "caught": 0,
+      "total": 20,
+      "rate": 0,
+      "target": "15/20"
+    },
+    "operationalFalseClearIdsAgainstReference": [],
+    "benchmarkFalseClearIds": [],
+    "rows": "row-diagnostics.json"
+  },
+  "official": {
+    "valid": false,
+    "score": null,
+    "diagnosticScorer": "organizer-scorer.json",
+    "warning": "Partial submissions trigger organizer defaults. Diagnostic numbers are not a valid headline score.",
+    "targets": {
+      "categoryMacroF1": 0.85,
+      "endToEndDefectRate": 0.8,
+      "reviewRecallCount": "15/20"
+    },
+    "category": {
+      "count": 520,
+      "accuracy": 0.9711538461538461,
+      "providerCoverage": 0.9846153846153847,
+      "decisionCoverage": 0.9846153846153847,
+      "macroF1": 0.9793779174009277,
+      "perCategory": {
+        "BL_COMPARISON": {
+          "support": 220,
+          "precision": 1,
+          "recall": 0.9681818181818181,
+          "f1": 0.9838337182448037
+        },
+        "SI_REQUEST": {
+          "support": 125,
+          "precision": 0.9609375,
+          "recall": 0.984,
+          "f1": 0.9723320158102767
+        },
+        "INVOICE_QUERY": {
+          "support": 75,
+          "precision": 1,
+          "recall": 0.9333333333333333,
+          "f1": 0.9655172413793104
+        },
+        "GENERAL": {
+          "support": 60,
+          "precision": 0.9672131147540983,
+          "recall": 0.9833333333333333,
+          "f1": 0.9752066115702479
+        },
+        "SPAM": {
+          "support": 40,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        }
+      },
+      "confusion": {
+        "BL_COMPARISON": {
+          "BL_COMPARISON": 213,
+          "PROVIDER_ERROR": 2,
+          "SI_REQUEST": 5
+        },
+        "INVOICE_QUERY": {
+          "INVOICE_QUERY": 70,
+          "PROVIDER_ERROR": 3,
+          "GENERAL": 2
+        },
+        "SI_REQUEST": {
+          "SI_REQUEST": 123,
+          "PROVIDER_ERROR": 2
+        },
+        "GENERAL": {
+          "GENERAL": 59,
+          "PROVIDER_ERROR": 1
+        },
+        "SPAM": {
+          "SPAM": 40
+        }
+      }
+    },
+    "exactTargets": {
+      "category": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "status": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "review_reason": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "defect_fields": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "has_defect": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      }
+    },
+    "scorerError": null
+  },
+  "adjudicated": {
+    "ledgerSha256": "48e50224e8d1a4a8c5c45e2ba59f3b71e8e0fc6be146e9389859f1a5b90274ac",
+    "accepted": [],
+    "unresolvedByTarget": {
+      "category": 0,
+      "status": 0,
+      "review_reason": 0,
+      "defect_fields": 0,
+      "has_defect": 0
+    },
+    "exactTargets": {
+      "category": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "status": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "review_reason": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "defect_fields": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "has_defect": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      }
+    },
+    "label": "Evaluation-only corrected references; target-level exclusions."
+  },
+  "independent": {
+    "status": "REUSED_INDEPENDENT_VALIDATION",
+    "fixtureSha256": "3a57d86214d951588e2ff889b3117c9045f60d5eddb1d60988801986c441f97a",
+    "rows": [
+      {
+        "id": "independent-1",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-2",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-3",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-4",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-5",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-6",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-7",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-8",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-9",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-10",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-11",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-12",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-13",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-14",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-15",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-16",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-17",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-18",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-19",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-20",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-21",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-22",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-23",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-24",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-25",
+        "expected": "GENERAL",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-26",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-27",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-28",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-29",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-30",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-31",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-32",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      }
+    ],
+    "category": {
+      "count": 32,
+      "accuracy": 0.96875,
+      "providerCoverage": 1,
+      "decisionCoverage": 1,
+      "macroF1": 0.9664335664335665,
+      "perCategory": {
+        "BL_COMPARISON": {
+          "support": 8,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "SI_REQUEST": {
+          "support": 6,
+          "precision": 0.8571428571428571,
+          "recall": 1,
+          "f1": 0.9230769230769231
+        },
+        "INVOICE_QUERY": {
+          "support": 6,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "GENERAL": {
+          "support": 6,
+          "precision": 1,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091
+        },
+        "SPAM": {
+          "support": 6,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        }
+      },
+      "confusion": {
+        "BL_COMPARISON": {
+          "BL_COMPARISON": 8
+        },
+        "SI_REQUEST": {
+          "SI_REQUEST": 6
+        },
+        "INVOICE_QUERY": {
+          "INVOICE_QUERY": 6
+        },
+        "GENERAL": {
+          "GENERAL": 5,
+          "SI_REQUEST": 1
+        },
+        "SPAM": {
+          "SPAM": 6
+        }
+      }
+    },
+    "falseClears": 0,
+    "automationCoverage": 0.6875,
+    "documentStatusReasonChecks": "NOT_RUN: independently authored document comparator fixtures are not integrated"
+  },
+  "operational": {
+    "falseClearIdsAgainstOfficialReference": [],
+    "unsafeClearIds": [],
+    "sourceProofFailureIds": [],
+    "automationCoverage": 0.5461538461538461,
+    "sentMessages": 0,
+    "limitation": "No live delivery evaluated. Conservative comparator leaves unsupported layouts and uncertain classifications blocked."
+  },
+  "performance": {
+    "wallMs": 12334.0937,
+    "fullInboxWallMs": 12578.325499999999,
+    "firstResultMs": 2263.8364,
+    "p50Ms": 4544.838100000001,
+    "p95Ms": 6221.4412,
+    "coldDatabase": true,
+    "classificationCacheHits": 0,
+    "providerCache": "unknown",
+    "usage": {
+      "requests": 63,
+      "input_tokens": 822294,
+      "output_tokens": 74073
+    },
+    "providerAttempts": 64,
+    "totalUsageIncludingIndependent": {
+      "requests": 95,
+      "input_tokens": 875528,
+      "output_tokens": 78904
+    },
+    "failedCallUsage": "unknown"
+  }
+}

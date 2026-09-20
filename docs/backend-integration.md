@@ -75,6 +75,13 @@ ceilings, not invoices. The existing `/usage` endpoint remains Jev-only.
 
 ## Evaluation — #37, #38, #39, #60
 
+Update on 2026-09-21: dataset import/retry and evaluation now use the same bounded
+comparison pipeline. A real 520-email run and all artifacts are available in the
+[issue #37 report](../tools/eval/reports/issue37-20260921/README.md). The runner
+exported 359 rows and reported 161 failures; it does not claim a complete valid
+submission or achieved defect/review targets. The historical validation below
+describes the earlier implementation before that integration.
+
 See [the evaluation guide](../tools/eval/README.md). The new runner executes the
 same `ClassificationService.processCase` as the API, uses a separate SQLite
 database, and never calls Gmail delivery. It supports safe projection for

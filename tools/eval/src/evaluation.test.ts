@@ -18,6 +18,12 @@ describe('honest evaluation projection', () => {
       expect(store.listCases()).toEqual(before); expect(store.getCase('future')!.decision!.workflowState).toBe('AWAITING_DOCUMENTS');
       const immediate = structuredClone(store.getCase('future')!); immediate.decision!.requestedAction = 'VERIFY_DOCUMENTS'; immediate.decision!.documentExpectation = 'EXPECTED_NOW';
       expect(exportCases([immediate]).failures[0].code).toBe('UNSUPPORTED_UNRESOLVED_STATE');
+      immediate.decision!.blockers = ['shipper:MISSING'];
+      immediate.decision!.verificationState = 'BLOCKED';
+      immediate.decision!.fieldResults = [{ field: 'shipper', outcome: 'MISSING' }];
+      expect(exportCases([immediate]).submission.future.review_reason).toBe('missing_value');
+      immediate.decision!.blockers.push('DOCUMENT_ROLES_UNVERIFIED');
+      expect(exportCases([immediate]).failures[0].code).toBe('UNSUPPORTED_UNRESOLVED_STATE');
     } finally { store.close(); }
   });
   it('keeps template siblings together even across format strata and input permutations', () => {
