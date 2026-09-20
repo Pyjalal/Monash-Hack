@@ -87,3 +87,17 @@ Validation: ten focused evaluation/triage tests passed, root TypeScript checking
 and targeted ESLint passed. Hash verification ran against all 520 original cases.
 No runtime inference or outbound behavior was changed. Human disposition of the
 three proposed disputes remains pending; no accepted label corrections are claimed.
+
+## Cross-platform checkout note
+
+The archived run hashes the exact reference bytes, including CRLF line endings.
+A checkout whose `ground_truth.json` has LF line endings correctly fails with
+`Reference/dataset mismatch`; do not rewrite the live dataset or weaken the hash
+check to make it pass. Reproduce this historical triage in a separate clean
+checkout made with `git -c core.autocrlf=true worktree add <new-path> <commit>`.
+Use the source checkout's dataset, not an existing LF-normalized dataset. New
+evaluation cycles freeze their own input bytes normally.
+
+Independent review reproduced all 520 triage rows and the three pending
+`review_reason` exclusions. All 319 tests, TypeScript checks and ESLint passed.
+No accepted corrections or independent document benchmark are claimed.
