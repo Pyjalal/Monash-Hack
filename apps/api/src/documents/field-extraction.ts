@@ -33,6 +33,9 @@ export interface DocumentFieldExtraction {
   status: "complete" | "wrong_document_type" | "unresolved" | "unreadable";
   method: ExtractionMethod | null;
   assessment: FormatAssessment;
+  /** Structured model output before source-candidate and confidence validation. */
+  fallbackSelection?: FallbackSelection;
+  fallbackError?: string;
   fields: Partial<Record<FieldName, ExtractedDocumentField>>;
   unresolvedFields: FieldName[];
 }
@@ -130,15 +133,17 @@ export async function extractDocumentFields(
   let selection: FallbackSelection;
   try {
     selection = await fallback({ expectedRole, text: reading.text.slice(0, 16_000), candidates });
-  } catch {
+  } catch (error) {
     return {
       status: "unresolved", method: "llm_fallback",
       assessment: { ...assessment, reasons: [...assessment.reasons, "fallback_failed"] },
+      fallbackError: error instanceof Error ? error.message.slice(0, 500) : "Unknown fallback error",
       fields: {}, unresolvedFields: [...FIELD_NAMES],
     };
   }
   if (selection.detectedRole !== expectedRole) return {
-    status: "wrong_document_type", method: "llm_fallback", assessment, fields: {}, unresolvedFields: [...FIELD_NAMES],
+    status: "wrong_document_type", method: "llm_fallback", assessment, fallbackSelection: selection,
+    fields: {}, unresolvedFields: [...FIELD_NAMES],
   };
 
   const minimumConfidence = options.minimumFallbackConfidence ?? 0.75;
@@ -151,5 +156,12 @@ export async function extractDocumentFields(
     fields[field] = { value: candidate.value, candidateId: candidate.id, confidence: selected.confidence, method: "llm_fallback" };
   }
   const unresolvedFields = FIELD_NAMES.filter(field => !fields[field]);
-  return { status: unresolvedFields.length ? "unresolved" : "complete", method: "llm_fallback", assessment, fields, unresolvedFields };
+  return {
+    status: unresolvedFields.length ? "unresolved" : "complete",
+    method: "llm_fallback",
+    assessment,
+    fallbackSelection: selection,
+    fields,
+    unresolvedFields,
+  };
 }

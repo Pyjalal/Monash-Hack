@@ -11,7 +11,7 @@
   "scripts": {
     "gateway:setup": "npx -y vercel@latest ai-gateway setup",
     "dev": "tsx watch apps/api/src/server.ts",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p apps/extension/tsconfig.json && tsc --noEmit -p apps/dashboard/tsconfig.json",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p apps/extension/tsconfig.json && tsc --noEmit -p apps/dashboard/tsconfig.json && tsc --noEmit -p apps/extraction-dashboard/tsconfig.json",
     "dev:dashboard": "vite apps/dashboard",
     "build:dashboard": "vite build apps/dashboard",
     "lint": "eslint .",
@@ -20,6 +20,9 @@
     "eval:classify": "tsx tools/eval/src/classification.ts",
     "submission:classify": "tsx tools/eval/src/submission.ts classify",
     "submission:pipeline": "tsx tools/eval/src/submission.ts pipeline",
+    "submission:extract-all": "tsx tools/eval/src/submission.ts pipeline --all-documents --classification training_data/sdoc-hackathon-docker/extracted/data_v2/sample_submission.json",
+    "dev:extraction-dashboard": "vite apps/extraction-dashboard --config apps/extraction-dashboard/vite.config.ts",
+    "build:extraction-dashboard": "vite build apps/extraction-dashboard --config apps/extraction-dashboard/vite.config.ts",
     "build:extension": "npm run build --workspace @cargolens/extension"
   },
   "engines": {

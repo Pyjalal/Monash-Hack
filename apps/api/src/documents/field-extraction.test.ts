@@ -42,6 +42,8 @@ describe("hybrid SI/BL field extraction", () => {
     const result = await extractDocumentFields(changed, "si", fallback);
     expect(result.method).toBe("llm_fallback");
     expect(result.assessment.reasons).toContain("missing_expected_label:shipper");
+    expect(result.fallbackSelection?.detectedRole).toBe("si");
+    expect(result.fallbackSelection?.fields.shipper).toBeDefined();
     expect(fallback).toHaveBeenCalledOnce();
   });
 
@@ -72,5 +74,6 @@ describe("hybrid SI/BL field extraction", () => {
     const result = await extractDocumentFields(changed, "si", async () => { throw new Error("provider unavailable"); });
     expect(result).toMatchObject({ status: "unresolved", method: "llm_fallback", unresolvedFields: FIELD_NAMES });
     expect(result.assessment.reasons).toContain("fallback_failed");
+    expect(result.fallbackError).toBe("provider unavailable");
   });
 });
