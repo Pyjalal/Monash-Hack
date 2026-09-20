@@ -1,18 +1,19 @@
 @import "tailwindcss";
+@import "../../../packages/brand/fonts.css";
 
 :root {
-  font-family: "Segoe UI", Arial, sans-serif;
-  color: #142641;
-  background: #f3f6fb;
+  font-family: "Albert Sans", "Segoe UI", Arial, sans-serif;
+  color: #16284b;
+  background: #f7f6f2;
   font-synthesis: none;
-  --background: #f3f6fb;
-  --foreground: #142641;
-  --primary: #2355ce;
-  --primary-foreground: #fcfdff;
-  --muted: #eaf0f8;
+  --background: #f7f6f2;
+  --foreground: #16284b;
+  --primary: #16284b;
+  --primary-foreground: #fffefa;
+  --muted: #eeede7;
   --muted-foreground: #52647d;
-  --border: #dce4ef;
-  --surface: #fcfdff;
+  --border: #deded7;
+  --surface: #fffefa;
   --radius: 0.5rem;
   font-size: 14px;
   line-height: 1.5;
@@ -146,7 +147,7 @@ small,
 .button-primary {
   background: var(--primary);
   color: var(--primary-foreground);
-  box-shadow: 0 2px 3px #1426410c;
+  box-shadow: 0 2px 3px #16284b0c;
 }
 .button-outline {
   border-color: #bdcce1;
@@ -168,11 +169,11 @@ small,
 }
 .button:active:not(:disabled) {
   background: #dce7fa;
-  color: #142641;
+  color: #16284b;
 }
 .button-primary:active:not(:disabled) {
   background: #183d9d;
-  color: #fcfdff;
+  color: #fffefa;
 }
 kbd {
   font-family: inherit;
@@ -202,7 +203,7 @@ select {
 input[type="checkbox"] {
   min-height: 18px;
   width: 18px;
-  accent-color: #2355ce;
+  accent-color: #16284b;
 }
 label {
   font-size: 12px;
@@ -214,8 +215,8 @@ label {
   min-height: 100dvh;
 }
 .sidebar {
-  background: #142b48;
-  color: #dce7f8;
+  background: #0a2542;
+  color: #eaf0f7;
   padding: 30px 20px 20px;
   display: flex;
   flex-direction: column;
@@ -230,12 +231,12 @@ label {
   font-size: 24px;
   font-weight: 650;
   letter-spacing: -0.04em;
-  color: #f6f9ff;
+  color: #f3ecdd;
 }
 .workspace-label {
   font-size: 9px;
   letter-spacing: 0.13em;
-  color: #afc3df;
+  color: #c4d0e0;
   margin: 42px 12px 14px;
 }
 .sidebar nav {
@@ -258,8 +259,8 @@ label {
   text-align: left;
 }
 .sidebar button[aria-current="page"] {
-  background: #294f84;
-  color: #fcfdff;
+  background: #284663;
+  color: #fffefa;
 }
 .nav-count {
   margin-left: auto;
@@ -267,7 +268,7 @@ label {
   padding: 1px 6px;
   font-size: 10px;
   border-radius: 4px;
-  background: #365f98;
+  background: #375775;
   color: #f3f7ff;
 }
 .sidebar-bottom {
@@ -278,11 +279,11 @@ label {
 .sidebar-bottom p {
   overflow-wrap: anywhere;
   margin: 9px 0 4px;
-  color: #dce7f8;
+  color: #eaf0f7;
 }
 .sidebar-bottom small {
   font-size: 10px;
-  color: #afc3df;
+  color: #c4d0e0;
   display: block;
   margin-bottom: 20px;
 }
@@ -348,7 +349,7 @@ label {
   height: 32px;
   border-radius: 50%;
   background: #e1eaff;
-  color: #2355ce;
+  color: #16284b;
   font-size: 11px;
   font-weight: 650;
 }
@@ -577,7 +578,7 @@ main#main {
   gap: 9px;
 }
 .case-heading svg {
-  color: #2355ce;
+  color: #16284b;
   margin-top: 1px;
 }
 .case-heading h2 {
@@ -613,8 +614,8 @@ main#main {
   min-height: 44px;
 }
 .case-tabs button[aria-pressed="true"] {
-  color: #2355ce;
-  border-color: #2355ce;
+  color: #16284b;
+  border-color: #16284b;
   font-weight: 650;
 }
 .section-heading {
@@ -814,7 +815,7 @@ table {
 }
 .timeline li {
   padding: 0 0 22px 18px;
-  border-left: 1px solid #dce4ef;
+  border-left: 1px solid #deded7;
   position: relative;
 }
 .timeline-dot {
@@ -949,7 +950,7 @@ table {
 .runs-table th {
   font-size: 10px;
   font-weight: 600;
-  background: #eaf0f8;
+  background: #eeede7;
   color: #52647d;
   padding: 13px;
 }
@@ -967,7 +968,7 @@ table {
 .runs-table summary {
   margin-top: 8px;
   font-size: 10px;
-  color: #2355ce;
+  color: #16284b;
 }
 .metric-note {
   margin-top: 20px;
@@ -992,7 +993,7 @@ dialog {
   margin: auto;
 }
 dialog::backdrop {
-  background: #142b4870;
+  background: #0a254270;
 }
 dialog .modal-head {
   display: flex;
@@ -1084,8 +1085,8 @@ pre {
   min-height: 100dvh;
 }
 .login-story {
-  background: #142b48;
-  color: #dce7f8;
+  background: #0a2542;
+  color: #eaf0f7;
   display: flex;
   flex-direction: column;
   padding: 44px 64px;
@@ -1097,7 +1098,7 @@ pre {
 .login-story h1 {
   font-size: clamp(36px, 3.6vw, 56px);
   letter-spacing: -0.04em;
-  color: #f6f9ff;
+  color: #f3ecdd;
   line-height: 1.14;
 }
 .login-story .overline {
@@ -1153,7 +1154,7 @@ pre {
   height: 44px;
   border-radius: 10px;
   background: #e2ebff;
-  color: #2355ce;
+  color: #16284b;
 }
 @media (hover: hover) {
   .button-primary:hover:not(:disabled) {
@@ -1303,7 +1304,7 @@ pre {
   }
   .sidebar.open {
     display: flex;
-    box-shadow: 10px 0 40px #14264140;
+    box-shadow: 10px 0 40px #16284b40;
   }
   .mobile-menu {
     display: inline-flex;
@@ -1452,3 +1453,11 @@ pre {
 .overline {
   text-decoration: none;
 }
+
+.page-heading h1, .login-story h1, .login-box h2 {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.brand svg, .login-story .overline { color: #e7ce93; }
+.sidebar button[aria-current="page"] { color: #f3ecdd; }
