@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p apps/extension/tsconfig.json",
     "lint": "eslint .",
     "test": "vitest run",
-    "eval": "tsx tools/eval/src/classification.ts",
+    "eval": "tsx tools/eval/src/evaluate.ts",
     "eval:classify": "tsx tools/eval/src/classification.ts",
     "build:extension": "npm run build --workspace @cargolens/extension"
   },

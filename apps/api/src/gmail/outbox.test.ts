@@ -86,3 +86,39 @@ describe('durable Gmail outbox', () => {
     db.close();
   });
 });
+
+it('bounds rate-limit retries and respects the retry delay', async () => {
+  const { GmailApiError } = await import('./client.js');
+  const db = new Database(':memory:'); const outbox = new GmailOutbox(db); let sends = 0;
+  try {
+    const item = outbox.enqueue(input);
+    const sender = { sendReply: async () => { sends++; throw new GmailApiError(429); } };
+    expect((await outbox.dispatch(item.id, 'v1', sender)).status).toBe('PENDING');
+    await outbox.dispatch(item.id, 'v1', sender); expect(sends).toBe(1);
+    for (let attempt = 2; attempt <= 3; attempt++) {
+      db.prepare('UPDATE gmail_outbox SET not_before=0 WHERE id=?').run(item.id);
+      await outbox.dispatch(item.id, 'v1', sender);
+    }
+    expect(outbox.get(item.id)?.status).toBe('FAILED');
+    await outbox.dispatch(item.id, 'v1', sender); expect(sends).toBe(3);
+  } finally { db.close(); }
+});
+
+it('persists an interrupted send across an actual database reopen without replaying it', async () => {
+  const { mkdtempSync, rmSync, realpathSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os'); const { join, relative, isAbsolute } = await import('node:path');
+  const directory = mkdtempSync(join(tmpdir(), 'cargolens-outbox-'));
+  const path = join(directory, 'outbox.sqlite'); let db = new Database(path);
+  try {
+    const first = new GmailOutbox(db); const item = first.enqueue(input); first.claim(item.id, 'v1'); db.close();
+    db = new Database(path); const restarted = new GmailOutbox(db); restarted.recoverInterrupted();
+    let sends = 0;
+    const result = await restarted.dispatch(item.id, 'v1', { sendReply: async () => { sends++; return { id: 'duplicate', threadId: 't1' }; } });
+    expect(result.status).toBe('UNKNOWN'); expect(sends).toBe(0);
+    expect((await restarted.reconcile(item.id, { findSentReply: async () => ({ id: 'original-send', threadId: 't1' }) })).sentMessageId).toBe('original-send');
+  } finally {
+    db.close();
+    const contained = relative(realpathSync(tmpdir()), realpathSync(directory));
+    if (contained && !contained.startsWith('..') && !isAbsolute(contained)) rmSync(directory, { recursive: true });
+  }
+});

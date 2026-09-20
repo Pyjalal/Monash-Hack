@@ -188,3 +188,32 @@ it("rejects ambiguous duplicate result IDs before caching", async () => {
   expect(sent[0].items[0].result.error?.code).toBe("PREVIEW_UNAVAILABLE");
   expect(JSON.stringify(await backing.get())).not.toContain(row.email.id);
 });
+
+it("attaches smart-filter probabilities when rules are active and degrades to plain classification if the rules call fails", async () => {
+  const urls: string[] = [];
+  const sent: Array<{ type: string; items: Array<{ result: { status: string; classification?: { rules?: Record<string, number> } } }> }> = [];
+  let rulesStatus = 200;
+  const rules = [{ id: "needs_reply_now", condition: "The sender is waiting on a reply today." }];
+  const queue = new ClassificationQueue({
+    request: async (url, init) => {
+      urls.push(url);
+      const body = JSON.parse(String(init.body)) as { emails: QueueItem["email"][]; rules?: unknown };
+      if (url.endsWith("/rules/evaluate")) {
+        expect(body.rules).toEqual(rules);
+        return new Response(JSON.stringify({ results: body.emails.map((email) => ({ id: email.id, status: "evaluated", cached: false, rules: { needs_reply_now: 0.83, unknown_rule: 0.5, bad: 7 } })), elapsedMs: 1, rulesVersion: "t" }), { status: rulesStatus });
+      }
+      return new Response(JSON.stringify({ results: body.emails.map((email) => classified(email.id)) }), { status: 200 });
+    },
+    send: async (_tabId, message) => { sent.push(message as typeof sent[number]); },
+  }, "http://127.0.0.1:3001/classify", null, () => rules);
+  queue.enqueue(1, [item(1)]);
+  await queue.drain();
+  expect(urls).toEqual(["http://127.0.0.1:3001/classify", "http://127.0.0.1:3001/rules/evaluate"]);
+  expect(sent[0].items[0].result.classification?.rules).toEqual({ needs_reply_now: 0.83 });
+
+  rulesStatus = 503;
+  queue.enqueue(1, [item(2)]);
+  await queue.drain();
+  expect(sent[1].items[0].result.status).toBe("classified");
+  expect(sent[1].items[0].result.classification?.rules).toBeUndefined();
+});

@@ -140,4 +140,4 @@ Conclusion: no code path in this repository can hold Gmail on its loading screen
 
 1. ~~Fix the Outlook return-to-list rescan path and add a regression test for open-message/close-message navigation.~~ Done; re-verify live in Outlook on the next dogfood pass.
 2. Re-test Gmail after the Work profile can load the inbox and capture a live Gmail badge result (see the content-script review under BLOCKER-001 for the disable/enable retest).
-3. Add a runnable dashboard before treating dashboard/Main testing as complete (scope proposal pending approval).
+3. ~~Add a runnable dashboard before treating dashboard/Main testing as complete.~~ Superseded on 2026-09-20 by shipped inbox triage in the extension itself (hide spam, pin urgent, smart filters with a settings page); the dashboard remains separate planned work.

@@ -41,6 +41,9 @@ function sanitizedResult(result: RowClassifyResult): RowClassifyResult | null {
   const usage = usageValue
     ? { input_tokens: usageValue.input_tokens, output_tokens: usageValue.output_tokens }
     : null;
+  const rules = classification.rules && typeof classification.rules === "object" && !Array.isArray(classification.rules)
+    ? Object.fromEntries(Object.entries(classification.rules).filter(([key, entry]) => /^[a-z0-9_-]{1,48}$/.test(key) && typeof entry === "number" && Number.isFinite(entry) && entry >= 0 && entry <= 1))
+    : undefined;
   return {
     id: result.id,
     status: "classified",
@@ -58,6 +61,7 @@ function sanitizedResult(result: RowClassifyResult): RowClassifyResult | null {
       elapsedMs: classification.elapsedMs ?? 0,
       questionVersion: classification.questionVersion ?? "unknown",
       cached: classification.cached,
+      ...(rules ? { rules } : {}),
     } as ClassificationPreview,
   };
 }

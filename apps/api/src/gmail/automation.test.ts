@@ -227,3 +227,22 @@ describe('Gmail automation integration', () => {
     } finally { await h.cleanup(); }
   });
 });
+
+it('preserves validated decision revisions during unchanged Gmail polling', async () => {
+  const h = await harness(false);
+  try {
+    await h.automation.sync();
+    const record = h.store.listCases()[0];
+    const decision = { ...record.decision!, decisionVersion: record.decision!.decisionVersion + 1 };
+    await h.automation.validateDecision(record.email.id, decision);
+    h.store.saveDecision(record.email.id, decision);
+    const classify = vi.spyOn(h.service, 'processCase');
+    await h.automation.sync();
+    expect(h.store.getCase(record.email.id)!.decision).toEqual(decision);
+    expect(classify).not.toHaveBeenCalled();
+    h.messages.push(message('m2', 'Please verify updated shipment documents.'));
+    await h.automation.sync();
+    expect(classify).toHaveBeenCalledOnce();
+    expect(h.store.getCase(record.email.id)!.sourceVersion).not.toBe(record.sourceVersion);
+  } finally { await h.cleanup(); }
+});

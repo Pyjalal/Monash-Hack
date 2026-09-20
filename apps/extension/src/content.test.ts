@@ -32,16 +32,16 @@ function result(id: string, confidence = 0.92, urgency: { level: string; score: 
   };
 }
 
-function setup(enabled: boolean, outlook = false) {
+function setup(enabled: boolean, outlook = false, options: { inbox?: unknown; html?: string } = {}) {
   const window = new Window({ url: "https://mail.google.com/mail/u/0/#inbox" });
-  window.document.body.innerHTML = fixture();
+  window.document.body.innerHTML = options.html ?? fixture();
   if (outlook) window.document.body.innerHTML = '<div role="listbox"><div role="option" data-convid="conversation-1"><input type="checkbox"><div class="ESO13">Operations</div><div><span class="TtcXM">Verify draft BL</span></div><span class="ASFJj">SI attached</span></div></div>';
   const listeners: Array<(message: ExtensionMessage) => void> = [];
   const sent: ExtensionMessage[] = [];
   const runtime: ContentRuntime = {
     sendMessage: vi.fn(async (message: ExtensionMessage) => {
       sent.push(message);
-      if (message.type === "GET_SETTINGS") return { enabled, apiUrl: "http://127.0.0.1:3001" };
+      if (message.type === "GET_SETTINGS") return { enabled, apiUrl: "http://127.0.0.1:3001", ...(options.inbox !== undefined ? { inbox: options.inbox } : {}) };
       return { accepted: 1, rejected: 0 };
     }),
     onMessage: (listener) => { listeners.push(listener); return () => undefined; },
@@ -251,6 +251,85 @@ it('restores Outlook badges after the host re-renders row content on return to t
     expect(badge?.shadowRoot?.textContent).toContain('BL check');
     expect(badge?.parentElement).toBe(row.querySelector('.TtcXM')!.parentElement);
     expect(state.sent.filter(message => message.type === 'CLASSIFY_ROWS')).toHaveLength(1);
+  } finally { state.controller.stop(); globalThis.MutationObserver = prior; }
+});
+
+function gmailRow(thread: string, subject: string): string {
+  return `<tr class="zA" data-thread-id="${thread}"><td class="message-cell"><span class="yW" email="ops@example.test">Ops</span><span class="y6">${subject}</span><span class="y2">snippet ${thread}</span></td></tr>`;
+}
+
+it("hides spam, pins urgent and rule-matched rows to the top in rank order, and restores everything on disable", async () => {
+  const html = `<div role="main"><table><tbody>${gmailRow("t1", "Newsletter")}${gmailRow("t2", "Routine SI")}${gmailRow("t3", "Reply needed")}${gmailRow("t4", "Release blocked")}</tbody></table></div>`;
+  const inbox = { hideSpam: true, spamThreshold: 0.8, pinUrgent: true, rules: [{ id: "needs_reply_now", condition: "sender waits on a reply today", action: "pin", threshold: 0.7, enabled: true }] };
+  const state = setup(true, false, { html, inbox });
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  try {
+    await state.controller.start(); await flush();
+    const request = state.sent.find(message => message.type === "CLASSIFY_ROWS") as Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }>;
+    expect(request.items).toHaveLength(4);
+    const item = (thread: string) => request.items.find(candidate => candidate.rowKey === thread)!;
+    const classified = (thread: string, overrides: Record<string, unknown>) => {
+      const base = result(item(thread).email.id) as Extract<RowResultMessage["result"], { status: "classified" }>;
+      return { rowKey: thread, fingerprint: item(thread).fingerprint, result: { ...base, classification: { ...base.classification, ...overrides } } as RowResultMessage["result"] };
+    };
+    state.listeners.forEach(listener => listener({ type: "CLASSIFY_RESULTS", epoch: 0, items: [
+      classified("t1", { category: "SPAM", confidence: 0.97 }),
+      classified("t2", {}),
+      classified("t3", { rules: { needs_reply_now: 0.91 } }),
+      classified("t4", { urgency: { level: "blocking", score: 3, confidence: 0.9 } }),
+    ] }));
+    const tbody = state.window.document.querySelector("tbody")!;
+    const order = () => [...tbody.querySelectorAll("tr")].map(row => row.getAttribute("data-thread-id"));
+    const spam = tbody.querySelector('[data-thread-id="t1"]') as unknown as HTMLElement;
+    expect(order()).toEqual(["t4", "t3", "t1", "t2"]);
+    expect(spam.style.display).toBe("none");
+    expect(spam.getAttribute("data-cargolens-hidden")).toBe("true");
+    expect(tbody.querySelector('[data-thread-id="t3"] [data-cargolens-badge]')!.shadowRoot!.textContent).toContain("Needs my reply now");
+    expect(state.controller.hiddenCount).toBe(1);
+    const tray = state.window.document.querySelector("#cargolens-urgent-tray")!.shadowRoot!;
+    expect(tray.textContent).toContain("1 hidden");
+
+    // The host re-renders: rows keep their identity but our inline style and order are reset.
+    spam.style.removeProperty("display");
+    tbody.append(tbody.querySelector('[data-thread-id="t4"]')!);
+    await state.controller.scan(); await flush();
+    expect(order()).toEqual(["t4", "t3", "t1", "t2"]);
+    expect(spam.style.display).toBe("none");
+    expect(state.sent.filter(message => message.type === "CLASSIFY_ROWS")).toHaveLength(1);
+
+    (tray.querySelector("button.reveal") as unknown as HTMLElement).click();
+    expect(spam.style.display).toBe("");
+    expect(state.controller.hiddenCount).toBe(0);
+    (state.window.document.querySelector("#cargolens-urgent-tray")!.shadowRoot!.querySelector("button.reveal") as unknown as HTMLElement).click();
+    expect(spam.style.display).toBe("none");
+
+    state.listeners.forEach(listener => listener({ type: "TOGGLE_ENABLED" }));
+    expect(spam.style.display).toBe("");
+    expect(spam.hasAttribute("data-cargolens-hidden")).toBe(false);
+    expect(order()).toEqual(["t1", "t2", "t3", "t4"]);
+    expect(tbody.querySelectorAll("[data-cargolens-pinned]")).toHaveLength(0);
+  } finally { state.controller.stop(); globalThis.MutationObserver = prior; }
+});
+
+it("leaves rows untouched when hiding and pinning are switched off", async () => {
+  const html = `<div role="main"><table><tbody>${gmailRow("t1", "Newsletter")}${gmailRow("t2", "Release blocked")}</tbody></table></div>`;
+  const state = setup(true, false, { html, inbox: { hideSpam: false, pinUrgent: false, rules: [] } });
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  try {
+    await state.controller.start(); await flush();
+    const request = state.sent.find(message => message.type === "CLASSIFY_ROWS") as Extract<ExtensionMessage, { type: "CLASSIFY_ROWS" }>;
+    const items = request.items.map(item => {
+      const base = result(item.email.id, 0.97, item.rowKey === "t2" ? { level: "blocking", score: 3, confidence: 0.9 } : null) as Extract<RowResultMessage["result"], { status: "classified" }>;
+      const classification = item.rowKey === "t1" ? { ...base.classification, category: "SPAM" } : base.classification;
+      return { rowKey: item.rowKey, fingerprint: item.fingerprint, result: { ...base, classification } as RowResultMessage["result"] };
+    });
+    state.listeners.forEach(listener => listener({ type: "CLASSIFY_RESULTS", epoch: 0, items }));
+    const rows = [...state.window.document.querySelectorAll("tr")] as unknown as HTMLElement[];
+    expect(rows.map(row => row.getAttribute("data-thread-id"))).toEqual(["t1", "t2"]);
+    expect(rows.every(row => !row.style.display && !row.hasAttribute("data-cargolens-hidden"))).toBe(true);
+    expect(state.controller.hiddenCount).toBe(0);
   } finally { state.controller.stop(); globalThis.MutationObserver = prior; }
 });
 
