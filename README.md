@@ -74,11 +74,16 @@ Implemented today:
 - Source-proof validation before saving a comparison claim or queueing a
   confirmation: bytes, excerpts and source pairs must agree, and the trusted
   role classifier and field comparator must establish their meaning.
+- Version-bound operational drafts shared with the Gmail queue, and optional
+  OpenRouter recovery of unresolved fields from selected server-read regions.
+  Recovery candidates remain proposals until the field comparator validates them.
+- A one-command organizer evaluation runner with frozen grouped manifests,
+  export provenance, explicit failed rows, and source-backed dispute overlays.
 
 Still assigned integration work:
 
 - The document-role/field comparator, OCR-aware field integration and vision
-  escalation, cheap-LLM recovery, organizer export/scorer integration, dashboard
+  escalation, automatic recovery orchestration, dashboard
   and workflow builder.
 - Low-confidence or conflicting classifications emit recovery signals; a
   recovery model is not yet connected end to end.
@@ -109,7 +114,9 @@ Copy `.env.example` to `.env`. The running API requires `TYPESAFE_API_KEY` and
 | `TYPESAFE_MODEL` / `JEV_PROMPT_VARIANT` | Pinned model and question variant; both feed the classifier revision. |
 | `JEV_CONCURRENCY` / `JEV_BATCH_SIZE` / `JEV_REQUESTS_PER_MINUTE` | Throughput controls for classification. |
 | `GMAIL_*` | OAuth registration, polling, sync query and automation switches; see [Gmail configuration](#gmail-configuration). |
-| `AI_GATEWAY_API_KEY` / `OPENROUTER_API_KEY` | Reserved for the corresponding integrations. |
+| `OPENROUTER_API_KEY` / `OPENROUTER_TEXT_MODEL` | Optional server-side text recovery; see [backend integration](docs/backend-integration.md). |
+| `RECOVERY_MAX_CASE_ATTEMPTS` / `RECOVERY_MAX_CASE_TOKENS` / `RECOVERY_MAX_CASE_USD` | Durable per-case recovery reservation ceilings, including failed attempts. |
+| `AI_GATEWAY_API_KEY` | Reserved for gateway integration. |
 
 ### Run the API
 
@@ -165,6 +172,29 @@ Gmail and Outlook Live were checked in signed-in Chrome on 2026-09-20; see
 [connector and adapter verification](docs/connector-verification.md) for tested
 layouts and remaining limitations.
 
+#### Inbox actions and smart filters
+
+The settings page turns Jev's judgments into triage, all preview-only and
+reversible — nothing is deleted, moved or marked in the mailbox:
+
+- **Hide spam rows** at a confidence you choose. Hidden rows can be shown again
+  from the CargoLens tray, and a confident spam label wins over any filter, so
+  phishing that literally matches an "action needed" filter stays hidden.
+- **Pin urgent rows to the top** of the visible list: Jev's "today" and
+  "blocking" urgency levels sort above everything else, most urgent first.
+- **Smart filters**: plain-language conditions Jev judges as a yes/no
+  probability for every visible row (`POST /rules/evaluate`, one Noul question
+  per rule, packed and cached per email). Shipping-focused presets — needs my
+  reply now, cargo or release blocked, vessel/cut-off changes, charges
+  disputes, automated notices, marketing — ship disabled; each filter chooses
+  its own action (pin, highlight or hide) and sensitivity threshold. Only the
+  wording of a condition costs a new judgment; changing actions or thresholds
+  re-applies instantly from cached probabilities.
+
+Preset thresholds were chosen from a stratified run over the benchmark dataset
+plus hand-written shipping scenarios (`npx tsx --env-file=.env
+tools/eval/src/rules.ts`); raw scores are written to `runtime/eval/rules/`.
+
 Successful previews are cached for five minutes in browser session storage, up
 to 200 entries. Cache keys include the mailbox context, local API endpoint,
 classifier revision and content fingerprint, and are stored as hashes. The
@@ -213,12 +243,15 @@ by fixtures; no live email was sent during this verification.
 |---|---|---|---|
 | `GET` | `/health` | public | Service status and `classifierRevision`. |
 | `POST` | `/classify` | public, budgeted | Up to 20 preview rows for the extension. |
+| `POST` | `/rules/evaluate` | public, budgeted | Smart-filter probabilities for up to 20 rows against up to 8 rules. |
 | `GET` | `/usage` | bearer | Authoritative request-level token totals. |
 | `POST` | `/import` | bearer | Import the configured dataset; returns a job. |
 | `GET` | `/emails` | bearer | Imported inbox with classification state. |
 | `GET` | `/cases/:id` | bearer | Full operational state for one case. |
 | `POST` | `/cases/:id/retry` | bearer | Re-run a failed or signalled case. |
 | `POST` | `/cases/:id/decision` | bearer | Record a human decision. |
+| `POST` | `/cases/:id/draft` | bearer | Persist an evidence-bound reply draft; requires source and decision versions. |
+| `POST` | `/cases/:id/recover` | bearer | Propose unresolved fields from selected attachment source regions. |
 | `GET` | `/events` | bearer | Server-sent events; honours `Last-Event-ID`. |
 | `POST` | `/gmail/oauth/start` | bearer | Begin the OAuth consent flow. |
 | `GET` | `/gmail/oauth/callback` | public | One-use OAuth callback (state + PKCE). |
@@ -233,7 +266,7 @@ by fixtures; no live email was sent during this verification.
 
 ```mermaid
 flowchart TD
-  Ext["Chrome extension (no credentials)"] -->|POST /classify| API["Hono API"]
+  Ext["Chrome extension (no credentials)"] -->|POST /classify, /rules/evaluate| API["Hono API"]
   Dash["Dashboard (bearer token)"] --> API
   Gmail["Gmail connector (OAuth + PKCE)"] --> API
   API --> Jev["TypeSafe Jev: typed judgments"]
@@ -262,10 +295,14 @@ npm run typecheck # strict TypeScript across workspaces
 npm run lint      # eslint
 ```
 
-The [classification harness](tools/eval/README.md) measures categories only.
-`npm run eval` does **not yet** produce the organizer's seven-field submission
-or final composite score. It makes paid model calls when a live phase is
-selected; keep reference manifests frozen during an evaluation cycle.
+`npm run eval -- --prepare` freezes the official dataset, scorer, grouped splits
+and configuration without model calls. `npm run eval` runs the API classification
+pipeline, exports supported decisions and invokes the unchanged organizer scorer.
+Incomplete comparison states are explicit export failures, so a partial run is
+never presented as a valid headline score. Live evaluation makes paid model calls.
+See the [evaluation guide](tools/eval/README.md) for offline checks, dispute
+adjudication, and final-run protection. `npm run eval:classify` retains the separate
+category tuning harness.
 
 ## Measured results
 
@@ -279,6 +316,13 @@ new provider calls.
 
 These are individual measured runs, not latency guarantees, and exclude
 attachment extraction and comparison.
+
+Smart-filter presets were calibrated on 20 September 2026: 40 dataset rows
+(stratified, 8 per category, rendered as inbox snippets) plus 12 hand-written
+shipping scenarios. The tightened `cargo_blocked` preset no longer fires on
+phishing spam (0.03 mean on SPAM) while scoring 0.92–0.98 on real customs
+holds and unreleased delivery orders; every hand-written scenario fires
+exactly its expected presets. Raw scores: `runtime/eval/rules/presets.json`.
 
 ## Training data
 
@@ -310,10 +354,12 @@ training_data/      SDOC dataset, attachments and organizer scorer
 
 ## Known limitations and next proof points
 
-- The organizer's seven-field submission, composite scoring, dashboard and
+- The comparator must still populate source-validated seven-field decisions
+  before the evaluation runner can produce a complete submission. Dashboard and
   workflow builder are pending integration work.
 - Live Gmail read, threading and attachment ingestion were verified on
   2026-09-20 with sending disabled; delivery is covered by fixtures only.
-- Recovery signals are emitted but no recovery model is connected end to end.
+- Text recovery is available through the authenticated API; automatic recovery
+  orchestration and semantic acceptance by the comparator remain pending.
 - Measured results cover classification only; extraction, comparison and OCR
   paths are validated by unit tests and fixtures, not yet by a full scored run.

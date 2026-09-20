@@ -2,6 +2,20 @@ import type { InboxAdapter } from "./adapters.js";
 import { adapterForHost } from "./adapters.js";
 import type { ClassificationPreview, ExtensionMessage, RowClassifyResult, RowResultMessage } from "./messages.js";
 import { fingerprintCandidate, type FingerprintedRow } from "./fingerprints.js";
+import { decideRow, isUrgent, type RowDecision } from "./inbox-actions.js";
+import { defaultInboxPolicy, parseInboxPolicy, type InboxPolicy } from "./settings.js";
+
+export const HIDDEN_ATTRIBUTE = "data-cargolens-hidden";
+const PINNED_ATTRIBUTE = "data-cargolens-pinned";
+const HIGHLIGHT_ATTRIBUTE = "data-cargolens-highlight";
+
+interface RowLayout {
+  element: Element;
+  originalParent: Element | null;
+  originalNext: Element | null;
+  inlineDisplay: string;
+  inlineBoxShadow: string;
+}
 
 export interface ContentRuntime {
   sendMessage(message: ExtensionMessage): Promise<unknown>;
@@ -11,6 +25,7 @@ export interface ContentRuntime {
 interface RowRecord extends FingerprintedRow {
   element: Element;
   result?: RowClassifyResult;
+  decision?: RowDecision;
 }
 
 type BadgeState =
@@ -33,6 +48,7 @@ const badgeStyle = `
 .badge.urgent { background: ${palette.accent}; border-color: ${palette.accent}; color: ${palette.surface}; }
 .badge.error { color: ${palette.accent}; }
 .badge.uncertain { border-color: ${palette.accent}; color: ${palette.accent}; }
+.badge.filtered { border-color: ${palette.accent}; }
 .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 button { border: 0; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; font: inherit; padding: 2px 4px; }
 button:focus-visible { outline: 2px solid ${palette.accent}; outline-offset: 2px; }
@@ -55,10 +71,15 @@ export class CargoLensController {
   private knownRevision: string | undefined;
   private revisionNeedsRefresh = false;
   private trayCollapsed = false;
+  private inbox: InboxPolicy = defaultInboxPolicy();
+  private revealHidden = false;
   private readonly current = new Map<string, RowRecord>();
   private readonly pending = new Map<string, RowRecord>();
   private readonly badgeHosts = new Map<string, HTMLElement>();
   private readonly urgent = new Map<string, RowRecord>();
+  private readonly hidden = new Map<string, RowLayout>();
+  private readonly pinned = new Map<string, RowLayout>();
+  private readonly highlighted = new Map<string, RowLayout>();
   private trayHost: HTMLElement | null = null;
   private removeRuntimeListener: (() => void) | null = null;
 
@@ -69,8 +90,27 @@ export class CargoLensController {
     this.cacheContext = cacheContext(root);
   }
 
+  private stopped = false;
+
+  private async sendMessage(message: ExtensionMessage): Promise<unknown> {
+    if (this.stopped) return undefined;
+    try {
+      return await this.runtime.sendMessage(message);
+    } catch (error) {
+      if (isContextInvalidated(error)) this.stop();
+      throw error;
+    }
+  }
+
   async start(): Promise<void> {
-    this.removeRuntimeListener = this.runtime.onMessage((message) => this.handleMessage(message));
+    if (this.stopped) return;
+    try {
+      this.removeRuntimeListener = this.runtime.onMessage((message) => this.handleMessage(message));
+    } catch (error) {
+      this.stop();
+      if (!isContextInvalidated(error)) throw error;
+      return;
+    }
     this.root.addEventListener("keydown", this.handleKeydown);
     this.root.addEventListener("visibilitychange", this.handleVisibilityChange);
     this.observer = new MutationObserver(() => {
@@ -86,29 +126,42 @@ export class CargoLensController {
       attributes: true,
       attributeFilter: ["aria-hidden", "class", "data-conversation-id", "data-convid", "data-from", "data-preview", "data-snippet", "data-subject", "data-thread-id", "data-legacy-thread-id", "email", "aria-label", "hidden", "role", "style"],
     });
-    await this.runtime.sendMessage({ type: "GET_SETTINGS" }).then((response) => {
+    await this.sendMessage({ type: "GET_SETTINGS" }).then((response) => {
+      if (this.stopped) return;
       if (response && typeof response === "object" && "enabled" in response && typeof response.enabled === "boolean") {
-        const value = response as { enabled: boolean; apiUrl?: unknown; epoch?: unknown };
+        const value = response as { enabled: boolean; apiUrl?: unknown; epoch?: unknown; inbox?: unknown };
         this.enabled = value.enabled;
         if (typeof value.apiUrl === "string") this.apiUrl = value.apiUrl;
         if (typeof value.epoch === "number" && Number.isInteger(value.epoch)) this.settingsEpoch = value.epoch;
+        if (value.inbox !== undefined) this.inbox = parseInboxPolicy(value.inbox);
         if (!this.enabled) this.clearPresentation();
       }
     }).catch(() => undefined);
+    if (this.stopped) return;
     this.settingsReady = true;
     this.revisionTimer = setInterval(() => this.checkRevision(), 30_000);
     if (this.enabled) await this.scan();
   }
 
   stop(): void {
+    if (this.stopped) return;
+    this.stopped = true;
+    this.enabled = false;
+    this.settingsReady = false;
     this.observer?.disconnect();
     if (this.debounceTimer) clearTimeout(this.debounceTimer);
     if (this.flushTimer) clearTimeout(this.flushTimer);
     if (this.revisionTimer) clearInterval(this.revisionTimer);
-    this.removeRuntimeListener?.();
-    this.root.removeEventListener("keydown", this.handleKeydown);
-    this.root.removeEventListener("visibilitychange", this.handleVisibilityChange);
-    this.clearPresentation();
+    try {
+      this.removeRuntimeListener?.();
+    } catch (error) {
+      if (!isContextInvalidated(error)) throw error;
+    } finally {
+      this.removeRuntimeListener = null;
+      this.root.removeEventListener("keydown", this.handleKeydown);
+      this.root.removeEventListener("visibilitychange", this.handleVisibilityChange);
+      this.clearPresentation();
+    }
   }
 
   get isEnabled(): boolean {
@@ -129,13 +182,18 @@ export class CargoLensController {
       const element = candidates[index].element;
       if (!element) continue;
       const prior = this.current.get(row.candidate.rowKey);
-      if (prior?.fingerprint === row.fingerprint && prior.element === element) continue;
+      if (prior?.fingerprint === row.fingerprint && prior.element === element) {
+        prior.candidate.badgeTarget = row.candidate.badgeTarget;
+        if (!this.badgeAttached(prior)) this.renderBadge(prior, this.badgeStateFor(prior));
+        continue;
+      }
       this.removePending(row.candidate.rowKey);
       const record: RowRecord = { ...row, element };
       this.current.set(row.candidate.rowKey, record);
       this.pending.set(`${row.candidate.rowKey}\u241f${row.fingerprint}`, record);
       this.renderBadge(record, { kind: "loading" });
     }
+    this.applyLayout();
     this.scheduleFlush();
   }
 
@@ -154,7 +212,7 @@ export class CargoLensController {
           email,
         }));
         const epoch = this.settingsEpoch;
-        void this.runtime.sendMessage({ type: "CLASSIFY_ROWS", epoch, items: chunk }).catch(() => {
+        void this.sendMessage({ type: "CLASSIFY_ROWS", epoch, items: chunk }).catch(() => {
           if (!this.enabled || epoch !== this.settingsEpoch) return;
           for (const row of rows.slice(index, index + 20)) {
             if (this.current.get(row.candidate.rowKey) === row && isVisible(row.element))
@@ -182,7 +240,7 @@ export class CargoLensController {
     if (!this.enabled || this.root.visibilityState === "hidden") return;
     const epoch = this.settingsEpoch;
     const context = this.cacheContext;
-    void this.runtime.sendMessage({ type: "CHECK_REVISION" }).then((response) => {
+    void this.sendMessage({ type: "CHECK_REVISION" }).then((response) => {
       if (!this.enabled || epoch !== this.settingsEpoch || context !== this.cacheContext || !response || typeof response !== "object" || !("revision" in response) || typeof response.revision !== "string") return;
       const shouldRefresh = this.revisionNeedsRefresh || this.knownRevision === undefined || this.knownRevision !== response.revision;
       this.knownRevision = response.revision;
@@ -205,13 +263,14 @@ export class CargoLensController {
   }
 
   private handleMessage(message: ExtensionMessage): void {
+    if (this.stopped) return;
     if (message.type === "TOGGLE_ENABLED") {
       this.setEnabled(!this.enabled);
       return;
     }
     if (message.type === "SETTINGS_UPDATED") {
       const changed = message.enabled !== this.enabled || message.apiUrl !== this.apiUrl || message.epoch !== this.settingsEpoch;
-      if (changed) this.applySettings(message.enabled, message.apiUrl, message.epoch);
+      if (changed) this.applySettings(message.enabled, message.apiUrl, message.epoch, message.inbox);
       return;
     }
     if (message.type !== "CLASSIFY_RESULTS" || message.epoch !== this.settingsEpoch) return;
@@ -231,23 +290,38 @@ export class CargoLensController {
     const fresh = this.adapter.extractRows(this.root).find(row => row.element === record.element && row.rowKey === item.rowKey);
     if (!fresh || fresh.subject !== record.candidate.subject || fresh.from !== record.candidate.from || fresh.snippet !== record.candidate.snippet) return;
     record.result = item.result;
-    this.renderBadge(record, item.result.status === "classified"
-      ? { kind: "classified", classification: item.result.classification }
-      : { kind: "error", code: item.result.error.code, message: item.result.error.message });
+    record.decision = item.result.status === "classified" ? decideRow(this.inbox, item.result.classification) : undefined;
+    this.renderBadge(record, this.badgeStateFor(record));
+    this.applyLayout();
+  }
+
+  private badgeStateFor(record: RowRecord): BadgeState {
+    const result = record.result;
+    if (!result) return { kind: "loading" };
+    return result.status === "classified"
+      ? { kind: "classified", classification: result.classification }
+      : { kind: "error", code: result.error.code, message: result.error.message };
+  }
+
+  private badgeAttached(record: RowRecord): boolean {
+    const host = this.badgeHosts.get(record.candidate.rowKey);
+    const target = record.candidate.badgeTarget ?? record.element;
+    return !!host && host.isConnected !== false && host.parentElement === target;
   }
 
   private setEnabled(enabled: boolean): void {
     this.enabled = enabled;
     this.settingsEpoch += 1;
     this.clearPresentation();
-    void this.runtime.sendMessage({ type: "SET_ENABLED", enabled }).catch(() => undefined);
+    void this.sendMessage({ type: "SET_ENABLED", enabled }).catch(() => undefined);
     if (enabled) void this.scan();
   }
 
-  private applySettings(enabled: boolean, apiUrl: string, epoch: number): void {
+  private applySettings(enabled: boolean, apiUrl: string, epoch: number, inbox?: unknown): void {
     this.enabled = enabled;
     this.apiUrl = apiUrl;
     this.settingsEpoch = epoch;
+    if (inbox !== undefined) this.inbox = parseInboxPolicy(inbox);
     this.clearPresentation();
     if (enabled) void this.scan();
   }
@@ -276,6 +350,7 @@ export class CargoLensController {
     this.current.delete(rowKey);
     this.removePending(rowKey);
     this.urgent.delete(rowKey);
+    this.restoreRow(rowKey);
     const host = this.badgeHosts.get(rowKey);
     host?.remove();
     this.badgeHosts.delete(rowKey);
@@ -286,12 +361,118 @@ export class CargoLensController {
     this.pending.clear();
     if (this.flushTimer) clearTimeout(this.flushTimer);
     this.flushTimer = null;
+    for (const rowKey of [...this.hidden.keys(), ...this.highlighted.keys()]) this.restoreRow(rowKey);
+    this.unpinAll();
     this.current.clear();
     for (const host of this.badgeHosts.values()) host.remove();
     this.badgeHosts.clear();
     this.urgent.clear();
     this.trayHost?.remove();
     this.trayHost = null;
+  }
+
+  /** Number of rows currently removed from view by spam or filter policy. */
+  get hiddenCount(): number {
+    return this.hidden.size;
+  }
+
+  private layoutFor(record: RowRecord): RowLayout {
+    const element = record.element as HTMLElement;
+    return { element, originalParent: element.parentElement, originalNext: element.nextElementSibling, inlineDisplay: element.style.display, inlineBoxShadow: element.style.boxShadow };
+  }
+
+  /**
+   * Re-applies hide/pin/highlight for every classified row. Idempotent so it can run after each scan:
+   * hosts re-render rows and reset inline styles or order, and rows whose decision changed are restored first.
+   */
+  private applyLayout(): void {
+    const byParent = new Map<Element, Array<{ record: RowRecord; rank: number }>>();
+    for (const [rowKey, record] of this.current) {
+      const decision = record.decision;
+      // A row awaiting a fresh result keeps its previous placement so hidden spam does not flash back in.
+      const hide = (decision ? decision.hide : this.hidden.has(rowKey)) && !this.revealHidden;
+      const pin = decision ? decision.pin : this.pinned.has(rowKey);
+      const element = record.element as HTMLElement;
+      if (hide) {
+        if (!this.hidden.has(rowKey)) this.hidden.set(rowKey, this.layoutFor(record));
+        element.setAttribute(HIDDEN_ATTRIBUTE, "true");
+        if (element.style.display !== "none") element.style.setProperty("display", "none", "important");
+      } else if (this.hidden.has(rowKey)) this.unhide(rowKey);
+      if (pin && !hide) {
+        if (!this.pinned.has(rowKey)) this.pinned.set(rowKey, this.layoutFor(record));
+        element.setAttribute(PINNED_ATTRIBUTE, "true");
+        const parent = element.parentElement;
+        if (parent) {
+          const rows = byParent.get(parent) ?? [];
+          rows.push({ record, rank: decision?.pinRank ?? 0 });
+          byParent.set(parent, rows);
+        }
+      } else if (this.pinned.has(rowKey)) this.unpin(rowKey);
+      if (decision?.highlight && !hide) {
+        if (!this.highlighted.has(rowKey)) this.highlighted.set(rowKey, this.layoutFor(record));
+        element.setAttribute(HIGHLIGHT_ATTRIBUTE, "true");
+        element.style.setProperty("box-shadow", `inset 4px 0 0 ${palette.accent}`);
+      } else if (this.highlighted.has(rowKey)) this.unhighlight(rowKey);
+    }
+    for (const [parent, rows] of byParent) {
+      rows.sort((a, b) => b.rank - a.rank);
+      rows.forEach(({ record }, index) => {
+        const target = parent.children[index];
+        if (target !== record.element) parent.insertBefore(record.element, target ?? null);
+      });
+    }
+    this.renderTray();
+  }
+
+  private unhide(rowKey: string): void {
+    const layout = this.hidden.get(rowKey);
+    if (!layout) return;
+    this.hidden.delete(rowKey);
+    const element = layout.element as HTMLElement;
+    element.removeAttribute(HIDDEN_ATTRIBUTE);
+    if (layout.inlineDisplay) element.style.display = layout.inlineDisplay; else element.style.removeProperty("display");
+  }
+
+  private unpin(rowKey: string): void {
+    const layout = this.pinned.get(rowKey);
+    if (!layout) return;
+    this.pinned.delete(rowKey);
+    const { element, originalParent, originalNext } = layout;
+    element.removeAttribute(PINNED_ATTRIBUTE);
+    if (!element.isConnected || !originalParent?.isConnected || element.parentElement !== originalParent) return;
+    if (originalNext && originalNext.parentElement === originalParent) { if (originalNext !== element.nextElementSibling) originalParent.insertBefore(element, originalNext); }
+    else if (!originalNext && originalParent.lastElementChild !== element) originalParent.append(element);
+  }
+
+  /** Restores pinned rows so that a row's original neighbour is back in place before the row is moved after it. */
+  private unpinAll(): void {
+    const remaining = new Map(this.pinned);
+    while (remaining.size) {
+      let progressed = false;
+      for (const [rowKey, layout] of remaining) {
+        const anchorPinned = [...remaining.values()].some(other => other !== layout && other.element === layout.originalNext);
+        if (anchorPinned) continue;
+        this.unpin(rowKey);
+        remaining.delete(rowKey);
+        progressed = true;
+      }
+      if (!progressed) { for (const rowKey of remaining.keys()) this.unpin(rowKey); break; }
+    }
+  }
+
+  private unhighlight(rowKey: string): void {
+    const layout = this.highlighted.get(rowKey);
+    if (!layout) return;
+    this.highlighted.delete(rowKey);
+    const element = layout.element as HTMLElement;
+    element.removeAttribute(HIGHLIGHT_ATTRIBUTE);
+    if (layout.inlineBoxShadow) element.style.boxShadow = layout.inlineBoxShadow; else element.style.removeProperty("box-shadow");
+  }
+
+  private restoreRow(rowKey: string): void {
+    this.unhide(rowKey);
+    this.unpin(rowKey);
+    this.unhighlight(rowKey);
   }
 
   private renderBadge(record: RowRecord, state: BadgeState): void {
@@ -320,11 +501,13 @@ export class CargoLensController {
     const categoryLabel = state.kind === "classified" ? categoryLabels[state.classification.category] ?? state.classification.category.replaceAll("_", " ") : "";
     const urgencyLabel = state.kind === "classified" && state.classification.urgency ? urgencyLabels[state.classification.urgency.level] : "";
     const confidenceLabel = categoryUncertain && state.classification.category !== "UNCERTAIN" ? "Uncertain" : "";
+    const reasons = record.decision?.reasons.filter(reason => reason !== "Spam") ?? [];
     label.textContent = state.kind === "loading"
       ? "CargoLens · scanning"
       : state.kind === "error"
         ? `CargoLens · ${state.code}`
-        : ["CargoLens", categoryLabel, urgencyUnclear ? "Urgency unclear" : urgencyLabel, confidenceLabel].filter(Boolean).join(" · ");
+        : ["CargoLens", categoryLabel, urgencyUnclear ? "Urgency unclear" : urgencyLabel, confidenceLabel, ...reasons].filter(Boolean).join(" · ");
+    if (reasons.length) badge.classList.add("filtered");
     badge.append(label);
     if (state.kind === "error") {
       const retry = document.createElement("button");
@@ -335,7 +518,7 @@ export class CargoLensController {
       retry.addEventListener("click", (event) => {
         event.preventDefault(); event.stopPropagation();
         this.renderBadge(record, { kind: "loading" });
-        void this.runtime.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, bypassCache: true, item: { source: record.candidate.source, context: this.cacheContext, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => {
+        void this.sendMessage({ type: "RETRY_ROW", epoch: this.settingsEpoch, bypassCache: true, item: { source: record.candidate.source, context: this.cacheContext, rowKey: record.candidate.rowKey, fingerprint: record.fingerprint, email: record.email } }).catch(() => {
           if (this.enabled && this.current.get(record.candidate.rowKey) === record) this.renderBadge(record, { kind: "error", code: "PREVIEW_UNAVAILABLE", message: "Preview unavailable" });
         });
       });
@@ -352,7 +535,8 @@ export class CargoLensController {
   }
 
   private renderTray(): void {
-    if (this.urgent.size === 0) {
+    const hiddenCount = this.hidden.size + (this.revealHidden ? [...this.current.values()].filter(record => record.decision?.hide).length : 0);
+    if (this.urgent.size === 0 && hiddenCount === 0) {
       this.trayHost?.remove();
       this.trayHost = null;
       return;
@@ -378,9 +562,18 @@ export class CargoLensController {
     title.textContent = "CargoLens";
     const count = document.createElement("span");
     count.className = "count";
-    count.textContent = `${this.urgent.size} urgent preview${this.urgent.size === 1 ? "" : "s"}`;
+    count.textContent = [this.urgent.size ? `${this.urgent.size} urgent` : "", hiddenCount ? `${hiddenCount} hidden` : ""].filter(Boolean).join(" · ");
     header.append(title, count);
     tray.append(header);
+    if (hiddenCount) {
+      const reveal = document.createElement("button");
+      reveal.type = "button";
+      reveal.className = "reveal";
+      reveal.textContent = this.revealHidden ? `Hide ${hiddenCount} filtered row${hiddenCount === 1 ? "" : "s"} again` : `Show ${hiddenCount} hidden row${hiddenCount === 1 ? "" : "s"} (spam and filters)`;
+      reveal.setAttribute("aria-pressed", String(this.revealHidden));
+      reveal.addEventListener("click", () => { this.revealHidden = !this.revealHidden; this.applyLayout(); });
+      tray.append(reveal);
+    }
     if (!this.trayCollapsed) {
       for (const record of this.urgent.values()) {
         const button = document.createElement("button");
@@ -413,8 +606,8 @@ export class CargoLensController {
   };
 }
 
-function isUrgent(urgency: { level: string; confidence: number } | null): boolean {
-  return urgency !== null && urgency.confidence >= 0.6 && (urgency.level === "blocking" || urgency.level === "today");
+function isContextInvalidated(error: unknown): boolean {
+  return /extension context invalidated/i.test(error instanceof Error ? error.message : String(error));
 }
 
 function cacheContext(root: Document): string | undefined {
@@ -451,6 +644,7 @@ function isVisible(element: Element): boolean {
   const view = element.ownerDocument.defaultView;
   for (let current: Element | null = element; current; current = current.parentElement) {
     if (current.isConnected === false || current.hasAttribute("hidden") || current.getAttribute("aria-hidden") === "true") return false;
+    if (current.getAttribute(HIDDEN_ATTRIBUTE) === "true") continue;
     const style = view?.getComputedStyle(current);
     if (style?.display === "none" || style?.visibility === "hidden") return false;
   }
