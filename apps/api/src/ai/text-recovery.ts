@@ -62,12 +62,18 @@ export class TextRecovery {
   private async checkModel(): Promise<void> {
     const response = await this.transport('https://openrouter.ai/api/v1/models', { signal: AbortSignal.timeout(this.limits.timeout), redirect: 'error' });
     if (!response.ok) throw new RecoveryError('MODEL_CATALOG_UNAVAILABLE');
-    const catalog = z.object({ data: z.array(z.object({ id: z.string(), pricing: z.record(z.string()), supported_parameters: z.array(z.string()).optional() })) }).parse(await limitedJson(response));
-    const model = catalog.data.find(row => row.id === this.model);
-    if (!model) throw new RecoveryError('MODEL_UNAVAILABLE');
+    const catalog = z.object({ data: z.array(z.object({ id: z.string() }).passthrough()) }).parse(await limitedJson(response));
+    const selected = catalog.data.find(row => row.id === this.model);
+    if (!selected) throw new RecoveryError('MODEL_UNAVAILABLE');
+    const model = z.object({ pricing: z.record(z.string()), supported_parameters: z.array(z.string()).optional() }).parse(selected);
     const input = Number(model.pricing.prompt); const output = Number(model.pricing.completion);
     if (!Number.isFinite(input) || !Number.isFinite(output) || input < 0 || output < 0 || input > 0.1 / 1e6 || output > 0.4 / 1e6 ||
-      Object.entries(model.pricing).some(([key, value]) => !['prompt', 'completion', 'input_cache_read', 'input_cache_write'].includes(key) && Number(value) !== 0)) throw new RecoveryError('MODEL_EXCEEDS_PRICE_LIMIT');
+      Object.entries(model.pricing).some(([key, value]) => {
+        if (['prompt', 'completion', 'image', 'audio', 'input_audio_cache', 'web_search'].includes(key)) return false;
+        const price = Number(value);
+        const ceiling = ['input_cache_read', 'input_cache_write'].includes(key) ? 0.1 / 1e6 : key === 'internal_reasoning' ? 0.4 / 1e6 : 0;
+        return !Number.isFinite(price) || price < 0 || price > ceiling;
+      })) throw new RecoveryError('MODEL_EXCEEDS_PRICE_LIMIT');
     if (!model.supported_parameters?.includes('response_format')) throw new RecoveryError('MODEL_STRUCTURED_OUTPUT_UNAVAILABLE');
   }
 

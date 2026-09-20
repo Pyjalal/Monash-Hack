@@ -59,3 +59,22 @@ describe('bounded OpenRouter text recovery', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url).endsWith('/models'))).toBe(true);
   });
 });
+
+it('checks only the selected model and ignores prices for modalities absent from the text request', async () => {
+  const { store, fetcher } = setup();
+  const original = fetcher.getMockImplementation()!;
+  fetcher.mockImplementation(async (...args) => String(args[0]).endsWith('/models') ? Response.json({ data: [
+    { id: 'unrelated-model', pricing: { overrides: [{ prompt: 'expensive' }] } },
+    { ...catalog.data[0], pricing: { ...catalog.data[0].pricing, image: '0.01', audio: '0.02', web_search: '0.014', input_cache_read: '0.00000001', internal_reasoning: '0.0000004' } },
+  ] }) : original(...args));
+  expect((await new TextRecovery({ store, apiKey: 'secret', fetch: fetcher }).recover(input)).candidates).toHaveLength(1);
+  const body = JSON.parse(String(fetcher.mock.calls[1][1]!.body));
+  expect(body.tools).toBeUndefined(); expect(body.plugins).toBeUndefined();
+  expect(body.messages.every((message: { content: unknown }) => typeof message.content === 'string')).toBe(true);
+});
+
+it.each(['request', 'input_cache_write', 'internal_reasoning'])('rejects unbudgeted %s charges', async key => {
+  const { store, fetcher } = setup();
+  fetcher.mockResolvedValue(Response.json({ data: [{ ...catalog.data[0], pricing: { ...catalog.data[0].pricing, [key]: '1' } }] }));
+  await expect(new TextRecovery({ store, apiKey: 'secret', fetch: fetcher }).recover(input)).rejects.toThrow('MODEL_EXCEEDS_PRICE_LIMIT');
+});

@@ -28,6 +28,16 @@ it('recovers server-read regions only and rejects stale or already resolved fiel
     expect((await result.json()).recovery.requiresSemanticValidation).toBe(true);
     expect(String(fetcher.mock.calls[1][1]!.body)).not.toContain('Private receiver');
     expect(store.getCase('case')!.decision).toEqual(before);
+    const originalTransport = fetcher.getMockImplementation()!;
+    fetcher.mockImplementation(async (...args) => {
+      const response = await originalTransport(...args);
+      if (String(args[0]).endsWith('/completions')) await writeFile(join(root, 'si.txt'), 'Shipper: Changed while provider was running');
+      return response;
+    });
+    const changed = await request(body);
+    expect(changed.status).toBe(409);
+    expect(await changed.json()).toEqual({ error: 'SOURCE_EVIDENCE_CHANGED' });
+
     store.saveDecision('case', { ...before!, decisionVersion: 2, fieldResults: [{ field: 'shipper', outcome: 'MATCH' }] });
     expect((await request({ ...body, decisionVersion: 2 })).status).toBe(422);
   } finally { store.close(); await rm(root, { recursive: true, force: true }); }
