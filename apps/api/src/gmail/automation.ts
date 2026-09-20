@@ -11,8 +11,9 @@ import { collectGmailEvidence, GmailResumeStore, planMissingEvidence, type Colle
 import { verifyOperationalEvidence } from './evidence-validation.js';
 import { GmailAuthorizationError } from './oauth.js';
 import { composeDraft } from '../drafts.js';
+import { compareDocuments } from '../documents/comparison.js';
 
-export interface GmailAutomationOptions { store: Store; service: ClassificationService; client: GmailClient; attachmentRoot: string; enabled: boolean; documentationContact?: string }
+export interface GmailAutomationOptions { store: Store; service: ClassificationService; client: GmailClient; attachmentRoot: string; enabled: boolean; documentationContact?: string; automaticComparison?: boolean }
 export interface GmailSyncResult { processed: number; skipped: number; errors: { threadId: string; code: string }[]; nextPageToken?: string }
 interface Snapshot { sourceVersion: string; latest: DecodedGmailMessage; retrievalComplete: boolean }
 interface RetainedGoal { requestedAction: OperationalDecision['requestedAction']; documentExpectation: OperationalDecision['documentExpectation']; active?: boolean }
@@ -132,6 +133,13 @@ export class GmailAutomation {
             blockers: expectedNow ? [...new Set([...current.decision.blockers, 'MISSING_SI', 'MISSING_BL'])] : current.decision.blockers });
         }
       }
+    }
+    const ready = store.getCase(caseId)!;
+    if (this.options.automaticComparison && !evidence.truncated && ready.decision?.nextAction === 'RECOVER_FIELDS'
+      && ready.decision.requestedAction === 'VERIFY_DOCUMENTS' && ready.decision.documentExpectation === 'EXPECTED_NOW'
+      && !ready.decision.blockers.length) {
+      const comparison = await compareDocuments(ready, this.options.attachmentRoot);
+      if (!store.saveDocumentComparison(caseId, comparison.decision, comparison.evidence)) throw new Error('Comparison source changed');
     }
     if (previous?.sourceVersion !== record.sourceVersion) store.emit('gmail.case.resumed', caseId, { sourceVersion: record.sourceVersion, sourceMessageId: latest.raw.id });
     await this.prepareDecision(caseId);

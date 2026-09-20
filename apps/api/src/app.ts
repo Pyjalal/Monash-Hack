@@ -17,6 +17,7 @@ import type { GmailPoller } from './gmail/polling.js';
 import { draftCase, DraftError } from './drafts.js';
 import { RecoveryError, type TextRecovery } from './ai/text-recovery.js';
 import { readAttachment } from './documents/index.js';
+import { compareDocuments } from './documents/comparison.js';
 
 export type AppOptions = { store: Store; service: ClassificationService; dashboardToken: string; datasetRoot?: string; allowedOrigins?: string[];
   documentationContact?: string;
@@ -125,6 +126,34 @@ export function createApp(options: AppOptions): Hono {
       catch { store.emit('outbound.blocked', id, { code: 'REPLY_VALIDATION_FAILED' }); return c.json({ saved: true, outbound: 'blocked', error: 'REPLY_VALIDATION_FAILED' }, 422); }
     }
     return c.json({ saved: true });
+  });
+  app.get('/cases/:id/comparison', c => {
+    const evidence = store.getDocumentComparison(c.req.param('id'));
+    return evidence ? c.json(evidence) : c.json({ error: 'NOT_FOUND' }, 404);
+  });
+  app.post('/cases/:id/compare', async c => {
+    const parsed = z.object({ sourceVersion: z.string().min(1), decisionVersion: z.number().int().positive() }).strict().safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'INVALID_COMPARISON_REQUEST' }, 400);
+    const record = store.getCase(c.req.param('id'));
+    if (!record) return c.json({ error: 'NOT_FOUND' }, 404);
+    const prior = record.decision;
+    if (!prior || record.sourceVersion !== parsed.data.sourceVersion || prior.decisionVersion !== parsed.data.decisionVersion) return c.json({ error: 'STALE_DECISION' }, 409);
+    if (prior.category !== 'BL_COMPARISON' || prior.requestedAction !== 'VERIFY_DOCUMENTS' || prior.documentExpectation !== 'EXPECTED_NOW'
+      || prior.blockers.some(code => ['THREAD_CONTEXT_REQUIRED', 'UNCERTAIN_INTENT', 'LOW_CATEGORY_CONFIDENCE', 'CATEGORY_EXPECTATION_CONFLICT'].includes(code))) return c.json({ error: 'COMPARISON_INTENT_UNVERIFIED' }, 422);
+    const root = record.email.id.startsWith('gmail:') ? options.gmailAttachmentRoot : options.datasetRoot;
+    if (!root) return c.json({ error: 'EVIDENCE_READER_NOT_CONFIGURED' }, 503);
+    const comparison = await compareDocuments(record, root);
+    if (record.email.id.startsWith('gmail:')) {
+      if (!options.gmail) return c.json({ error: 'GMAIL_NOT_CONFIGURED' }, 503);
+      try { await options.gmail.validateDecision(record.email.id, comparison.decision); }
+      catch { return c.json({ error: 'SOURCE_EVIDENCE_VALIDATION_FAILED' }, 422); }
+    }
+    if (!store.saveDocumentComparison(record.email.id, comparison.decision, comparison.evidence)) return c.json({ error: 'STALE_DECISION' }, 409);
+    if (record.email.id.startsWith('gmail:') && options.gmail) {
+      try { await options.gmail.processDecision(record.email.id); }
+      catch { return c.json({ saved: true, outbound: 'blocked', error: 'REPLY_VALIDATION_FAILED' }, 422); }
+    }
+    return c.json({ saved: true, decision: comparison.decision });
   });
   app.post('/cases/:id/draft', async c => {
     const parsed = z.object({ sourceVersion: z.string().min(1), decisionVersion: z.number().int().positive() }).strict().safeParse(await c.req.json().catch(() => null));

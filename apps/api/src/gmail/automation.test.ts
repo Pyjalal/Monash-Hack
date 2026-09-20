@@ -1,4 +1,4 @@
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, rm, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
@@ -16,7 +16,7 @@ function message(id: string, text: string, attachments: string[] = []): GmailMes
   } };
 }
 
-async function harness(enabled: boolean, initial: GmailMessage[] = [message('m1', 'Please send us the draft BL.')], attachmentBytes: Record<string, string> = {}) {
+async function harness(enabled: boolean, initial: GmailMessage[] = [message('m1', 'Please send us the draft BL.')], attachmentBytes: Record<string, string | Buffer> = {}, automaticComparison = false) {
   const root = await mkdtemp(join(tmpdir(), 'cargolens-gmail-'));
   const store = new Store(':memory:'); const messages = initial; const sent: string[] = [];
   const service = new ClassificationService({ store, configurationKey: 'fixture:v1', requestsPerMinute: 1200, classifier: async email => ({
@@ -28,16 +28,36 @@ async function harness(enabled: boolean, initial: GmailMessage[] = [message('m1'
     const url = String(input); let data: unknown;
     if (url.includes('oauth2.googleapis.com')) data = { access_token: 'fixture', expires_in: 3600 };
     else if (url.endsWith('/messages/send')) { sent.push(Buffer.from(JSON.parse(String(init?.body)).raw, 'base64url').toString()); data = { id: 'sent-' + sent.length, threadId: 'thread-1' }; }
-    else if (url.includes('/attachments/')) data = { data: Buffer.from(attachmentBytes[url.split('/').at(-1)!] ?? 'Shipper: ' + url.split('/').at(-1)).toString('base64url') };
+    else if (url.includes('/attachments/')) {
+      const bytes = attachmentBytes[url.split('/').at(-1)!] ?? 'Shipper: ' + url.split('/').at(-1);
+      data = { data: (typeof bytes === 'string' ? Buffer.from(bytes) : bytes).toString('base64url') };
+    }
     else if (url.includes('/threads/')) data = { id: 'thread-1', messages };
     else data = { messages: messages.map(value => ({ id: value.id, threadId: value.threadId })) };
     return new Response(JSON.stringify(data), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } });
-  const automation = new GmailAutomation({ store, service, client, attachmentRoot: root, enabled });
+  const automation = new GmailAutomation({ store, service, client, attachmentRoot: root, enabled, automaticComparison });
   return { automation, service, store, messages, sent, cleanup: async () => { store.close(); await rm(root, { recursive: true, force: true }); } };
 }
 
 describe('Gmail automation integration', () => {
+  it('automatically compares real image-only thread evidence and sends one verified confirmation', async () => {
+    const inbound = message('m1', 'Please verify these documents.', ['a1', 'a2']);
+    for (const part of inbound.payload!.parts!.slice(1)) part.mimeType = 'image/png';
+    const h = await harness(true, [inbound], {
+      a1: await readFile('apps/api/src/documents/testfixtures/ocr-comparison/a.png'),
+      a2: await readFile('apps/api/src/documents/testfixtures/ocr-comparison/b.png'),
+    }, true);
+    try {
+      expect((await h.automation.sync()).errors).toEqual([]);
+      const record = h.store.listCases()[0];
+      expect(record.decision?.workflowState).toBe('VERIFIED');
+      expect(h.store.getDocumentComparison(record.email.id)).not.toBeNull();
+      expect(h.automation.outbox()[0]).toMatchObject({ action: 'CONFIRM_MATCH', status: 'SENT' });
+      expect(h.sent).toHaveLength(1);
+      await h.automation.sync(); expect(h.sent).toHaveLength(1);
+    } finally { await h.cleanup(); }
+  }, 120_000);
   it('queues responsibility clarification for a draft request without asking the customer for the BL', async () => {
     const h = await harness(false);
     try {

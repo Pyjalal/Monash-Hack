@@ -34,7 +34,7 @@ const gmailAuthorization = gmailConfigured ? new GmailAuthorization({ store, cli
 const gmail = gmailConfigured ? new GmailAutomation({ store, service,
   client: new GmailClient({ clientId: process.env.GMAIL_CLIENT_ID!, clientSecret: process.env.GMAIL_CLIENT_SECRET!, refreshToken: () => gmailAuthorization!.refreshToken(), onAuthorizationRevoked: () => gmailAuthorization!.markRevoked(), mailboxAddress: process.env.GMAIL_MAILBOX_ADDRESS!,
     authorizedAdditionalRecipients: process.env.GMAIL_DOCUMENTATION_CONTACT ? [process.env.GMAIL_DOCUMENTATION_CONTACT] : [] }),
-  attachmentRoot: resolve(process.env.GMAIL_ATTACHMENT_ROOT ?? 'runtime/gmail-attachments'), enabled: gmailEnabled,
+  attachmentRoot: resolve(process.env.GMAIL_ATTACHMENT_ROOT ?? 'runtime/gmail-attachments'), enabled: gmailEnabled, automaticComparison: true,
   documentationContact: process.env.GMAIL_DOCUMENTATION_CONTACT }) : undefined;
 const gmailPoller = gmail ? new GmailPoller(store, gmail, process.env.GMAIL_MAILBOX_ADDRESS!, process.env.GMAIL_SYNC_QUERY) : undefined;
 const rules = new RuleService({ store, model, evaluator: createJevRuleEvaluator({ apiKey: process.env.TYPESAFE_API_KEY, model }) });
