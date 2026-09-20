@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-20T09:15:16.989Z",
+  "scope": "Source readability only; no field comparison, vision call, or outbound authorization.",
+  "observations": [
+    {
+      "key": "email_511_SI",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_511_SI.txt",
+      "sha256": "ffbdf37f9b827e098379b1b1845af44c751066d8d2b50dc429a9ac2c4a519fb1",
+      "filenameInvariant": true,
+      "nativeStatus": "READABLE",
+      "readerProfile": "native",
+      "unresolvedPages": [],
+      "averageConfidence": null,
+      "ocrError": null
+    },
+    {
+      "key": "email_511_BL",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_511_BL.pdf",
+      "sha256": "3fbaeb7389c9d13ffccecebc432c1d72fbcdb47841d06a077fb764780d178dee",
+      "filenameInvariant": true,
+      "nativeStatus": "PARSE_ERROR",
+      "readerProfile": "ocr_blocked",
+      "unresolvedPages": [],
+      "averageConfidence": null,
+      "ocrError": "ocr_failed"
+    },
+    {
+      "key": "email_512_SI",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_512_SI.pdf",
+      "sha256": "63b8ae6368fdbd1a2410d1354166cc75eb4776c3cc023f40e38057f62fa27edb",
+      "filenameInvariant": true,
+      "nativeStatus": "OCR_REQUIRED",
+      "readerProfile": "ocr_recovered",
+      "unresolvedPages": [],
+      "averageConfidence": 83.56,
+      "ocrError": null
+    },
+    {
+      "key": "email_512_BL",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_512_BL.pdf",
+      "sha256": "71b23cd364f1efd8578fc29ab02c5e1a99876c183a74ef994859eec46e400b4f",
+      "filenameInvariant": true,
+      "nativeStatus": "OCR_REQUIRED",
+      "readerProfile": "ocr_recovered",
+      "unresolvedPages": [],
+      "averageConfidence": 77.27,
+      "ocrError": null
+    },
+    {
+      "key": "email_513_SI",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_513_SI.pdf",
+      "sha256": "c98a4945de75e903932957c81a6f55efe32d403ad1777cbdaf2fabf3e9a3e049",
+      "filenameInvariant": true,
+      "nativeStatus": "OCR_REQUIRED",
+      "readerProfile": "ocr_recovered",
+      "unresolvedPages": [],
+      "averageConfidence": 82.74,
+      "ocrError": null
+    },
+    {
+      "key": "email_513_BL",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_513_BL.pdf",
+      "sha256": "45bbd0ce9c2b8e9cd25d7fa844a8a66966037228e3f1cf965c66feaba9ae5501",
+      "filenameInvariant": true,
+      "nativeStatus": "OCR_REQUIRED",
+      "readerProfile": "ocr_recovered",
+      "unresolvedPages": [],
+      "averageConfidence": 81.26,
+      "ocrError": null
+    },
+    {
+      "key": "email_514_SI",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_514_SI.pdf",
+      "sha256": "008657118b19c99e8d92cb9a43e0bdbd0339bcfc94d101abeea21795dc8374b2",
+      "filenameInvariant": true,
+      "nativeStatus": "OCR_REQUIRED",
+      "readerProfile": "ocr_recovered",
+      "unresolvedPages": [],
+      "averageConfidence": 77.71,
+      "ocrError": null
+    },
+    {
+      "key": "email_514_BL",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_514_BL.pdf",
+      "sha256": "df4092e9cd70592a9e524756aa19d3a7e15808cbb53a6baf597866322d18cfce",
+      "filenameInvariant": true,
+      "nativeStatus": "OCR_REQUIRED",
+      "readerProfile": "ocr_recovered",
+      "unresolvedPages": [],
+      "averageConfidence": 80.31,
+      "ocrError": null
+    },
+    {
+      "key": "email_515_SI",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_515_SI.txt",
+      "sha256": "2e446f432eea5e9350e3aa92abd73e507ab169107404e974a2a552f06077a784",
+      "filenameInvariant": true,
+      "nativeStatus": "READABLE",
+      "readerProfile": "native",
+      "unresolvedPages": [],
+      "averageConfidence": null,
+      "ocrError": null
+    },
+    {
+      "key": "email_515_BL",
+      "source": "training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_515_BL.pdf",
+      "sha256": "57988629f5664ff0b6020858195b6b1ba0bb82ca5d0f38ac21176e9b148245e2",
+      "filenameInvariant": true,
+      "nativeStatus": "PARSE_ERROR",
+      "readerProfile": "ocr_blocked",
+      "unresolvedPages": [],
+      "averageConfidence": null,
+      "ocrError": "ocr_failed"
+    },
+    {
+      "key": "independent_empty",
+      "source": "apps/api/src/documents/testfixtures/ocr-verification/a.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "filenameInvariant": true,
+      "nativeStatus": "EMPTY",
+      "readerProfile": "native_blocked",
+      "unresolvedPages": [],
+      "averageConfidence": null,
+      "ocrError": null
+    },
+    {
+      "key": "independent_corrupt",
+      "source": "apps/api/src/documents/testfixtures/ocr-verification/b.pdf",
+      "sha256": "66bb65a9304a410b8b3ce757fcc00d69970e14795acefb05ac3f85b1fef90b74",
+      "filenameInvariant": true,
+      "nativeStatus": "PARSE_ERROR",
+      "readerProfile": "ocr_blocked",
+      "unresolvedPages": [],
+      "averageConfidence": null,
+      "ocrError": "ocr_failed"
+    },
+    {
+      "key": "independent_blank_image",
+      "source": "apps/api/src/documents/testfixtures/ocr-verification/c.png",
+      "sha256": "1b639d4ed78f5136490f7f5b47e0027dd3676f4782b16df9a52fb62e2f09ec31",
+      "filenameInvariant": true,
+      "nativeStatus": "UNSUPPORTED",
+      "readerProfile": "ocr_blocked",
+      "unresolvedPages": [
+        1
+      ],
+      "averageConfidence": null,
+      "ocrError": null
+    },
+    {
+      "key": "independent_readable_image",
+      "source": "apps/api/src/documents/testfixtures/ocr-verification/d.png",
+      "sha256": "87349aa3ffb9f99d9b199400e0c841acba4e3ea85735db0ceb8ccd85f60b5e0d",
+      "filenameInvariant": true,
+      "nativeStatus": "UNSUPPORTED",
+      "readerProfile": "ocr_recovered",
+      "unresolvedPages": [],
+      "averageConfidence": 95.78,
+      "ocrError": null
+    },
+    {
+      "key": "independent_garbled",
+      "source": "apps/api/src/documents/testfixtures/ocr-verification/e.txt",
+      "sha256": "a2d23c65e33b65aaa4fd61cc5e499f2df5c4e8c5b8d1bf831ad79f1f58c86309",
+      "filenameInvariant": true,
+      "nativeStatus": "GARBLED",
+      "readerProfile": "native_partial",
+      "unresolvedPages": [],
+      "averageConfidence": null,
+      "ocrError": null
+    }
+  ]
+}
