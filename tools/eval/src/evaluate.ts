@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { createHash, randomUUID } from 'node:crypto';
 import { readFile, writeFile, mkdir, realpath } from 'node:fs/promises';
-import { resolve, relative, isAbsolute } from 'node:path';
+import { resolve, relative, isAbsolute, dirname } from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { parseArgs } from 'node:util';
@@ -14,7 +14,7 @@ import { createJevProvider } from '../../../apps/api/src/ai/jev.js';
 import { createJevBatchProvider } from '../../../apps/api/src/ai/jev-batch.js';
 import { verifyOperationalEvidence } from '../../../apps/api/src/gmail/evidence-validation.js';
 import { exportCases, EXPORT_VERSION } from './export.js';
-import { adjudicate, DisputeLedgerSchema, targetMetrics } from './disputes.js';
+import { adjudicate, DisputeLedgerSchema, targetMetrics, validateDisputeEvidence } from './disputes.js';
 import { classificationMetrics, groupedSplit, templateGroup, quantile } from './metrics.js';
 import { INDEPENDENT_CASES } from './independent.js';
 import { evaluationDiagnostics } from './diagnostics.js';
@@ -85,12 +85,7 @@ async function main() {
   await freeze(resolve(output, 'independent-frozen.json'), INDEPENDENT_CASES);
   const ledger = values.disputes ? DisputeLedgerSchema.parse(JSON.parse(await readFile(resolve(values.disputes), 'utf8'))) : { version: 1 as const, datasetSha256, entries: [] };
   if (ledger.datasetSha256 !== datasetSha256) throw new Error('Dispute ledger belongs to a different dataset');
-  for (const entry of ledger.entries) for (const span of entry.evidence) {
-    const bytes = await sourceBytes(root, span.path);
-    if (span.path.replaceAll('\\', '/').endsWith('ground_truth.json') || sha(bytes) !== span.sha256 || bytes.toString('utf8').slice(span.start, span.end) !== span.text) throw new Error('Dispute evidence must be an exact source span, not a model disagreement or label');
-    const email = emails.find(row => row.id === entry.emailId);
-    if (!email || ![`inbox/${entry.emailId}.json`, ...email.attachments.map(attachment => attachment.relativePath)].includes(span.path.replaceAll('\\', '/'))) throw new Error('Dispute evidence is not attached to the cited email');
-  }
+  await validateDisputeEvidence(ledger, root, emails, dirname(resolve(values.disputes ?? 'ledger.json')));
   const adjudicated = adjudicate(truth, ledger);
   await freeze(resolve(output, 'disputes-frozen.json'), ledger);
   await json(resolve(output, 'optimization-targets.json'), { datasetSha256, truthSha256: sha(truthBytes), excluded: adjudicated.excluded,
