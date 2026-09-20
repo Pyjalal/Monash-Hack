@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CargoLens settings</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; --bg: #f4f0f4; --surface: #fdfafd; --wash: #eae1e8; --ink: #342732; --muted: #735e70; --accent: #754369; --ok: #35684f; --line: #cdbdca; }
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--ink); margin: 0; font-size: 14px; line-height: 1.45; }
+    .page { margin: 0 auto; max-width: 860px; padding: 28px 20px 120px; }
+    header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+    h1 { font-size: 24px; letter-spacing: -.01em; margin: 0; }
+    h1 small { color: var(--muted); display: block; font-size: 13px; font-weight: 500; letter-spacing: 0; margin-top: 4px; }
+    h2 { font-size: 15px; margin: 0; }
+    .card { background: var(--surface); border: 1px solid var(--wash); border-radius: 16px; margin-bottom: 16px; padding: 18px 20px; }
+    .card > p.lead { color: var(--muted); font-size: 13px; margin: 4px 0 14px; }
+    .row { align-items: center; display: flex; gap: 14px; justify-content: space-between; padding: 10px 0; }
+    .row + .row { border-top: 1px solid var(--wash); }
+    .row .text { flex: 1; }
+    .row .text strong { display: block; font-weight: 650; }
+    .row .text span { color: var(--muted); font-size: 12.5px; }
+    label.field { color: var(--muted); display: block; font-size: 11px; font-weight: 700; letter-spacing: .05em; margin: 12px 0 5px; text-transform: uppercase; }
+    input[type="url"], input[type="text"], textarea, select { background: #fff; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); font: inherit; padding: 8px 10px; width: 100%; }
+    textarea { min-height: 72px; resize: vertical; }
+    input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .switch { appearance: none; background: var(--line); border: 0; border-radius: 999px; cursor: pointer; flex: none; height: 22px; margin: 0; position: relative; transition: background .15s; width: 40px; }
+    .switch::after { background: #fff; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,.2); content: ""; height: 18px; left: 2px; position: absolute; top: 2px; transition: transform .15s; width: 18px; }
+    .switch:checked { background: var(--accent); }
+    .switch:checked::after { transform: translateX(18px); }
+    .pill { background: var(--wash); border-radius: 999px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 4px 10px; text-transform: uppercase; white-space: nowrap; }
+    .pill.ok { background: #e2efe7; color: var(--ok); }
+    .pill.error { background: #f3e2ee; color: var(--accent); }
+    .pill.accent { background: var(--accent); color: var(--surface); }
+    button { background: var(--accent); border: 0; border-radius: 9px; color: var(--surface); cursor: pointer; font: inherit; font-weight: 700; padding: 9px 14px; }
+    button.secondary { background: var(--wash); color: var(--ink); }
+    button.ghost { background: transparent; color: var(--accent); padding: 6px 8px; }
+    button:disabled { cursor: default; opacity: .55; }
+    .actions { display: flex; gap: 8px; margin-top: 12px; }
+    .inline { align-items: center; display: flex; gap: 10px; }
+    .slider { align-items: center; display: grid; gap: 10px; grid-template-columns: 1fr auto; }
+    input[type="range"] { accent-color: var(--accent); width: 100%; }
+    .rule { border: 1px solid var(--wash); border-radius: 12px; margin-top: 12px; padding: 12px 14px; }
+    .rule.disabled { opacity: .72; }
+    .rule .head { align-items: center; display: flex; gap: 12px; }
+    .rule .head .text { flex: 1; }
+    .rule .body { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; margin-top: 12px; }
+    .rule .body .wide { grid-column: 1 / -1; }
+    .rule .condition { color: var(--muted); font-size: 12.5px; margin: 6px 0 0; }
+    .rule details summary { color: var(--accent); cursor: pointer; font-size: 12.5px; font-weight: 650; margin-top: 8px; }
+    .bar { background: var(--wash); border-radius: 999px; height: 8px; overflow: hidden; }
+    .bar i { background: var(--accent); display: block; height: 100%; }
+    .result { align-items: center; display: grid; gap: 10px; grid-template-columns: 200px 1fr 48px auto; padding: 6px 0; }
+    .result .fired { color: var(--ok); font-size: 12px; font-weight: 700; }
+    .result .quiet { color: var(--muted); font-size: 12px; }
+    footer { background: rgba(253,250,253,.94); backdrop-filter: blur(8px); border-top: 1px solid var(--wash); bottom: 0; left: 0; position: fixed; right: 0; }
+    footer .inner { align-items: center; display: flex; gap: 14px; justify-content: space-between; margin: 0 auto; max-width: 860px; padding: 12px 20px; }
+    .status { color: var(--muted); font-size: 12.5px; margin: 0; min-height: 18px; }
+    .status.ok { color: var(--ok); }
+    .status.error { color: var(--accent); }
+    kbd { background: var(--wash); border-radius: 5px; font: 600 11px ui-monospace, monospace; padding: 2px 6px; }
+    @media (max-width: 640px) { .rule .body { grid-template-columns: 1fr; } .result { grid-template-columns: 1fr 1fr 48px; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>CargoLens<small>Preview, triage and smart filters for your shipping inbox</small></h1>
+      <span class="pill" id="health-pill">Checking API</span>
+    </header>
+
+    <section class="card" aria-labelledby="preview-heading">
+      <div class="row">
+        <div class="text"><h2 id="preview-heading">Preview badges</h2><span>Classify visible inbox rows with Jev. Toggle any time with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>.</span></div>
+        <input class="switch" id="enabled" type="checkbox" aria-label="Enable CargoLens previews">
+      </div>
+      <label class="field" for="api-url">Local API URL</label>
+      <div class="inline">
+        <input id="api-url" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="http://127.0.0.1:3001">
+        <button class="secondary" id="health" type="button">Check</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="inbox-heading">
+      <h2 id="inbox-heading">Inbox actions</h2>
+      <p class="lead">Nothing is deleted or moved in your mailbox. CargoLens only changes what the inbox list shows; hidden rows can be brought back from the tray.</p>
+      <div class="row">
+        <div class="text"><strong>Hide spam rows</strong><span>Rows Jev classifies as spam disappear from the list. A phishing “customs hold” stays hidden even if a filter below would pin it.</span></div>
+        <input class="switch" id="hide-spam" type="checkbox" aria-label="Hide spam rows">
+      </div>
+      <div class="row" id="spam-threshold-row">
+        <div class="text slider" style="width:100%">
+          <input id="spam-threshold" type="range" min="50" max="99" step="1" aria-label="Spam confidence required before hiding">
+          <span id="spam-threshold-label" class="pill">80%</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="text"><strong>Pin urgent rows to the top</strong><span>Rows Jev rates as “today” or “blocking” move above the rest of the visible list, most urgent first.</span></div>
+        <input class="switch" id="pin-urgent" type="checkbox" aria-label="Pin urgent rows to the top">
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="rules-heading">
+      <div class="row" style="padding-top:0">
+        <div class="text"><h2 id="rules-heading">Smart filters</h2><span>Each filter is a plain-language condition that Jev judges for every visible row. Choose what happens when it fires. Actions and sensitivity apply instantly; only the wording costs a new judgment.</span></div>
+        <span class="pill" id="rule-count">0 of 8</span>
+      </div>
+      <div id="rules"></div>
+      <div class="actions">
+        <button class="secondary" id="add-rule" type="button">Add custom filter</button>
+        <button class="ghost" id="reset-presets" type="button">Restore preset wording</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="test-heading">
+      <h2 id="test-heading">Try it on a message</h2>
+      <p class="lead">Paste a subject and the first lines of an email to see how every filter scores it against the saved API. Nothing is stored.</p>
+      <label class="field" for="test-subject">Subject</label>
+      <input id="test-subject" type="text" placeholder="Customs hold on MSKU1234567 – packing list missing">
+      <label class="field" for="test-snippet">Snippet</label>
+      <textarea id="test-snippet" placeholder="Container is on hold pending the missing packing list. Please send today."></textarea>
+      <div class="actions">
+        <button id="run-test" type="button">Score with Jev</button>
+        <button class="ghost" id="sample-test" type="button">Use a sample</button>
+      </div>
+      <div id="test-results" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="inner">
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <div class="actions" style="margin:0">
+        <button class="secondary" id="revert" type="button">Revert</button>
+        <button id="save" type="button">Save settings</button>
+      </div>
+    </div>
+  </footer>
+  <script src="options.js"></script>
+</body>
+</html>
