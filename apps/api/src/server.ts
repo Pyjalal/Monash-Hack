@@ -5,21 +5,30 @@ import { serve } from '@hono/node-server';
 import { questionVersion } from '@cargolens/shared/questions';
 import { createJevProvider } from './ai/jev.js';
 import { createJevBatchProvider } from './ai/jev-batch.js';
+import { createOpenRouterJevBatchProvider, createOpenRouterJevProvider } from './ai/openrouter.js';
 import { createApp } from './app.js';
 import { ClassificationService } from './pipeline.js';
 import { Store } from './store.js';
 import { GmailAutomation, GmailClient } from './gmail/index.js';
 
-if (!process.env.TYPESAFE_API_KEY || !process.env.DASHBOARD_TOKEN) throw new Error('Set TYPESAFE_API_KEY and DASHBOARD_TOKEN in the local .env file');
+if (!process.env.DASHBOARD_TOKEN) throw new Error('Set DASHBOARD_TOKEN in the local .env file');
 const dbPath = resolve(process.env.DATABASE_PATH ?? 'runtime/cargolens.sqlite');
 mkdirSync(dirname(dbPath), { recursive: true });
 const store = new Store(dbPath);
-const model = process.env.TYPESAFE_MODEL ?? 'jev-1.13.0';
+const aiProvider = process.env.AI_PROVIDER ?? 'typesafe';
+if (aiProvider !== 'typesafe' && aiProvider !== 'openrouter') throw new Error('AI_PROVIDER must be typesafe or openrouter');
+if (aiProvider === 'typesafe' && !process.env.TYPESAFE_API_KEY) throw new Error('Set TYPESAFE_API_KEY when AI_PROVIDER=typesafe');
+if (aiProvider === 'openrouter' && !process.env.OPENROUTER_API_KEY) throw new Error('Set OPENROUTER_API_KEY when AI_PROVIDER=openrouter');
+const model = aiProvider === 'openrouter' ? process.env.OPENROUTER_MODEL ?? 'typesafe/jev-1.13' : process.env.TYPESAFE_MODEL ?? 'jev-1.13.0';
 const variant = process.env.JEV_PROMPT_VARIANT === 'concise' ? 'concise' : 'boundaries';
-const provider = createJevProvider({ apiKey: process.env.TYPESAFE_API_KEY, model, variant, mode: 'full' });
-const batch = createJevBatchProvider({ apiKey: process.env.TYPESAFE_API_KEY, model, variant, mode: 'full' });
+const provider = aiProvider === 'openrouter'
+  ? createOpenRouterJevProvider({ apiKey: process.env.OPENROUTER_API_KEY!, model, variant, mode: 'full' })
+  : createJevProvider({ apiKey: process.env.TYPESAFE_API_KEY!, model, variant, mode: 'full' });
+const batch = aiProvider === 'openrouter'
+  ? createOpenRouterJevBatchProvider({ apiKey: process.env.OPENROUTER_API_KEY!, model, variant, mode: 'full' })
+  : createJevBatchProvider({ apiKey: process.env.TYPESAFE_API_KEY!, model, variant, mode: 'full' });
 const service = new ClassificationService({ store, classifier: provider.classify, batchClassifier: batch.classifyBatch,
-  configurationKey: `${model}:${questionVersion(variant, 'full')}:packed-v1`, batchSize: Number(process.env.JEV_BATCH_SIZE ?? 8),
+  configurationKey: `${aiProvider}:${model}:${questionVersion(variant, 'full')}:packed-v1`, batchSize: Number(process.env.JEV_BATCH_SIZE ?? 8),
   concurrency: Number(process.env.JEV_CONCURRENCY ?? 8), requestsPerMinute: Number(process.env.JEV_REQUESTS_PER_MINUTE ?? 1100) });
 const gmailEnabled = process.env.GMAIL_AUTOMATION_ENABLED === 'true';
 const gmailConfigured = [process.env.GMAIL_CLIENT_ID, process.env.GMAIL_CLIENT_SECRET, process.env.GMAIL_REFRESH_TOKEN, process.env.GMAIL_MAILBOX_ADDRESS].every(Boolean);

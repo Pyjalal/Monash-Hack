@@ -11,7 +11,7 @@ npm ci
 cp .env.example .env
 ```
 
-Set `TYPESAFE_API_KEY` and replace `DASHBOARD_TOKEN` with a long random token in `.env`, then run:
+Set `DASHBOARD_TOKEN` to a long random token and choose one Jev transport in `.env`: `AI_PROVIDER=typesafe` with `TYPESAFE_API_KEY` (the default), or `AI_PROVIDER=openrouter` with `OPENROUTER_API_KEY` and `OPENROUTER_MODEL=typesafe/jev-1.13`. Then run:
 
 ```sh
 npm run dev

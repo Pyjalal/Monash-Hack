@@ -4,6 +4,7 @@ import { dirname, resolve } from "node:path";
 import { TypeSafeClient, choice, type Questions } from "@typesafe-ai/sdk";
 import { FIELD_NAMES, SubmissionSchema, type Attachment, type Category, type Email, type Submission } from "@cargolens/shared";
 import { createJevBatchProvider } from "../../../apps/api/src/ai/jev-batch.js";
+import { createOpenRouterDecisionClient, createOpenRouterJevBatchProvider } from "../../../apps/api/src/ai/openrouter.js";
 import { loadDataset } from "../../../apps/api/src/dataset.js";
 import { readAttachment, type AttachmentReadResult, type LabelValueCandidate } from "../../../apps/api/src/documents/index.js";
 
@@ -18,7 +19,9 @@ const defaultClassification = resolve("outputs/jev-classification-submission.jso
 const defaultDetails = resolve("outputs/jev-classification-details.json");
 const defaultPipeline = resolve("outputs/jev-full-pipeline-submission.json");
 const defaultPipelineDetails = resolve("outputs/jev-extraction-details.json");
-const model = process.env.TYPESAFE_MODEL ?? "jev-1.13.0";
+const aiProvider = process.env.AI_PROVIDER ?? "typesafe";
+if (aiProvider !== "typesafe" && aiProvider !== "openrouter") throw new Error("AI_PROVIDER must be typesafe or openrouter");
+const model = aiProvider === "openrouter" ? process.env.OPENROUTER_MODEL ?? "typesafe/jev-1.13" : process.env.TYPESAFE_MODEL ?? "jev-1.13.0";
 
 function positiveInteger(value: string | undefined, name: string, fallback: number): number {
   if (value === undefined) return fallback;
@@ -78,10 +81,12 @@ function benchmarkCategory(value: Category): Exclude<Category, "UNCERTAIN"> {
 
 async function classify(): Promise<void> {
   const options = argumentsFor("classify");
-  const key = process.env.TYPESAFE_API_KEY;
-  if (!key) throw new Error("TYPESAFE_API_KEY is required");
+  const key = aiProvider === "openrouter" ? process.env.OPENROUTER_API_KEY : process.env.TYPESAFE_API_KEY;
+  if (!key) throw new Error(aiProvider === "openrouter" ? "OPENROUTER_API_KEY is required" : "TYPESAFE_API_KEY is required");
   const emails = await loadDataset(options.root);
-  const provider = createJevBatchProvider({ apiKey: key, model, variant: "boundaries", mode: "full" });
+  const provider = aiProvider === "openrouter"
+    ? createOpenRouterJevBatchProvider({ apiKey: key, model, variant: "boundaries", mode: "full" })
+    : createJevBatchProvider({ apiKey: key, model, variant: "boundaries", mode: "full" });
   const batches = Array.from({ length: Math.ceil(emails.length / options.batchSize) }, (_, index) => emails.slice(index * options.batchSize, (index + 1) * options.batchSize));
   const rows = await mapLimited(batches, options.concurrency, async batch => provider.classifyBatch(batch));
   const classifications = rows.flatMap(row => row.classifications);
@@ -90,7 +95,7 @@ async function classify(): Promise<void> {
   }])));
   await Promise.all([
     writeJson(options.output, submission),
-    writeJson(options.details, { createdAt: new Date().toISOString(), model, questionVersion: rows[0]?.questionVersion ?? null,
+    writeJson(options.details, { createdAt: new Date().toISOString(), provider: aiProvider, model, questionVersion: rows[0]?.questionVersion ?? null,
       usage: rows.reduce((total, row) => ({ input_tokens: total.input_tokens + row.usage.input_tokens, output_tokens: total.output_tokens + row.usage.output_tokens }), { input_tokens: 0, output_tokens: 0 }),
       classifications }),
   ]);
@@ -162,7 +167,9 @@ function normalise(field: FieldName, value: string | null): string | null {
   return compact.replace(/\s*\([A-Z]{5}\)\s*$/, "").replace(/[^A-Z0-9]+/g, " ").trim();
 }
 
-async function extract(email: Email, root: string, client: TypeSafeClient) {
+interface DecisionClient { systemOne(input: { state: unknown; questions: Questions }, request: { signal?: AbortSignal }): Promise<unknown> }
+
+async function extract(email: Email, root: string, client: DecisionClient) {
   const documents = await documentsFor(email, root);
   if (!documents.si || !documents.bl) return { email_id: email.id, review_reason: "missing_attachment" as const, documents, defect_fields: [] as FieldName[] };
   if (documents.si.reading.status !== "READABLE" || documents.bl.reading.status !== "READABLE") return { email_id: email.id, review_reason: "unreadable" as const, documents, defect_fields: [] as FieldName[] };
@@ -185,10 +192,13 @@ async function extract(email: Email, root: string, client: TypeSafeClient) {
 }
 
 async function pipeline(): Promise<void> {
-  const options = argumentsFor("pipeline"); const key = process.env.TYPESAFE_API_KEY;
-  if (!key) throw new Error("TYPESAFE_API_KEY is required");
+  const options = argumentsFor("pipeline"); const key = aiProvider === "openrouter" ? process.env.OPENROUTER_API_KEY : process.env.TYPESAFE_API_KEY;
+  if (!key) throw new Error(aiProvider === "openrouter" ? "OPENROUTER_API_KEY is required" : "TYPESAFE_API_KEY is required");
   const [emails, classifications] = await Promise.all([loadDataset(options.root), readFile(options.classification, "utf8").then(value => SubmissionSchema.parse(JSON.parse(value)))]);
-  const client = new TypeSafeClient({ apiKey: key, defaultModel: model, timeout: 15_000, retry: { maxRetries: 1 }, logLevel: "off" });
+  const typesafe = new TypeSafeClient({ apiKey: key, defaultModel: model, timeout: 15_000, retry: { maxRetries: 1 }, logLevel: "off" });
+  const client: DecisionClient = aiProvider === "openrouter"
+    ? createOpenRouterDecisionClient({ apiKey: key, model, timeoutMs: 15_000, maxRetries: 1 })
+    : { systemOne: (input, request) => typesafe.systemOne(input as never, request) };
   const selected = emails.filter(email => classifications[email.id]?.category === "BL_COMPARISON");
   const extracted = await mapLimited(selected, options.concurrency, email => extract(email, options.root, client));
   const byId = new Map(extracted.map(result => [result.email_id, result]));
@@ -201,7 +211,7 @@ async function pipeline(): Promise<void> {
       ? { category: classified.category, status: result.review_reason ? "NEEDS_REVIEW" : result.defect_fields.length ? "MISMATCH" : "OK", review_reason: result.review_reason, defect_fields: result.defect_fields, has_defect: result.defect_fields.length > 0 }
       : { category: classified.category, status: "OK", review_reason: null, defect_fields: [], has_defect: false };
   }
-  await Promise.all([writeJson(options.output, SubmissionSchema.parse(submission)), writeJson(options.details, { createdAt: new Date().toISOString(), model, selected: selected.length, extractions: extracted })]);
+  await Promise.all([writeJson(options.output, SubmissionSchema.parse(submission)), writeJson(options.details, { createdAt: new Date().toISOString(), provider: aiProvider, model, selected: selected.length, extractions: extracted })]);
   console.log(`Generated ${options.output} from ${selected.length} BL comparison cases`);
 }
 
