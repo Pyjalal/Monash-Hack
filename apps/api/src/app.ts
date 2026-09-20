@@ -151,6 +151,8 @@ export function createApp(options: AppOptions): Hono {
       const recovery = await options.textRecovery.recover({ caseId: record.email.id, sourceVersion: record.sourceVersion, attachmentId: attachment.id, sha256: reading.sha256, unresolvedFields: parsed.data.fields, regions });
       const current = store.getCase(record.email.id);
       if (current?.sourceVersion !== record.sourceVersion || current.decision?.decisionVersion !== parsed.data.decisionVersion) return c.json({ error: 'STALE_DECISION' }, 409);
+      const latestReading = await readAttachment({ root, relativePath: attachment.relativePath, mimeType: attachment.mimeType });
+      if (latestReading.status !== 'READABLE' || latestReading.sha256 !== reading.sha256) return c.json({ error: 'SOURCE_EVIDENCE_CHANGED' }, 409);
       return c.json({ recovery });
     } catch (error) {
       const code = error instanceof RecoveryError ? error.code : 'RECOVERY_FAILED';

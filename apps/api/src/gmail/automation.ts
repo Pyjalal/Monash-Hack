@@ -97,7 +97,7 @@ export class GmailAutomation {
       source_version=excluded.source_version,decoded_json=excluded.decoded_json,retrieval_complete=excluded.retrieval_complete,evidence_json=excluded.evidence_json,updated_at=excluded.updated_at`)
       .run(caseId, record.sourceVersion, JSON.stringify(latest.decoded), evidence.truncated ? 0 : 1,
         JSON.stringify(evidence.attachments.map(({ bytes: _bytes, ...source }) => source)), new Date().toISOString());
-    await service.processCase(email);
+    if (record.status !== 'classified' || !record.classification || !record.decision) await service.processCase(email);
     let current = store.getCase(caseId)!;
     if (!current.classification || !current.decision) throw new Error('Gmail classification failed');
     const storedGoal = store.db.prepare('SELECT goal_json FROM gmail_automation_goals WHERE case_id=?').get(caseId) as { goal_json: string } | undefined;
