@@ -38,6 +38,9 @@ export class Store {
       CREATE TABLE IF NOT EXISTS flows (id TEXT PRIMARY KEY, flow_json TEXT NOT NULL, updated_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS ai_requests (request_id TEXT PRIMARY KEY, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS rule_cache (key TEXT PRIMARY KEY, probability REAL NOT NULL, created_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS document_comparisons (case_id TEXT NOT NULL, source_version TEXT NOT NULL,
+        decision_version INTEGER NOT NULL, evidence_json TEXT NOT NULL, created_at TEXT NOT NULL,
+        PRIMARY KEY(case_id, source_version, decision_version));
     `);
   }
   close(): void { this.db.close(); }
@@ -87,6 +90,20 @@ export class Store {
   markFailed(id: string, sourceVersion: string, code: string): void {
     const changed = this.db.prepare("UPDATE cases SET status='failed',updated_at=? WHERE id=? AND source_version=?").run(new Date().toISOString(), id, sourceVersion).changes;
     if (changed) this.emit('case.failed', id, { code, sourceVersion });
+  }
+  saveDocumentComparison(id: string, decision: OperationalDecision, evidence: unknown): boolean {
+    return this.db.transaction(() => {
+      if (!this.saveDecision(id, decision)) return false;
+      this.db.prepare('INSERT INTO document_comparisons VALUES (?,?,?,?,?)')
+        .run(id, decision.sourceVersion, decision.decisionVersion, JSON.stringify(evidence), new Date().toISOString());
+      return true;
+    })();
+  }
+  getDocumentComparison(id: string): { sourceVersion: string; decisionVersion: number; evidence: unknown } | null {
+    const current = this.getCase(id);
+    const row = this.db.prepare('SELECT evidence_json FROM document_comparisons WHERE case_id=? AND source_version=? AND decision_version=?')
+      .get(id, current?.sourceVersion ?? '', current?.decision?.decisionVersion ?? 0) as { evidence_json: string } | undefined;
+    return row && current?.decision ? { sourceVersion: current.sourceVersion, decisionVersion: current.decision.decisionVersion, evidence: JSON.parse(row.evidence_json) } : null;
   }
   getCached(key: string): Classification | null {
     const row = this.db.prepare('SELECT result_json FROM classification_cache WHERE key=?').get(key) as {result_json: string} | undefined;

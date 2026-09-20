@@ -1,10 +1,22 @@
 import { OperationalDecisionSchema, type OperationalDecision } from '@cargolens/shared';
+import { compareDocuments } from '../documents/comparison.js';
 import type { CaseRecord } from '../store.js';
 import { readAttachment, type AttachmentReadResult } from '../documents/index.js';
 
 export async function verifyOperationalEvidence(record: CaseRecord, candidate: OperationalDecision, attachmentRoot: string): Promise<void> {
   const decision = OperationalDecisionSchema.parse(candidate);
   if (decision.sourceVersion !== record.sourceVersion) throw new Error('Source evidence decision is stale');
+  if (decision.fieldResults.some(field => [field.si, field.bl].some(span => span?.locator.startsWith('ocr:')))) {
+    const reproduced = await compareDocuments(record, attachmentRoot);
+    if (reproduced.decision.verificationState !== decision.verificationState
+      || reproduced.decision.pairValidated !== decision.pairValidated
+      || JSON.stringify(reproduced.decision.blockers) !== JSON.stringify(decision.blockers)
+      || JSON.stringify(reproduced.decision.fieldResults) !== JSON.stringify(decision.fieldResults)
+      || JSON.stringify(reproduced.decision.knownMismatches) !== JSON.stringify(decision.knownMismatches)) {
+      throw new Error('Recovered source comparison could not be independently verified');
+    }
+    return;
+  }
   if (decision.nextAction === 'REQUEST_AMENDMENT' && !decision.knownMismatches.length) throw new Error('Amendment requires established source mismatches');
   const fields = decision.verificationState === 'COMPLETE' || decision.nextAction === 'CONFIRM_MATCH'
     ? decision.fieldResults : decision.fieldResults.filter(field => decision.knownMismatches.includes(field.field));
