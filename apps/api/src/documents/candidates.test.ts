@@ -43,6 +43,15 @@ describe("sourced label/value candidates", () => {
     expect(candidates[1].source.valueSpans[0]).toMatchObject({ kind: "page", page: 2, text: "12" });
   });
 
+  it("recovers PDF-style aligned labels and their unindented continuation lines", () => {
+    const page = "Shipper   Acme Trading\nAddress line one\nAddress line two\nConsignee   Buyer Limited";
+    const input = { sha256: "a".repeat(64), text: page, spans: [{ kind: "page" as const, start: 0, end: page.length, page: 1, text: page }] };
+    expect(splitLabelValueCandidates(input).map(({ label, value }) => ({ label, value }))).toEqual([
+      { label: "Shipper", value: "Acme Trading\nAddress line one\nAddress line two" },
+      { label: "Consignee", value: "Buyer Limited" },
+    ]);
+  });
+
   it("uses adjacent spreadsheet cells and aligned next rows without crossing sheets", () => {
     const cells = [
       { text: "Weight", sheet: "Sheet A", cell: "A1" }, { text: "1250", sheet: "Sheet A", cell: "B1" },

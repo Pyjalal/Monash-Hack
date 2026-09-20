@@ -28,7 +28,7 @@ function isLabel(text: string): boolean {
 }
 
 function delimited(span: SourceSpan): { label: SourceSpan; value: SourceSpan } | null {
-  const match = /^(\s*)([^:=：\t\r\n]{1,120}?)(\s*(?:[:=：]|\t+)\s*)(.*)$/u.exec(span.text);
+  const match = /^(\s*)([^:=：\t\r\n]{1,120}?)(\s*(?:[:=：]|\t+| {2,})\s*)(.*)$/u.exec(span.text);
   if (!match) return null;
   const label = slice(span, match[1].length, match[1].length + match[2].trimEnd().length);
   if (!isLabel(label.text) || match[4].startsWith("//")) return null;
@@ -47,7 +47,7 @@ function candidate(input: CandidateInput, labelSpans: SourceSpan[], valueSpans: 
   return { id, label, value, pairing, source };
 }
 
-function lineCandidates(input: CandidateInput, lines: SourceSpan[]): LabelValueCandidate[] {
+function lineCandidates(input: CandidateInput, lines: SourceSpan[], allowUnindentedContinuation = false): LabelValueCandidate[] {
   const result: LabelValueCandidate[] = [];
   for (let index = 0; index < lines.length; index++) {
     const parsed = delimited(lines[index]);
@@ -56,7 +56,7 @@ function lineCandidates(input: CandidateInput, lines: SourceSpan[]): LabelValueC
     let next = index + 1;
     while (next < lines.length) {
       const line = lines[next];
-      if (!line.text.trim() || delimited(line) || (values.length > 0 && !/^\s/u.test(line.text))) break;
+      if (!line.text.trim() || delimited(line) || (values.length > 0 && !allowUnindentedContinuation && !/^\s/u.test(line.text))) break;
       const value = values.length ? slice(line, 0, line.text.trimEnd().length) : trimmed(line);
       values.push(value); next++;
     }
@@ -138,7 +138,7 @@ export function splitLabelValueCandidates(input: CandidateInput, options: Candid
   const lines = spans.filter(span => span.kind === "line");
   const candidates = lineCandidates(input, lines);
   if (options.adjacentParagraphs) candidates.push(...paragraphCandidates(input, lines));
-  for (const span of spans.filter(span => span.kind === "page")) candidates.push(...lineCandidates(input, pageLines(span)));
+  for (const span of spans.filter(span => span.kind === "page")) candidates.push(...lineCandidates(input, pageLines(span), true));
   candidates.push(...cellCandidates(input, spans.filter((span): span is Extract<SourceSpan, { kind: "cell" }> => span.kind === "cell")));
   return [...new Map(candidates.map(entry => [entry.id, entry])).values()].sort((a, b) => a.source.labelSpans[0].start - b.source.labelSpans[0].start);
 }

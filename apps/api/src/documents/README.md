@@ -29,6 +29,16 @@ Readability records Unicode letter/number counts, replacement characters and sus
 
 Run `npx vitest run apps/api/src/documents` for source-provenance and reader fixtures. Native readers do not call model providers or perform OCR.
 
+## Hybrid seven-field extraction
+
+`field-extraction.ts` adds a fail-closed fast path for the seven SI/BL comparison fields. It does not identify a format from a filename or from field positions. Instead, `assessExpectedFormat` requires a consistent document-role marker, exactly one reviewed label alias for every required field, and plausible numeric shapes for container count and gross weight.
+
+When that contract passes, extraction is deterministic and makes no model request. Missing or unfamiliar labels, duplicate labels, conflicting role markers, and malformed values mark only that document as out-of-template. `extractDocumentFields` then invokes its injected fallback extractor with bounded source-backed candidates. A fallback result is accepted only when the model identifies the expected role, selects candidate IDs that were actually supplied, returns all seven fields, and meets the configured confidence threshold (0.75 by default). It cannot introduce a free-text value. Anything else remains unresolved for review.
+
+The benchmark pipeline uses this hybrid path independently for SI and BL, so one expected-format document can stay deterministic while only its changed counterpart incurs a model call. The extraction detail JSON records the method, format assessment, drift reasons, candidate IDs, and confidence for later evaluation. `TYPESAFE_EXTRACTION_MODEL` or `OPENROUTER_EXTRACTION_MODEL` can select a separate low-cost typed-decision model without changing the classification model.
+
+The label alias list is a versioned extraction policy, not a self-learning dictionary. Add an alias only after representative documents and regression cases show that it has one unambiguous field meaning. Do not automatically promote an LLM result into the deterministic path.
+
 ## Optional OCR recovery
 
 Install the Python packages and Tesseract described in [the sidecar setup](../../../../tools/ocr-sidecar/README.md). Call the recovery reader explicitly:
