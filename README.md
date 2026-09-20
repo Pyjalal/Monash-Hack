@@ -39,7 +39,7 @@ npm run build:extension
 
 In Chrome's extension manager, enable Developer mode, choose **Load unpacked**, and select `apps/extension/dist`. Open the CargoLens popup to check the local API and enable previews. The supported inbox hosts are Gmail, Outlook Live and Outlook Office. `Ctrl+Shift+L` toggles previews. Reload existing mailbox tabs after loading or updating the extension.
 
-Badges classify visible subject/snippet text; the urgent tray provides shortcuts to native rows. No mailbox OAuth token is needed for these previews. Full-thread retrieval and outbound automation use the separate Gmail API connector below. Gmail and Outlook selectors still need checking against the team's actual mailbox layouts.
+Badges classify visible subject/snippet text; the urgent tray provides shortcuts to native rows. No mailbox OAuth token is needed for these previews. Full-thread retrieval and outbound automation use the separate Gmail API connector below. Gmail and Outlook Live were checked in signed-in Chrome on 2026-09-20. See [connector and adapter verification](docs/connector-verification.md) for tested layouts and remaining limitations.
 
 Successful previews are cached for five minutes in browser session storage, up to 200 entries. Cache keys include the mailbox context, local API endpoint, classifier revision and content fingerprint, and are stored as hashes. The cache stores classification metadata, not email subjects, senders or snippets. Changed content or classifier configuration triggers a new classification; **Retry** bypasses the cached result. API failures remain visible and are not cached as successful classifications.
 
@@ -55,11 +55,17 @@ The document-role/field comparator, OCR-aware field integration and vision escal
 
 ## Gmail configuration
 
-Add `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET`, `GMAIL_REFRESH_TOKEN` and `GMAIL_MAILBOX_ADDRESS` to `.env`. Obtain offline OAuth access with `gmail.readonly` and `gmail.send` scopes using Google's [web-server OAuth guide](https://developers.google.com/identity/protocols/oauth2/web-server) and [Gmail scopes](https://developers.google.com/workspace/gmail/api/auth/scopes).
+Add `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET`, `GMAIL_MAILBOX_ADDRESS` and `GMAIL_OAUTH_REDIRECT_URI` to `.env`. Register the exact callback URI in Google Cloud; the local default is `http://127.0.0.1:3001/gmail/oauth/callback`. The connector requests only `gmail.readonly` and `gmail.send`.
 
-`GMAIL_AUTOMATION_ENABLED=false` permits manual ingestion and queued-reply inspection without sending. Authenticated routes are `GET /gmail/status`, `POST /gmail/sync` with `{}`, `GET /gmail/outbox` and `POST /gmail/dispatch`. Enabling automation starts polling and dispatches eligible replies. Set `GMAIL_DOCUMENTATION_CONTACT` only to the responsible documentation contact: requests for a draft from us are routed there, or ask for clarification when responsibility is unknown. No BL is fabricated.
+With the server running, call authenticated `POST /gmail/oauth/start` using `Authorization: Bearer <DASHBOARD_TOKEN>`, then open the returned URL and consent with the configured mailbox. The server checks one-use state, PKCE, required scopes and mailbox identity before saving the refresh token encrypted in SQLite. Alternatively, an existing `GMAIL_REFRESH_TOKEN` seeds the encrypted store once. A disconnected or revoked connection is not silently re-enabled by that environment variable: reconnect through OAuth. Encryption is bound to the client secret and mailbox; rotating either requires reconnection. Keep both the environment file and runtime database private.
 
-Live Gmail has not been exercised yet; connector and delivery behavior have been verified with fixtures. Four configured OAuth values are required before enabling automation.
+Authenticated routes include `GET /gmail/status`, `POST /gmail/sync` with `{"maxMessages":1}`, `GET /gmail/outbox`, `POST /gmail/dispatch`, and `POST /gmail/disconnect`. The callback and generic connection-result page are public; administrative routes require the dashboard token. Sync returns a job ID; follow its completion or failure through `/events`.
+
+`GMAIL_POLL_ENABLED=true` enables bounded polling independently of sending. `GMAIL_SYNC_QUERY` defaults to inbox excluding spam and trash. The mailbox/query cursor survives restarts; failed pages are retried, invalid cursors restart the scan, and full rounds rescan for new replies. This is polling, not Gmail push/history synchronization.
+
+`GMAIL_AUTOMATION_ENABLED=false` permits ingestion and queued-reply inspection without sending. Setting it to true enables eligible dispatch during sync and through the dispatch route. Set `GMAIL_DOCUMENTATION_CONTACT` only to the responsible documentation contact: requests for a draft from us are routed there, or ask for clarification when responsibility is unknown. No BL is fabricated.
+
+Live read, full-thread ingestion, attachment bytes and classification were verified on 2026-09-20 with outbound sending disabled. Delivery remains covered by fixtures; no live email was sent during this verification.
 
 ## Verification and benchmarks
 
