@@ -22,8 +22,9 @@ const aiProvider = process.env.AI_PROVIDER ?? "typesafe";
 if (aiProvider !== "typesafe" && aiProvider !== "openrouter") throw new Error("AI_PROVIDER must be typesafe or openrouter");
 const model = aiProvider === "openrouter" ? process.env.OPENROUTER_MODEL ?? "typesafe/jev-1.13" : process.env.TYPESAFE_MODEL ?? "jev-1.13.0";
 const extractionModel = aiProvider === "openrouter"
-  ? process.env.OPENROUTER_EXTRACTION_MODEL ?? "nex-agi/nex-n2.5-pro:free"
+  ? process.env.OPENROUTER_EXTRACTION_MODEL ?? "deepseek/deepseek-v4-flash"
   : process.env.TYPESAFE_EXTRACTION_MODEL ?? model;
+const extractionProvider = aiProvider === "openrouter" ? process.env.OPENROUTER_EXTRACTION_PROVIDER ?? "streamlake/fp8" : null;
 
 function positiveInteger(value: string | undefined, name: string, fallback: number): number {
   if (value === undefined) return fallback;
@@ -179,7 +180,7 @@ function createFieldFallback(client: DecisionClient): FallbackExtractor {
   };
 }
 
-function createOpenRouterFieldFallback(apiKey: string, selectedModel: string): FallbackExtractor {
+function createOpenRouterFieldFallback(apiKey: string, selectedModel: string, selectedProvider: string): FallbackExtractor {
   const nullableSelection = {
     anyOf: [
       {
@@ -220,6 +221,8 @@ function createOpenRouterFieldFallback(apiKey: string, selectedModel: string): F
         headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "X-OpenRouter-Title": "CargoLens Extraction" },
         body: JSON.stringify({
           model: selectedModel,
+          provider: { order: [selectedProvider], allow_fallbacks: false },
+          reasoning: { effort: "none", exclude: true },
           temperature: 0,
           max_tokens: 2_000,
           response_format: { type: "json_schema", json_schema: { name: "si_bl_field_selection", strict: true, schema } },
@@ -297,7 +300,7 @@ async function pipeline(): Promise<void> {
     ? new TypeSafeClient({ apiKey: key, defaultModel: extractionModel, timeout: extractionTimeoutMs, retry: { maxRetries: 1 }, logLevel: "off" })
     : null;
   const fallback = aiProvider === "openrouter"
-    ? createOpenRouterFieldFallback(key, extractionModel)
+    ? createOpenRouterFieldFallback(key, extractionModel, extractionProvider!)
     : createFieldFallback({ systemOne: (input, request) => typesafe!.systemOne(input as never, request) });
   const selected = options.allDocuments
     ? emails.filter(email => email.attachments.some(attachment => roleFor(attachment) !== null))
@@ -317,6 +320,7 @@ async function pipeline(): Promise<void> {
     writeJson(options.output, SubmissionSchema.parse(submission)),
     writeJson(options.details, {
       createdAt: new Date().toISOString(), provider: aiProvider, classificationModel: model, extractionModel,
+      extractionProvider,
       selection: options.allDocuments ? "all_documents" : "classified_bl_comparison",
       selected: selected.length, extractions: extracted,
     }),

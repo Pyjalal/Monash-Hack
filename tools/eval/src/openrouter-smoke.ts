@@ -8,7 +8,7 @@ type ChatResponse = {
   error?: { message?: unknown; code?: unknown; metadata?: { raw?: unknown; provider_name?: unknown; provider_error_code?: unknown } };
 };
 
-type SmokeOptions = { apiKey: string; model: string; message: string; endpoint: string; timeoutMs: number };
+type SmokeOptions = { apiKey: string; model: string; provider: string | null; message: string; endpoint: string; timeoutMs: number };
 
 function positiveInteger(value: string | undefined, name: string, fallback: number): number {
   if (value === undefined) return fallback;
@@ -27,13 +27,14 @@ function option(args: string[], name: string): string | undefined {
 
 function config(): SmokeOptions {
   const args = process.argv.slice(2);
-  const model = option(args, "--model") ?? process.env.OPENROUTER_SMOKE_MODEL ?? process.env.OPENROUTER_EXTRACTION_MODEL ?? "nex-agi/nex-n2.5-pro:free";
+  const model = option(args, "--model") ?? process.env.OPENROUTER_SMOKE_MODEL ?? process.env.OPENROUTER_EXTRACTION_MODEL ?? "deepseek/deepseek-v4-flash";
+  const provider = option(args, "--provider") ?? process.env.OPENROUTER_SMOKE_PROVIDER ?? process.env.OPENROUTER_EXTRACTION_PROVIDER ?? null;
   const message = option(args, "--message") ?? "Hi";
   const endpoint = option(args, "--endpoint") ?? process.env.OPENROUTER_CHAT_URL ?? "https://openrouter.ai/api/v1/chat/completions";
   const timeoutMs = positiveInteger(option(args, "--timeout-ms") ?? process.env.OPENROUTER_SMOKE_TIMEOUT_MS, "--timeout-ms", 30_000);
   const apiKey = process.env.OPENROUTER_API_KEY?.trim() ?? "";
   if (!apiKey) throw new Error("OPENROUTER_API_KEY is required (set it in .env or pass DOTENV_CONFIG_PATH)");
-  return { apiKey, model, message, endpoint, timeoutMs };
+  return { apiKey, model, provider, message, endpoint, timeoutMs };
 }
 
 function safeText(value: unknown): string {
@@ -49,7 +50,7 @@ async function smoke(options: SmokeOptions): Promise<void> {
       "Content-Type": "application/json",
       "X-OpenRouter-Title": "CargoLens OpenRouter Smoke Test",
     },
-    body: JSON.stringify({ model: options.model, messages: [{ role: "user", content: options.message }], temperature: 0, max_tokens: 64 }),
+    body: JSON.stringify({ model: options.model, ...(options.provider ? { provider: { order: [options.provider], allow_fallbacks: false } } : {}), reasoning: { effort: "none", exclude: true }, messages: [{ role: "user", content: options.message }], temperature: 0, max_tokens: 256 }),
   });
   const raw = await response.text();
   let body: ChatResponse;
@@ -62,11 +63,15 @@ async function smoke(options: SmokeOptions): Promise<void> {
     throw new Error(`${safeText(detail)}${provider}`);
   }
   const content = body.choices?.[0]?.message?.content;
-  if (!content) throw new Error("OpenRouter returned 200 but no assistant message content");
+  if (!content) {
+    const message = body.choices?.[0]?.message;
+    throw new Error(`OpenRouter returned 200 but no assistant message content: ${JSON.stringify({ messageKeys: message && typeof message === "object" ? Object.keys(message) : [], finishReason: (body.choices?.[0] as { finish_reason?: unknown } | undefined)?.finish_reason, usage: body.usage ?? null })}`);
+  }
   console.log(JSON.stringify({
     ok: true,
     endpoint: options.endpoint,
     requestedModel: options.model,
+    requestedProvider: options.provider,
     responseModel: typeof body.model === "string" ? body.model : null,
     responseId: typeof body.id === "string" ? body.id : null,
     message: options.message,

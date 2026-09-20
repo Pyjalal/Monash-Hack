@@ -12,7 +12,7 @@ type Selection = { detectedRole: string; fields: Partial<Record<FieldName, { can
 type Extraction = { status: string; method: string | null; assessment: { matchesExpectedFormat: boolean; reasons: string[]; detectedRole: string }; fallbackSelection?: Selection; fallbackError?: string; fields: Partial<Record<FieldName, FieldOutput>>; unresolvedFields: FieldName[] };
 type Comparison = { si: string; bl: string; siNormalized: string | null; blNormalized: string | null; matches: boolean };
 type CaseTrace = { email_id: string; review_reason: string | null; documents: Partial<Record<Role, DocumentTrace>>; extraction?: Partial<Record<Role, Extraction>>; comparison?: Partial<Record<FieldName, Comparison>>; defect_fields: FieldName[] };
-type Trace = { createdAt: string; provider: string; extractionModel: string; selection: string; selected: number; extractions: CaseTrace[] };
+type Trace = { createdAt: string; provider: string; extractionModel: string; extractionProvider?: string | null; selection: string; selected: number; extractions: CaseTrace[] };
 
 function Badge({ tone, children }: { tone: "good" | "warn" | "bad" | "neutral"; children: ReactNode }) {
   return <span className={`badge ${tone}`}>{children}</span>;
@@ -74,7 +74,7 @@ export function App() {
   if (error) return <main className="center"><h1>Extraction trace unavailable</h1><p>{error}</p><code>npm run submission:extract-all</code></main>;
   if (!trace) return <main className="center"><div className="spinner"/><p>Loading extraction trace…</p></main>;
   return <div className="app">
-    <header className="topbar"><div><p className="eyebrow">CargoLens · audit workspace</p><h1>SI / BL Extraction Trace</h1><p>Every intermediate result, from file reader to seven-field comparison.</p></div><div className="run-meta"><Badge tone="neutral">{trace.provider}</Badge><strong>{trace.extractionModel}</strong><span>{new Date(trace.createdAt).toLocaleString()}</span></div></header>
+    <header className="topbar"><div><p className="eyebrow">CargoLens · audit workspace</p><h1>SI / BL Extraction Trace</h1><p>Every intermediate result, from file reader to seven-field comparison.</p></div><div className="run-meta"><Badge tone="neutral">{trace.provider}</Badge><strong>{trace.extractionModel}</strong>{trace.extractionProvider && <span>route: {trace.extractionProvider}</span>}<span>{new Date(trace.createdAt).toLocaleString()}</span></div></header>
     <section className="summary">{Object.entries(summary).map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}</section>
     <div className="workspace">
       <aside><div className="controls"><input aria-label="Search cases" placeholder="Search email ID" value={query} onChange={event => setQuery(event.target.value)} /><select aria-label="Filter cases" value={filter} onChange={event => setFilter(event.target.value)}><option value="all">All cases</option><option value="fallback">LLM fallback</option><option value="mismatch">Mismatches</option><option value="review">Needs review</option></select></div><nav>{cases.map(item => <button key={item.email_id} className={item.email_id === selected?.email_id ? "active" : ""} onClick={() => setSelectedId(item.email_id)}><span><strong>{item.email_id}</strong><small>{item.review_reason ?? `${item.defect_fields.length} mismatch${item.defect_fields.length === 1 ? "" : "es"}`}</small></span><i className={item.review_reason ? "bad-dot" : item.defect_fields.length ? "warn-dot" : "good-dot"}/></button>)}</nav></aside>

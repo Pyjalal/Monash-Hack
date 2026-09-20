@@ -129,11 +129,11 @@ Use the smoke test to separate API-key/model/provider problems from extraction-p
 ```powershell
 $env:DOTENV_CONFIG_PATH="..\\Monash-Hack\\.env"
 npm run test:openrouter
-npm run test:openrouter -- --model nex-agi/nex-n2.5-pro:free
+npm run test:openrouter -- --model deepseek/deepseek-v4-flash --provider streamlake/fp8
 npm run test:openrouter -- --model google/gemma-3-27b-it --message "Hi from CargoLens"
 ```
 
-Configuration precedence is CLI flag, then environment variable, then the default: `--model` / `OPENROUTER_SMOKE_MODEL`, `--endpoint` / `OPENROUTER_CHAT_URL`, and `--timeout-ms` / `OPENROUTER_SMOKE_TIMEOUT_MS`. The request uses the standard `/api/v1/chat/completions` endpoint, so it also works for models that are not available on the alpha Decisions endpoint.
+Configuration precedence is CLI flag, then environment variable, then the default: `--model` / `OPENROUTER_SMOKE_MODEL`, `--provider` / `OPENROUTER_SMOKE_PROVIDER`, `--endpoint` / `OPENROUTER_CHAT_URL`, and `--timeout-ms` / `OPENROUTER_SMOKE_TIMEOUT_MS`. The request uses the standard `/api/v1/chat/completions` endpoint, so it also works for models that are not available on the alpha Decisions endpoint.
 
 ```sh
 npm run submission:classify
