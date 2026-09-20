@@ -1,0 +1,5 @@
+# OCR fixtures and their provenance reports must survive checkout byte-for-byte.
+apps/api/src/documents/testfixtures/ocr-verification/*.pdf -text
+apps/api/src/documents/testfixtures/ocr-verification/*.png -text
+apps/api/src/documents/testfixtures/ocr-verification/*.txt -text
+tools/eval/ocr-verification/*.json text eol=lf

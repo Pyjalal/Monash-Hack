@@ -49,3 +49,17 @@ Scope: native parsing and local OCR readability only. OCR errors are not correct
 confidence is not field accuracy. No live vision or OCR-aware match authorization
 is tested or added. The existing native-source confirmation validator stays closed
 to unverified OCR evidence.
+
+## Integration review, 2026-09-20
+
+The review against current main passed 290 tests across 38 suites, including all
+28 new OCR and confirmation tests. Type checking, lint and six Python sidecar
+tests passed. No real outbound messages were sent by the verification tests.
+
+A fresh Windows checkout initially broke audit reproduction: automatic CRLF
+conversion changed the synthetic corrupt PDF and the hashed observations report.
+The repository now preserves fixture bytes and checks JSON reports out with LF.
+After the correction, the label audit reproduced exactly, and a fresh
+`core.autocrlf=true` checkout preserved both linked hashes. Supplied data and
+official labels were not modified. PDF parser warnings on corrupt fixtures are
+expected and do not indicate successful recovery.
