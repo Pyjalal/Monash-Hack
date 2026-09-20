@@ -1,0 +1,2807 @@
+{
+  "version": "conservative-projection-v2",
+  "datasetSha256": "f70c26b3c6780f71403b1bc00a562a84f33ae035aa9cd5a0dd6ba59eceab7680",
+  "profileSha256": "93355c33d331571f12e11d44d1c78d0e4bbc4ff2c61ecd833e3f175d5160ba86",
+  "rows": {
+    "email_002": {
+      "sourceVersion": "11b4c09c7c0ade073ab0e0d81f27db29d09013799bfcbd563dbd8036fc948e52",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_003": {
+      "sourceVersion": "b1c04f968e450b58b47438e3a734b74c92150ed581b61a55e6c1f63747cb497e",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_006": {
+      "sourceVersion": "a058444670f5f22c198392db757e9ce337db0ebba3a687e012c1993f2d1f70e1",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_007": {
+      "sourceVersion": "4baced0ac9a59a91a7a1c7c66a948826da0a4e1a7d5d8c2d1874472a7add04d2",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_008": {
+      "sourceVersion": "1c7ddac4ec56fe242b27086a12b63d6bb302a26e30bebc7ea6ae1096d2cc9cf7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_010": {
+      "sourceVersion": "ef111ec07259095c5354b7f30558e2ee6c8440e91404f4ab51420062f8e5e648",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_011": {
+      "sourceVersion": "97be6164bf0b57f561e3476370166c5468a3e8c8514ce2b0155a3edb237bd040",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_012": {
+      "sourceVersion": "2a229ff7ddffd5ac43ffe527eab2801f5a6a0213de9154710e9a05e4a9dc1015",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_014": {
+      "sourceVersion": "fb594970320493492dd2c7efd8e9ceae630f757b9b5a2340002241ee0c0038ca",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_015": {
+      "sourceVersion": "cc8a821c6356735336e7429c0eb91b83ecbe87132078539aae41b7cc862de067",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_016": {
+      "sourceVersion": "416b1e2e829670017a51345bd4db823bc17118b9187d73466c108b3ea1cdfded",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_017": {
+      "sourceVersion": "202556e59f475918941cf75ed68a66aa912b91a116d7967530f81f3540b9d065",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_018": {
+      "sourceVersion": "5844ba623f5656df0de4e16964c31eddd3a59af797b9ae5454bc60854f31015a",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_019": {
+      "sourceVersion": "5a3b51d1ecec842665c107db4f742ff8a92aa98fa929eca7ecaae50cf51ac93f",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_020": {
+      "sourceVersion": "0f3f2f7d5f92652b5d84bb9ce52f36aa17572ef6462d88f6a4e161289b33cfa3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_021": {
+      "sourceVersion": "43842662b41c2c8421f9c251e0bce632e7984f9c77fb684d783ce750efdf6e48",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_022": {
+      "sourceVersion": "fe43e3f25dc20be3e712fdd5c91febf6001cc349da9722df52d3cddf94655f63",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_023": {
+      "sourceVersion": "c9e2ee97b081588200ac669995ff5967fcd67434a7c7cc9aed2c1dcc0b29c97d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_024": {
+      "sourceVersion": "63af5aab1c1dcea93f68924e3a0d2c2f2f4747fb8f45b2e299659f1f3d4a721c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_026": {
+      "sourceVersion": "0d316554a5453cc4f866266a642873e7fb5c48ee0184337f6e548e2bcaa93797",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_027": {
+      "sourceVersion": "4e86f8ec3be56547f4f77f8d1b58137e72ba60b9f4c9225efe23df73f54e8db2",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_028": {
+      "sourceVersion": "50937547332d0569af4c6f89cb8b3286f1b05319440cccf2c3b50faa9d49513c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_029": {
+      "sourceVersion": "99b977c9149f37b55dcedb5da367dbe44833467b0d0897da85e02852351c3f28",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_030": {
+      "sourceVersion": "0baa4ac71d90d0ae2d1db034e240da80d8822c1806f14f37ff0ef86b2d3265b1",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_033": {
+      "sourceVersion": "e9745c5de12e56fdd5c433ccbaab8cc185257e7d58b6e66bba3eff2ce8615a57",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_035": {
+      "sourceVersion": "9cfe82dcf721cc876ec3a524744237e07398301da14f9302059493eb73732203",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_036": {
+      "sourceVersion": "af75cf18e57d722f3eec7bcadfc5fe64a747923b2af9b68b9b2c15ac8374027c",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_037": {
+      "sourceVersion": "4c79e9fb56c9c60f322d6119faf462444797909800a08910a4c24c210a4e3dbe",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_039": {
+      "sourceVersion": "43f6e1ed1c36c69264803a91f28cf62bfb5108071812e68c9a868143aaf6bf01",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_041": {
+      "sourceVersion": "672facf8d6d7548966dce866b6d100d4c6b9141d25f6ca94cdff3ae2c685644d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_042": {
+      "sourceVersion": "e450c0c404608afae023a428e43b4f21d15a0880be436a71378bbf9747a2ae30",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_045": {
+      "sourceVersion": "c1108e036511a38bec690a784958efcc3a382082ae666adae79d95ad1db7eb93",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_047": {
+      "sourceVersion": "d29e22b80bd47a8f281854ebac95beaf1ac221c86285fa1704216894094cd978",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_048": {
+      "sourceVersion": "42cec0dc083490e6536bcd933f2c0a0ab57d48743e60e22ff0202d601a12023d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_049": {
+      "sourceVersion": "db0be44901f59a69f71b859aaa34165d63e4343d25bc72cd858bd80cf8999b06",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_050": {
+      "sourceVersion": "b2bbcf16d18da3c88aef599f76a3926ccc20c48e20a02ce4c17cd1d05d729238",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_053": {
+      "sourceVersion": "e4451d518b49668b5c1f5beffff056585f0e7664435a0892230dff7937619091",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_054": {
+      "sourceVersion": "e8d8d4f79f05d89f30cd89e61d898cc3a5809fca33c0cc40916bf6215efa3af9",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_057": {
+      "sourceVersion": "55c3bb4d542c78e83305d133ae254438d16bddd73388de2746d45b76a0374213",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_060": {
+      "sourceVersion": "5fb8fbc7fd7c77f800307cb5eb343d8ef2c3146791a8ded00f34f69b67c16569",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_061": {
+      "sourceVersion": "2cd9d3e5638e453cf54799b316785f968ff3f3b4ca642fd2212c5cede9734d9d",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_062": {
+      "sourceVersion": "5b0e1295942cbe59cd5760da3e1a3ac38ba597f85ad1ba0435bee878f76af501",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_063": {
+      "sourceVersion": "f5869c3f3f1f5022789d70124b495c8dd30f17ccfb360e18e3c550c16782c972",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_066": {
+      "sourceVersion": "96ffeb9ebcad7114fa90277b83dba1cc7e19f5a92553765e1404bba40f053776",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_067": {
+      "sourceVersion": "68595511ebbb02cc2fea08639a90253f318debf44159d47d05810d6db5c8bb7c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_069": {
+      "sourceVersion": "bc46f95adffb1a963a4df5bb39f3a406b077a7872902b30fde36cf97a1548fb1",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_070": {
+      "sourceVersion": "9f615d5780baf4a728839e4b5a63db28adacdee53d49e949fa9b49b823ca63ac",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_072": {
+      "sourceVersion": "755615de57cf40b9aa7f34a320b2bec7bd004ba9286f2978bc7841b4284ad22e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_073": {
+      "sourceVersion": "dc04b34d7ea4db19c2fb918f1ee0032029f99c73a8041c65b1118b8c4d212bca",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_074": {
+      "sourceVersion": "e8eb5ffe881d35df7a55976c44aed1bef0008acf8005fff8e52b9ed9bc258b0f",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_075": {
+      "sourceVersion": "8ea2aaaa155c52b15853fa2c0e2023652015afb46be874168691360c0be3863b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_076": {
+      "sourceVersion": "97debee7ef1d411f7ed1038287603b9721190307b85da30f251c771bff691a81",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_078": {
+      "sourceVersion": "ff6e4b534b5b5ccd2a317ede6789f08c765431ea588d733e959659d65f4e8ffe",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_079": {
+      "sourceVersion": "af7ca534d07452b405dea30f4ba1aed343470a26a1fa1c9564c1b4c77d74f839",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_080": {
+      "sourceVersion": "3d01a4d9bc3eac2f5f8eaf7707902cba560765a8b846194bd221d57bfb0cc34e",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_081": {
+      "sourceVersion": "a4aaf10ff22f1f73a759b09ad9379a71e1be4cc5064925171805c08220880a05",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_083": {
+      "sourceVersion": "b5e68cc37f5c0de25c25b082a90b553346bcc766ea21ec3cea69c0a30dacd989",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_084": {
+      "sourceVersion": "95d16d025f1528b081540bacb62d8a4af3f122fa12c72136086085cb415ebcde",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_085": {
+      "sourceVersion": "ddcb8c39e9aaf573cdf74b5e1e624e5af24ef9da36c47cce5df0e2ef6f6bdde3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_086": {
+      "sourceVersion": "05772be5aa11264d9c5ed10e58fd3b5cc209b8dd1d66e3e546a3a7cbc6e27ab7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_088": {
+      "sourceVersion": "319a9975d2d575c57092f2843ff9a8fd86dc58c8efaefb5f2d307ca339747243",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_089": {
+      "sourceVersion": "f07668a9a5142e238f37c7465315175462d9227cf91b406c62b185b867718569",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_092": {
+      "sourceVersion": "329db6e7f0cdbf46e10cd8c1df6bc8fa32b15697d16e5e350ef55d0875070c23",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_093": {
+      "sourceVersion": "3913b406808858303b3ae56b57ac879b1d4fe6a62686e0719bb6fbf57c832071",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_094": {
+      "sourceVersion": "593fc9e9164e2258d53911961f7033d21c045168b23fe9d313c1f250839d58d7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_095": {
+      "sourceVersion": "ba43055ef067a0340aece039d735b47146666c944fbd6620dc77b820dc1847a7",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_105": {
+      "sourceVersion": "9008ebd2a97a35fcb6f0781e79647bbba247409abe77c69fa49bcb5802c7f6cb",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_106": {
+      "sourceVersion": "87a347cd562d9c8150f1f813903f8b55c3965d9ba688ea28031cf02734e995ca",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_108": {
+      "sourceVersion": "a54f62d198159bfc64cd5c50db9213e91e7e086667251393f44f931f49e16e06",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_110": {
+      "sourceVersion": "16c58ebec42effaf295d7415b3fd21f364ec0f1067c17a74a1f295562bec6140",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_112": {
+      "sourceVersion": "bf37555a3b4cbc9f7403294433b967caf4fe3b1054fb460ed9294f6b5092ee36",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_114": {
+      "sourceVersion": "f2be982a86c8daf6ac190952576e2d3d7c705dcc224e0bc7579c8343bf14c51c",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_115": {
+      "sourceVersion": "11695ab15e40fac6be80498d60ebc518d85f3464c2f081248337fcecb2304478",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_116": {
+      "sourceVersion": "8d35a78be1aca1b6264b910975ade184b50a7b08cdf292990e9daba94e997b26",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_117": {
+      "sourceVersion": "fde0f4bf77da5589de6e668965e959e21da3232e32e1fae5e40a7337bac4ef06",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_120": {
+      "sourceVersion": "9d9e949b85727bfaa106e35dd6f36cce45326f8ad0186f8a075fca39ca7986e4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_122": {
+      "sourceVersion": "666d56f0eb419615f16779ac23c899c07456a40e6910274176b30f15f7254384",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_123": {
+      "sourceVersion": "64e6fa07b2e5a3880d8fb9062def29ce8bbf6c3934373f45aa84d95fbf21e1b0",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_124": {
+      "sourceVersion": "9c9d6b757077262472df68c6ccc879907a3dcf6223eb0f18b1caf146fbe43016",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_125": {
+      "sourceVersion": "0cfc243f44cbb7fc96168bf6a8eb528abac7eccd74996b9802c322a256b47f9b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_126": {
+      "sourceVersion": "ff83cab7cc9cfb3f945f43952f47cf6c1a8f2269dc7bc42ae8bdc2474ed898c3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_127": {
+      "sourceVersion": "60d37ea6788e551b01ba99f1a51de00d28aa82b42e16e958fc0f738d88a34cf0",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_130": {
+      "sourceVersion": "f253fd9a456c64e776bcde6f19f227c8962fbe0acebf5abc971ad84531378a28",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_131": {
+      "sourceVersion": "6686838586feef91c56b8c125cc7951c11bcfa9d509929e7f8ba05e3db006586",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_134": {
+      "sourceVersion": "b5d1394814a4a929c3c589e489a55621152a68a1c295b9e3fd683a2ccdee0754",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_135": {
+      "sourceVersion": "ebbdc2ee95531dba8b0dce5dc1ff230c48381914f684772284eb1107b3b76f2c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_136": {
+      "sourceVersion": "7ae97a41008232eaccaf81c0602ec7297c75d57938d38c7dad03d610522f67ec",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_137": {
+      "sourceVersion": "4895dd1174ae5cf5588f04f4e457aeea755fda4411f516ffd4ab7b31677c3f4b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_138": {
+      "sourceVersion": "df91abd8a1208501ca23df675d2d58e076321be9abb1daf686fb781ea31e8a40",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_139": {
+      "sourceVersion": "35da30d42d02923fc7b9467caed7ae3276d19be88ad57a5e35c0ef795760bd85",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_140": {
+      "sourceVersion": "51b687db57b6efa3f7e7d9e568c0d193cd62cefefef881dc8c1ae8972e6ea433",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_141": {
+      "sourceVersion": "e07c83c1b2af23532c4ae20af00479cd61800ac30c5e6b27558ece33207eba11",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_142": {
+      "sourceVersion": "da86fa0dd81c95fb532e6c5e74fee3b6559da925859cbf0daf2052a7211a78a5",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_147": {
+      "sourceVersion": "626dce050000786b724c56bbf30490b592edd4873060b51f8310334826c94560",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_148": {
+      "sourceVersion": "f26cb8c415559be11ddc6eefbd50b5362ded3d69119fbe06f4a48b3f98666cb1",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_149": {
+      "sourceVersion": "d04808b7c8de19e6b227a55fe05598f0011584f26a9774bfb8358f7279c3e96e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_150": {
+      "sourceVersion": "13b726831faa384d861652c27096266252b60c22482784eaf61710f85692cf7e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_151": {
+      "sourceVersion": "d2a8207acaed3e5c70f44023658e8ff3241944d6c8ef8d0172ad28acd913d378",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_152": {
+      "sourceVersion": "f4abe4780da3831756e8f9254700d82e870c5f71dd7c80331646611036bb8bfc",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_153": {
+      "sourceVersion": "367e6375ff8100b7c9d487df029b11f45d36a4affb0ac4c6c8d083fa1352338d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_154": {
+      "sourceVersion": "48a118db7674525cfdb5fb8bd0751dfa444810a655817e0f193b0fce15fd972b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_155": {
+      "sourceVersion": "3d8cfe0391d88b249b8099ef6ee5c1156a668dc2a5e56aa75b1e4e28dd3567f9",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_156": {
+      "sourceVersion": "4acd9003adf54e56f0a2708f85abae24cca11edb61b5fa05fc9c02c7d4991302",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_157": {
+      "sourceVersion": "cf558abe1a3e82e5a70c0e691e26f2fec21da7f871a2080dcbc2ed9e18c6e7b5",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_158": {
+      "sourceVersion": "f8f3440e04f44ee196bc0a5624aef809ccc065a07e050ef1da03f066db778135",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_159": {
+      "sourceVersion": "c0dd726d12b86d8a1147886aadf5092c00435807e059d253822cffa02f79b951",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_161": {
+      "sourceVersion": "ad7678dd7e5a58190700fbbe5de314396da610c5339e3f3836b21bef9f4e3da6",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_162": {
+      "sourceVersion": "61d92f09f2535054471866f88fae58f9baf377ef5e9a23b012fa3250827b14cc",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_163": {
+      "sourceVersion": "1eaac1b992ebde0b53110190ebf317ba6ad7dc3b59489d69696605ef550ccaf4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_164": {
+      "sourceVersion": "fd96bf02ad09a645fc8ef72b8ef171c9e985c8a5de9bf04528ec02fc56c062f1",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_165": {
+      "sourceVersion": "b1469459537921cab2734594dcabce681c968938ff1e9f0b24340e644fe590df",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_166": {
+      "sourceVersion": "f2ab3f712b0665a5549f851571877034a6e5cf22417c12acceedf7e16068117f",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_168": {
+      "sourceVersion": "c3da03a2aa8cb4141eeffd983c4049c85bbe87e684417d519bb3a66a733711d7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_172": {
+      "sourceVersion": "9a1dc0e3bb712ee75a4437f61da661f53f07f7328cb25ac2172531b96b58198d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_173": {
+      "sourceVersion": "48a56f2aef0555d503b9926c56612eaa1eb3bbe01f754dd1cc2c97a5c7884eb0",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_176": {
+      "sourceVersion": "7875b19355000e09191fcf3c34a971051f83dcc757bf07e2a8828e3e8d3a0768",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_177": {
+      "sourceVersion": "dc945d37fa1d744dd1833a62bd05bfd6a6c592f11666a9a6b762d816210bd270",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_179": {
+      "sourceVersion": "29533e8be9b36a69fbbbe086e8470120035944bac5d161f72ab53036de792d20",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_180": {
+      "sourceVersion": "aa3715c1bdb6d6b5a3c1d91705ef2771310267f72714e6a37263aadf617295a1",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_181": {
+      "sourceVersion": "8bba2574c950ef4c084ed59ddf97c1905b8174c5fe5ffa2b5389ca0869d97a13",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_183": {
+      "sourceVersion": "6595666bd6d2e2989226f6ba28fa459458c382aabcc0d6f3509f4226ecaa3c45",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_184": {
+      "sourceVersion": "430fe75d9ac072d9d6e2de75020c76f6041e4bcc7d031464bca586e8160ae516",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_185": {
+      "sourceVersion": "cd3e339c6717b5eebd880c9d48d469592da81b8f5f0214d2e84c6b6f4a82382d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_186": {
+      "sourceVersion": "9ef990e8671a06346e909c5e3e6066040ef1634542053d24af1c0e54807752fe",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_187": {
+      "sourceVersion": "4c8da91bb036f76e3d70de657a51a61df1db8928d4a6a089fd3a41c2b3bc5b84",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_188": {
+      "sourceVersion": "df980a7fee280847069188caf70f91ee88e73b2389304772576a40d572b75b35",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_189": {
+      "sourceVersion": "67b09eb33bc338561b8120e3957d93ca44e396b8b88b12443ddba1bf20e0d0d9",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_190": {
+      "sourceVersion": "bd3dbef24b158fa068e9315b4335a61876b677982d98b8e7ff4ab6627c8b8296",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_191": {
+      "sourceVersion": "139389047fd3083f5896a0ea71e30d76c7f839a4e03fda4d055279c02747d0cc",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_192": {
+      "sourceVersion": "a9d418e7db0565cc5814c56737dd775b9475a00c843592bdd4f29014a9d0a8b0",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_193": {
+      "sourceVersion": "b4c372c6bce1c828d0ec110fc168a3d74e5db30a2e39c0ddc5d30582d95c7a75",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_194": {
+      "sourceVersion": "540f392e70013bd43171fc852ebaf04975990fccf59733702f2e043a70b5680e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_195": {
+      "sourceVersion": "14a0b9a338515e926046ff76fef1cea5e05120c7f31ab57ea935ae492fea2fc3",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_196": {
+      "sourceVersion": "db52f47634b9e42eaa260b4147ce9de8b1c1abd5e355c6623afa4a1328115461",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_199": {
+      "sourceVersion": "d14990a5f6ef661f6dfe1b1590c8078fa02455f1a8a993a6627a8dabe08e29f8",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_200": {
+      "sourceVersion": "eceaf403bca02f4f93c43df608a78a4b1242894cbf78f825d4021029a7ae191c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_201": {
+      "sourceVersion": "0d0160147ca2ee1cf4354479b7fc065eb70795d06b4e184729c2e9aecb6fdf26",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_202": {
+      "sourceVersion": "5f317b6e6ec8bf6d0a2c5f13866e2dc0c83dfc99fe64e0848e2713659893b1a7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_203": {
+      "sourceVersion": "c68a9c12360be14d0fa59b99bcd0dfb812f2cf4743e502f318427eb17804337e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_204": {
+      "sourceVersion": "d40168d83609bfe0681d8668f21afcdc090d42af1bbb2e7c7136bd4e7f067298",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_205": {
+      "sourceVersion": "2dfd05f020dc8357254517b208ece3bc261f0899f4aa9abe9bf864b59e0e8df2",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_206": {
+      "sourceVersion": "6c9d36ad11b99799d4d6cfbb3b75c9a22e152cc09ace835501d51063e7071199",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_207": {
+      "sourceVersion": "ad53988baa7d2780e80bf38f8e239d2d87b3cb7a8e98d4fbf12ca87a74979cb6",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_209": {
+      "sourceVersion": "cf4f667abcb25ad94fc98f4cd7dc7e9624f1f89c4d3a3ea72764aeda79de91cf",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_210": {
+      "sourceVersion": "90c7feefd31bff16b35d65a92141bff904c3a23f3125ab5e820e4484c725bed1",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_212": {
+      "sourceVersion": "a2ec1b33c77d506a487a6068b0dfa946bff8a110cea4cdc76ce69cbe06c377b3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_213": {
+      "sourceVersion": "b5149f6a446ef8960e3b44bda9329c6007b20e777b9fe0656276111a579987b9",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_214": {
+      "sourceVersion": "d0a9721fe37f73ae4925a77d7643da682b81560a0322deaacc61d838a61c3a21",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_215": {
+      "sourceVersion": "e11a2b0086b520ffcdf820ac4d83766248e80693c5d7463cd1dd5337d00d49f7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_217": {
+      "sourceVersion": "0e75869bdd5e0d526020c3f624f1376dd4ebd791381c81cfa5c51dd649a7d318",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_218": {
+      "sourceVersion": "210ec01a3a67b714206f8acabb26a0636cda5889b366e722ffc0a5fdf48bd45d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_219": {
+      "sourceVersion": "5c3412bd2dd14f36b8a5b989a37c92bf474a9d0b342136d08414aaab7b6ac9bf",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_220": {
+      "sourceVersion": "117deb650337a94ee5778de18281b4fd781e5766510e36b0b3cb5432c71e92a4",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_221": {
+      "sourceVersion": "5b43f0fe05c0ef55fabd5e6b1e3f8bbaa9ffa39252d82237d4b8a7fc3e8d9bf0",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_222": {
+      "sourceVersion": "22844b1924ef2a90c111ddb9e7dc0084a7fb54a5bd607ee7a0f0823318d5ce9d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_224": {
+      "sourceVersion": "0662ba2363d03cc3617856f83b50dc129be3aea3cc5ba637be661ab05277d1d8",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_226": {
+      "sourceVersion": "3d2664b76127f66fd751b267280bb8e1d72a51fd0c7f1585989744d9597a40b9",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_228": {
+      "sourceVersion": "0619f65014fb4ecf42917c8fcb08416a044686fcd3df05f63014a113b1d7707c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_229": {
+      "sourceVersion": "829dc84f71f9329246827d4f4de53dd559e2647160c980429d2a6c387d2a5b37",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_230": {
+      "sourceVersion": "ddbdb501dbd5106fbf46a3985f59124bd63052f5b7931152ccf5f8ae3e1d8971",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_231": {
+      "sourceVersion": "9d6cc5209a22a4dbbc8aebcc4efe2bf5beed7ed204bd14c590e78f768faed82a",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_232": {
+      "sourceVersion": "6d22d343f89c2cfe30c1a00d76d4ccf5b24a66cf4832cf83f80f951ef51485a4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_233": {
+      "sourceVersion": "32d7165efa382d38ef40a7c232585cc57a450e0e805bd488ce7ee890bdc05747",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_234": {
+      "sourceVersion": "b9ef418a0b6be783af8ca86cf5fb45e8817cc8db760c0f47905efcbf245dec36",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_236": {
+      "sourceVersion": "a5e0a3bf08ba6bc4df0ef927e7035b677ef081cffacb1413991751411e76e452",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_238": {
+      "sourceVersion": "31f2c3e465f9c42433ae9ec230e74d0d0ea5c976c52ad112f0ad81f69960ecc1",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_240": {
+      "sourceVersion": "57cf9882e283f0d7b11398884bfbb1e009d99536e9439ca950cfa15bfec805f3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_241": {
+      "sourceVersion": "f5d05411537623604f38faf1e834e7bdf55f4525837606f7949bbfbe0eae8b70",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_244": {
+      "sourceVersion": "1605d31af4639d4f05c35aa363211863fb2d2dba31b10c8925e4951652beaa6f",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_245": {
+      "sourceVersion": "a0670926326eadfac058c4b21ca4a45fdf232def8b16a415ba72e09d3e8303b4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_246": {
+      "sourceVersion": "fd2aecebb232b101bddb664506c359d87957679a4acff054ef2bfbb62aeecc69",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_248": {
+      "sourceVersion": "cce46aa52ae46b62693f51a86dc3463c6b9960328a97295484813c57ef9b8f8a",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_250": {
+      "sourceVersion": "be488220d8b57e6fd33ab1368a077fdab178e7597e3bd31d8ee524a7e1e97a1d",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_251": {
+      "sourceVersion": "059aec2b16ca43448353adff37dbf9fd2d8f23ce459724a2edd9aedb34b22738",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_252": {
+      "sourceVersion": "c65f8524f49d52aac10ed5caf49bcd93ecaee5470986e11ab1c94d51db864cc4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_253": {
+      "sourceVersion": "9751b374acfbe81dd5bb57f5dc139e2c3d63901e8f0eb2ac0e46c6a662e3d84c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_254": {
+      "sourceVersion": "3cc7b85e883bc7ad96af5fa17d1cc70c9990281a570f1c91f99060bcaae22057",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_255": {
+      "sourceVersion": "865f09d65ae8eba6628d23675a4f000d526db085e019d991be5261a9ca857dda",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_257": {
+      "sourceVersion": "c7fcf086d0a9fed91b2c9ae232989bb65e1917aaed9b24b80c43a3db25d99682",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_258": {
+      "sourceVersion": "c97902aaff80e30ab4b912d1008ec63c4d3fb9fb8853481183c8a92f0d8fcd83",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_259": {
+      "sourceVersion": "473b03c060e4c8f7ecc13deb49931c9ad29dffa5617319f28ce8b876f2adc4e4",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_260": {
+      "sourceVersion": "17f3909f864f24cdf67141c492ae497ac3a81ceb52fc03ad988fb19fe974151b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_261": {
+      "sourceVersion": "da86a7ba70c5c21d0cfebcf9c5ef96ac820dd6ff45368bb7e3d9483d4728e267",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_262": {
+      "sourceVersion": "23ce2a5f13149aa7cd46d63219ead7d05ef0e52a747bca9870d67ec46cf91f55",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_263": {
+      "sourceVersion": "3aaa15115480754b6c9a1391cc5efc7a61acc93ae0eca42215e7f0f9b4d99a64",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_264": {
+      "sourceVersion": "76e5602f7e20b2662f5051249ab773ec8d5b41d3453a509f8c725cdc3c6ae2c2",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_265": {
+      "sourceVersion": "50c1c2fe825b25cbfeab5980eb7f501ad65fe09e56322e313bd9d27a56f12164",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_266": {
+      "sourceVersion": "15bc6303f8c24057d5b71c91d1e7f96fc2148aa9e953d31899aaf0f5eb64a987",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_267": {
+      "sourceVersion": "4e716fbd411d64b13ce8f049a966af99391772d95fcd59c49f5835c503357a84",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_268": {
+      "sourceVersion": "0c14122f904d67dab0f3e297a66544b3c8a4cce7f3062728903a1557ce065e02",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_269": {
+      "sourceVersion": "791b56b3b1998497be9c0abf7c76a767657d24186fc51b8dfa383404414e1ff2",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_271": {
+      "sourceVersion": "b6592a28ee9f186a15b26d4f960e0104706d869d7573ff1fe5cc1a92869aae48",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_272": {
+      "sourceVersion": "011746690d29ff18761caafa52bd6f383aa1fad2ad84ff84cb62040be9bc9281",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_274": {
+      "sourceVersion": "75285b23e295aa0e5f7fc2155056036d6614d3caca9058079fd3f1b521d1f193",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_276": {
+      "sourceVersion": "19c1040134ce1c8bee40d45e3df52fbfbbaaed5aa8fe920d8fc81420094145e1",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_277": {
+      "sourceVersion": "f90ad237b9927799186e007103cfe824442deb8e0655ecae437ac6ea4b683237",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_278": {
+      "sourceVersion": "6af7fe8f86e0b1474881b08cc60dc31489b073d0de5af9d8178b13ecca245b4e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_279": {
+      "sourceVersion": "139bc62f2540e53436c174184644631d2027866d4296fa83adcd773c3ad4c8e7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_280": {
+      "sourceVersion": "b4b76b30fa8b46a94122c9c90ef3dca986fac201c3fec9c38c868f39f3b5c758",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_281": {
+      "sourceVersion": "0a372e51d3bfdc2c2a197d8cf9a1f7dbb3167e772201c5389fd7d1bb41bf9867",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_282": {
+      "sourceVersion": "b7c9a34a8b9150936528471f83843826e25da0e0e1b135508359f9995ee85342",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_283": {
+      "sourceVersion": "6226ed63a534ff05dc54def2094c1ff44866e507829d2fb0a362a9c88797db9b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_286": {
+      "sourceVersion": "c3f240aa381a97c601b4ee70417992479293c6645bb20b30e24f565c384b8367",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_287": {
+      "sourceVersion": "d486e5938cdc07e2a08b100afa418f6f59a6674d504ef2a946c185426d96caa8",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_288": {
+      "sourceVersion": "2a9171de7871af4ecccd42c16d71d459b749f444d88c641aa77a82690e9df0df",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_289": {
+      "sourceVersion": "dcb419cb3b9c72085e0aef24b7f43e32627c8101d7603f75942aebaa0fcfb7a1",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_290": {
+      "sourceVersion": "c6af568b6565e47311687db54fd26c77aa04a6cc3041a80093ea31fcfb5d7725",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_292": {
+      "sourceVersion": "40afee2a78774eab4250b0d6adf2dfd4c5e7a26b7c647441386b6a0b9d23cdf8",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_293": {
+      "sourceVersion": "6bf930c06ca7466572ac70f5738c76c3f15126d629dd3f698ae2a23231a9c9d3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_294": {
+      "sourceVersion": "d632c4db9ec78a230b5b80cb21827d928d633ab35428b088f7452d306062bcc3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_295": {
+      "sourceVersion": "30a083c218bcb31113ce9bb55010004299c96f9a37f97b2ec4307416c711212c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_297": {
+      "sourceVersion": "54302f3755bd91ede8d0fb53749aa26a4ccc3e1345ea845c4535356e3b4d4cc4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_298": {
+      "sourceVersion": "360136dcea2ce0007ed51da19680d0758204241170b997d4c88e6013b2d2ea9c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_299": {
+      "sourceVersion": "50684d422d214cd8b0e61cc53659a64ad1c9bc2864554da9d92361d5fc31f78b",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_301": {
+      "sourceVersion": "d9cdb3c05bbb643b99d2f1ade6b308a375b302b852ead786dc462aa2fa96b39a",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_303": {
+      "sourceVersion": "a59a7f5d3c7e017214659a3588bb2fc7701b5fd40429ff9f24c8b216b7f87caa",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_304": {
+      "sourceVersion": "7bfc668f082048b0955e252e20e8a7b1bb16a9bca1b08d56dd3e73db287bc5ec",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_305": {
+      "sourceVersion": "d3498c23e098d7f2acfd987f7e2e560ac94121e475921600144d91d5e954a631",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_306": {
+      "sourceVersion": "08f1771d363d6b6bbe9987b94dae9368140a6361ce0fadce577a277ba5f8c6ad",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_308": {
+      "sourceVersion": "9ecb99e815d696ac9f8e7cbc89ce44d33f40f1a81d45f5d7b607bd0fba6e4198",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_309": {
+      "sourceVersion": "b944b086631654e9095d59969e9f5834fa8a5575c360a3a54c161e007b07fe3c",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_310": {
+      "sourceVersion": "994a805c9eb80688f44ff26056d429d82fbefbf6c4f8acd585b097e9c00c0f75",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_311": {
+      "sourceVersion": "ed81ad603f815da2f1ea38a619223da728c96e31b623e04805a149f2dd1a7328",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_315": {
+      "sourceVersion": "58e86bc553de0883de5968bdaa0a3a3e5105a7250f246478a13781e74d209831",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_316": {
+      "sourceVersion": "7c550643524d8a0b0bd8342e605145be0a38bb388759e15a48d92df4218e3a1e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_317": {
+      "sourceVersion": "27ca6c0dd2cd84e325d6e044fdc74b9d2e9bf8b9ad9305254be0a38119a97bd4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_318": {
+      "sourceVersion": "14439aa14c21658435073aaea0e146e9d56a4efe27040f11bdf86169742d0eab",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_319": {
+      "sourceVersion": "e0343df6a867b6cc3adbb641ba5bff96ddfb6fb0e2e30acff247f906e2f787d4",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_320": {
+      "sourceVersion": "576094f2f994aad4cf3a7b40aa148d94ddf0f190a9c5f7e457871302cb2ed906",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_321": {
+      "sourceVersion": "121d17730868630695fb804e08d445eeddbeb1e242523c16e4131cfd1701291a",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_322": {
+      "sourceVersion": "4af9dd22967a38e05a0a3f05749bfac6c0a5259f7caed2e66dc680d82913068d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_323": {
+      "sourceVersion": "bd152e7ddaa46d8b39a285291aa6f6542935ddf368e8008ae04116268a6b4f1a",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_325": {
+      "sourceVersion": "283361066960b5a673f9917306b8cec5431d7f00a65f3371b6a6af16fe2e7742",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_326": {
+      "sourceVersion": "728cf7c11626d52cd92aeb0fdb27200cd78910d8fdf928c8d53e4aae3f4965ce",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_327": {
+      "sourceVersion": "9b4d2bfab274ef5fb27004d39e7ae6810a6c6245233000d1133de49531b3ec52",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_328": {
+      "sourceVersion": "b818ccfa8aff3b308228a2cace6782a51d91f0ac867d903ee4916296ae2bbd18",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_329": {
+      "sourceVersion": "6d94d983973f52554523f610edef687762225bba004759349d1bc1ad1ca4d321",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_330": {
+      "sourceVersion": "ae16191366c3d4303b0d2f6a2abaaa0432fd322e478354a49ddfaf29685e0b03",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_331": {
+      "sourceVersion": "bca3b7ab2ea137fed36202cdfb0985fb4db304a348961b4910cfe663fd7848f6",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_332": {
+      "sourceVersion": "005af959ba75f2a0d55aca69690ed2cc76f336f028c05d268b80ef09dc94b6ed",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_333": {
+      "sourceVersion": "fa82281250dd6448ab4cfcc501aff89be620c148c258b76c8f503fe1f64bdbbb",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_336": {
+      "sourceVersion": "6b3d60737554f662c7bd660349e166f498c27b11385c489105b248a244cbd0b6",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_337": {
+      "sourceVersion": "2633a253ed166232a5811ad0fc12e83b0f57f9e29d7f366c376704a2f2687b8b",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_338": {
+      "sourceVersion": "448e231ef6772c90176ac79d3477bfcb92e29c6e4ae8ba50c9039d24dddd43af",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_339": {
+      "sourceVersion": "bc98e9ead7cdb0a91f64e0f86e7a3f7dfaa60baae05f08c8d405dec33d18601d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_340": {
+      "sourceVersion": "a0d96da200753f4a20c0763ce801c0d7ad6f07d89883865e0102aac2a0203fbd",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_341": {
+      "sourceVersion": "baa248dad6e647ecbd2537be5139cf4967fee8ca0ce9b893f8d5da9403f34470",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_344": {
+      "sourceVersion": "0c4df8c2b344480924e9c1421d29a95a223d798aa2f2bffe5ad6f67d988a9358",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_345": {
+      "sourceVersion": "2d92f093879a121b866968380dbc2d165c5ec6f49047a92db0c103d7b5e0cc2f",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_346": {
+      "sourceVersion": "a5f051172d8607c3dce8fe95fc00285f04bace2cb5356a122d253336cb7dbafa",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_347": {
+      "sourceVersion": "3e2286a7369d25cb9379008789e370a06cc014caa77f40c0368d498339c752fe",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_350": {
+      "sourceVersion": "5667fe01bc5550b6092d47866e162d836f613ecb3a5ed2d9adea4cf851b47ad9",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_352": {
+      "sourceVersion": "32c0af2c3f2f31601746f54e03ab9f2b6fabca0c3987ae09d0a7e002bf453f00",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_353": {
+      "sourceVersion": "3cd6b5a83f7dd532fef7ca0b16586f9ccbe39276b2745ba7fd39beb41b905b69",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_355": {
+      "sourceVersion": "80441d0d27d3beeea78b9e7f47bb6ac4ee2ad2c66ad3c97acc4a8fac8a218f59",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_356": {
+      "sourceVersion": "e91d33795c2881a4902758abee43b4c1653ad061dbf5c2d00f2380bb625cf4f4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_357": {
+      "sourceVersion": "8303d364bef1a9081c9119e4613adfc41bb0b822ff12ae2f64b915ac75b6cf70",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_358": {
+      "sourceVersion": "6041cf0980ddf52fda365db50e8a726caaa1da907e77bb2dfb7fca978340aac4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_359": {
+      "sourceVersion": "2e0b46f0d1d97d2f53e469a5f256a060c82ff357340671e601ab6e28b443348c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_360": {
+      "sourceVersion": "770668254e3205431c119f4d6c0bc3adc67904e83ecd0f82e426fc111e5becc7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_362": {
+      "sourceVersion": "fb0801281b1212dabf70b85cf6f1f6fb29658fd74d00bc450774cb78f604226f",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_363": {
+      "sourceVersion": "9af3afbec758f97bed8be9d82b36d943ea02cbb3837d571e7e3a630edb0a887d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_365": {
+      "sourceVersion": "1f2cbed7115c6e78ec7588dc71ac8603410c3d759ba49013e88c0f44e60de1e4",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_366": {
+      "sourceVersion": "223f5cf102575eb7149d6eb3a7692349b3f87fce233099cfc5d54d3df364d914",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_368": {
+      "sourceVersion": "b5e3f33b882ba498bce0a79595b08d5fabf00f1efd25e96c75ac7bf0d3bb0763",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_369": {
+      "sourceVersion": "ec79319c6fb044bc8f10f24d0a719fd8c6d2acd4c4fb66a0a2cbb4aee93f2662",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_370": {
+      "sourceVersion": "23f4ac4d97fb46ab0687139f6779dc5bebf2ac7a6ccaca30b6cf146adf12be0f",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_371": {
+      "sourceVersion": "361e1bb4c848d2501225b4fefe98640d7cf2ed50d154f0ef3089c8677efa90e6",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_372": {
+      "sourceVersion": "4d39382e7077afc52f3ef9c1c0267955baf86b8b4638a8564ca19582492fe122",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_373": {
+      "sourceVersion": "2356f6c768ab46806d35bf3557bb6b180c4349548fee109a9e0803a348bad190",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_374": {
+      "sourceVersion": "ac33328d6dd89d8ee2e1fb5adea6e377137f7f419d81988a460188c7adba05d0",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_375": {
+      "sourceVersion": "34ba443158bc1e206b056193ecb9ce6096cef11536214cb0017d7846b8cbe61d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_376": {
+      "sourceVersion": "863f7db81ae915eac08b1e8d5c620af22672280226a16b3a504e25a6c2735178",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_380": {
+      "sourceVersion": "df0e38c76f1de6c66ffb1fbe46689694eca676bfdb6a12a53fefa02e113afa1e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_381": {
+      "sourceVersion": "9a525af28650698a46006c72d28e77c951f844a7cad0fec10e04ef51e6aaeb4b",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_382": {
+      "sourceVersion": "6485b029ced80ff588c271cb8d8886076696aa418f311de2b70081cb3379a4ac",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_384": {
+      "sourceVersion": "8b06e1cf8342d82a7c6e9110864ec649a4a6f13a6e4a54d5f0fbee1d9ad3180e",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_385": {
+      "sourceVersion": "e30267e00bdefee5800f9bbf3fc50f4665bc5f4cdc86888476ab72eb8e0e4eb9",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_386": {
+      "sourceVersion": "06e74f8c51b13216aa20dd9c2ef5099b66aeb1bd236b60cb12afe4785e09ba6d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_387": {
+      "sourceVersion": "a15943e270fce7594663f90ba6ece179b421a6f69a1f2929d3fbb7b34901e36b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_388": {
+      "sourceVersion": "5e779ca12082b03469c5c522917ed1c4299c7d6cfce294185b6af85136489216",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_389": {
+      "sourceVersion": "33adf1bb6562e19a95500ac7d79d0d4ebad4e1ecf1deba9c127596d665b5cefa",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_390": {
+      "sourceVersion": "99ab1e6514bd0270deab893dc13d3cf077ff53a04c3c6c53f0ffc5529d915bde",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_392": {
+      "sourceVersion": "4c2499d2eb87dfc0de680b0810757f51f6604b623f673a845f9a42a00f52876b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_393": {
+      "sourceVersion": "5280486f40e7d8fd1f46a4371204eb0170f2ef732f99f3cf5f2048c1abb0ac93",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_394": {
+      "sourceVersion": "1179ab9f867bf05a412d856490dc01f381d4aebca8469d81bbc196a7137ca3c9",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_395": {
+      "sourceVersion": "d11b35bc2aa179a06af52669c0309c34fd5eb09f54bad86c7dabb050ed84f046",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_396": {
+      "sourceVersion": "19ebfbb2e24f7937ad7453f1e23b773ac37de723452c5be9b0128925f108332b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_397": {
+      "sourceVersion": "bafa8baadb775a0f8df5729c882a5a7c5c6235e34ee89c5377bc08b18e76b689",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_399": {
+      "sourceVersion": "b5c07cd5f68b0b61060839821a654875d5d6ed16e3fa85a254045f1fcb21bd5e",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_400": {
+      "sourceVersion": "175abbdbd64497d58ab1e55928cfc978afdba4c59c3e1b418c418257b5a915e2",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_401": {
+      "sourceVersion": "86e369d62846354dca2822877548f4ebdaf29f7efefa9b133c08fcae83db1276",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_402": {
+      "sourceVersion": "7f8ac22938193cb46969f14ab5e867bf60fdab5ba7179e5130575378ef666d31",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_403": {
+      "sourceVersion": "8ce7155c25efd22b18ab65089582321c08f714eccbfcb889acb6fbe05968028a",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_404": {
+      "sourceVersion": "830dd6ff305c70fcf22e7e3ee809b82981686085b9d80fbc161b9de692e57987",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_406": {
+      "sourceVersion": "65fed74e08563d0f2438d54e661a8874675d89ca27bc7414208d0fc68e0bf642",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_412": {
+      "sourceVersion": "012412ec553cc21d6522ad796809ad7881c9233f3964d66536f3675f252734af",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_413": {
+      "sourceVersion": "e881bbad10f63732ef54df3deb7dcf6fa6bf5ab64bd8ef9a7dcf78b31530f899",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_414": {
+      "sourceVersion": "288a2a0b44606a4e79a6eb67bb4300a00f518e84875efddb7d47629de95b706c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_415": {
+      "sourceVersion": "57843df91384352bb6fbe267062f57f5d68d2f01ae881616cd420ce2d106d20a",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_417": {
+      "sourceVersion": "c3ddc164c376acfbf3f60176efedb4ab83a4fc501384efb4bc93a397d1f79d4c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_418": {
+      "sourceVersion": "c2816934132994c1d2abc72f05d7069e77d954e11207a53274c3e9910df1a2ac",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_419": {
+      "sourceVersion": "14a586869f13d4ee47673c0877435e9f4f61eae7faf23215494837f77807f2f8",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_420": {
+      "sourceVersion": "5f0fe33aa619f73a29f40fe2d01e1a10d419b86d62ae44c9a41649d9ecf36429",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_423": {
+      "sourceVersion": "458bf948f7c9dcbc4ce2544cb1e21fb4f00e3b3f5ff5ab86dc460014df7822be",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_425": {
+      "sourceVersion": "53f2815035220e6048af53e219e125068026e9a9253d923adad5ae2c39c05a55",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_427": {
+      "sourceVersion": "e8167b57caeec989a9b16db49f3e130a45a4dc279f2bfb2bee82ddcf9fea9584",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_429": {
+      "sourceVersion": "e72bfecee00ef7d4a5baa3dc780a7fe490399d0508a5eb3e294f257407dbb6fc",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_430": {
+      "sourceVersion": "f1691d9baf3163c8dcb29262fd8ccab6cb73ba2615b3552d7b01a07a649202d3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_431": {
+      "sourceVersion": "9eba751788c7b4e4880e7d5ac592ef0d020850d13843686e2be9d09a85ad88d6",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_433": {
+      "sourceVersion": "7726b7665dc52c8720e706596387e373b315f6f1f9b2d0b7bc6b06dd6feab13b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_436": {
+      "sourceVersion": "22bb85ed620175bef070b29245ce2dd04433dea571eb36ff1f0d205b391bc1f0",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_437": {
+      "sourceVersion": "2c362c6532121286eef8d4ce5ff31f26334eace783bc3f9c315ec3c6ae7398ed",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_438": {
+      "sourceVersion": "16b5bfd9cebebe163ef275c6b5750875cd26dac84158b583d5b9588d5fccbc35",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_439": {
+      "sourceVersion": "c4cb82e05bf33ddd8a104a9c90acd04324ca6a10d5f1e7a98596594e77afb65f",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_440": {
+      "sourceVersion": "11014ee6b073e4669c1be5d4937ca8a68d7e4c496aa1814b3cbe70317ed8cf5a",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_441": {
+      "sourceVersion": "4500e61f5f4ebf23b6fe03aa2597e23dce461a84178d41c17a50433dfe45f6bc",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_442": {
+      "sourceVersion": "4a1b5926a5bd50b571978ad69380c40c7486784720a9e1a32540311920208fe5",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_443": {
+      "sourceVersion": "5f7f4d1b1c0183968d58fad169ddddb946c413854141d9ce53ecc602c3caaa75",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_445": {
+      "sourceVersion": "8ef98e782fcddc4b93acb04b4a8144b38e55cb0c13f11f7046cc9e142ab2fa80",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_446": {
+      "sourceVersion": "667cc693d6e5d86ec32c2c4464ec1203155ff014f8761a7d07778f51fdb755f4",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_447": {
+      "sourceVersion": "5c023f3ea57d40eaa039bd138dc09dc362e280a0c04828e0412d6f825442fdaa",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_448": {
+      "sourceVersion": "b29a136fb10b217cfdfeba577c4a146b27a94b7991d93b4aec5f16488ed9ac7a",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_449": {
+      "sourceVersion": "b79dd123475bfbee30318e40541691f2146153b450b0e7daefb8d711eadd7075",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_450": {
+      "sourceVersion": "6ee3e06dbb73e6e1e2ffa4d5016ccfd13df9f2d03060471259b5bd4e84da7766",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_451": {
+      "sourceVersion": "3f25a7e01571ffece0fcbefd0264a4d98b5f8bfccc52aeb01e97280ff361848c",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_455": {
+      "sourceVersion": "95a7a10fb7a5661d8c26971d58345b4765c7328a49cf3c9539147d51960b0450",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_457": {
+      "sourceVersion": "8ad486fd11078d2901d75a8102e4ad010a0e9f3cdaa67cba0136e155b163856c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_458": {
+      "sourceVersion": "c4e09678af9727702c293949394671b4078655de8768679aeafa82a5d16f29b7",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_460": {
+      "sourceVersion": "5633e01e6f3dfe55a21c5e0c72ae254f8d874a0e8f5ec47455bd433e8372db91",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_461": {
+      "sourceVersion": "56552e87610bc8d2d0f509a33fa5eca068aab595485f09ddaeb9599a01c049be",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_463": {
+      "sourceVersion": "2f3df349b2668acbf58d83db77d079bfd8303c15b7d6742ecb25eec640e5a2ea",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_464": {
+      "sourceVersion": "8b814c3d87c3cf445fa71651e0a69fd8ba386b6cd0e089905581cfbebb8df355",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_465": {
+      "sourceVersion": "c69d32f63bacc31634cae67f1e205e6ac7741968750482c9c04c897732db68fe",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_466": {
+      "sourceVersion": "f01ad499f3f0d44e14cd627c0a98b56b307988acd237ff19637718f852d8dd0b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_467": {
+      "sourceVersion": "c5ed917e0d122f0d9210769ace70b20b7e48816a50105e00ae09f22f4bd0dcfc",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_469": {
+      "sourceVersion": "1122d649870e8c60b4b3f26316384339f3a22fed0acd3d601da563cb896aa5ff",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_470": {
+      "sourceVersion": "9aa39577938657fb2cb9d2ff10f8988b68c612a347b74ae6057d9f501ae88bfe",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_471": {
+      "sourceVersion": "0d9cec6405784c8694ca111845f56ca711becfe57d07b3aa3f5f47ffd0e239ea",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_472": {
+      "sourceVersion": "dcdb5971a75b8ca5304498eea9fa4606c63060c4fe7c279ff7e2dba23344b28d",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_473": {
+      "sourceVersion": "6d632250c8f357ae3cf96b0fd8cd99929748da671b831c19946fe3d4884acf95",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_475": {
+      "sourceVersion": "5b845610e1cf94ca41ed92592feeb2e682d2dc374eb42a36635856b01c20093b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_476": {
+      "sourceVersion": "5d8b483610eeaf691d439beb1ada0a446913cd1c9b545d6aa7712d79c832fad3",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_477": {
+      "sourceVersion": "36f66313500397e4abec0df01c6f66b23c11cd47954531295aa353871b41daa9",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_478": {
+      "sourceVersion": "dd896112e0a38d401a20c326b282459bef2d81b1fc5195c28629366f30d809bf",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_480": {
+      "sourceVersion": "bc3c577e037049e1890ced614843522a3ebdf15caf5bce4b4975d8a398ec8a06",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_482": {
+      "sourceVersion": "e65e09693c6ec3b892aa2455d9c575338b651e722b70e2ea63f962a4ff501adf",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_484": {
+      "sourceVersion": "77af8b9d816417331bc1962f5e9bc6144a01ffef188ccf2612fbf14946c9540b",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_485": {
+      "sourceVersion": "2fac2227668f92e5bc99f4c3d6f315f2301ebbc3cdb185faddb2607efce30451",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_486": {
+      "sourceVersion": "1ac7aaa44c0e756b9127595f17b99c4792b24d3d6409f5d92b51d218f33a9684",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_487": {
+      "sourceVersion": "fae50b0a70415bb7f9d33d8983367bf589ef7eba660973df08c5e134cf327244",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_488": {
+      "sourceVersion": "4e509b92abb3b1b6bd45ccc02da952da15bd47b65c42dff1e17e4643e508bdc0",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_489": {
+      "sourceVersion": "d1877bf99b78583f56a3b6d91b7718cabede3c645e3dcdcf2a070d9ccab3ebd5",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_490": {
+      "sourceVersion": "4d728fc6d72af5bd3620b89eb01d1b4fc02eb2ecf28bb3fa054eed882b0d6a2a",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_492": {
+      "sourceVersion": "23d2d1f465846b331cc1e939ecab27c5ae60cd73f8f5688f3f51a2fd7238446c",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_493": {
+      "sourceVersion": "327ff7a75a3dcd7cf365287198f06504919d93c4e4e99b7217e63b684a43f5f2",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_495": {
+      "sourceVersion": "b4725eee9d0d75ff4647571ce296a416b341e1b372edaac575fe0bc5d19b76ac",
+      "decisionVersion": 1,
+      "rule": "DEFERRED_DRAFT_REQUEST",
+      "lossy": true
+    },
+    "email_497": {
+      "sourceVersion": "56ed440cdbf292ca8d779148a764d25eddc1ee64ccd6bacf5a82c93ff031e945",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    },
+    "email_500": {
+      "sourceVersion": "dc212b75071f2769ec9079c058a9b539ab2efdf84c5c0c549c396353713452c3",
+      "decisionVersion": 1,
+      "rule": "NOT_APPLICABLE",
+      "lossy": false
+    }
+  },
+  "failures": [
+    {
+      "id": "email_001",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_004",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_005",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_009",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_013",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_025",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_031",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_032",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_034",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_038",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_040",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_043",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_044",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_046",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_051",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_052",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_055",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_056",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_058",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_059",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_064",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_065",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_068",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_071",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_077",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_082",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_087",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_090",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_091",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_096",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_097",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_098",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_099",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_100",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_101",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_102",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_103",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_104",
+      "code": "CASE_NOT_CLASSIFIED"
+    },
+    {
+      "id": "email_107",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_109",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_111",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_113",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_118",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_119",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_121",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_128",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_129",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_132",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_133",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_143",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_144",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_145",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_146",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_160",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_167",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_169",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_170",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_171",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_174",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_175",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_178",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_182",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_197",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_198",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_208",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_211",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_216",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_223",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_225",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_227",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_235",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_237",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_239",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_242",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_243",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_247",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_249",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_256",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_270",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_273",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_275",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_284",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_285",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_291",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_296",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_300",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_302",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_307",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_312",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_313",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_314",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_324",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_334",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_335",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_342",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_343",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_348",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_349",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_351",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_354",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_361",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_364",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_367",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_377",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_378",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_379",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_383",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_391",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_398",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_405",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_407",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_408",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_409",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_410",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_411",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_416",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_421",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_422",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_424",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_426",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_428",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_432",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_434",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_435",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_444",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_452",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_453",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_454",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_456",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_459",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_462",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_468",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_474",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_479",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_481",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_483",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_491",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_494",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_496",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_498",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_499",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_501",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_502",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_503",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_504",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_505",
+      "code": "UNRESOLVED_NON_COMPARISON"
+    },
+    {
+      "id": "email_506",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_507",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_508",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_509",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_510",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_511",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_512",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_513",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_514",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_515",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_516",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_517",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_518",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_519",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    },
+    {
+      "id": "email_520",
+      "code": "UNSUPPORTED_UNRESOLVED_STATE"
+    }
+  ]
+}

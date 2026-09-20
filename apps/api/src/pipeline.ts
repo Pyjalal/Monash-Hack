@@ -4,6 +4,7 @@ import { buildClassificationState } from '@cargolens/shared/questions';
 import { InvalidJevResponseError, type Classifier } from './ai/classify.js';
 import type { BatchClassificationResult } from './ai/jev-batch.js';
 import { hash, Store, type RequestUsage } from './store.js';
+import { compareDocuments } from './documents/comparison.js';
 
 export class QueueFullError extends Error { constructor() { super('Classification queue is full'); this.name = 'QueueFullError'; } }
 
@@ -35,6 +36,8 @@ export class ClassificationService {
   private readonly requestsPerMinute: number;
   private readonly batchSize: number;
   private readonly flushMs: number;
+  private documentsActive = 0;
+  private readonly documentWaiters: (() => void)[] = [];
 
   constructor(private readonly options: ServiceOptions) {
     const defaultConcurrency = options.batchClassifier ? 8 : 24;
@@ -133,11 +136,39 @@ export class ClassificationService {
     } catch (error) { for (const work of batch) work.reject(error); }
   }
 
-  async processCase(email: Email): Promise<void> {
+  async processCase(email: Email, attachmentRoot?: string): Promise<void> {
     const record = this.options.store.upsertEmail(email);
-    if (record.classification && `${record.classification.model}:${record.classification.questionVersion}` === this.options.configurationKey) return;
-    try { this.options.store.saveClassification(email.id, record.sourceVersion, await this.classify(email)); }
-    catch (error) { this.options.store.markFailed(email.id, record.sourceVersion, error instanceof QueueFullError ? 'QUEUE_FULL' : 'CLASSIFICATION_FAILED'); }
+    const revision = record.classification && `${record.classification.model}:${record.classification.questionVersion}`;
+    if (!revision || !(this.options.configurationKey === revision || this.options.configurationKey.startsWith(`${revision}:`))) {
+      try { this.options.store.saveClassification(email.id, record.sourceVersion, await this.classify(email)); }
+      catch (error) { this.options.store.markFailed(email.id, record.sourceVersion, error instanceof QueueFullError ? 'QUEUE_FULL' : 'CLASSIFICATION_FAILED'); return; }
+    }
+    if (!attachmentRoot) return;
+    // Bound document parsing independently of the fast classification queue.
+    if (this.documentsActive >= 2) await new Promise<void>(resolve => this.documentWaiters.push(resolve));
+    else this.documentsActive++;
+    try {
+      const current = this.options.store.getCase(email.id);
+      const decision = current?.decision;
+      if (!current || current.sourceVersion !== record.sourceVersion || !decision || decision.decisionVersion !== 1 ||
+        decision.category !== 'BL_COMPARISON' || decision.requestedAction !== 'VERIFY_DOCUMENTS' || decision.documentExpectation !== 'EXPECTED_NOW' || decision.blockers.length) return;
+      if (!current.email.attachments.length) {
+        this.options.store.saveDecision(email.id, { ...decision, decisionVersion: 2, verificationState: 'BLOCKED', workflowState: 'AWAITING_DOCUMENTS',
+          blockers: ['MISSING_ATTACHMENT'], nextAction: 'REQUEST_DOCUMENTS' });
+        return;
+      }
+      try {
+        const comparison = await compareDocuments(current, attachmentRoot);
+        this.options.store.saveDocumentComparison(email.id, comparison.decision, comparison.evidence);
+      } catch {
+        this.options.store.saveDecision(email.id, { ...decision, decisionVersion: 2, verificationState: 'FAILED', workflowState: 'FAILED',
+          blockers: ['COMPARISON_FAILED'], nextAction: 'WAIT' });
+        this.options.store.emit('comparison.failed', email.id, { sourceVersion: record.sourceVersion, code: 'COMPARISON_FAILED' });
+      }
+    } finally {
+      const next = this.documentWaiters.shift();
+      if (next) next(); else this.documentsActive--;
+    }
   }
 
   stats(): { active: number; queued: number; inFlight: number } { return { active: this.active, queued: this.waiting.length, inFlight: this.pending.size }; }
