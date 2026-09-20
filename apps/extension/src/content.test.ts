@@ -232,6 +232,28 @@ it('rejects Outlook results arriving after a row is recycled but before the obse
   } finally { state.controller.stop(); globalThis.MutationObserver = prior; }
 });
 
+it('restores Outlook badges after the host re-renders row content on return to the list view', async () => {
+  const state = setup(true, true);
+  const prior = globalThis.MutationObserver;
+  globalThis.MutationObserver = state.window.MutationObserver as unknown as typeof MutationObserver;
+  try {
+    await state.controller.start(); await flush();
+    const request = state.sent.find(message => message.type === 'CLASSIFY_ROWS') as Extract<ExtensionMessage, { type: 'CLASSIFY_ROWS' }>;
+    const item = request.items[0];
+    const row = state.window.document.querySelector('[data-convid]')!;
+    state.listeners.forEach(listener => listener({ type: 'CLASSIFY_RESULTS', epoch: 0, items: [{ rowKey: item.rowKey, fingerprint: item.fingerprint, result: result(item.email.id) }] }));
+    expect(row.querySelector('[data-cargolens-badge]')?.shadowRoot?.textContent).toContain('BL check');
+    // Outlook opens a message and returns to the list: same row element and convid, but the inner content is rebuilt.
+    row.innerHTML = row.innerHTML.replace(/<span data-cargolens-badge[\s\S]*?<\/span>/, '');
+    expect(row.querySelector('[data-cargolens-badge]')).toBeNull();
+    await state.controller.scan(); await flush();
+    const badge = row.querySelector('[data-cargolens-badge]');
+    expect(badge?.shadowRoot?.textContent).toContain('BL check');
+    expect(badge?.parentElement).toBe(row.querySelector('.TtcXM')!.parentElement);
+    expect(state.sent.filter(message => message.type === 'CLASSIFY_ROWS')).toHaveLength(1);
+  } finally { state.controller.stop(); globalThis.MutationObserver = prior; }
+});
+
 it('keeps Outlook retry failures visible without triggering native row actions', async () => {
   const state = setup(true, true);
   const prior = globalThis.MutationObserver;
