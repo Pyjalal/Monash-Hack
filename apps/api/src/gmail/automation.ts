@@ -5,11 +5,12 @@ import { OperationalDecisionSchema, type Email, type OperationalDecision } from 
 import type { Store, CaseRecord } from '../store.js';
 import type { ClassificationService } from '../pipeline.js';
 import type { GmailClient } from './client.js';
-import { GmailOutbox, type OutboundAction, type OutboxItem } from './outbox.js';
+import { GmailOutbox, type OutboxItem } from './outbox.js';
 import { decodeGmailMessage, mailboxAddress, type DecodedGmailMessage } from './message.js';
-import { collectGmailEvidence, GmailResumeStore, planMissingEvidence, type CollectedEvidence, type DocumentRole } from './evidence.js';
+import { collectGmailEvidence, GmailResumeStore, planMissingEvidence, type CollectedEvidence } from './evidence.js';
 import { verifyOperationalEvidence } from './evidence-validation.js';
 import { GmailAuthorizationError } from './oauth.js';
+import { composeDraft } from '../drafts.js';
 
 export interface GmailAutomationOptions { store: Store; service: ClassificationService; client: GmailClient; attachmentRoot: string; enabled: boolean; documentationContact?: string }
 export interface GmailSyncResult { processed: number; skipped: number; errors: { threadId: string; code: string }[]; nextPageToken?: string }
@@ -194,22 +195,8 @@ export class GmailAutomation {
     if (!['REQUEST_DOCUMENTS', 'REQUEST_CLARIFICATION', 'REQUEST_AMENDMENT', 'CONFIRM_MATCH'].includes(decision.nextAction)) return null;
     const snapshot = this.snapshot(caseId);
     if (snapshot.sourceVersion !== record.sourceVersion || !snapshot.latest.eligible || !snapshot.retrievalComplete) throw new Error('Current complete Gmail source snapshot is required');
-    let action = decision.nextAction as OutboundAction;
-    let recipient = mailboxAddress(snapshot.latest.email.from);
-    let text: string;
-    if (action === 'CONFIRM_MATCH' || action === 'REQUEST_AMENDMENT') {
-      await this.verifyEvidence(record, decision);
-      text = action === 'CONFIRM_MATCH' ? 'No mismatch was detected across the seven verified SI and BL fields in the supplied source documents.' :
-        'Please amend the draft BL for these established differences:\n' + decision.fieldResults.filter(field => decision.knownMismatches.includes(field.field)).map(field => `- ${field.field}: SI "${field.si!.text.replace(/\s+/g, ' ')}"; BL "${field.bl!.text.replace(/\s+/g, ' ')}".`).join('\n');
-    } else {
-      const missingRoles: DocumentRole[] = record.email.attachments.length === 0 ? ['SI', 'BL'] : decision.blockers.flatMap(blocker => blocker === 'MISSING_SI' ? ['SI' as const] : blocker === 'MISSING_BL' ? ['BL' as const] : []);
-      if (action === 'REQUEST_CLARIFICATION' && decision.requestedAction !== 'REQUEST_DRAFT') text = 'Please clarify the request or provide clearer source evidence for the unresolved fields. Document verification has not been completed.';
-      else {
-        const plan = planMissingEvidence({ requestedAction: decision.requestedAction, requester: snapshot.latest.email.from, documentationContact: this.options.documentationContact, missingRoles, retrievalComplete: snapshot.retrievalComplete });
-        if (!plan.recipient || !plan.replyType) return null;
-        recipient = plan.recipient; action = plan.replyType; text = plan.text;
-      }
-    }
+    if (decision.nextAction === 'CONFIRM_MATCH' || decision.nextAction === 'REQUEST_AMENDMENT') await this.verifyEvidence(record, decision);
+    const { action, to: recipient, text } = composeDraft(record, this.options.documentationContact);
     const idempotencyKey = createHash('sha256').update(`${caseId}:${record.sourceVersion}:${action}:${recipient}`).digest('hex');
     const existing = this.queue.list().some(item => item.reply.idempotencyKey === idempotencyKey);
     const item = this.queue.enqueue({ caseId, sourceVersion: record.sourceVersion, action, decision, reply: { threadId: snapshot.latest.email.threadId!, to: recipient, subject: snapshot.latest.email.subject, text, inReplyTo: snapshot.latest.rfcMessageId, references: snapshot.latest.references, idempotencyKey, sourceVersion: record.sourceVersion } });
