@@ -29,5 +29,6 @@
       "description": "Toggle CargoLens preview"
     }
   },
+  "options_ui": { "page": "options.html", "open_in_tab": true },
   "action": { "default_title": "CargoLens", "default_popup": "popup.html" }
 }

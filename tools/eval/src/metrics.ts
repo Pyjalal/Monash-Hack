@@ -34,14 +34,15 @@ export function templateGroup(body: string) {
   return createHash("sha256").update(normalized).digest("hex");
 }
 
-export function groupedSplit<T extends { id: string; group: string; category: string }>(rows: T[]) {
+export function groupedSplit<T extends { id: string; group: string; category: string; format?: string }>(rows: T[]) {
   const groups = new Map<string, T[]>();
   for (const row of rows) groups.set(row.group, [...(groups.get(row.group) ?? []), row]);
   const buckets = new Map<string, T[][]>();
   for (const group of groups.values()) {
     const categories = [...new Set(group.map(row => row.category))].sort((a, b) =>
       group.filter(row => row.category === b).length - group.filter(row => row.category === a).length || a.localeCompare(b));
-    buckets.set(categories[0], [...(buckets.get(categories[0]) ?? []), group]);
+    const stratum = JSON.stringify([categories[0], [...new Set(group.map(row => row.format ?? 'unspecified'))].sort()]);
+    buckets.set(stratum, [...(buckets.get(stratum) ?? []), group]);
   }
   const dev: T[] = []; const holdout: T[] = [];
   for (const bucket of buckets.values()) {

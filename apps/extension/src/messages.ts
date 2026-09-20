@@ -18,6 +18,8 @@ export interface ClassificationPreview {
   expectation: string | null;
   expectationConfidence: number | null;
   cached: boolean;
+  /** Smart-filter probabilities keyed by rule id; absent when no rules were active or evaluation failed. */
+  rules?: Record<string, number>;
 }
 
 export type RowClassifyResult =
@@ -38,8 +40,8 @@ export type ExtensionMessage =
   | { type: "TOGGLE_ENABLED" }
   | { type: "GET_SETTINGS" }
   | { type: "SET_ENABLED"; enabled: boolean }
-  | { type: "SET_SETTINGS"; enabled: boolean; apiUrl: string }
-  | { type: "SETTINGS_UPDATED"; enabled: boolean; apiUrl: string; epoch: number };
+  | { type: "SET_SETTINGS"; enabled: boolean; apiUrl: string; inbox?: unknown }
+  | { type: "SETTINGS_UPDATED"; enabled: boolean; apiUrl: string; epoch: number; inbox?: unknown };
 
 const categories = new Set(["BL_COMPARISON", "SI_REQUEST", "INVOICE_QUERY", "GENERAL", "SPAM", "UNCERTAIN"]);
 const urgencyLevels = new Set(["routine", "week", "today", "blocking"]);
@@ -82,6 +84,7 @@ export function isClassifyResult(value: unknown): value is RowClassifyResult {
     }
     if (typeof classification.elapsedMs !== "number" || !Number.isFinite(classification.elapsedMs) || classification.elapsedMs < 0 || typeof classification.questionVersion !== "string" || classification.questionVersion.length === 0 || typeof classification.cached !== "boolean") return false;
     if (classification.usageRequestId !== undefined && typeof classification.usageRequestId !== "string") return false;
+    if (classification.rules !== undefined && !probabilityRecord(classification.rules)) return false;
     return true;
   }
   if (!result.error || typeof result.error !== "object") return false;

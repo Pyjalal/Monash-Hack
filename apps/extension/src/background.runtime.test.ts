@@ -100,9 +100,10 @@ it("resynchronizes an existing tab after its background worker restarts", async 
   state.getListener()?.({ type: "CLASSIFY_ROWS", epoch: 7, items: [item()] }, { tab: { id: 41 } }, staleResponse);
   await vi.waitFor(() => expect(staleResponse).toHaveBeenCalled());
   expect(fetchMock).not.toHaveBeenCalled();
-  expect(state.chromeMock.tabs.sendMessage).toHaveBeenCalledWith(41, {
+  expect(state.chromeMock.tabs.sendMessage).toHaveBeenCalledWith(41, expect.objectContaining({
     type: "SETTINGS_UPDATED", enabled: true, apiUrl: "http://localhost:4555", epoch: 1,
-  });
+    inbox: expect.objectContaining({ hideSpam: true, pinUrgent: true }),
+  }));
   const currentResponse = vi.fn();
   state.getListener()?.({ type: "CLASSIFY_ROWS", epoch: 1, items: [item()] }, { tab: { id: 41 } }, currentResponse);
   await vi.waitFor(() => expect(currentResponse).toHaveBeenCalledWith({ accepted: 1, rejected: 0 }));
