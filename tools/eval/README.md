@@ -122,6 +122,19 @@ The packed study first compares batches of four and eight on the frozen developm
 
 The feature branch's useful end-to-end submission workflow is available here without replacing CargoLens's operational pipeline:
 
+## OpenRouter smoke test
+
+Use the smoke test to separate API-key/model/provider problems from extraction-prompt problems. It sends one ordinary `Hi` chat request to OpenRouter and never prints the API key:
+
+```powershell
+$env:DOTENV_CONFIG_PATH="..\\Monash-Hack\\.env"
+npm run test:openrouter
+npm run test:openrouter -- --model google/gemma-4-26b-a4b-it:free
+npm run test:openrouter -- --model google/gemma-3-27b-it --message "Hi from CargoLens"
+```
+
+Configuration precedence is CLI flag, then environment variable, then the default: `--model` / `OPENROUTER_SMOKE_MODEL`, `--endpoint` / `OPENROUTER_CHAT_URL`, and `--timeout-ms` / `OPENROUTER_SMOKE_TIMEOUT_MS`. The request uses the standard `/api/v1/chat/completions` endpoint, so it also works for models that are not available on the alpha Decisions endpoint.
+
 ```sh
 npm run submission:classify
 npm run submission:pipeline

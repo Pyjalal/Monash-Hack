@@ -21,6 +21,7 @@
     "submission:classify": "tsx tools/eval/src/submission.ts classify",
     "submission:pipeline": "tsx tools/eval/src/submission.ts pipeline",
     "submission:extract-all": "tsx tools/eval/src/submission.ts pipeline --all-documents --classification training_data/sdoc-hackathon-docker/extracted/data_v2/sample_submission.json",
+    "test:openrouter": "tsx tools/eval/src/openrouter-smoke.ts",
     "dev:extraction-dashboard": "vite apps/extraction-dashboard --config apps/extraction-dashboard/vite.config.ts",
     "build:extraction-dashboard": "vite build apps/extraction-dashboard --config apps/extraction-dashboard/vite.config.ts",
     "build:extension": "npm run build --workspace @cargolens/extension"
