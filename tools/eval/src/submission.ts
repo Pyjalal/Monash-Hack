@@ -22,7 +22,7 @@ const aiProvider = process.env.AI_PROVIDER ?? "typesafe";
 if (aiProvider !== "typesafe" && aiProvider !== "openrouter") throw new Error("AI_PROVIDER must be typesafe or openrouter");
 const model = aiProvider === "openrouter" ? process.env.OPENROUTER_MODEL ?? "typesafe/jev-1.13" : process.env.TYPESAFE_MODEL ?? "jev-1.13.0";
 const extractionModel = aiProvider === "openrouter"
-  ? process.env.OPENROUTER_EXTRACTION_MODEL ?? "google/gemma-4-26b-a4b-it:free"
+  ? process.env.OPENROUTER_EXTRACTION_MODEL ?? "nex-agi/nex-n2.5-pro:free"
   : process.env.TYPESAFE_EXTRACTION_MODEL ?? model;
 
 function positiveInteger(value: string | undefined, name: string, fallback: number): number {

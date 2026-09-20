@@ -27,7 +27,7 @@ function option(args: string[], name: string): string | undefined {
 
 function config(): SmokeOptions {
   const args = process.argv.slice(2);
-  const model = option(args, "--model") ?? process.env.OPENROUTER_SMOKE_MODEL ?? process.env.OPENROUTER_EXTRACTION_MODEL ?? "google/gemma-4-26b-a4b-it:free";
+  const model = option(args, "--model") ?? process.env.OPENROUTER_SMOKE_MODEL ?? process.env.OPENROUTER_EXTRACTION_MODEL ?? "nex-agi/nex-n2.5-pro:free";
   const message = option(args, "--message") ?? "Hi";
   const endpoint = option(args, "--endpoint") ?? process.env.OPENROUTER_CHAT_URL ?? "https://openrouter.ai/api/v1/chat/completions";
   const timeoutMs = positiveInteger(option(args, "--timeout-ms") ?? process.env.OPENROUTER_SMOKE_TIMEOUT_MS, "--timeout-ms", 30_000);

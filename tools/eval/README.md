@@ -129,7 +129,7 @@ Use the smoke test to separate API-key/model/provider problems from extraction-p
 ```powershell
 $env:DOTENV_CONFIG_PATH="..\\Monash-Hack\\.env"
 npm run test:openrouter
-npm run test:openrouter -- --model google/gemma-4-26b-a4b-it:free
+npm run test:openrouter -- --model nex-agi/nex-n2.5-pro:free
 npm run test:openrouter -- --model google/gemma-3-27b-it --message "Hi from CargoLens"
 ```
 
