@@ -37,6 +37,7 @@ export class Store {
       CREATE TABLE IF NOT EXISTS events (sequence INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL, case_id TEXT, at TEXT NOT NULL, data_json TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS flows (id TEXT PRIMARY KEY, flow_json TEXT NOT NULL, updated_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS ai_requests (request_id TEXT PRIMARY KEY, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS rule_cache (key TEXT PRIMARY KEY, probability REAL NOT NULL, created_at TEXT NOT NULL);
     `);
   }
   close(): void { this.db.close(); }
@@ -93,6 +94,14 @@ export class Store {
   }
   cache(key: string, result: Classification): void {
     this.db.prepare('INSERT OR REPLACE INTO classification_cache VALUES (?,?,?)').run(key, JSON.stringify(ClassificationSchema.parse(result)), new Date().toISOString());
+  }
+  getCachedRule(key: string): number | null {
+    const row = this.db.prepare('SELECT probability FROM rule_cache WHERE key=?').get(key) as { probability: number } | undefined;
+    return row && Number.isFinite(row.probability) ? row.probability : null;
+  }
+  cacheRule(key: string, probability: number): void {
+    if (!Number.isFinite(probability) || probability < 0 || probability > 1) throw new RangeError('Rule probability must be within [0, 1]');
+    this.db.prepare('INSERT OR REPLACE INTO rule_cache VALUES (?,?,?)').run(key, probability, new Date().toISOString());
   }
   recordUsage(request: RequestUsage): void {
     this.db.prepare('INSERT OR IGNORE INTO ai_requests VALUES (?,?,?)').run(request.requestId, JSON.stringify(request), new Date().toISOString());

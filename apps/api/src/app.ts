@@ -5,6 +5,8 @@ import { cors } from 'hono/cors';
 import { streamSSE } from 'hono/streaming';
 import { z } from 'zod';
 import { ClassifyRequestSchema, OperationalDecisionSchema, type ClassifyResult } from '@cargolens/shared';
+import { RulesRequestSchema } from '@cargolens/shared/rules';
+import type { RuleService } from './ai/rules.js';
 import { loadDataset } from './dataset.js';
 import { ClassificationService, QueueFullError } from './pipeline.js';
 import { Store } from './store.js';
@@ -14,7 +16,7 @@ import { GmailAuthorizationError, type GmailAuthorization } from './gmail/oauth.
 import type { GmailPoller } from './gmail/polling.js';
 
 export type AppOptions = { store: Store; service: ClassificationService; dashboardToken: string; datasetRoot?: string; allowedOrigins?: string[];
-  gmailAuthorization?: GmailAuthorization; gmailPoller?: GmailPoller;
+  rules?: RuleService; gmailAuthorization?: GmailAuthorization; gmailPoller?: GmailPoller;
   gmail?: Pick<GmailAutomation, 'sync' | 'status' | 'outbox' | 'validateDecision' | 'processDecision' | 'dispatchPending'> };
 function tokenMatches(value: string, expected: string): boolean {
   const actual = Buffer.from(value); const wanted = Buffer.from(`Bearer ${expected}`);
@@ -33,7 +35,7 @@ export function createApp(options: AppOptions): Hono {
   app.use('*', bodyLimit({ maxSize: 1024 * 1024, onError: c => c.json({ error: 'PAYLOAD_TOO_LARGE' }, 413) }));
   app.use('*', async (c, next) => {
     if (c.req.method === 'GET' && ['/gmail/oauth/callback', '/gmail/connection-result'].includes(c.req.path)) return next();
-    if (c.req.path === '/health' || (c.req.path === '/classify' && c.req.method === 'POST') || c.req.method === 'OPTIONS') return next();
+    if (c.req.path === '/health' || (['/classify', '/rules/evaluate'].includes(c.req.path) && c.req.method === 'POST') || c.req.method === 'OPTIONS') return next();
     if (!tokenMatches(c.req.header('Authorization') ?? '', options.dashboardToken)) return c.json({ error: 'UNAUTHORIZED' }, 401);
     await next();
   });
@@ -56,6 +58,19 @@ export function createApp(options: AppOptions): Hono {
     const usage = { input_tokens: 0, output_tokens: 0, requests: 0 };
     for (const id of requestIds) { const request = store.getRequestUsage(id); if (request) { usage.requests++; usage.input_tokens += request.usage.input_tokens; usage.output_tokens += request.usage.output_tokens; } }
     return c.json({ results, elapsedMs: performance.now() - start, usage });
+  });
+  app.post('/rules/evaluate', async c => {
+    if (!options.rules) return c.json({ error: 'RULES_NOT_CONFIGURED' }, 503);
+    if (!/^application\/json(?:;|$)/i.test(c.req.header('Content-Type') ?? '')) return c.json({ error: 'JSON_REQUIRED' }, 415);
+    const parsed = RulesRequestSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'INVALID_RULES_BATCH', details: parsed.error.flatten() }, 400);
+    previewBudget = Math.min(600, previewBudget + (Date.now() - refillAt) / 6000); refillAt = Date.now();
+    if (previewBudget < parsed.data.emails.length) return c.json({ error: 'PREVIEW_BUDGET_EXHAUSTED', retryAfterSeconds: 60 }, 429);
+    previewBudget -= parsed.data.emails.length;
+    const start = performance.now();
+    const emails = parsed.data.emails.map(source => ({ ...source, snippet: source.snippet ?? '', contentScope: 'inbox_snippet' as const, attachments: [] }));
+    const results = await options.rules.evaluate(emails, parsed.data.rules);
+    return c.json({ results, elapsedMs: performance.now() - start, rulesVersion: options.rules.rulesVersion });
   });
   app.get('/usage', c => c.json({ ...store.usageSummary(), coverage: 'successful_provider_requests' }));
   app.get('/emails', c => {
