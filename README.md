@@ -165,6 +165,29 @@ Gmail and Outlook Live were checked in signed-in Chrome on 2026-09-20; see
 [connector and adapter verification](docs/connector-verification.md) for tested
 layouts and remaining limitations.
 
+#### Inbox actions and smart filters
+
+The settings page turns Jev's judgments into triage, all preview-only and
+reversible — nothing is deleted, moved or marked in the mailbox:
+
+- **Hide spam rows** at a confidence you choose. Hidden rows can be shown again
+  from the CargoLens tray, and a confident spam label wins over any filter, so
+  phishing that literally matches an "action needed" filter stays hidden.
+- **Pin urgent rows to the top** of the visible list: Jev's "today" and
+  "blocking" urgency levels sort above everything else, most urgent first.
+- **Smart filters**: plain-language conditions Jev judges as a yes/no
+  probability for every visible row (`POST /rules/evaluate`, one Noul question
+  per rule, packed and cached per email). Shipping-focused presets — needs my
+  reply now, cargo or release blocked, vessel/cut-off changes, charges
+  disputes, automated notices, marketing — ship disabled; each filter chooses
+  its own action (pin, highlight or hide) and sensitivity threshold. Only the
+  wording of a condition costs a new judgment; changing actions or thresholds
+  re-applies instantly from cached probabilities.
+
+Preset thresholds were chosen from a stratified run over the benchmark dataset
+plus hand-written shipping scenarios (`npx tsx --env-file=.env
+tools/eval/src/rules.ts`); raw scores are written to `runtime/eval/rules/`.
+
 Successful previews are cached for five minutes in browser session storage, up
 to 200 entries. Cache keys include the mailbox context, local API endpoint,
 classifier revision and content fingerprint, and are stored as hashes. The
@@ -213,6 +236,7 @@ by fixtures; no live email was sent during this verification.
 |---|---|---|---|
 | `GET` | `/health` | public | Service status and `classifierRevision`. |
 | `POST` | `/classify` | public, budgeted | Up to 20 preview rows for the extension. |
+| `POST` | `/rules/evaluate` | public, budgeted | Smart-filter probabilities for up to 20 rows against up to 8 rules. |
 | `GET` | `/usage` | bearer | Authoritative request-level token totals. |
 | `POST` | `/import` | bearer | Import the configured dataset; returns a job. |
 | `GET` | `/emails` | bearer | Imported inbox with classification state. |
@@ -233,7 +257,7 @@ by fixtures; no live email was sent during this verification.
 
 ```mermaid
 flowchart TD
-  Ext["Chrome extension (no credentials)"] -->|POST /classify| API["Hono API"]
+  Ext["Chrome extension (no credentials)"] -->|POST /classify, /rules/evaluate| API["Hono API"]
   Dash["Dashboard (bearer token)"] --> API
   Gmail["Gmail connector (OAuth + PKCE)"] --> API
   API --> Jev["TypeSafe Jev: typed judgments"]
@@ -279,6 +303,13 @@ new provider calls.
 
 These are individual measured runs, not latency guarantees, and exclude
 attachment extraction and comparison.
+
+Smart-filter presets were calibrated on 20 September 2026: 40 dataset rows
+(stratified, 8 per category, rendered as inbox snippets) plus 12 hand-written
+shipping scenarios. The tightened `cargo_blocked` preset no longer fires on
+phishing spam (0.03 mean on SPAM) while scoring 0.92–0.98 on real customs
+holds and unreleased delivery orders; every hand-written scenario fires
+exactly its expected presets. Raw scores: `runtime/eval/rules/presets.json`.
 
 ## Training data
 
