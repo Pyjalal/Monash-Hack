@@ -20,12 +20,11 @@ CargoLens is a shipping-document intelligence workspace for operations teams
 that live in their inbox. It classifies every inbound email — comparison
 request, SI request, invoice query, general, spam — scores its urgency, reads
 the attached Shipping Instruction and draft Bill of Lading, compares the seven
-fields that decide a shipment, and escalates to a human the moment evidence
-runs out. Typed judgments come from [TypeSafe Jev](https://docs.typesafe.ai);
+fields that decide a shipment, and requests clearer evidence when bounded recovery cannot resolve a case. Typed judgments come from [TypeSafe Jev](https://docs.typesafe.ai);
 arithmetic, aliases, completion rules and every state transition stay in
 deterministic, unit-tested code.
 
-The product is designed so that no credential ever reaches the browser: the
+Provider and mailbox credentials stay on the server: the
 Chrome extension calls a local API that owns the TypeSafe key, the dashboard is
 gated by a bearer token, and Gmail access flows through an encrypted OAuth
 connection. Jev proposes; code verifies; only source evidence can clear a
@@ -47,12 +46,10 @@ flowchart LR
   Verified -.-> Export["Benchmark projection, separate contract"]
 ```
 
-Classification is the fast path: one bounded Jev request per email, badges
-streamed to the extension and dashboard over server-sent events. Verification
+Classification is the fast path: bounded packed Jev requests classify multiple emails. The dashboard receives server-sent events; extension previews use background runtime messages. Verification
 is the careful path: documents are read independently, candidates carry exact
 source locations, and a comparison claim is saved only after source-proof
-validation. Both paths share one case store, so the extension badge, the
-dashboard and the benchmark export always describe the same operational state.
+validation. Full cases and benchmark exports share the durable case store. Extension badges classify visible snippets only and cannot establish document verification.
 
 ## What works now — and what still needs a partner
 
@@ -93,6 +90,8 @@ solely because the benchmark labels it `OK`.
 
 ## Quick start
 
+For a complete teammate walkthrough, including PowerShell, OCR, the dashboard and a no-key synthetic demo, see [Setup and demo](docs/setup.md).
+
 ### Prerequisites
 
 - Node.js 20.19 or newer and npm.
@@ -102,12 +101,12 @@ solely because the benchmark labels it `OK`.
 ### Environment variables
 
 Copy `.env.example` to `.env`. The running API requires `TYPESAFE_API_KEY` and
-`DASHBOARD_TOKEN`; generate a long random token and keep it server-side.
+`DASHBOARD_TOKEN`; generate a long random token. An authorized operator enters this workspace token into the dashboard; provider and mailbox credentials remain server-side.
 
 | Variable | Purpose |
 |---|---|
 | `TYPESAFE_API_KEY` | Jev inference. Never placed in the extension. |
-| `DASHBOARD_TOKEN` | Bearer token for every route except `/health` and `/classify`. |
+| `DASHBOARD_TOKEN` | Workspace bearer token; public local preview and OAuth callback routes are listed below. |
 | `HOST` / `PORT` | API bind address, default `127.0.0.1:3001`. |
 | `DATABASE_PATH` | SQLite location, default `runtime/cargolens.sqlite`. |
 | `DATASET_ROOT` | Dataset root, default `training_data/sdoc-hackathon-docker/extracted/data_v2`. |
@@ -129,8 +128,7 @@ npm run dev
 The API binds to `http://127.0.0.1:3001`. `GET /health` and `POST /classify`
 are public local endpoints. Health includes a `classifierRevision` hash so
 preview clients can invalidate cached results when the model, questions or
-packing configuration changes. Every other route requires
-`Authorization: Bearer <DASHBOARD_TOKEN>`. The extension never receives API
+packing configuration changes. Operational routes require `Authorization: Bearer <DASHBOARD_TOKEN>`; `/rules/evaluate` and the OAuth callback/result routes are also public as listed below. The extension never receives API
 keys or this token. Local environment files, SQLite databases and evaluation
 outputs are ignored by Git.
 
@@ -277,8 +275,7 @@ flowchart TD
 
 Three boundaries hold the system honest:
 
-1. **Labels never enter inference.** Ground truth, filenames and email IDs are
-   evaluation-only. Jev answers what the sender requests and what the source
+1. **Labels never enter inference.** Ground-truth labels and corrected references are evaluation-only. Filenames and IDs support retrieval and provenance, never ground-truth lookup or a shortcut to a field value. Jev answers what the sender requests and what the source
    establishes — never which answer a scorer would reward.
 2. **The model proposes, code decides.** Jev returns typed choices and
    probabilities; parsing, arithmetic, alias handling, completion rules and
@@ -351,7 +348,7 @@ for the schema, categories, edge cases, and regeneration instructions.
 
 ```
 apps/api/           Hono service: pipeline, document readers, OCR recovery, Gmail connector
-apps/dashboard/     React dashboard workspace (reserved)
+apps/dashboard/     React/Vite operations dashboard
 apps/extension/     MV3 Chrome extension for Gmail and Outlook web
 packages/shared/    Zod schemas and Jev question contracts
 tools/eval/         Classification evaluation harness
