@@ -16,6 +16,8 @@
     "test": "vitest run",
     "eval": "tsx tools/eval/src/classification.ts",
     "eval:classify": "tsx tools/eval/src/classification.ts",
+    "submission:classify": "tsx tools/eval/src/submission.ts classify",
+    "submission:pipeline": "tsx tools/eval/src/submission.ts pipeline",
     "build:extension": "npm run build --workspace @cargolens/extension"
   },
   "engines": {
