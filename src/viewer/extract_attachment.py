@@ -20,18 +20,38 @@ PKG_R = "{http://schemas.openxmlformats.org/package/2006/relationships}"
 def docx_text(path: Path):
     with zipfile.ZipFile(path) as archive:
         root = ET.fromstring(archive.read("word/document.xml"))
-    paragraphs = []
-    for paragraph in root.iter(f"{W}p"):
+
+    def paragraph_text(paragraph):
         pieces = []
         for node in paragraph.iter():
             if node.tag == f"{W}t" and node.text:
                 pieces.append(node.text)
             elif node.tag == f"{W}tab":
                 pieces.append("\t")
-        text = "".join(pieces).strip()
-        if text:
-            paragraphs.append(text)
-    return {"kind": "text", "format": "DOCX", "content": "\n".join(paragraphs)}
+            elif node.tag == f"{W}br":
+                pieces.append(" | ")
+        return "".join(pieces).strip()
+
+    lines = []
+    body = root.find(f"{W}body")
+    for child in body or []:
+        if child.tag == f"{W}p":
+            text = paragraph_text(child)
+            if text:
+                lines.append(text)
+        elif child.tag == f"{W}tbl":
+            for row in child.findall(f"{W}tr"):
+                cells = []
+                for cell in row.findall(f"{W}tc"):
+                    paragraphs = [
+                        paragraph_text(paragraph)
+                        for paragraph in cell.findall(f"{W}p")
+                    ]
+                    paragraphs = [text for text in paragraphs if text]
+                    cells.append(" | ".join(paragraphs))
+                if any(cells):
+                    lines.append(": ".join(cells))
+    return {"kind": "text", "format": "DOCX", "content": "\n".join(lines)}
 
 
 def column_number(cell_reference: str):
@@ -101,6 +121,22 @@ def xlsx_content(path: Path):
     return {"kind": "workbook", "format": "XLSX", "sheets": sheets}
 
 
+def pdf_text(path: Path):
+    """Extract the text layer; image-only, empty, and corrupt PDFs stay unavailable."""
+    try:
+        from pypdf import PdfReader
+    except ImportError as error:
+        raise RuntimeError(
+            "PDF extraction requires pypdf (python -m pip install -r requirements.txt)"
+        ) from error
+
+    reader = PdfReader(path)
+    content = "\n".join((page.extract_text() or "") for page in reader.pages).strip()
+    if not content:
+        raise ValueError("PDF has no readable text layer")
+    return {"kind": "text", "format": "PDF", "content": content}
+
+
 def main():
     path = Path(sys.argv[1])
     try:
@@ -108,6 +144,13 @@ def main():
             result = docx_text(path)
         elif path.suffix.lower() == ".xlsx":
             result = xlsx_content(path)
+        elif path.suffix.lower() == ".pdf":
+            result = pdf_text(path)
+        elif path.suffix.lower() == ".txt":
+            content = path.read_text(encoding="utf-8").strip()
+            if not content:
+                raise ValueError("Text attachment is empty")
+            result = {"kind": "text", "format": "TXT", "content": content}
         else:
             result = {"kind": "unavailable", "message": "Unsupported format"}
     except Exception as error:

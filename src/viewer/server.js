@@ -17,6 +17,9 @@ const DATASETS = {
     dataDir: path.join(ROOT, 'training_data/sdoc-hackathon-docker/extracted/data_v2'),
     submissionPath: path.join(ROOT, 'outputs/jev-classification-submission.json'),
     detailsPath: path.join(ROOT, 'outputs/jev-classification-details.json'),
+    pipelineSubmissionPath: path.join(ROOT, 'outputs/jev-full-pipeline-submission.json'),
+    extractionDetailsPath: path.join(ROOT, 'outputs/jev-extraction-details.json'),
+    scorePath: path.join(ROOT, 'outputs/jev-full-pipeline-score.json'),
   },
   data_v3: {
     label: 'dataset_v3',
@@ -42,6 +45,16 @@ const CONTENT_TYPES = {
 
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, 'utf8'));
+}
+
+async function readOptionalJson(filePath, fallback) {
+  if (!filePath) return fallback;
+  try {
+    return await readJson(filePath);
+  } catch (error) {
+    if (error.code === 'ENOENT') return fallback;
+    throw error;
+  }
 }
 
 function json(response, statusCode, value) {
@@ -75,10 +88,13 @@ function resolveAttachment(datasetId, requestedPath) {
 async function loadDataset(datasetId) {
   const config = datasetConfig(datasetId);
   const inboxDir = path.join(config.dataDir, 'inbox');
-  const [truth, submission, names] = await Promise.all([
+  const [truth, submission, names, pipelineSubmission, extractionDetails, score] = await Promise.all([
     readJson(path.join(config.dataDir, 'ground_truth.json')),
     readJson(config.submissionPath),
     readdir(inboxDir),
+    readOptionalJson(config.pipelineSubmissionPath, {}),
+    readOptionalJson(config.extractionDetailsPath, { extractions: [] }),
+    readOptionalJson(config.scorePath, null),
   ]);
   let details = { model: null, generated_at: null, predictions: [] };
   try {
@@ -88,6 +104,9 @@ async function loadDataset(datasetId) {
   }
   const detailById = new Map(
     details.predictions.map(item => [item.email_id, item]),
+  );
+  const extractionById = new Map(
+    (extractionDetails.extractions ?? []).map(item => [item.email_id, item]),
   );
 
   const emails = await Promise.all(
@@ -101,6 +120,14 @@ async function loadDataset(datasetId) {
     const expected = truth[email.email_id]?.category ?? null;
     const predicted = submission[email.email_id]?.category ?? null;
     const detail = detailById.get(email.email_id);
+    const pipeline = pipelineSubmission[email.email_id] ?? null;
+    const expectedResult = truth[email.email_id] ?? null;
+    const extraction = extractionById.get(email.email_id) ?? null;
+    const predictedFields = pipeline?.defect_fields ?? [];
+    const expectedFields = expectedResult?.defect_fields ?? [];
+    const defectFieldsCorrect =
+      predictedFields.length === expectedFields.length &&
+      predictedFields.every(field => expectedFields.includes(field));
     return {
       dataset: datasetId,
       dataset_label: config.label,
@@ -114,6 +141,15 @@ async function loadDataset(datasetId) {
       correct: predicted === expected,
       confidence: detail?.confidence ?? null,
       probabilities: detail?.probabilities ?? null,
+      pipeline_status: pipeline?.status ?? null,
+      expected_status: expectedResult?.status ?? null,
+      pipeline_status_correct: pipeline?.status === expectedResult?.status,
+      review_reason: pipeline?.review_reason ?? null,
+      expected_review_reason: expectedResult?.review_reason ?? null,
+      defect_fields: predictedFields,
+      expected_defect_fields: expectedFields,
+      defect_fields_correct: defectFieldsCorrect,
+      attachment_status: extraction?.attachment_status ?? null,
     };
   });
 
@@ -121,7 +157,9 @@ async function loadDataset(datasetId) {
     id: datasetId,
     label: config.label,
     model: details.model,
-    generated_at: details.generated_at,
+    generated_at: extractionDetails.generated_at ?? details.generated_at,
+    has_pipeline: Object.keys(pipelineSubmission).length > 0,
+    pipeline_score: score,
     emails: rows,
   };
 }
@@ -159,11 +197,13 @@ async function loadDashboard() {
     generated_at: generatedDates.at(-1) ?? null,
     summary: summariseRows(emails),
     categories: summariseCategories(emails),
+    pipeline: datasets.find(dataset => dataset.pipeline_score)?.pipeline_score ?? null,
     datasets: datasets.map(dataset => ({
       id: dataset.id,
       label: dataset.label,
       model: dataset.model,
       generated_at: dataset.generated_at,
+      has_pipeline: dataset.has_pipeline,
       ...summariseRows(dataset.emails),
     })),
     emails,
@@ -173,11 +213,13 @@ async function loadDashboard() {
 async function emailDetail(datasetId, emailId) {
   if (!validateEmailId(emailId)) throw new Error('Invalid email ID');
   const config = datasetConfig(datasetId);
-  const [email, truth, submission, dataset] = await Promise.all([
+  const [email, truth, submission, dataset, pipelineSubmission, extractionDetails] = await Promise.all([
     readJson(path.join(config.dataDir, 'inbox', `${emailId}.json`)),
     readJson(path.join(config.dataDir, 'ground_truth.json')),
     readJson(config.submissionPath),
     loadDataset(datasetId),
+    readOptionalJson(config.pipelineSubmissionPath, {}),
+    readOptionalJson(config.extractionDetailsPath, { extractions: [] }),
   ]);
   const row = dataset.emails.find(item => item.email_id === emailId);
   return {
@@ -189,6 +231,10 @@ async function emailDetail(datasetId, emailId) {
     correct: row?.correct ?? false,
     confidence: row?.confidence ?? null,
     probabilities: row?.probabilities ?? null,
+    pipeline: pipelineSubmission[emailId] ?? null,
+    expected_result: truth[emailId] ?? null,
+    extraction:
+      extractionDetails.extractions?.find(item => item.email_id === emailId) ?? null,
   };
 }
 

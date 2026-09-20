@@ -1,8 +1,9 @@
 const state = {
   dashboard: null,
-  datasetFilter: 'all',
+  datasetFilter: 'data_v2',
   resultFilter: 'all',
   categoryFilter: 'all',
+  statusFilter: 'all',
   search: '',
 };
 
@@ -23,11 +24,19 @@ const elements = {
   emailRows: document.querySelector('#emailRows'),
   emptyState: document.querySelector('#emptyState'),
   generatedAt: document.querySelector('#generatedAt'),
+  finalScore: document.querySelector('#finalScore'),
+  fieldF1: document.querySelector('#fieldF1'),
+  defectsCaught: document.querySelector('#defectsCaught'),
+  reviewRecall: document.querySelector('#reviewRecall'),
+  reviewPrecision: document.querySelector('#reviewPrecision'),
+  pipelinePanel: document.querySelector('#pipelinePanel'),
+  policyNote: document.querySelector('#policyNote'),
   incorrectCount: document.querySelector('#incorrectCount'),
   incorrectTabCount: document.querySelector('#incorrectTabCount'),
   modelName: document.querySelector('#modelName'),
   resultHeading: document.querySelector('#resultHeading'),
   searchInput: document.querySelector('#searchInput'),
+  statusFilter: document.querySelector('#statusFilter'),
   toast: document.querySelector('#toast'),
   totalCount: document.querySelector('#totalCount'),
   visibleCount: document.querySelector('#visibleCount'),
@@ -39,6 +48,19 @@ function percent(value, digits = 1) {
 
 function categoryLabel(category) {
   return category?.replaceAll('_', ' ') ?? '—';
+}
+
+function fieldLabel(field) {
+  return categoryLabel(field)?.toLowerCase().replace(/^./, character => character.toUpperCase());
+}
+
+function statusBadge(status) {
+  const value = status ?? 'NOT_RUN';
+  return node(
+    'span',
+    `status-badge status-badge--${value.toLowerCase().replaceAll('_', '-')}`,
+    categoryLabel(value),
+  );
 }
 
 function node(tag, className, text) {
@@ -102,6 +124,22 @@ function renderSummary() {
     : scopeLabel;
 }
 
+function renderPipelineSummary() {
+  const score = state.dashboard.pipeline;
+  elements.pipelinePanel.hidden = !score;
+  if (!score) return;
+
+  elements.finalScore.textContent = score.final_score.toFixed(4);
+  elements.fieldF1.textContent = percent(score.stage3.field_f1);
+  elements.defectsCaught.textContent = `${score.end_to_end.success}/${score.end_to_end.total}`;
+  elements.reviewRecall.textContent = percent(score.reliability.escalation_recall);
+  elements.reviewPrecision.textContent = percent(score.reliability.escalation_precision);
+  const extraReviews = score.reliability.pred_review - score.reliability.gold_review;
+  elements.policyNote.textContent =
+    `${score.reliability.gold_review}/${score.reliability.gold_review} true review cases were caught. ` +
+    `${extraReviews} additional BL-comparison emails are escalated because the active policy requires a complete readable SI/BL pair.`;
+}
+
 function renderCategoryBars() {
   elements.categoryBars.replaceChildren();
   for (const category of scopedCategories()) {
@@ -142,6 +180,7 @@ function populateDatasetFilter() {
     option.value = dataset.id;
     elements.datasetFilter.append(option);
   }
+  elements.datasetFilter.value = state.datasetFilter;
 }
 
 function filteredEmails() {
@@ -153,12 +192,18 @@ function filteredEmails() {
       (state.resultFilter === 'incorrect' && !email.correct);
     const categoryMatches =
       state.categoryFilter === 'all' || email.expected === state.categoryFilter;
+    const statusMatches =
+      state.statusFilter === 'all' ||
+      (state.statusFilter === 'NOT_RUN' && email.pipeline_status === null) ||
+      email.pipeline_status === state.statusFilter;
     const searchMatches =
       !query ||
       email.email_id.toLowerCase().includes(query) ||
       email.subject.toLowerCase().includes(query) ||
-      email.from.toLowerCase().includes(query);
-    return resultMatches && categoryMatches && searchMatches;
+      email.from.toLowerCase().includes(query) ||
+      email.review_reason?.toLowerCase().includes(query) ||
+      email.defect_fields.some(field => field.toLowerCase().includes(query));
+    return resultMatches && categoryMatches && statusMatches && searchMatches;
   });
 }
 
@@ -195,6 +240,13 @@ function renderRows() {
     predictedCell.append(node('span', 'badge', categoryLabel(email.predicted)));
     const expectedCell = document.createElement('td');
     expectedCell.append(node('span', 'badge badge--truth', categoryLabel(email.expected)));
+    const statusCell = document.createElement('td');
+    statusCell.append(statusBadge(email.pipeline_status));
+    const defectsCell = node(
+      'td',
+      'defect-cell',
+      email.defect_fields.length ? email.defect_fields.map(fieldLabel).join(', ') : '—',
+    );
     const confidenceCell = node(
       'td',
       'confidence',
@@ -205,7 +257,17 @@ function renderRows() {
       'attachment-count',
       email.attachment_count ? `${email.attachment_count} files` : '—',
     );
-    row.append(resultCell, datasetCell, mailCell, predictedCell, expectedCell, confidenceCell, fileCell);
+    row.append(
+      resultCell,
+      datasetCell,
+      mailCell,
+      predictedCell,
+      expectedCell,
+      statusCell,
+      defectsCell,
+      confidenceCell,
+      fileCell,
+    );
     row.addEventListener('click', () => openEmail(email.dataset, email.email_id));
     row.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') openEmail(email.dataset, email.email_id);
@@ -308,6 +370,133 @@ function renderAttachmentPreview(data) {
   return wrapper;
 }
 
+function pipelineDecision(email) {
+  const section = node('section', 'content-section pipeline-decision');
+  section.append(node('h3', '', 'Pipeline decision'));
+  if (!email.pipeline) {
+    section.append(node('p', 'preview-message', 'The extraction pipeline has not been run for this dataset.'));
+    return section;
+  }
+
+  const grid = node('div', 'decision-grid');
+  const predicted = node('div', 'decision-item');
+  predicted.append(node('span', '', 'Pipeline outcome'), statusBadge(email.pipeline.status));
+  const expected = node('div', 'decision-item');
+  expected.append(node('span', '', 'Ground truth'), statusBadge(email.expected_result.status));
+  const reason = node('div', 'decision-item');
+  reason.append(
+    node('span', '', 'Review reason'),
+    node('strong', '', categoryLabel(email.pipeline.review_reason) || '—'),
+  );
+  const attachmentState = node('div', 'decision-item');
+  attachmentState.append(
+    node('span', '', 'Attachment state'),
+    node('strong', '', categoryLabel(email.extraction?.attachment_status)),
+  );
+  grid.append(predicted, expected, reason, attachmentState);
+
+  const defects = node('div', 'defect-summary');
+  const predictedFields = email.pipeline.defect_fields ?? [];
+  const expectedFields = email.expected_result.defect_fields ?? [];
+  defects.append(
+    node('strong', '', 'Detected defects'),
+    node('span', '', predictedFields.length ? predictedFields.map(fieldLabel).join(', ') : 'None'),
+    node('strong', '', 'Ground-truth defects'),
+    node('span', '', expectedFields.length ? expectedFields.map(fieldLabel).join(', ') : 'None'),
+  );
+  section.append(grid, defects);
+  return section;
+}
+
+function extractedFieldComparison(email) {
+  const section = node('section', 'content-section extraction-section');
+  section.append(node('h3', '', 'Seven-field SI–BL comparison'));
+  const extraction = email.extraction;
+  if (!extraction) {
+    section.append(node('p', 'preview-message', 'No extraction result is available for this email.'));
+    return section;
+  }
+
+  const siFields = extraction.documents?.si?.fields;
+  const blFields = extraction.documents?.bl?.fields;
+  if (!siFields && !blFields) {
+    section.append(
+      node(
+        'p',
+        'preview-message preview-message--review',
+        extraction.attachment_status === 'NOT_APPLICABLE'
+          ? extraction.skipped_reason
+          : extraction.attachment_status === 'NO_ATTACHMENTS'
+          ? 'No attachments were supplied. The email was sent to human review and no field values were inferred.'
+          : 'The available attachment could not support a complete SI–BL comparison.',
+      ),
+    );
+    return section;
+  }
+
+  const documentMeta = node('div', 'document-meta');
+  for (const [label, document] of [
+    ['SI document', extraction.documents?.si],
+    ['BL document', extraction.documents?.bl],
+  ]) {
+    const card = node('div', 'document-meta__item');
+    card.append(
+      node('span', '', label),
+      node('strong', '', document?.filename?.split('/').at(-1) ?? 'Missing'),
+      node('small', '', document?.readable === false
+        ? `Unreadable · ${document.error ?? 'No text extracted'}`
+        : categoryLabel(document?.document_type)),
+    );
+    documentMeta.append(card);
+  }
+
+  const wrapper = node('div', 'field-table-wrap');
+  const table = node('table', 'field-table');
+  const head = document.createElement('thead');
+  const headRow = document.createElement('tr');
+  for (const label of ['Field', 'Shipping instruction', 'Bill of lading', 'Result']) {
+    headRow.append(node('th', '', label));
+  }
+  head.append(headRow);
+  const body = document.createElement('tbody');
+  const fields = [
+    'shipper',
+    'consignee',
+    'notify_party',
+    'port_of_loading',
+    'port_of_discharge',
+    'container_count',
+    'gross_weight_kg',
+  ];
+  for (const field of fields) {
+    const si = siFields?.[field];
+    const bl = blFields?.[field];
+    const comparable = si?.normalized_value != null && bl?.normalized_value != null;
+    const matches = comparable && si.normalized_value === bl.normalized_value;
+    const row = document.createElement('tr');
+    row.className = comparable ? (matches ? 'field-row--match' : 'field-row--mismatch') : 'field-row--review';
+    row.append(
+      node('td', 'field-name', fieldLabel(field)),
+      node('td', 'field-value', si?.value ?? '—'),
+      node('td', 'field-value', bl?.value ?? '—'),
+    );
+    const result = document.createElement('td');
+    result.append(
+      node(
+        'span',
+        `field-result field-result--${comparable ? (matches ? 'match' : 'mismatch') : 'review'}`,
+        comparable ? (matches ? 'Match' : 'Mismatch') : 'Review',
+      ),
+    );
+    row.append(result);
+    body.append(row);
+  }
+  table.append(head, body);
+  wrapper.append(table);
+  section.append(documentMeta, wrapper);
+  return section;
+}
+
 async function openEmail(datasetId, emailId) {
   elements.drawerBackdrop.hidden = false;
   elements.drawer.classList.add('is-open');
@@ -347,7 +536,14 @@ async function openEmail(datasetId, emailId) {
       list.append(node('p', 'preview-message', 'This email has no attachments.'));
     }
     attachmentsSection.append(list);
-    elements.drawerContent.replaceChildren(comparison, mailMetadata(email), bodySection, attachmentsSection);
+    elements.drawerContent.replaceChildren(
+      comparison,
+      pipelineDecision(email),
+      extractedFieldComparison(email),
+      mailMetadata(email),
+      bodySection,
+      attachmentsSection,
+    );
   } catch (error) {
     elements.drawerContent.replaceChildren(node('p', 'preview-message', error.message));
   }
@@ -366,6 +562,7 @@ async function initialise() {
   state.dashboard = await response.json();
   populateDatasetFilter();
   renderSummary();
+  renderPipelineSummary();
   renderCategoryBars();
   populateCategoryFilter();
   renderRows();
@@ -393,6 +590,10 @@ elements.datasetFilter.addEventListener('change', event => {
 });
 elements.categoryFilter.addEventListener('change', event => {
   state.categoryFilter = event.target.value;
+  renderRows();
+});
+elements.statusFilter.addEventListener('change', event => {
+  state.statusFilter = event.target.value;
   renderRows();
 });
 elements.closeDrawer.addEventListener('click', closeDrawer);

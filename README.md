@@ -61,11 +61,12 @@ npm run viewer
 # open http://127.0.0.1:4173
 ```
 
-The dashboard can filter correct and incorrect predictions, search by email,
-show category-level accuracy, inspect complete message bodies, and preview or
-download TXT, PDF, DOCX, and XLSX attachments. When `data_v3` predictions are
-available, the dashboard combines both datasets and provides a dataset filter
-and dataset badge for every email.
+The dashboard shows classification and full-pipeline scores, filters by
+category and pipeline outcome, and displays the seven extracted SI/BL values
+with match/mismatch evidence in each email drawer. It can also inspect complete
+message bodies and preview or download TXT, PDF, DOCX, and XLSX attachments.
+When `data_v3` predictions are available, the dashboard combines both datasets
+and provides a dataset filter and dataset badge for every email.
 
 Classify and evaluate the synthetic v3 dataset separately:
 
@@ -75,3 +76,27 @@ npm run classify -- --data-dir data_v3 \
   --details outputs/jev-v3-details.json
 npm run classify:evaluate -- outputs/jev-v3-submission.json data_v3/ground_truth.json
 ```
+
+## Stage 2/3: seven-field extraction and SI/BL comparison
+
+The full pipeline reads TXT, PDF, DOCX, and XLSX attachments, asks Jev to
+select the supported value for each of the seven comparison fields, normalises
+those values, and produces a scorer-compatible SI-vs-BL comparison result.
+
+Install the PDF text dependency once, then combine the existing Stage 1
+classifications with extraction and comparison:
+
+```bash
+python -m pip install -r requirements.txt
+npm run pipeline
+python training_data/sdoc-hackathon-docker/extracted/server/score_cli.py \
+  outputs/jev-full-pipeline-submission.json
+```
+
+Only emails classified as `BL_COMPARISON` enter extraction. Those emails are
+marked `NEEDS_REVIEW` when an SI/BL attachment is missing or cannot be read;
+all other categories skip extraction as `NOT_APPLICABLE`. Jev selects each of
+the seven field values from field-agnostic document candidates, after which the
+pipeline normalises and compares the SI and BL values deterministically.
+Detailed values, candidates, and Jev confidence are written to
+`outputs/jev-extraction-details.json`.

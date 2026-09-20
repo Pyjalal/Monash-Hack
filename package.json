@@ -6,6 +6,7 @@
   "scripts": {
     "classify": "node src/classification/cli.js",
     "classify:evaluate": "node src/classification/evaluate.js",
+    "pipeline": "node src/extraction/cli.js",
     "viewer": "node src/viewer/server.js",
     "test": "node --test"
   },
