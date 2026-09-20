@@ -98,3 +98,20 @@ describe('Gmail HTTP connector', () => {
     expect(Buffer.from(message.payload?.body?.data ?? '', 'base64url').toString()).toBe('Please compare the current documents');
   });
 });
+
+it('refreshes and retries a failed GET once after access-token expiry', async () => {
+  let refreshes = 0; let reads = 0;
+  const client = new GmailClient({ ...config, fetchImpl: async input => {
+    if (String(input).includes('/token')) return json({ access_token: 'access-' + ++refreshes, expires_in: 3600 });
+    if (++reads === 1) return json({}, 401);
+    return json({ messages: [] });
+  } });
+  expect((await client.listMessages()).messages).toEqual([]);
+  expect(refreshes).toBe(2); expect(reads).toBe(2);
+});
+it('makes revoked authorization explicit and does not expose provider secrets', async () => {
+  let revoked = false;
+  const client = new GmailClient({ ...config, onAuthorizationRevoked: () => { revoked = true; }, fetchImpl: async () => json({ error: 'invalid_grant', error_description: 'secret provider detail' }, 400) });
+  await expect(client.listMessages()).rejects.toThrow('GMAIL_REAUTHORIZATION_REQUIRED');
+  expect(revoked).toBe(true);
+});
