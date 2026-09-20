@@ -54,7 +54,7 @@ if (gmailPoller && process.env.GMAIL_POLL_ENABLED === 'true') {
   poll = setInterval(synchronize, pollMs); poll.unref();
   synchronize();
 }
-void Promise.all(store.listCases(1000).filter(record => !record.email.id.startsWith('gmail:') && record.status === 'queued').map(record => service.processCase(record.email)));
+void Promise.all(store.listCases(1000).filter(record => !record.email.id.startsWith('gmail:') && record.status === 'queued').map(record => service.processCase(record.email, resolve(process.env.DATASET_ROOT ?? 'training_data/sdoc-hackathon-docker/extracted/data_v2'))));
 const server = serve({ fetch: app.fetch, port: Number(process.env.PORT ?? 3001), hostname: process.env.HOST ?? '127.0.0.1' }, info => {
   console.log(`CargoLens API listening on http://${info.address}:${info.port}`);
 });

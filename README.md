@@ -317,6 +317,14 @@ new provider calls.
 These are individual measured runs, not latency guarantees, and exclude
 attachment extraction and comparison.
 
+On 21 September 2026, the shared API/evaluation pipeline processed all 520 rows
+including conservative document comparison in 12.58 seconds. Category macro-F1
+was 0.97938; 359 rows exported and 161 failed explicitly. Exact defect detection
+was 0/46 and review recall 0/20. These targets are not met, and the partial
+submission has no valid headline score. See the [issue #37 report and frozen
+artifacts](tools/eval/reports/issue37-20260921/README.md) for actual results,
+failure accounting, environment versions and reproducibility hashes.
+
 Smart-filter presets were calibrated on 20 September 2026: 40 dataset rows
 (stratified, 8 per category, rendered as inbox snippets) plus 12 hand-written
 shipping scenarios. The tightened `cargo_blocked` preset no longer fires on
@@ -354,12 +362,13 @@ training_data/      SDOC dataset, attachments and organizer scorer
 
 ## Known limitations and next proof points
 
-- The comparator must still populate source-validated seven-field decisions
-  before the evaluation runner can produce a complete submission. Dashboard and
-  workflow builder are pending integration work.
+- The source-only comparator now runs during dataset import and evaluation,
+  but its conservative layout/role/reference support does not yet produce a
+  complete official submission. Failures remain explicit and block a valid score.
 - Live Gmail read, threading and attachment ingestion were verified on
   2026-09-20 with sending disabled; delivery is covered by fixtures only.
 - Text recovery is available through the authenticated API; automatic recovery
   orchestration and semantic acceptance by the comparator remain pending.
-- Measured results cover classification only; extraction, comparison and OCR
-  paths are validated by unit tests and fixtures, not yet by a full scored run.
+- The latest full-inbox run measures classification and comparison attempts;
+  successful official document verification and final independent document
+  scorecards remain outstanding.

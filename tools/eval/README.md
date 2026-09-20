@@ -56,10 +56,34 @@ a partial submission is **diagnostic only**, and the valid headline is `null`.
 Every omitted row is included in the failure list. Runs with missing exports or
 scorer errors exit nonzero after writing their report.
 
-The document comparator has not yet been integrated into `processCase`.
-Immediate comparison cases remain unsupported until it supplies validated
-seven-field decisions. Full independent document status/reason and live sending
-checks are explicitly `NOT_RUN`; they cannot be inferred from classifier tests.
+The runner and API dataset import/retry now call the same `processCase` path
+with the attachment root. Confident immediate comparison requests run the
+source-only comparator, with two document jobs at a time. Future draft requests
+remain awaiting documents. Existing decisions survive unchanged-source replay.
+Missing attachments become explicit review decisions; unsupported roles, layouts,
+references, and uncertain classifications remain blockers, never fallback matches.
+Fresh evidence checks run before export; failed proof is recorded per row.
+
+Install the dependencies from `tools/ocr-sidecar/requirements.txt` and make both
+Python and Tesseract available on PATH for OCR. `--python` selects the organizer
+scorer executable; the OCR sidecar uses `python` from PATH. The manifest records
+the actual Node, Python, and Tesseract versions (or `UNAVAILABLE`). A total
+300-request transport budget bounds classification attempts, including retries
+and the reused independent classification fixtures.
+
+`row-diagnostics.json` records exact category/status/reason/defect-set results
+and blockers for every evaluated row. `reader-profiles.json` records native/OCR
+profiles and source hashes. The terminal prints observed category macro-F1,
+exact end-to-end defects caught, review recall, unsafe clears, full-inbox time,
+and request-level token use beside their targets. Full-inbox time includes
+classification, bounded comparison, proof checks, export and organizer scoring;
+independent validation timing is separate. `scorecards.json` contains the full
+category confusion matrix and performance breakdown.
+
+The comparator has independent source fixtures in the test suite. Full final
+independent document scorecards and live sending measurements remain separate
+from this runner's reused classification validation; those checks are explicitly
+`NOT_RUN` and cannot be inferred from classifier tests.
 
 ## Source-backed dispute ledger
 

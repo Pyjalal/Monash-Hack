@@ -122,7 +122,7 @@ export function createApp(options: AppOptions): Hono {
       const job = `import-${Date.now()}`;
       const run = reports.begin(emails.map(email => email.id), service.configurationRevision, options.dataMode);
       store.emit('import.started', null, { job, count: emails.length });
-      void Promise.all(emails.map(email => service.processCase(email))).then(() => { run.finish(); store.emit('import.completed', null, { job, count: emails.length, runId: run.id }); })
+      void Promise.all(emails.map(email => service.processCase(email, options.datasetRoot))).then(() => { run.finish(); store.emit('import.completed', null, { job, count: emails.length, runId: run.id }); })
         .catch(() => { run.finish(true); store.emit('import.failed', null, { job }); }).finally(() => { importing = false; });
       return c.json({ job, queued: emails.length, events: '/events' }, 202);
     } catch { importing = false; return c.json({ error: 'IMPORT_FAILED' }, 400); }
@@ -130,7 +130,7 @@ export function createApp(options: AppOptions): Hono {
   app.post('/cases/:id/retry', async c => {
     const record = store.getCase(c.req.param('id'));
     if (!record) return c.json({ error: 'NOT_FOUND' }, 404);
-    await service.processCase(record.email); return c.json(store.getCase(record.email.id));
+    await service.processCase(record.email, record.email.id.startsWith('gmail:') ? undefined : options.datasetRoot); return c.json(store.getCase(record.email.id));
   });
   app.post('/cases/:id/decision', async c => {
     const parsed = OperationalDecisionSchema.safeParse(await c.req.json().catch(() => null));

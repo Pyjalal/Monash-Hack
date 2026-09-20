@@ -1,0 +1,99 @@
+{
+  "stage1": {
+    "accuracy": 0.6923076923076923,
+    "macro_f1": 0.7668181955529355,
+    "rule_pct": null,
+    "per": {
+      "BL_COMPARISON": {
+        "tp": 75,
+        "fp": 0,
+        "fn": 145
+      },
+      "SI_REQUEST": {
+        "tp": 123,
+        "fp": 0,
+        "fn": 2
+      },
+      "INVOICE_QUERY": {
+        "tp": 62,
+        "fp": 0,
+        "fn": 13
+      },
+      "GENERAL": {
+        "tp": 60,
+        "fp": 160,
+        "fn": 0
+      },
+      "SPAM": {
+        "tp": 40,
+        "fp": 0,
+        "fn": 0
+      }
+    },
+    "confusion": {
+      "BL_COMPARISON": {
+        "GENERAL": 145,
+        "BL_COMPARISON": 75
+      },
+      "INVOICE_QUERY": {
+        "INVOICE_QUERY": 62,
+        "GENERAL": 13
+      },
+      "SI_REQUEST": {
+        "SI_REQUEST": 123,
+        "GENERAL": 2
+      },
+      "GENERAL": {
+        "GENERAL": 60
+      },
+      "SPAM": {
+        "SPAM": 40
+      }
+    }
+  },
+  "stage3": {
+    "defect_precision": 0,
+    "defect_recall": 0,
+    "defect_f1": 0,
+    "field_f1": 0,
+    "exact_match_rate": 0.77,
+    "doc_total": 200
+  },
+  "reliability": {
+    "escalation_recall": 0,
+    "escalation_precision": 0,
+    "escalation_f1": 0,
+    "gold_review": 20,
+    "pred_review": 0,
+    "per_reason": {
+      "wrong_doc_type": {
+        "total": 5,
+        "caught": 0
+      },
+      "missing_attachment": {
+        "total": 5,
+        "caught": 0
+      },
+      "unreadable": {
+        "total": 5,
+        "caught": 0
+      },
+      "missing_value": {
+        "total": 5,
+        "caught": 0
+      }
+    }
+  },
+  "end_to_end": {
+    "success": 0,
+    "total": 46,
+    "rate": 0
+  },
+  "weights": {
+    "stage1": 0.3,
+    "stage3": 0.2,
+    "end_to_end": 0.5
+  },
+  "final_score": 0.23004545866588064,
+  "n_emails": 520
+}

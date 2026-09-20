@@ -1,7 +1,7 @@
 import { OperationalDecisionSchema, SubmissionRowSchema, type Submission, type SubmissionRow } from '@cargolens/shared';
 import type { CaseRecord } from '../../../apps/api/src/store.js';
 
-export const EXPORT_VERSION = 'conservative-projection-v1';
+export const EXPORT_VERSION = 'conservative-projection-v2';
 export function projectCase(record: CaseRecord): { row: SubmissionRow; rule: string; lossy: boolean } {
   if (record.status !== 'classified' || !record.classification || !record.decision) throw new Error('CASE_NOT_CLASSIFIED');
   const decision = OperationalDecisionSchema.parse(record.decision);
@@ -22,7 +22,8 @@ export function projectCase(record: CaseRecord): { row: SubmissionRow; rule: str
   if (decision.knownMismatches.length) throw new Error('MISMATCH_WITH_UNRESOLVED_EVIDENCE');
   const reasons: Record<string, SubmissionRow['review_reason']> = { MISSING_SI: 'missing_attachment', MISSING_BL: 'missing_attachment',
     MISSING_ATTACHMENT: 'missing_attachment', WRONG_DOC_TYPE: 'wrong_doc_type', UNREADABLE: 'unreadable', OCR_REQUIRED: 'unreadable', MISSING_VALUE: 'missing_value' };
-  const mapped = [...new Set(decision.blockers.map(blocker => reasons[blocker]))];
+  const mapped = [...new Set(decision.blockers.map(blocker => reasons[blocker] ??
+    (/^(shipper|consignee|notify_party|port_of_loading|port_of_discharge|container_count|gross_weight_kg):MISSING$/.test(blocker) ? 'missing_value' : undefined)))];
   if (!mapped.length || mapped.some(reason => !reason) || mapped.length !== 1) throw new Error('UNSUPPORTED_UNRESOLVED_STATE');
   return { row: SubmissionRowSchema.parse({ ...base, status: 'NEEDS_REVIEW', review_reason: mapped[0] }), rule: 'EXPLICIT_REVIEW_BLOCKER', lossy: false };
 }
