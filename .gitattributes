@@ -4,3 +4,4 @@ apps/api/src/documents/testfixtures/ocr-verification/*.png -text
 apps/api/src/documents/testfixtures/ocr-verification/*.txt -text
 tools/eval/ocr-verification/*.json text eol=lf
 tools/eval/reports/**/*.json text eol=lf
+tools/eval/disputes/**/*.json text eol=lf
