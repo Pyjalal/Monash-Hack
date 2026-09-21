@@ -27,8 +27,8 @@ const intentBoundaries = {
 } satisfies ChoiceCriteria;
 
 const expectationCriteria = {
-  FUTURE_DRAFT: "The recipient should prepare or send a draft BL that the sender is waiting to receive.",
-  VERIFY_NOW: "The sender asks the recipient to check, approve or amend an existing draft BL now.",
+  FUTURE_DRAFT: "The sender asks the recipient to prepare, provide, or send a draft BL that the sender is waiting to receive (e.g. asking to send or provide a draft BL, even if stating it is for checking).",
+  VERIFY_NOW: "The sender asks the recipient to check, approve, or amend an existing draft BL now, without asking the recipient to prepare or send a draft BL.",
   UNCLEAR: "The document expectation is unclear, contradictory or not applicable to a bill of lading.",
 } as const;
 
