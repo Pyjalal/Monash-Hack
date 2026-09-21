@@ -3,6 +3,7 @@ import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { serve } from '@hono/node-server';
 import { questionVersion } from '@cargolens/shared/questions';
+import { SEED_SI_BL_FLOW } from '@cargolens/shared/flows';
 import { createOpenRouterJevProvider, createOpenRouterJevBatchProvider } from './ai/openrouter.js';
 import { createJevProvider } from './ai/jev.js';
 import { createJevBatchProvider } from './ai/jev-batch.js';
@@ -23,6 +24,9 @@ if (!apiKey || !process.env.DASHBOARD_TOKEN) throw new Error('Set the selected p
 const dbPath = resolve(process.env.DATABASE_PATH ?? 'runtime/cargolens.sqlite');
 mkdirSync(dirname(dbPath), { recursive: true });
 const store = new Store(dbPath);
+// Ship the default SI-to-BL flow so a fresh workspace has one real executing
+// graph. An operator edit is preserved: seeding only fills an absent flow.
+if (!store.getFlow(SEED_SI_BL_FLOW.id)) store.saveFlow(SEED_SI_BL_FLOW);
 const model = aiProvider === 'openrouter' ? process.env.OPENROUTER_MODEL ?? 'typesafe/jev-1.13' : process.env.TYPESAFE_MODEL ?? 'jev-1.13.0';
 const variant = process.env.JEV_PROMPT_VARIANT === 'concise' ? 'concise' : 'boundaries';
 const provider = (aiProvider === 'openrouter' ? createOpenRouterJevProvider : createJevProvider)({ apiKey, model, variant, mode: 'full' });

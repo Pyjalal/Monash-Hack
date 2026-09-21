@@ -7,6 +7,8 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import { z } from 'zod';
 import { ClassifyRequestSchema, FieldNameSchema, OperationalDecisionSchema, type ClassifyResult } from '@cargolens/shared';
 import { RulesRequestSchema } from '@cargolens/shared/rules';
+import { FlowSchema, validateFlow } from '@cargolens/shared/flows';
+import { runFlow } from './flows/interpreter.js';
 import type { RuleService } from './ai/rules.js';
 import { loadDataset } from './dataset.js';
 import { ClassificationService, QueueFullError } from './pipeline.js';
@@ -162,6 +164,30 @@ export function createApp(options: AppOptions): Hono {
   app.get('/cases/:id/comparison', c => {
     const evidence = store.getDocumentComparison(c.req.param('id'));
     return evidence ? c.json(evidence) : c.json({ error: 'NOT_FOUND' }, 404);
+  });
+  app.get('/flows', c => c.json({ flows: store.listFlows() }));
+  app.get('/flows/:id', c => {
+    const flow = store.getFlow(c.req.param('id'));
+    return flow ? c.json({ flow, validation: validateFlow(flow) }) : c.json({ error: 'NOT_FOUND' }, 404);
+  });
+  app.post('/flows', async c => {
+    const parsed = FlowSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'INVALID_FLOW', details: parsed.error.flatten() }, 400);
+    const validation = validateFlow(parsed.data);
+    // An unsupported graph is rejected rather than stored as decoration.
+    if (!validation.ok) return c.json({ error: 'UNSUPPORTED_FLOW', errors: validation.errors }, 422);
+    return c.json({ flow: store.saveFlow(parsed.data), validation }, 200);
+  });
+  app.post('/cases/:id/flow-run', async c => {
+    const parsed = z.object({ flowId: z.string().min(1).max(64) }).strict().safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'INVALID_FLOW_RUN_REQUEST' }, 400);
+    const flow = store.getFlow(parsed.data.flowId);
+    if (!flow) return c.json({ error: 'FLOW_NOT_FOUND' }, 404);
+    const record = store.getCase(c.req.param('id'));
+    if (!record) return c.json({ error: 'NOT_FOUND' }, 404);
+    const root = record.email.id.startsWith('gmail:') ? options.gmailAttachmentRoot : options.datasetRoot;
+    const run = await runFlow({ flow, store, caseId: record.email.id, attachmentRoot: root, documentationContact: options.documentationContact });
+    return c.json({ run }, run.status === 'INVALID' ? 422 : 200);
   });
   app.post('/cases/:id/compare', async c => {
     const parsed = z.object({ sourceVersion: z.string().min(1), decisionVersion: z.number().int().positive() }).strict().safeParse(await c.req.json().catch(() => null));

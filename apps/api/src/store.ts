@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
 import { EventEmitter } from 'node:events';
 import { ClassificationSchema, EmailSchema, OperationalDecisionSchema, type CaseEvent, type Classification, type Email, type OperationalDecision, type Usage } from '@cargolens/shared';
+import { parseFlow, type Flow } from '@cargolens/shared/flows';
 import { getClassificationRecoverySignals } from './ai/classify.js';
 
 export function hash(value: unknown): string { return createHash('sha256').update(JSON.stringify(value)).digest('hex'); }
@@ -106,6 +107,22 @@ export class Store {
     const row = this.db.prepare('SELECT evidence_json FROM document_comparisons WHERE case_id=? AND source_version=? AND decision_version=?')
       .get(id, current?.sourceVersion ?? '', current?.decision?.decisionVersion ?? 0) as { evidence_json: string } | undefined;
     return row && current?.decision ? { sourceVersion: current.sourceVersion, decisionVersion: current.decision.decisionVersion, evidence: JSON.parse(row.evidence_json) } : null;
+  }
+  /** Saved flows are parsed on the way in and on the way out, so a stored row
+   *  can never widen what the interpreter will execute. */
+  saveFlow(flow: Flow): Flow {
+    const parsed = parseFlow(flow);
+    this.db.prepare('INSERT OR REPLACE INTO flows VALUES (?,?,?)').run(parsed.id, JSON.stringify(parsed), new Date().toISOString());
+    this.emit('flow.saved', null, { flowId: parsed.id, version: parsed.version, nodes: parsed.nodes.length });
+    return parsed;
+  }
+  getFlow(id: string): Flow | null {
+    const row = this.db.prepare('SELECT flow_json FROM flows WHERE id=?').get(id) as { flow_json: string } | undefined;
+    return row ? parseFlow(JSON.parse(row.flow_json)) : null;
+  }
+  listFlows(): Flow[] {
+    const rows = this.db.prepare('SELECT flow_json FROM flows ORDER BY id').all() as { flow_json: string }[];
+    return rows.map(row => parseFlow(JSON.parse(row.flow_json)));
   }
   getCached(key: string): Classification | null {
     const row = this.db.prepare('SELECT result_json FROM classification_cache WHERE key=?').get(key) as {result_json: string} | undefined;
