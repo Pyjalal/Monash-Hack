@@ -66,6 +66,9 @@ Implemented today:
   recovery reader that preserve native evidence separately, validate source
   hashes, and bound process concurrency, output size and timeouts. See the
   [recovery reader contract](apps/api/src/documents/README.md#optional-ocr-recovery).
+  A dedicated verification harness recovers all 15 supplied scans under neutral
+  and misleading filenames with hash-checked snapshots
+  ([details](tools/eval/ocr-verification/README.md)).
 - Gmail OAuth client with PKCE, thread/reference lookup, durable outbound
   queue, four reply templates, stale-source checks and resume fixtures.
 - Source-proof validation before saving a comparison claim or queueing a
@@ -74,16 +77,23 @@ Implemented today:
 - Version-bound operational drafts shared with the Gmail queue, and optional
   OpenRouter recovery of unresolved fields from selected server-read regions.
   Recovery candidates remain proposals until the field comparator validates them.
+- Extension inbox triage: hide-spam, urgent pinning and plain-language smart
+  filters judged by Jev, configured from the extension settings page
+  (see [Inbox actions and smart filters](#inbox-actions-and-smart-filters)).
 - A one-command organizer evaluation runner with frozen grouped manifests,
   export provenance, explicit failed rows, and source-backed dispute overlays.
 
 Still assigned integration work:
 
-- The document-role/field comparator, OCR-aware field integration and vision
-  escalation, automatic recovery orchestration, dashboard
-  and workflow builder.
-- Low-confidence or conflicting classifications emit recovery signals; a
-  recovery model is not yet connected end to end.
+- The document-role/field comparator and OCR-aware field integration. The
+  OpenRouter vision-escalation provider exists
+  ([VISION.md](apps/api/src/ai/VISION.md)) but is not yet wired into the API;
+  automatic recovery orchestration, dashboard and workflow builder are also
+  pending.
+- Low-confidence or conflicting classifications emit recovery signals. Server
+  side text recovery is connected end to end through the authenticated
+  `POST /cases/:id/recover` route; automatic orchestration and semantic
+  acceptance by the comparator remain pending.
 
 A request for a future draft remains **awaiting documents**, never verified
 solely because the benchmark labels it `OK`.
@@ -159,7 +169,8 @@ npm run build:extension
 
 In Chrome's extension manager, enable Developer mode, choose **Load unpacked**,
 and select `apps/extension/dist`. Open the CargoLens popup to check the local
-API and enable previews. The supported inbox hosts are Gmail, Outlook Live and
+API and enable previews, or open **Inbox actions & smart filters** for the full
+settings page. The supported inbox hosts are Gmail, Outlook Live and
 Outlook Office. `Ctrl+Shift+L` toggles previews. Reload existing mailbox tabs
 after loading or updating the extension.
 
@@ -295,11 +306,16 @@ npm run lint      # eslint
 `npm run eval -- --prepare` freezes the official dataset, scorer, grouped splits
 and configuration without model calls. `npm run eval` runs the API classification
 pipeline, exports supported decisions and invokes the unchanged organizer scorer.
-Incomplete comparison states are explicit export failures, so a partial run is
-never presented as a valid headline score. Live evaluation makes paid model calls.
+`npm run eval -- --offline` exercises the plumbing with no provider calls and
+deliberately exits nonzero. Incomplete comparison states are explicit export
+failures, so a partial run is never presented as a valid headline score. Live
+evaluation makes paid model calls.
 See the [evaluation guide](tools/eval/README.md) for offline checks, dispute
 adjudication, and final-run protection. `npm run eval:classify` retains the separate
-category tuning harness.
+category tuning harness. OCR recovery has a dedicated verification harness
+(`tools/eval/src/ocr-verification.ts` plus a frozen label audit) proving all 15
+supplied scans recover under neutral and misleading filenames; see
+[its README](tools/eval/ocr-verification/README.md).
 
 ## Measured results
 
@@ -350,10 +366,10 @@ for the schema, categories, edge cases, and regeneration instructions.
 apps/api/           Hono service: pipeline, document readers, OCR recovery, Gmail connector
 apps/dashboard/     React/Vite operations dashboard
 apps/extension/     MV3 Chrome extension for Gmail and Outlook web
-packages/shared/    Zod schemas and Jev question contracts
-tools/eval/         Classification evaluation harness
+packages/shared/    Zod schemas plus Jev question and smart-filter contracts
+tools/eval/         Evaluation harness: official runner, smart filters, OCR verification
 tools/ocr-sidecar/  Python/Tesseract OCR CLI
-docs/               Connector and adapter verification notes
+docs/               Connector, backend and acceptance verification notes
 training_data/      SDOC dataset, attachments and organizer scorer
 ```
 

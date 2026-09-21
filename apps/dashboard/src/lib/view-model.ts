@@ -6,6 +6,7 @@ export function filterRows(
   query: string,
   category: string,
   workflow: string,
+  status = "",
 ) {
   const text = query.trim().toLowerCase();
   return rows.filter(
@@ -13,7 +14,8 @@ export function filterRows(
       (!text ||
         `${row.subject} ${row.from} ${row.id}`.toLowerCase().includes(text)) &&
       (!category || row.classification?.category === category) &&
-      (!workflow || row.workflowState === workflow),
+      (!workflow || row.workflowState === workflow) &&
+      (!status || row.status === status),
   );
 }
 export function counts(rows: InboxRow[]) {

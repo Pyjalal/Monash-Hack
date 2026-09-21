@@ -1,0 +1,25 @@
+.git
+.env
+.env.*
+!.env.example
+node_modules
+runtime
+dist
+coverage
+dogfood-output
+outputs
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+__pycache__
+*.py[cod]
+
+# The deployed app needs only the competition inbox JSON and source attachments.
+# Keep labels and generator/server material out of the runtime image.
+training_data/README.md
+training_data/sdoc-hackathon-docker.zip
+training_data/sdoc-hackathon-docker/extracted/server
+training_data/sdoc-hackathon-docker/extracted/data_v2/*.py
+training_data/sdoc-hackathon-docker/extracted/data_v2/README.md
+training_data/sdoc-hackathon-docker/extracted/data_v2/ground_truth.json
+training_data/sdoc-hackathon-docker/extracted/data_v2/sample_submission.json

@@ -22,12 +22,14 @@ import {
   ArrowRight,
   CircleHelp,
   PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Button } from "./components/ui/button";
 import { Mark, DocumentArt } from "./components/Artwork";
 import { CaseView } from "./components/CaseView";
 import { Measurements, DeliveryLog } from "./components/Measurements";
+import { InboxMap } from "./components/InboxMap";
 import {
   createApiClient,
   CATEGORY_LABEL,
@@ -49,16 +51,28 @@ import {
 import { openEventStream, type StreamState } from "./lib/sse";
 import { counts, duration, filterRows } from "./lib/view-model";
 
+const AUTH_REQUIRED = import.meta.env.VITE_AUTH_REQUIRED !== "false";
+
+function anonymousSession(): Session {
+  return { token: "", apiUrl: defaultApiUrl(), issuedAt: Date.now() };
+}
+
 export function App() {
-  const [session, setSession] = useState(() => readSession(sessionStorage));
+  const [session, setSession] = useState(() =>
+    AUTH_REQUIRED ? readSession(sessionStorage) : anonymousSession(),
+  );
   const [reason, setReason] = useState("");
   const logout = useCallback((message = "") => {
+    if (!AUTH_REQUIRED) {
+      setReason(message);
+      return;
+    }
     clearSession(sessionStorage);
     setSession(null);
     setReason(message);
   }, []);
   useEffect(() => {
-    if (!session) return;
+    if (!AUTH_REQUIRED || !session) return;
     const timer = setTimeout(
       () => logout("Session expired. Sign in to continue."),
       Math.max(0, session.issuedAt + SESSION_MAX_AGE_MS - Date.now()),
@@ -66,7 +80,7 @@ export function App() {
     return () => clearTimeout(timer);
   }, [session, logout]);
   return session ? (
-    <Workspace session={session} logout={logout} />
+    <Workspace session={session} logout={logout} authRequired={AUTH_REQUIRED} />
   ) : (
     <Login
       reason={reason}
@@ -128,7 +142,7 @@ function Login({
           CargoLens
         </a>
         <div>
-          <p className="overline">SHIPPING OPERATIONS, IN FOCUS</p>
+          <p className="overline">Shipping operations in focus</p>
           <h1>
             Every document.
             <br />A clearer decision.
@@ -237,9 +251,11 @@ export function Modal({
 function Workspace({
   session,
   logout,
+  authRequired,
 }: {
   session: Session;
   logout: (reason?: string) => void;
+  authRequired: boolean;
 }) {
   const api = useMemo(
     () =>
@@ -257,6 +273,7 @@ function Workspace({
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
   const [workflow, setWorkflow] = useState("");
+  const [mapStatus, setMapStatus] = useState("");
   const [stream, setStream] = useState<StreamState>("connecting");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
@@ -264,6 +281,7 @@ function Workspace({
   const [loaded, setLoaded] = useState(false);
   const [commands, setCommands] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [revision, setRevision] = useState(0);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
@@ -272,8 +290,8 @@ function Workspace({
   const refreshTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inRefresh = useRef(false);
   const visible = useMemo(
-    () => filterRows(rows, query, category, workflow),
-    [rows, query, category, workflow],
+    () => filterRows(rows, query, category, workflow, mapStatus),
+    [rows, query, category, workflow, mapStatus],
   );
   const virtual = useVirtualizer({
     count: visible.length,
@@ -411,16 +429,38 @@ function Workspace({
     setMobileNav(false);
   };
   return (
-    <div className="app-shell">
+    <div
+      className={`app-shell ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}
+    >
       <a className="skip" href="#main">
         Skip to workspace
       </a>
-      <aside className={`sidebar ${mobileNav ? "open" : ""}`}>
-        <a href="#main" className="brand">
-          <Mark />
-          CargoLens
-        </a>
-        <p className="workspace-label">OPERATIONS WORKSPACE</p>
+      <aside
+        id="primary-sidebar"
+        className={`sidebar ${mobileNav ? "open" : ""}`}
+        aria-label="Workspace navigation"
+      >
+        <div className="sidebar-head">
+          <button
+            className="sidebar-toggle"
+            aria-controls="primary-sidebar"
+            aria-expanded={!sidebarCollapsed}
+            aria-label={
+              sidebarCollapsed
+                ? "Expand workspace navigation"
+                : "Collapse workspace navigation"
+            }
+            title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            onClick={() => setSidebarCollapsed((value) => !value)}
+          >
+            {sidebarCollapsed ? (
+              <PanelLeftOpen size={18} />
+            ) : (
+              <PanelLeftClose size={18} />
+            )}
+          </button>
+        </div>
+        <p className="workspace-label">Operations workspace</p>
         <nav aria-label="Main navigation">
           {[
             { id: "inbox", label: "Inbox", icon: Inbox },
@@ -434,10 +474,16 @@ function Workspace({
             <button
               key={item.id}
               aria-current={page === item.id ? "page" : undefined}
+              aria-label={
+                item.id === "inbox"
+                  ? `${item.label}, ${stats.total} items`
+                  : item.label
+              }
+              title={sidebarCollapsed ? item.label : undefined}
               onClick={() => choose(item.id)}
             >
               <item.icon size={18} />
-              {item.label}
+              <span className="sidebar-label">{item.label}</span>
               {item.id === "inbox" && (
                 <span className="nav-count">{stats.total}</span>
               )}
@@ -445,41 +491,68 @@ function Workspace({
           ))}
         </nav>
         <div className="sidebar-bottom">
-          <div className="connection">
+          <div
+            className="connection"
+            role="status"
+            aria-label={
+              stream === "live"
+                ? "Live event stream"
+                : stream === "replaying"
+                  ? "Replaying saved events"
+                  : stream === "reconnecting"
+                    ? "Event stream reconnecting"
+                    : stream === "offline"
+                      ? "Event stream offline"
+                      : "Event stream connecting"
+            }
+          >
             <span className={`dot ${stream === "live" ? "green" : ""}`} />
-            {stream === "live"
-              ? "Live event stream"
-              : stream === "replaying"
-                ? "Replaying saved events"
-                : stream === "reconnecting"
-                  ? "Reconnecting…"
-                  : stream === "offline"
-                    ? "Offline"
-                    : "Connecting…"}
+            <span className="sidebar-label">
+              {stream === "live"
+                ? "Live event stream"
+                : stream === "replaying"
+                  ? "Replaying saved events"
+                  : stream === "reconnecting"
+                    ? "Reconnecting…"
+                    : stream === "offline"
+                      ? "Offline"
+                      : "Connecting…"}
+            </span>
           </div>
-          <p>
+          <p className="sidebar-label">
             {gmail?.configured
               ? (gmail.mailbox ?? "Gmail configured")
               : "Dataset workspace"}
           </p>
-          <small>
+          <small className="sidebar-label">
             {gmail?.enabled
               ? "Unattended sending enabled"
               : "Unattended sending disabled"}
           </small>
-          <button onClick={() => setCommands(true)}>
+          <button
+            aria-label="Open keyboard shortcuts"
+            title={sidebarCollapsed ? "Keyboard shortcuts" : undefined}
+            onClick={() => setCommands(true)}
+          >
             <CircleHelp size={17} />
-            Keyboard shortcuts<kbd>?</kbd>
+            <span className="sidebar-label">Keyboard shortcuts</span>
+            <kbd className="sidebar-label">?</kbd>
           </button>
-          <button onClick={() => logout()}>
-            <LogOut size={17} />
-            Sign out
-          </button>
+          {authRequired && (
+            <button
+              aria-label="Sign out"
+              title={sidebarCollapsed ? "Sign out" : undefined}
+              onClick={() => logout()}
+            >
+              <LogOut size={17} />
+              <span className="sidebar-label">Sign out</span>
+            </button>
+          )}
         </div>
       </aside>
       <div className="main-shell">
         <header className="topbar">
-          <div className="breadcrumb">
+          <div className="topbar-start">
             <Button
               className="mobile-menu"
               variant="ghost"
@@ -489,15 +562,25 @@ function Workspace({
             >
               <PanelLeftClose size={20} />
             </Button>
-            <span>Operations</span>
-            <span>/</span>
-            <strong>
-              {page === "inbox"
-                ? "Inbox"
-                : page === "measurements"
-                  ? "Measurements"
-                  : "Delivery log"}
-            </strong>
+            <a
+              href="#main"
+              className="brand topbar-brand"
+              aria-label="CargoLens workspace"
+            >
+              <Mark />
+              <span>CargoLens</span>
+            </a>
+            <div className="breadcrumb">
+              <span>Operations</span>
+              <span>/</span>
+              <strong>
+                {page === "inbox"
+                  ? "Inbox"
+                  : page === "measurements"
+                    ? "Measurements"
+                    : "Delivery log"}
+              </strong>
+            </div>
           </div>
           <div className="top-actions">
             <Button
@@ -519,8 +602,8 @@ function Workspace({
             <div>
               <p className="overline">
                 {page === "inbox"
-                  ? "CORRESPONDENCE TO CONFIDENCE"
-                  : "OBSERVABLE OPERATIONS"}
+                  ? "Correspondence to confidence"
+                  : "Observable operations"}
               </p>
               <h1>
                 {page === "inbox"
@@ -603,6 +686,44 @@ function Workspace({
           )}
           {page === "inbox" ? (
             <>
+              <InboxMap
+                rows={rows}
+                loaded={loaded}
+                category={category}
+                workflow={workflow}
+                status={mapStatus}
+                onCategoryChange={(value) => {
+                  setCategory(value);
+                  setWorkflow("");
+                  setMapStatus("");
+                }}
+                onWorkflowChange={(value) => {
+                  setWorkflow(value);
+                  setCategory("");
+                  setMapStatus("");
+                }}
+                onStatusChange={(value) => {
+                  setMapStatus(value);
+                  setCategory("");
+                  setWorkflow("");
+                }}
+                onMessageSelect={(id) => {
+                  setSelected(id);
+                  requestAnimationFrame(() => {
+                    const index = visible.findIndex((row) => row.id === id);
+                    if (index >= 0) virtual.scrollToIndex(index);
+                    list.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  });
+                }}
+                onClearFilters={() => {
+                  setCategory("");
+                  setWorkflow("");
+                  setMapStatus("");
+                }}
+              />
               <div className="inbox-tools">
                 <label className="search-label">
                   <Search size={17} />
@@ -620,7 +741,10 @@ function Workspace({
                   <span className="sr-only">Filter category</span>
                   <select
                     value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    onChange={(e) => {
+                      setCategory(e.target.value);
+                      setMapStatus("");
+                    }}
                   >
                     <option value="">All categories</option>
                     {Object.entries(CATEGORY_LABEL).map(([key, label]) => (
@@ -634,7 +758,10 @@ function Workspace({
                   <span className="sr-only">Filter verification</span>
                   <select
                     value={workflow}
-                    onChange={(e) => setWorkflow(e.target.value)}
+                    onChange={(e) => {
+                      setWorkflow(e.target.value);
+                      setMapStatus("");
+                    }}
                   >
                     <option value="">All verification states</option>
                     {Object.entries(WORKFLOW_LABEL).map(([key, label]) => (
@@ -680,6 +807,7 @@ function Workspace({
                               setQuery("");
                               setCategory("");
                               setWorkflow("");
+                              setMapStatus("");
                             }}
                           >
                             Clear filters
