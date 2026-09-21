@@ -25,9 +25,15 @@ interface CargoLensChromeCommands {
   onCommand: { addListener(listener: (command: string) => void): void };
 }
 
+interface CargoLensChromePermissions {
+  contains(permissions: { origins: string[] }): Promise<boolean>;
+  request(permissions: { origins: string[] }): Promise<boolean>;
+}
+
 declare const chrome: {
   runtime: CargoLensChromeRuntime;
   storage: { sync: CargoLensChromeStorageArea; session: CargoLensChromeStorageArea };
   tabs: CargoLensChromeTabs;
   commands: CargoLensChromeCommands;
+  permissions: CargoLensChromePermissions;
 };

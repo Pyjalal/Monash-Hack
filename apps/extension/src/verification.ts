@@ -1,9 +1,9 @@
 import { CaseSchema, FIELD_NAMES, type Case } from '@cargolens/shared';
-import { isLoopbackApiUrl, normalizeApiUrl } from './settings.js';
+import { isAllowedApiUrl, normalizeApiUrl } from './settings.js';
 
 export class VerificationClient {
   constructor(private readonly base: string, private readonly token: string, private readonly request: typeof fetch = fetch) {
-    if (!isLoopbackApiUrl(base)) throw new Error('Use the configured local API.');
+    if (!isAllowedApiUrl(base)) throw new Error('Use the configured API URL.');
   }
   private async read(path: string): Promise<unknown> {
     const response = await this.request(`${normalizeApiUrl(this.base)}${path}`, {

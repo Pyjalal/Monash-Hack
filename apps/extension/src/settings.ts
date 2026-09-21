@@ -39,13 +39,22 @@ export function defaultInboxPolicy(): InboxPolicy {
     rules: RULE_PRESETS.map(preset => ({ id: preset.id, label: preset.label, condition: preset.condition, action: preset.action, threshold: preset.threshold, enabled: false, preset: true })) };
 }
 
-export function isLoopbackApiUrl(value: unknown): value is string {
+/**
+ * An API origin the extension may call.
+ *
+ * Loopback may stay on plain HTTP because the request never leaves the machine.
+ * A remote API must be HTTPS: inbox subjects and senders travel in the request
+ * body, so plaintext to a remote host is not acceptable. Credentials, paths,
+ * queries and fragments are never part of an API origin and are rejected so a
+ * stored setting cannot redirect requests somewhere unexpected.
+ */
+export function isAllowedApiUrl(value: unknown): value is string {
   if (typeof value !== "string" || value.trim().length === 0) return false;
   try {
     const url = new URL(value.trim());
-    return url.protocol === "http:"
-      && (url.hostname === "127.0.0.1" || url.hostname === "localhost")
-      && url.username === ""
+    const loopback = url.hostname === "127.0.0.1" || url.hostname === "localhost";
+    if (url.protocol !== "https:" && !(url.protocol === "http:" && loopback)) return false;
+    return url.username === ""
       && url.password === ""
       && url.search === ""
       && url.hash === ""
@@ -56,8 +65,26 @@ export function isLoopbackApiUrl(value: unknown): value is string {
 }
 
 export function normalizeApiUrl(value: unknown): string {
-  if (!isLoopbackApiUrl(value)) return DEFAULT_API_URL;
+  if (!isAllowedApiUrl(value)) return DEFAULT_API_URL;
   return new URL(value.trim()).origin;
+}
+
+/**
+ * Chrome only permits fetches to origins the extension actually holds. Loopback
+ * ships in the manifest; every other HTTPS origin is optional and has to be
+ * granted by the user. Must be called from a user gesture, or Chrome rejects
+ * the request. Resolves true when the origin is already granted outside Chrome
+ * (tests, bundling) so callers can treat it as a single gate.
+ */
+export async function ensureHostPermission(apiUrl: string): Promise<boolean> {
+  if (typeof chrome === "undefined" || !chrome.permissions) return true;
+  const origins = [`${normalizeApiUrl(apiUrl)}/*`];
+  try {
+    if (await chrome.permissions.contains({ origins })) return true;
+    return await chrome.permissions.request({ origins });
+  } catch {
+    return false;
+  }
 }
 
 export function classifyEndpoint(apiUrl: string): string {
