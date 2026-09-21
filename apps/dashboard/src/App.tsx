@@ -30,6 +30,7 @@ import { Mark, DocumentArt } from "./components/Artwork";
 import { CaseView } from "./components/CaseView";
 import { Measurements, DeliveryLog } from "./components/Measurements";
 import { InboxMap } from "./components/InboxMap";
+import { Tour, shouldOpenTour } from "./components/Tour";
 import {
   createApiClient,
   CATEGORY_LABEL,
@@ -296,6 +297,8 @@ function Workspace({
   const [notice, setNotice] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [commands, setCommands] = useState(false);
+  // New operators get the walkthrough once; it can be replayed from the command list.
+  const [tour, setTour] = useState(() => shouldOpenTour());
   const [mobileNav, setMobileNav] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [revision, setRevision] = useState(0);
@@ -477,7 +480,7 @@ function Workspace({
           </button>
         </div>
         <p className="workspace-label">Operations workspace</p>
-        <nav aria-label="Main navigation">
+        <nav aria-label="Main navigation" data-tour="nav">
           {[
             { id: "inbox", label: "Inbox", icon: Inbox },
             {
@@ -509,6 +512,7 @@ function Workspace({
         <div className="sidebar-bottom">
           <div
             className="connection"
+            data-tour="stream"
             role="status"
             aria-label={STREAM_LABEL[stream]}
           >
@@ -527,6 +531,7 @@ function Workspace({
           </small>
           <button
             aria-label="Open keyboard shortcuts"
+            data-tour="shortcuts"
             title={sidebarCollapsed ? "Keyboard shortcuts" : undefined}
             onClick={() => setCommands(true)}
           >
@@ -621,6 +626,7 @@ function Workspace({
           <div
             className="summary-strip"
             aria-label="Inbox classification totals"
+            data-tour="counts"
           >
             {[
               { value: stats.total, label: "Emails in workspace" },
@@ -633,7 +639,7 @@ function Workspace({
                 <span>{metric.label}</span>
               </div>
             ))}
-            <div className="summary-actions">
+            <div className="summary-actions" data-tour="import">
               <Button
                 variant="outline"
                 disabled={!!busy}
@@ -720,7 +726,7 @@ function Workspace({
                   setMapStatus("");
                 }}
               />
-              <div className="inbox-tools">
+              <div className="inbox-tools" data-tour="filters">
                 <label className="search-label">
                   <Search size={17} />
                   <span className="sr-only">Search correspondence</span>
@@ -770,7 +776,7 @@ function Workspace({
                 <span className="small muted">{visible.length} visible</span>
               </div>
               <div className="inbox-workspace">
-                <section className="inbox-panel" aria-label="Email list">
+                <section className="inbox-panel" aria-label="Email list" data-tour="list">
                   <div className="panel-label">
                     <strong>Correspondence</strong>
                     <span className="small muted">J / K to navigate</span>
@@ -880,7 +886,7 @@ function Workspace({
                     )}
                   </div>
                 </section>
-                <section className="case-panel" aria-label="Selected case">
+                <section className="case-panel" aria-label="Selected case" data-tour="case">
                   {selected ? (
                     <CaseView
                       key={selected}
@@ -929,6 +935,7 @@ function Workspace({
           </footer>
         </main>
       </div>
+      {tour && <Tour close={() => setTour(false)} />}
       {commands && (
         <Modal title="Go to the next thing" close={() => setCommands(false)}>
           <p className="muted">
@@ -953,6 +960,14 @@ function Workspace({
               {
                 label: "Open delivery log",
                 run: () => setPage("deliveries"),
+                key: "",
+              },
+              {
+                label: "Replay the walkthrough",
+                run: () => {
+                  setPage("inbox");
+                  setTour(true);
+                },
                 key: "",
               },
             ].map((item) => (

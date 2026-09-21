@@ -2168,3 +2168,143 @@ pre {
 .brand svg, .login-story .overline { color: #e7ce93; }
 .topbar-brand svg { color: #ad7414; }
 .sidebar button[aria-current="page"] { color: #f3ecdd; }
+
+/* Walkthrough ---------------------------------------------------------- */
+/* The dialog fills the viewport so the ring and the card share the top
+   layer; the background stays inert and Escape still leaves. */
+dialog.tour {
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: hidden;
+}
+dialog.tour::backdrop {
+  background: #0a254299;
+}
+.tour-ring {
+  position: fixed;
+  border-radius: 12px;
+  outline: 2px solid #e7ce93;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 9999px #0a254266;
+  pointer-events: none;
+  transition:
+    top 220ms ease,
+    left 220ms ease,
+    width 220ms ease,
+    height 220ms ease;
+}
+.tour-card {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  margin-inline: auto;
+  margin-block-end: 20px;
+  width: min(460px, calc(100% - 32px));
+  padding: 22px;
+  border: 1px solid #c4d2e5;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow: 0 20px 70px #11274440;
+}
+.tour-card h2 {
+  margin: 4px 0 8px;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.tour-card p {
+  margin: 0 0 12px;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+.tour-hint {
+  padding: 9px 11px;
+  border-radius: 8px;
+  background: var(--muted);
+  color: var(--foreground);
+}
+.tour-progress {
+  height: 3px;
+  margin-bottom: 16px;
+  border-radius: 2px;
+  background: var(--muted);
+  overflow: hidden;
+}
+.tour-progress span {
+  display: block;
+  block-size: 100%;
+  background: #ad7414;
+  transition: inline-size 220ms ease;
+}
+.tour-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tour-step-buttons {
+  display: flex;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+.tour-close {
+  position: absolute;
+  inset-block-start: 14px;
+  inset-inline-end: 14px;
+  display: grid;
+  place-items: center;
+  /* 2.5.8 target size, with room for a thumb. */
+  min-inline-size: 44px;
+  min-block-size: 44px;
+  border: 1px solid #ffffff40;
+  border-radius: 10px;
+  background: #0a2542cc;
+  color: #f7f6f2;
+  cursor: pointer;
+}
+.tour-close:hover {
+  background: #0a2542;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-ring,
+  .tour-progress span {
+    transition: none;
+  }
+}
+/* On a phone the card owns the bottom of the screen and the ring is the
+   only thing pointing at the feature. */
+@media (max-width: 620px) {
+  .tour-card {
+    margin-block-end: 12px;
+    padding: 18px;
+    width: calc(100% - 20px);
+    max-height: 68dvh;
+    overflow-y: auto;
+  }
+  .tour-card h2 {
+    font-size: 18px;
+  }
+  .tour-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .tour-step-buttons {
+    margin-inline-start: 0;
+  }
+  .tour-step-buttons > * {
+    flex: 1;
+  }
+}
