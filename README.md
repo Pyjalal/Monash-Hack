@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD013 -->
+<!-- markdownlint-disable MD013 MD033 -->
 
 # CargoLens
 
@@ -12,6 +12,8 @@
   <a href="apps/api/src/documents/README.md"><strong>Document readers</strong></a>
   ·
   <a href="tools/eval/README.md"><strong>Evaluation harness</strong></a>
+  ·
+  <a href="tools/eval/reports/issue60-20260921/README.md"><strong>Final scorecards</strong></a>
   ·
   <a href="docs/si-bl-extraction-architecture.md"><strong>SI/BL extraction architecture</strong></a>
 </p>
@@ -85,8 +87,10 @@ Implemented today:
 
 Still assigned integration work:
 
-- The document-role/field comparator and OCR-aware field integration. The
-  OpenRouter vision-escalation provider exists
+- A complete official submission and OCR-aware field integration. The bounded
+  source-only comparator runs during dataset import and evaluation, but its
+  conservative layout/role/reference support does not yet export a valid
+  520-row submission. The OpenRouter vision-escalation provider exists
   ([VISION.md](apps/api/src/ai/VISION.md)) but is not yet wired into the API;
   automatic recovery orchestration, dashboard and workflow builder are also
   pending.
@@ -252,9 +256,15 @@ by fixtures; no live email was sent during this verification.
 | `POST` | `/classify` | public, budgeted | Up to 20 preview rows for the extension. |
 | `POST` | `/rules/evaluate` | public, budgeted | Smart-filter probabilities for up to 20 rows against up to 8 rules. |
 | `GET` | `/usage` | bearer | Authoritative request-level token totals. |
+| `GET` | `/dashboard` | bearer | Aggregated dashboard report snapshot and data mode. |
+| `GET` | `/runs/:id` | bearer | One import/run report. |
 | `POST` | `/import` | bearer | Import the configured dataset; returns a job. |
 | `GET` | `/emails` | bearer | Imported inbox with classification state. |
 | `GET` | `/cases/:id` | bearer | Full operational state for one case. |
+| `GET` | `/cases/:id/activity` | bearer | Recent durable events for one case. |
+| `GET` | `/cases/:id/sources` | bearer | Re-read attachment sources with hash checks. |
+| `GET` | `/cases/:id/comparison` | bearer | Stored document comparison evidence. |
+| `POST` | `/cases/:id/compare` | bearer | Run the bounded document comparison; requires verified comparison intent. |
 | `POST` | `/cases/:id/retry` | bearer | Re-run a failed or signalled case. |
 | `POST` | `/cases/:id/decision` | bearer | Record a human decision. |
 | `POST` | `/cases/:id/draft` | bearer | Persist an evidence-bound reply draft; requires source and decision versions. |
@@ -309,7 +319,10 @@ deliberately exits nonzero. Incomplete comparison states are explicit export
 failures, so a partial run is never presented as a valid headline score. Live
 evaluation makes paid model calls.
 See the [evaluation guide](tools/eval/README.md) for offline checks, dispute
-adjudication, and final-run protection. `npm run eval:classify` retains the separate
+adjudication, and final-run protection. `npm run eval:final` republishes the
+frozen final scorecards with no provider calls, and `npm run eval:triage`
+reproduces the offline miss triage; both refuse existing output directories.
+`npm run eval:classify` retains the separate
 category tuning harness. OCR recovery has a dedicated verification harness
 (`tools/eval/src/ocr-verification.ts` plus a frozen label audit) proving all 15
 supplied scans recover under neutral and misleading filenames; see
@@ -335,6 +348,21 @@ was 0/46 and review recall 0/20. These targets are not met, and the partial
 submission has no valid headline score. See the [issue #37 report and frozen
 artifacts](tools/eval/reports/issue37-20260921/README.md) for actual results,
 failure accounting, environment versions and reproducibility hashes.
+
+The frozen final run is published as the [issue #60
+scorecards](tools/eval/reports/issue60-20260921/README.md): the unchanged
+organizer scorer replayed the submission exactly, the official headline remains
+unavailable (`official.valid: false`; the raw 0.230045 diagnostic includes
+scorer defaults for absent rows and is not a headline), and the [issue #39
+triage](tools/eval/reports/issue39-20260921/README.md) accounts for all 520
+rows: 284 agreements without a lossy convention, 75 future-draft label
+conventions, 8 inference failures, 1 reader failure and 152 semantic/intent or
+document-role blockers, with three pending disputes and zero accepted
+corrections. A twelve-case independently authored document challenge measured
+12/12 exact operational workflow and blocker checks, 6/12 exact exported
+status, 0/12 false match confirmations and 4/12 proof-validated
+confirmation/amendment decisions; the six blocked exports remain misses.
+Reproduce with `npm run eval:final`.
 
 Smart-filter presets were calibrated on 20 September 2026: 40 dataset rows
 (stratified, 8 per category, rendered as inbox snippets) plus 12 hand-written
@@ -363,6 +391,7 @@ for the schema, categories, edge cases, and regeneration instructions.
 ```
 apps/api/           Hono service: pipeline, document readers, OCR recovery, Gmail connector
 apps/dashboard/     React/Vite operations dashboard
+apps/extraction-dashboard/  Extraction trace research workspace (Vite)
 apps/extension/     MV3 Chrome extension for Gmail and Outlook web
 packages/shared/    Zod schemas plus Jev question and smart-filter contracts
 tools/eval/         Evaluation harness: official runner, smart filters, OCR verification
@@ -380,9 +409,10 @@ training_data/      SDOC dataset, attachments and organizer scorer
   2026-09-20 with sending disabled; delivery is covered by fixtures only.
 - Text recovery is available through the authenticated API; automatic recovery
   orchestration and semantic acceptance by the comparator remain pending.
-- The latest full-inbox run measures classification and comparison attempts;
-  successful official document verification and final independent document
-  scorecards remain outstanding.
+- The final scorecards are published
+  ([issue #60](tools/eval/reports/issue60-20260921/README.md)); a valid 520-row
+  official submission, the defect/review performance targets and human
+  adjudication of the three pending disputes remain outstanding.
 
 
 ### Extension document verification
