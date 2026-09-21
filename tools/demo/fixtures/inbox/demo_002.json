@@ -1,0 +1,10 @@
+{
+  "email_id": "demo_002",
+  "from": "raj.menon@orchardexporters.example",
+  "subject": "TO CONFIRM DOCS _ DEMO-5RSG-00133 _ SINGAPORE_HAMBURG",
+  "body": "Hello,\n\nAttached are the SI and the draft BL for this shipment. Please verify the details and confirm.\n\nBest regards,\nRaj",
+  "attachments": [
+    "attachments/d2-si.txt",
+    "attachments/d2-bl.txt"
+  ]
+}

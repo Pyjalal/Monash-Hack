@@ -1,0 +1,10 @@
+{
+  "email_id": "demo_001",
+  "from": "sofia.bergman@cedarimports.example",
+  "subject": "INVOICE 88421 OVERDUE _ DEMO-5RSG-00133 _ HAMBURG",
+  "body": "Hi team,\n\nIgnore the reference in the subject line, our accounts team reused an old thread.\nWhat I actually need: please check the attached draft BL against our SI and confirm the details match.\n\nThanks,\nSofia",
+  "attachments": [
+    "attachments/d1-si.txt",
+    "attachments/d1-bl.txt"
+  ]
+}

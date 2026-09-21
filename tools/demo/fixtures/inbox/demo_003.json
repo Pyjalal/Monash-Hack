@@ -1,0 +1,10 @@
+{
+  "email_id": "demo_003",
+  "from": "docs@orchardexporters.example",
+  "subject": "SCANNED SI + DRAFT BL _ DEMO-5RSG-00133",
+  "body": "Hi,\n\nOur system can only export scans. Attached are scanned copies of the SI and the draft BL.\nPlease check them against each other and confirm.\n\nRegards,\nDocumentation",
+  "attachments": [
+    "attachments/d3-si.pdf",
+    "attachments/d3-bl.pdf"
+  ]
+}

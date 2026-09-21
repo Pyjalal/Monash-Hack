@@ -1,0 +1,9 @@
+DRAFT BILL OF LADING
+Shipment reference: DEMO-5RSG-00133
+Shipper: Orchard Exporters Pte Ltd
+Consignee: Cedar Imports GmbH
+Notify party: Cedar Customs Agent
+Port of loading: Singapore
+Port of discharge: Hamburg
+Container count: 3
+Gross weight kg: 14000
