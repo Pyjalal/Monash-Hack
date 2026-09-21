@@ -177,7 +177,7 @@ export function CaseView({
           </span>
         </div>
       </header>
-      <nav className="case-tabs" aria-label="Case sections">
+      <nav className="case-tabs" aria-label="Case sections" data-tour="tabs">
         {["check", "message", "activity"].map((name) => (
           <button
             aria-pressed={tab === name}
@@ -277,7 +277,7 @@ export function CaseView({
           )}
           {checkView.applies && (
           <div className="table-scroll">
-            <table className="comparison-table">
+            <table className="comparison-table" data-tour="check">
               <caption className="sr-only">
                 Seven-field shipping instruction and bill of lading evidence
               </caption>
@@ -339,7 +339,7 @@ export function CaseView({
           </div>
           )}
           {record.email.attachments.length > 0 && (
-            <div className="source-strip">
+            <div className="source-strip" data-tour="sources">
               <div>
                 <strong>Source documents</strong>
                 <p className="small muted">
@@ -357,7 +357,7 @@ export function CaseView({
               </Button>
             </div>
           )}
-          <div className="next-action">
+          <div className="next-action" data-tour="next-action">
             <div>
               <p className="overline">Next action</p>
               <h3>{d ? human(d.nextAction) : "Classify this email"}</h3>
@@ -479,7 +479,7 @@ export function CaseView({
           )}
         </>
       )}
-      <section className="case-delivery">
+      <section className="case-delivery" data-tour="deliveries">
         <h3>Operational replies</h3>
         {delivery.length ? (
           delivery.map((item) => (

@@ -14,6 +14,12 @@ import {
   comparisonView,
 } from "./view-model";
 import { createApiClient, type InboxRow } from "./api";
+import {
+  shouldOpenTour,
+  markTourSeen,
+  TOUR_STEPS,
+  TOUR_VERSION,
+} from "../components/Tour";
 import type { Case } from "@cargolens/shared";
 
 describe("dashboard behavior contracts", () => {
@@ -183,6 +189,44 @@ describe("dashboard behavior contracts", () => {
         }),
       ),
     ).toMatchObject({ status: "RUN", applies: true, matched: 1 });
+  });
+  it("shows the walkthrough once per version and survives blocked storage", () => {
+    let value: string | null = null;
+    const storage = {
+      getItem: () => value,
+      setItem: (_k: string, v: string) => { value = v; },
+      removeItem: () => { value = null; },
+    } as unknown as Storage;
+
+    expect(shouldOpenTour(storage)).toBe(true);
+    markTourSeen(storage);
+    expect(shouldOpenTour(storage)).toBe(false);
+
+    // A newer walkthrough is shown again rather than being suppressed forever.
+    value = String(TOUR_VERSION - 1);
+    expect(shouldOpenTour(storage)).toBe(true);
+    // Corrupt values must not permanently hide it either.
+    value = "not-a-number";
+    expect(shouldOpenTour(storage)).toBe(true);
+
+    // Storage can throw in a locked-down browser; the tour still opens.
+    const blocked = {
+      getItem: () => { throw new Error("blocked"); },
+      setItem: () => { throw new Error("blocked"); },
+      removeItem: () => {},
+    } as unknown as Storage;
+    expect(shouldOpenTour(blocked)).toBe(true);
+    expect(() => markTourSeen(blocked)).not.toThrow();
+  });
+  it("gives every walkthrough step a target the app actually renders", () => {
+    // A step pointing at a data-tour attribute nobody sets would silently
+    // become a centred step with no explanation.
+    const targets = TOUR_STEPS.flatMap((step) => (step.target ? [step.target] : []));
+    expect(new Set(targets).size).toBe(targets.length);
+    for (const step of TOUR_STEPS) {
+      expect(step.title.length).toBeGreaterThan(0);
+      expect(step.body.length).toBeGreaterThan(40);
+    }
   });
   it("closes an unauthorized stream without a retry loop", async () => {
     const states: string[] = [];

@@ -296,7 +296,7 @@ export function InboxMap({
   };
 
   return (
-    <section className="inbox-map-card" aria-labelledby="inbox-map-title">
+    <section className="inbox-map-card" aria-labelledby="inbox-map-title" data-tour="map">
       <header className="inbox-map-header">
         <div>
           <p className="inbox-map-kicker">Live queue topology</p>
