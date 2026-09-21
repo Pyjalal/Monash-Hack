@@ -17,8 +17,8 @@ import type {
   DraftResponse,
   SourceReading,
 } from "../lib/api";
-import { describeError, WORKFLOW_LABEL } from "../lib/api";
-import { canCompare, canDraft, human } from "../lib/view-model";
+import { describeError, CATEGORY_LABEL, WORKFLOW_LABEL } from "../lib/api";
+import { canCompare, canDraft, comparisonView, human } from "../lib/view-model";
 import { Button } from "./ui/button";
 import { Modal } from "../App";
 
@@ -141,6 +141,7 @@ export function CaseView({
       </div>
     );
   const d = record.decision;
+  const checkView = comparisonView(record);
   const fields = FIELD_NAMES.map((field) => ({
     field,
     result: d?.fieldResults.find((row) => row.field === field),
@@ -209,16 +210,22 @@ export function CaseView({
         <>
           <div className="section-heading">
             <div>
-              <h3>SI versus BL comparison</h3>
+              <h3>
+                {checkView.applies
+                  ? "SI versus BL comparison"
+                  : "Document check"}
+              </h3>
               <p className="small muted">
-                Seven fields, each grounded in its own source.
+                {checkView.applies
+                  ? "Seven fields, each grounded in its own source."
+                  : "What this message asks for, and why no SI/BL comparison applies."}
               </p>
             </div>
-            <span className="small muted">
-              {d?.fieldResults.filter((row) => row.outcome === "MATCH")
-                .length ?? 0}{" "}
-              / 7 matched
-            </span>
+            {checkView.status === "RUN" && (
+              <span className="small muted">
+                {checkView.matched} / 7 matched
+              </span>
+            )}
           </div>
           {d?.blockers.length ? (
             <div className="warning-box">
@@ -233,12 +240,42 @@ export function CaseView({
               </div>
             </div>
           ) : null}
-          {d?.requestedAction === "REQUEST_DRAFT" && (
+          {!checkView.applies && (
+            <>
+              <div className="info-box">
+                {checkView.status === "UNCLASSIFIED"
+                  ? "This case has not been classified yet, so no document check has been attempted."
+                  : checkView.status === "DEFERRED"
+                    ? "The sender is waiting to receive a draft bill of lading. There is no draft to compare yet, so verification is not complete."
+                    : `Classified as ${CATEGORY_LABEL[record.classification?.category ?? d?.category ?? "UNCERTAIN"]}. The seven-field SI/BL check only applies to bill-of-lading comparison requests, so no fields are extracted for this case.`}
+              </div>
+              <dl className="facts">
+                <dt>Category</dt>
+                <dd>
+                  {record.classification
+                    ? `${CATEGORY_LABEL[record.classification.category]} (${Math.round(record.classification.confidence * 100)}% confidence)`
+                    : "Pending"}
+                </dd>
+                <dt>Requested action</dt>
+                <dd>{d ? human(d.requestedAction) : "Pending"}</dd>
+                <dt>Document expectation</dt>
+                <dd>{d ? human(d.documentExpectation) : "Pending"}</dd>
+                <dt>Attachments</dt>
+                <dd>
+                  {record.email.attachments.length
+                    ? `${record.email.attachments.length} supplied`
+                    : "None supplied"}
+                </dd>
+              </dl>
+            </>
+          )}
+          {checkView.applies && checkView.status === "NOT_RUN" && (
             <div className="info-box">
-              Draft requested. Documents are expected later; verification is not
-              complete.
+              Comparison has not run for this case yet. The seven fields below
+              stay unestablished until real source documents are read.
             </div>
           )}
+          {checkView.applies && (
           <div className="table-scroll">
             <table className="comparison-table">
               <caption className="sr-only">
@@ -300,23 +337,26 @@ export function CaseView({
               </tbody>
             </table>
           </div>
-          <div className="source-strip">
-            <div>
-              <strong>Source documents</strong>
-              <p className="small muted">
-                Inspect excerpts, hashes and recovery evidence.
-              </p>
+          )}
+          {record.email.attachments.length > 0 && (
+            <div className="source-strip">
+              <div>
+                <strong>Source documents</strong>
+                <p className="small muted">
+                  Inspect excerpts, hashes and recovery evidence.
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                size="small"
+                disabled={busy}
+                onClick={() => void operate("sources")}
+              >
+                <Paperclip size={15} />
+                View sources
+              </Button>
             </div>
-            <Button
-              variant="outline"
-              size="small"
-              disabled={busy || !record.email.attachments.length}
-              onClick={() => void operate("sources")}
-            >
-              <Paperclip size={15} />
-              View sources
-            </Button>
-          </div>
+          )}
           <div className="next-action">
             <div>
               <p className="overline">Next action</p>

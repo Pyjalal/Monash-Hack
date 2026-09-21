@@ -43,6 +43,46 @@ export function canCompare(record: Case) {
     )
   );
 }
+/**
+ * Whether the seven-field SI/BL grid can say anything truthful about this case.
+ *
+ * Only BL_COMPARISON cases that expect documents now ever produce field
+ * results. Rendering the grid for anything else reports a correct
+ * classification as seven pending verifications that will never resolve.
+ */
+export type ComparisonStatus =
+  | "UNCLASSIFIED"
+  | "NOT_APPLICABLE"
+  | "DEFERRED"
+  | "NOT_RUN"
+  | "RUN";
+export function comparisonView(record: Case): {
+  status: ComparisonStatus;
+  applies: boolean;
+  matched: number;
+  resolved: number;
+} {
+  const d = record.decision;
+  const results = d?.fieldResults ?? [];
+  const matched = results.filter((row) => row.outcome === "MATCH").length;
+  const resolved = results.length;
+  const status: ComparisonStatus = !d
+    ? "UNCLASSIFIED"
+    : d.category !== "BL_COMPARISON"
+      ? "NOT_APPLICABLE"
+      : d.requestedAction === "REQUEST_DRAFT" ||
+          d.documentExpectation === "DEFERRED"
+        ? "DEFERRED"
+        : resolved
+          ? "RUN"
+          : "NOT_RUN";
+  return {
+    status,
+    applies: status === "RUN" || status === "NOT_RUN",
+    matched,
+    resolved,
+  };
+}
 export function canDraft(record: Case) {
   return (
     !!record.decision &&
