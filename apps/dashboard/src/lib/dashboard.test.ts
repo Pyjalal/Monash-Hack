@@ -6,7 +6,13 @@ import {
   clearSession,
   SESSION_MAX_AGE_MS,
 } from "./session";
-import { counts, filterRows, canCompare, canDraft } from "./view-model";
+import {
+  counts,
+  filterRows,
+  canCompare,
+  canDraft,
+  comparisonView,
+} from "./view-model";
 import { createApiClient, type InboxRow } from "./api";
 import type { Case } from "@cargolens/shared";
 
@@ -106,6 +112,77 @@ describe("dashboard behavior contracts", () => {
       blockers: ["UNCERTAIN_INTENT"],
     });
     expect(canCompare(record)).toBe(false);
+  });
+  it("only offers the seven-field grid for cases a comparison can actually reach", () => {
+    const build = (decision: unknown, attachments: unknown[] = []) =>
+      ({ decision, email: { attachments } }) as unknown as Case;
+
+    // An unclassified case has established nothing yet.
+    expect(comparisonView(build(null))).toMatchObject({
+      status: "UNCLASSIFIED",
+      applies: false,
+    });
+
+    // email_033: "SI NEEDED" is a shipping-instruction request, not a BL
+    // comparison. Rendering seven pending rows here misreports a correct
+    // classification as a failed verification.
+    expect(
+      comparisonView(
+        build({
+          category: "SI_REQUEST",
+          requestedAction: "OTHER",
+          documentExpectation: "UNCERTAIN",
+          workflowState: "NOT_APPLICABLE",
+          blockers: [],
+          fieldResults: [],
+        }),
+      ),
+    ).toMatchObject({ status: "NOT_APPLICABLE", applies: false, matched: 0 });
+
+    // A BL case whose draft is still owed cannot be compared yet either.
+    expect(
+      comparisonView(
+        build({
+          category: "BL_COMPARISON",
+          requestedAction: "REQUEST_DRAFT",
+          documentExpectation: "DEFERRED",
+          workflowState: "AWAITING_DOCUMENTS",
+          blockers: [],
+          fieldResults: [],
+        }),
+      ),
+    ).toMatchObject({ status: "DEFERRED", applies: false });
+
+    // A real comparison case that has not run yet still shows the grid.
+    expect(
+      comparisonView(
+        build({
+          category: "BL_COMPARISON",
+          requestedAction: "VERIFY_DOCUMENTS",
+          documentExpectation: "EXPECTED_NOW",
+          workflowState: "AWAITING_DOCUMENTS",
+          blockers: [],
+          fieldResults: [],
+        }),
+      ),
+    ).toMatchObject({ status: "NOT_RUN", applies: true, matched: 0 });
+
+    // Once it has run, the matched count is real and reportable.
+    expect(
+      comparisonView(
+        build({
+          category: "BL_COMPARISON",
+          requestedAction: "VERIFY_DOCUMENTS",
+          documentExpectation: "EXPECTED_NOW",
+          workflowState: "MISMATCH",
+          blockers: [],
+          fieldResults: [
+            { field: "shipper", outcome: "MATCH" },
+            { field: "consignee", outcome: "MISMATCH" },
+          ],
+        }),
+      ),
+    ).toMatchObject({ status: "RUN", applies: true, matched: 1 });
   });
   it("closes an unauthorized stream without a retry loop", async () => {
     const states: string[] = [];
