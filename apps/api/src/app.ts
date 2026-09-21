@@ -22,9 +22,12 @@ import { RecoveryError, type TextRecovery } from './ai/text-recovery.js';
 import { readAttachment } from './documents/index.js';
 import { compareDocuments } from './documents/comparison.js';
 import { dashboardReports } from './dashboard.js';
+import { chatRoutes } from './chat/routes.js';
+import type { ChatOptions } from './chat/service.js';
 
 export type AppOptions = { store: Store; service: ClassificationService; dashboardToken: string; authRequired?: boolean; datasetRoot?: string; dashboardDist?: string; allowedOrigins?: string[];
   dataMode?: 'operational' | 'synthetic';
+  chat?: ChatOptions;
   documentationContact?: string;
   textRecovery?: TextRecovery; gmailAttachmentRoot?: string;
   rules?: RuleService; gmailAuthorization?: GmailAuthorization; gmailPoller?: GmailPoller;
@@ -53,12 +56,13 @@ export function createApp(options: AppOptions): Hono {
   app.use('*', bodyLimit({ maxSize: 1024 * 1024, onError: c => c.json({ error: 'PAYLOAD_TOO_LARGE' }, 413) }));
   app.use('*', async (c, next) => {
     if (c.req.method === 'GET' && ['/gmail/oauth/callback', '/gmail/connection-result'].includes(c.req.path)) return next();
-    if (c.req.method === 'GET' && (c.req.path === '/' || c.req.path.startsWith('/assets/'))) return next();
+    if (c.req.method === 'GET' && (c.req.path === '/' || c.req.path.startsWith('/assets/') || c.req.path === '/favicon.svg')) return next();
     if (c.req.path === '/health' || (['/classify', '/rules/evaluate'].includes(c.req.path) && c.req.method === 'POST') || c.req.method === 'OPTIONS') return next();
     if (options.authRequired !== false && !tokenMatches(c.req.header('Authorization') ?? '', options.dashboardToken)) return c.json({ error: 'UNAUTHORIZED' }, 401);
     await next();
   });
   app.onError((_error, c) => c.json({ error: 'INTERNAL_ERROR' }, 500));
+  app.route('/api/chat', chatRoutes({ ...options.chat, store }));
   app.get('/health', c => c.json({ service: 'CargoLens', apiVersion: 1, status: 'ready', classifierRevision: service.configurationRevision }, 200, { 'Cache-Control': 'no-store' }));
   app.post('/classify', async c => {
     if (!/^application\/json(?:;|$)/i.test(c.req.header('Content-Type') ?? '')) return c.json({ error: 'JSON_REQUIRED' }, 415);

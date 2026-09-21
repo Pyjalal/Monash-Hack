@@ -16,6 +16,7 @@ import { GmailAuthorization } from './gmail/oauth.js';
 import { GmailPoller } from './gmail/polling.js';
 import { TextRecovery } from './ai/text-recovery.js';
 import { loadDataset } from './dataset.js';
+import { createChatGuard } from './chat/guard.js';
 
 const aiProvider = process.env.AI_PROVIDER ?? 'typesafe';
 if (!['typesafe', 'openrouter'].includes(aiProvider)) throw new Error('AI_PROVIDER must be typesafe or openrouter');
@@ -50,6 +51,8 @@ const ruleModel = process.env.TYPESAFE_MODEL ?? 'jev-1.13.0';
 const rules = process.env.TYPESAFE_API_KEY ? new RuleService({ store, model: ruleModel, evaluator: createJevRuleEvaluator({ apiKey: process.env.TYPESAFE_API_KEY, model: ruleModel }) }) : undefined;
 const datasetRoot = resolve(process.env.DATASET_ROOT ?? 'training_data/sdoc-hackathon-docker/extracted/data_v2');
 const app = createApp({ store, service, rules, dashboardToken: process.env.DASHBOARD_TOKEN, authRequired: process.env.AUTH_REQUIRED !== 'false',
+  chat: { apiKey: process.env.OPENROUTER_API_KEY, model: process.env.CHAT_MODEL,
+    guard: createChatGuard({ provider: aiProvider as 'typesafe' | 'openrouter', apiKey, model }) },
   textRecovery: new TextRecovery({ store, apiKey: process.env.OPENROUTER_API_KEY, model: process.env.OPENROUTER_TEXT_MODEL,
     maxCaseAttempts: Number(process.env.RECOVERY_MAX_CASE_ATTEMPTS ?? 3), maxCaseTokens: Number(process.env.RECOVERY_MAX_CASE_TOKENS ?? 30000),
     maxCaseUsd: Number(process.env.RECOVERY_MAX_CASE_USD ?? 0.02) }),

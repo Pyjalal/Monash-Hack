@@ -31,8 +31,9 @@ import { Mark, DocumentArt } from "./components/Artwork";
 import { CaseView } from "./components/CaseView";
 import { Measurements, DeliveryLog } from "./components/Measurements";
 import { InboxMap } from "./components/InboxMap";
-import { Tour, shouldOpenTour } from "./components/Tour";
+import { Tour, shouldOpenTour, type TourStep } from "./components/Tour";
 import { FlowBuilder } from "./components/FlowBuilder";
+import { ChatWidget } from "./components/ChatWidget";
 import {
   createApiClient,
   CATEGORY_LABEL,
@@ -301,6 +302,11 @@ function Workspace({
   const [commands, setCommands] = useState(false);
   // New operators get the walkthrough once; it can be replayed from the command list.
   const [tour, setTour] = useState(() => shouldOpenTour());
+  const [chatTourOpen, setChatTourOpen] = useState(false);
+  const prepareTourStep = useCallback((step: TourStep) => {
+    setPage(step.page ?? 'inbox');
+    setChatTourOpen(step.target === 'chat-scope' || step.target === 'chat-compose');
+  }, []);
   const [mobileNav, setMobileNav] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [revision, setRevision] = useState(0);
@@ -923,7 +929,7 @@ function Workspace({
           ) : page === "measurements" ? (
             <Measurements report={report} api={api} />
           ) : page === "builder" ? (
-            <FlowBuilder api={api} />
+            <FlowBuilder api={api} suppressTour={tour} />
           ) : (
             <DeliveryLog
               items={outbox}
@@ -946,7 +952,8 @@ function Workspace({
           </footer>
         </main>
       </div>
-      {tour && <Tour close={() => setTour(false)} />}
+      {tour && <Tour onStepChange={prepareTourStep} close={() => { setTour(false); setChatTourOpen(false); }} />}
+      <ChatWidget api={api} tourOpen={chatTourOpen} selectedId={selected} onOpenCase={id => { setSelected(id); setPage('inbox'); }} />
       {commands && (
         <Modal title="Go to the next thing" close={() => setCommands(false)}>
           <p className="muted">

@@ -2496,3 +2496,7 @@ dialog.tour::backdrop {
     display: none;
   }
 }
+
+.tour-card--chat { inset-inline: 20px auto; inset-block: 20px auto; margin: 0; }
+@media (max-width: 620px) { .tour-card--chat { inset-inline: 10px; inset-block: 10px auto; margin: 0; max-height: 44dvh; } }
+@media (max-width: 620px) { .tour-card--chat-scope { inset-block: auto 10px; } }

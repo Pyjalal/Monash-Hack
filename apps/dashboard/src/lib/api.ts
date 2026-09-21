@@ -141,6 +141,7 @@ export interface FlowRunReport {
 }
 
 export interface ApiClient {
+  chat(input: { message: string; history: { role: 'user' | 'assistant'; content: string }[]; caseId?: string }, signal?: AbortSignal): Promise<unknown>;
   dashboard(): Promise<DashboardReport>;
   run(id: string): Promise<RunReport>;
   activity(id: string): Promise<{ events: Activity[] }>;
@@ -217,6 +218,7 @@ export function createApiClient(
       body: body === undefined ? undefined : JSON.stringify(body),
     });
   return {
+    chat: (input, signal) => request('/api/chat', { method: 'POST', body: JSON.stringify(input), signal }),
     dashboard: () => request("/dashboard"),
     run: (id) => request(`/runs/${encodeURIComponent(id)}`),
     activity: (id) => request(`/cases/${encodeURIComponent(id)}/activity`),

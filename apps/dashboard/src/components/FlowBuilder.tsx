@@ -29,11 +29,12 @@ import {
   type FlowNodeType,
 } from "@cargolens/shared/flows";
 import { FIELD_NAMES, type Category } from "@cargolens/shared";
-import { AlertTriangle, Check, Plus, Save, Trash2 } from "lucide-react";
+import { AlertTriangle, Check, Plus, Save, Trash2, CircleHelp } from "lucide-react";
 import type { ApiClient } from "../lib/api";
 import { describeError, CATEGORY_LABEL } from "../lib/api";
 import { Button } from "./ui/button";
 import { human } from "../lib/view-model";
+import { Tour, FLOW_TOUR_STEPS, shouldOpenFlowTour, markFlowTourSeen } from './Tour';
 
 const NODE_LABEL: Record<FlowNodeType, string> = {
   trigger: "Trigger",
@@ -157,7 +158,8 @@ function fromReactFlow(id: string, name: string, nodes: Node[], edges: Edge[]): 
   };
 }
 
-export function FlowBuilder({ api }: { api: ApiClient }) {
+export function FlowBuilder({ api, suppressTour = false }: { api: ApiClient; suppressTour?: boolean }) {
+  const [guide, setGuide] = useState(() => !suppressTour && shouldOpenFlowTour());
   const [flow, setFlow] = useState<Flow>(SEED_SI_BL_FLOW);
   const initial = useMemo(() => toReactFlow(SEED_SI_BL_FLOW), []);
   const [nodes, setNodes, onNodesChange] = useNodesState(initial.nodes);
@@ -273,7 +275,8 @@ export function FlowBuilder({ api }: { api: ApiClient }) {
             not execute is refused rather than saved as a drawing.
           </p>
         </div>
-        <Button disabled={busy || !validation.ok} onClick={() => void save()}>
+        <Button data-tour="flow-help" variant="outline" onClick={() => setGuide(true)}><CircleHelp size={16} /> Builder guide</Button>
+        <Button data-tour="flow-save" disabled={busy || !validation.ok} onClick={() => void save()}>
           <Save size={16} />
           {busy ? "Saving…" : "Save flow"}
         </Button>
@@ -304,7 +307,7 @@ export function FlowBuilder({ api }: { api: ApiClient }) {
       )}
 
       <div className="flow-layout">
-        <div className="flow-palette">
+        <div className="flow-palette" data-tour="flow-palette">
           <p className="panel-label">Add a node</p>
           {FLOW_NODE_TYPES.map((type) => (
             <button key={type} type="button" onClick={() => addNode(type)}>
@@ -317,7 +320,7 @@ export function FlowBuilder({ api }: { api: ApiClient }) {
           ))}
         </div>
 
-        <div className="flow-canvas">
+        <div className="flow-canvas" data-tour="flow-canvas">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -335,7 +338,7 @@ export function FlowBuilder({ api }: { api: ApiClient }) {
           </ReactFlow>
         </div>
 
-        <div className="flow-inspector">
+        <div className="flow-inspector" data-tour="flow-inspector">
           <p className="panel-label">Configuration</p>
           {!currentData ? (
             <p className="muted small">
@@ -354,6 +357,7 @@ export function FlowBuilder({ api }: { api: ApiClient }) {
           )}
         </div>
       </div>
+      {guide && !suppressTour && <Tour steps={FLOW_TOUR_STEPS} onFinish={markFlowTourSeen} close={() => setGuide(false)} />}
     </div>
   );
 }

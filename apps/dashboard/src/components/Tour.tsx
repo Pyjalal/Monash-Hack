@@ -3,10 +3,11 @@ import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { Button } from "./ui/button";
 
 /** Bumped when the steps change, so a returning operator sees what is new. */
-export const TOUR_VERSION = 4;
+export const TOUR_VERSION = 5;
 const STORAGE_KEY = "cargolens.tour.seen";
 
 export interface TourStep {
+  page?: 'inbox' | 'builder';
   /** Matches a `data-tour` attribute in the app. Absent means a centred step. */
   target?: string;
   title: string;
@@ -22,11 +23,26 @@ export const TOUR_STEPS: TourStep[] = [
       "It decides what every email is asking for, then checks the shipping instruction against the draft bill of lading using the actual attached documents. This walkthrough covers every part of the workspace. Use the arrow keys to move, Escape to leave.",
   },
   {
+    target: 'chat-launcher',
+    title: 'Ask your inbox',
+    body: 'The floating chat button opens your email assistant. Ask about urgent shipments, missing documents, a sender or a booking reference. It searches the emails already imported into this workspace.',
+  },
+  {
+    target: 'chat-scope',
+    title: 'Choose the emails to search',
+    body: 'Search all workspace emails or just the selected email. Try “Summarize email_001” or ask a follow-up. Switching scope starts a fresh conversation so answers stay tied to the right records.',
+  },
+  {
+    target: 'chat-compose',
+    title: 'Answers checked against evidence',
+    body: 'Jev screens retrieved text for injected instructions, then checks each generated claim against its cited chunk. Numbered source buttons open the matching email. The assistant is read-only; inspect sources before acting.',
+  },
+  {
     target: "nav",
-    title: "Three places to work",
+    title: "Four places to work",
     body:
-      "Inbox is the queue and the case detail. Measurements is the recorded run history. Delivery log is every operational reply, sent or held. The number beside Inbox is the live case count.",
-    fallback: "Open the sidebar with the toggle at the top left to see the three sections.",
+      "Inbox holds the queue and case detail. Measurements records run history. Workflow builder lets you configure the checking flow. Delivery log shows operational replies. The number beside Inbox is the live case count.",
+    fallback: "Open the sidebar with the toggle at the top left to see the four sections.",
   },
   {
     target: "counts",
@@ -89,6 +105,8 @@ export const TOUR_STEPS: TourStep[] = [
       "Compare documents runs the seven-field check. Preview shows the exact reply the case would send, and nothing is sent from a preview. A match can only be confirmed when all seven fields are verified from two different documents with no blockers.",
   },
   {
+    target: 'flow-canvas',
+    page: 'builder',
     title: "The workflow builder",
     body:
       "Workflow builder, in the sidebar, draws the SI-to-BL checking flow as a graph you can change: six node types, a trigger, the comparison, conditions and the two outcomes. It runs through the same functions as the pipeline, and a graph that would not execute is refused with the reason rather than saved as a drawing.",
@@ -113,6 +131,23 @@ export const TOUR_STEPS: TourStep[] = [
   },
 ];
 
+export const FLOW_TOUR_STEPS: TourStep[] = [
+  { target: 'flow-canvas', title: 'Your document workflow', body: 'Follow the graph from trigger through document comparison to an outcome. Drag the canvas to pan and use its zoom controls. Connections define the order the interpreter executes.' },
+  { target: 'flow-palette', title: 'Add the right step', body: 'Choose a trigger, a Jev question, field comparison, condition, draft reply or escalation. Adding a node gives it a valid starting configuration; connect it into the graph before saving.' },
+  { target: 'flow-inspector', title: 'Configure a selected node', body: 'Select a node on the canvas to edit its settings here. Choose the question, fields or condition it uses. A condition has separate true and false outputs. Removing a node also removes its connections.' },
+  { target: 'flow-save', title: 'Validate and save', body: 'Save flow becomes available when the graph validates. Invalid connections or incomplete paths are explained above the canvas. Saving stores a new configuration; it does not send an email or run the workflow.' },
+  { target: 'flow-help', title: 'Return to this guide', body: 'Open Builder guide whenever you need a reminder. Use the workspace chat to inspect email evidence, then return here to configure how cases should move through your workflow.' },
+];
+
+export function shouldOpenFlowTour(): boolean {
+  try { return globalThis.localStorage?.getItem('cargolens.flow-tour.seen') !== '1'; }
+  catch { return true; }
+}
+export function markFlowTourSeen(): void {
+  try { globalThis.localStorage?.setItem('cargolens.flow-tour.seen', '1'); }
+  catch { return; }
+}
+
 function readSeen(storage: Storage | undefined): number {
   try {
     return Number(storage?.getItem(STORAGE_KEY) ?? 0) || 0;
@@ -135,17 +170,18 @@ export function markTourSeen(storage: Storage | undefined = globalThis.localStor
 
 type Box = { top: number; left: number; width: number; height: number } | null;
 
-export function Tour({ close }: { close: () => void }) {
+export function Tour({ close, steps = TOUR_STEPS, onStepChange, onFinish = markTourSeen }: { close: () => void; steps?: TourStep[]; onStepChange?: (step: TourStep) => void; onFinish?: () => void }) {
   const [index, setIndex] = useState(0);
   const [box, setBox] = useState<Box>(null);
   const dialog = useRef<HTMLDialogElement>(null);
-  const step = TOUR_STEPS[index];
-  const last = index === TOUR_STEPS.length - 1;
+  const step = steps[index];
+  const last = index === steps.length - 1;
+  useEffect(() => { onStepChange?.(step); }, [step, onStepChange]);
 
   const finish = useCallback(() => {
-    markTourSeen();
+    onFinish();
     close();
-  }, [close]);
+  }, [close, onFinish]);
 
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null;
@@ -159,26 +195,24 @@ export function Tour({ close }: { close: () => void }) {
       setBox(null);
       return;
     }
-    const node = document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`);
-    if (!node) {
-      setBox(null);
-      return;
-    }
-    node.scrollIntoView({ block: "center", behavior: "smooth" });
     const measure = () => {
+      const node = document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`);
+      if (!node) { setBox(null); return; }
       const rect = node.getBoundingClientRect();
-      setBox(
-        rect.width && rect.height
-          ? { top: rect.top, left: rect.left, width: rect.width, height: rect.height }
-          : null,
-      );
+      const next = rect.width && rect.height ? { top: rect.top, left: rect.left, width: rect.width, height: rect.height } : null;
+      setBox(previous => JSON.stringify(previous) === JSON.stringify(next) ? previous : next);
     };
+    const node = document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`);
+    node?.scrollIntoView({ block: "center", behavior: "instant" });
     measure();
     const timer = window.setTimeout(measure, 320);
+    const observer = new MutationObserver(measure);
+    observer.observe(document.body, { childList: true, subtree: true });
     window.addEventListener("resize", measure);
     window.addEventListener("scroll", measure, true);
     return () => {
       window.clearTimeout(timer);
+      observer.disconnect();
       window.removeEventListener("resize", measure);
       window.removeEventListener("scroll", measure, true);
     };
@@ -187,7 +221,7 @@ export function Tour({ close }: { close: () => void }) {
   function onKeyDown(event: React.KeyboardEvent) {
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      setIndex((current) => Math.min(current + 1, TOUR_STEPS.length - 1));
+      setIndex((current) => Math.min(current + 1, steps.length - 1));
     }
     if (event.key === "ArrowLeft") {
       event.preventDefault();
@@ -215,9 +249,9 @@ export function Tour({ close }: { close: () => void }) {
           style={{ top: box.top, left: box.left, width: box.width, height: box.height }}
         />
       )}
-      <div className="tour-card" role="document">
+      <div className={`tour-card ${step.target?.startsWith('chat-') ? 'tour-card--chat' : ''} ${step.target === 'chat-scope' ? 'tour-card--chat-scope' : ''}`} role="document">
         <p className="overline">
-          Step {index + 1} of {TOUR_STEPS.length}
+          Step {index + 1} of {steps.length}
         </p>
         <h2 id="tour-title">{step.title}</h2>
         <p>{step.body}</p>
@@ -227,10 +261,10 @@ export function Tour({ close }: { close: () => void }) {
           role="progressbar"
           aria-valuenow={index + 1}
           aria-valuemin={1}
-          aria-valuemax={TOUR_STEPS.length}
+          aria-valuemax={steps.length}
           aria-label="Walkthrough progress"
         >
-          <span style={{ inlineSize: `${((index + 1) / TOUR_STEPS.length) * 100}%` }} />
+          <span style={{ inlineSize: `${((index + 1) / steps.length) * 100}%` }} />
         </div>
         <div className="tour-actions">
           <Button variant="ghost" size="small" onClick={finish}>
