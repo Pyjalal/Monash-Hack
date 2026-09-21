@@ -424,6 +424,12 @@ label {
 }
 .main-shell {
   min-width: 0;
+  background-color: var(--background);
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='.035'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 34% 8%, rgb(255 255 255 / 0.72), transparent 38%),
+    linear-gradient(135deg, #f8f7f3 0%, #f4f3ef 100%);
+  background-blend-mode: normal, normal, normal;
 }
 .topbar {
   height: 72px;
