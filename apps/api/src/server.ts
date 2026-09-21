@@ -52,6 +52,7 @@ const rules = process.env.TYPESAFE_API_KEY ? new RuleService({ store, model: rul
 const datasetRoot = resolve(process.env.DATASET_ROOT ?? 'training_data/sdoc-hackathon-docker/extracted/data_v2');
 const app = createApp({ store, service, rules, dashboardToken: process.env.DASHBOARD_TOKEN, authRequired: process.env.AUTH_REQUIRED !== 'false',
   chat: { apiKey: process.env.OPENROUTER_API_KEY, model: process.env.CHAT_MODEL,
+    onDiagnostic: event => console.warn(JSON.stringify({ event: 'chat_summary_fallback', ...event })),
     guard: createChatGuard({ provider: aiProvider as 'typesafe' | 'openrouter', apiKey, model }) },
   textRecovery: new TextRecovery({ store, apiKey: process.env.OPENROUTER_API_KEY, model: process.env.OPENROUTER_TEXT_MODEL,
     maxCaseAttempts: Number(process.env.RECOVERY_MAX_CASE_ATTEMPTS ?? 3), maxCaseTokens: Number(process.env.RECOVERY_MAX_CASE_TOKENS ?? 30000),

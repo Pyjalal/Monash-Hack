@@ -4,11 +4,19 @@ import './chat.css';
 import type { ApiClient } from '../lib/api';
 
 type Source = { id: string; caseId: string; title: string; excerpt: string };
-type Message = { role: 'user' | 'assistant'; content: string; sources?: Source[]; mode?: string };
+type Message = { role: 'user' | 'assistant'; content: string; sources?: Source[]; mode?: string; fallbackReason?: string };
+const fallbackNotes: Record<string, string> = {
+  not_configured: 'The summary model is not configured. Showing checked email excerpts.',
+  provider_unavailable: 'The summary provider could not respond. Showing checked excerpts; please retry.',
+  generation_timeout: 'The summary timed out. Showing checked excerpts; please retry.',
+  invalid_response: 'The summary had an invalid format. Showing checked excerpts; please retry.',
+  verification_unavailable: 'The answer verification service could not respond. Showing checked excerpts; please retry.',
+  unsupported_answer: 'The summary did not pass the evidence check. Showing checked excerpts.',
+};
 const prompts = ['Find emails about urgent shipments', 'Which emails mention missing documents?', 'Give me an inbox overview'];
 const welcome: Message = { role: 'assistant', content: 'Ask me about your workspace emails. Find a booking, summarize an email, or investigate missing documents. Open cited records to check each answer.' };
 
-function isReply(value: unknown): value is { answer: string; sources: Source[]; mode: string } {
+function isReply(value: unknown): value is { answer: string; sources: Source[]; mode: string; fallbackReason?: string } {
   if (!value || typeof value !== 'object' || !('answer' in value) || typeof value.answer !== 'string' || !('mode' in value) || typeof value.mode !== 'string' || !('sources' in value) || !Array.isArray(value.sources)) return false;
   return value.sources.every((source: unknown) => !!source && typeof source === 'object' && 'id' in source && typeof source.id === 'string' && 'title' in source && typeof source.title === 'string' && 'caseId' in source && typeof source.caseId === 'string' && 'excerpt' in source && typeof source.excerpt === 'string');
 }
@@ -48,7 +56,7 @@ export function ChatWidget({ api, selectedId, onOpenCase, tourOpen = false }: { 
       const reply = await api.chat({ message, history: messages.slice(1).slice(-8).map(item => ({ role: item.role, content: item.content.slice(0, 4000) })), ...(scope === 'selected' && selectedId ? { caseId: selectedId } : {}) }, request.signal);
       if (controller.current !== request) return;
       if (!isReply(reply)) throw new Error('The assistant returned an incomplete reply. Please try again.');
-      setMessages([...next, { role: 'assistant', content: reply.answer, sources: reply.sources, mode: reply.mode }]);
+      setMessages([...next, { role: 'assistant', content: reply.answer, sources: reply.sources, mode: reply.mode, fallbackReason: typeof reply.fallbackReason === 'string' ? reply.fallbackReason : undefined }]);
     } catch (failure) {
       if (controller.current !== request) return;
       setMessages(messages); setDraft(message);
@@ -73,7 +81,7 @@ export function ChatWidget({ api, selectedId, onOpenCase, tourOpen = false }: { 
           <span className="chat-speaker">{message.role === 'user' ? 'You' : 'CargoLens'}</span>
           <p>{message.content}</p>
           {!!message.sources?.length && <div className="chat-sources" aria-label="Answer sources"><span><BookOpen size={12} aria-hidden="true" /> Sources</span>{message.sources.map((source, number) => <button type="button" key={source.id} title={source.excerpt} onClick={() => { onOpenCase(source.caseId); close(); }}>[{number + 1}] {source.caseId} - {source.title}</button>)}</div>}
-          {message.mode && <small className="chat-note">{message.mode === 'generated' ? 'Jev checked: relevance, grounding and citations' : message.mode === 'answer_rejected' ? 'AI answer withheld by Jev. Showing screened excerpts.' : message.mode === 'retrieval' ? 'Jev-screened excerpts. AI summary unavailable.' : 'No unchecked answer shown.'}</small>}
+          {message.mode && <small className="chat-note">{message.mode === 'generated' ? 'Jev checked: relevance, grounding and citations' : fallbackNotes[message.fallbackReason ?? ''] ?? (message.mode === 'retrieval' || message.mode === 'answer_rejected' ? 'Showing Jev-screened email excerpts.' : 'No unchecked answer shown.')}</small>}
         </div>)}
         {messages.length === 1 && <div className="chat-prompts" aria-label="Suggested questions">{prompts.map(prompt => <button key={prompt} type="button" onClick={() => void send(prompt)}>{prompt} <span aria-hidden="true">↗</span></button>)}</div>}
         {pending && <p className="chat-pending" role="status">Retrieving emails and checking evidence with Jev...</p>}

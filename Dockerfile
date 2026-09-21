@@ -10,7 +10,7 @@ ENV PATH="/opt/ocr/bin:$PATH"
 COPY package.json package-lock.json ./
 COPY apps/api/package.json apps/api/package.json
 COPY apps/dashboard/package.json apps/dashboard/package.json
-COPY apps/site/package.json apps/site/package.json
+COPY apps/site/ apps/site/
 COPY apps/extension/package.json apps/extension/package.json
 COPY apps/extraction-dashboard/package.json apps/extraction-dashboard/package.json
 COPY packages/shared/package.json packages/shared/package.json

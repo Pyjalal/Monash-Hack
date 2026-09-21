@@ -21,6 +21,33 @@ beforeEach(() => {
 afterEach(() => store.close());
 
 describe('workspace email RAG', () => {
+  it('recovers from a temporary generation provider failure', async () => {
+    const transport = model();
+    transport.mockResolvedValueOnce(new Response('', { status: 503 }));
+    const result = await new ChatService({ store, guard: safeGuard(), apiKey: 'test', transport }).answer(input);
+    expect(result.mode).toBe('generated');
+    expect(transport).toHaveBeenCalledTimes(2);
+  });
+  it('uses a single structured citation contract and reports email requests as facts', async () => {
+    const transport = model();
+    await new ChatService({ store, guard: safeGuard(), apiKey: 'test', transport }).answer(input);
+    const body = JSON.parse(String(transport.mock.calls[0][1]?.body));
+    expect(body.response_format.type).toBe('json_schema');
+    expect(body.messages[0].content).not.toContain('Cite EVERY factual sentence with [1]');
+    expect(body.messages[0].content).toContain('Report what the emails request');
+  });
+  it('distinguishes verification outages from generation failures without exposing provider errors', async () => {
+    const guard = safeGuard();
+    guard.verify = vi.fn().mockRejectedValue(new Error('private provider details'));
+    const result = await new ChatService({ store, guard, apiKey: 'test', transport: model() }).answer(input);
+    expect(result).toMatchObject({ mode: 'retrieval', fallbackReason: 'verification_unavailable' });
+    expect(JSON.stringify(result)).not.toContain('private provider details');
+  });
+  it('reports an invalid generated format distinctly', async () => {
+    const transport = vi.fn<typeof fetch>().mockResolvedValue(Response.json({ choices: [{ message: { content: 'invalid JSON' } }] }));
+    const result = await new ChatService({ store, guard: safeGuard(), apiKey: 'test', transport }).answer(input);
+    expect(result).toMatchObject({ mode: 'retrieval', fallbackReason: 'invalid_response' });
+  });
   it('retrieves actual emails and follows references', () => {
     expect(retrieve(store.listCases(), input)[0]).toMatchObject({ caseId: 'email_1', excerpt: expect.stringContaining('Friday') });
     expect(retrieve(store.listCases(), { message: 'What about its documents?', history: [{ role: 'user', content: 'booking ABC123' }] })[0].caseId).toBe('email_1');
