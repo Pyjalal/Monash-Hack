@@ -26,6 +26,10 @@ describe('workspace email RAG', () => {
     expect(retrieve(store.listCases(), { message: 'What about its documents?', history: [{ role: 'user', content: 'booking ABC123' }] })[0].caseId).toBe('email_1');
     expect(retrieve(store.listCases(), { message: 'Wimbledon winner?', history: [] })).toEqual([]);
   });
+  it('finds urgency expressed as same-day deadlines', () => {
+    store.upsertEmail({ id: 'deadline', subject: 'Documents for sailing', from: 'ops@example.test', body: 'Please confirm today before the cutoff.', contentScope: 'full_message', attachments: [] });
+    expect(retrieve(store.listCases(), { message: 'Find emails about urgent shipments', history: [] })[0].caseId).toBe('deadline');
+  });
   it('respects selected email scope and refreshes changed content', async () => {
     const service = new ChatService({ store, guard: safeGuard() });
     expect((await service.answer({ ...input, caseId: 'email_2' })).sources).toEqual([]);

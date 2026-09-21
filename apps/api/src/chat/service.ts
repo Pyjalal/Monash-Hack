@@ -47,6 +47,9 @@ function chunksFor(record: CaseRecord): Chunk[] {
 export function retrieve(records: CaseRecord[], input: Input): ChatSource[] {
   const contextual = /\b(it|that|those|them|they|also|more)\b/i.test(input.message) || tokens(input.message).length < 2;
   const query = new Set(tokens(`${contextual ? input.history.filter(item => item.role === 'user').at(-1)?.content ?? '' : ''} ${input.message}`));
+  if (/\b(urgent|urgency|asap|time-sensitive)\b/i.test(input.message)) {
+    for (const term of ['urgent', 'today', 'blocking', 'deadline', 'asap']) query.add(term);
+  }
   const chunks = records.flatMap(chunksFor);
   const frequency = new Map<string, number>();
   for (const chunk of chunks) for (const term of new Set(chunk.terms)) frequency.set(term, (frequency.get(term) ?? 0) + 1);
