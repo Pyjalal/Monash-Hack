@@ -51,3 +51,12 @@ it('asserts a defect when field comparison does not confirm equivalence', async 
   expect(result.review_reason).toBeNull();
   expect(result.defect_fields).toEqual(['shipper']);
 });
+
+it('escalates to missing_value when Jev identifies a field as an unconfirmed placeholder', async () => {
+  const { root, email } = await fixture(fields.replace('Consignee: Buyer', 'Consignee: TBC'));
+  const result = await extract(email, root, vi.fn(), async () => ({
+    consignee: { equivalent: false, confidence: 0.98, placeholder: true },
+  }), null);
+  expect(result.review_reason).toBe('missing_value');
+  expect(result.defect_fields).not.toContain('consignee');
+});

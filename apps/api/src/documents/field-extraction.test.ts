@@ -103,6 +103,20 @@ describe("hybrid SI/BL field extraction", () => {
     expect(result.assessment.reasons).toContain("fallback_failed");
     expect(result.fallbackError).toBe("Field recovery failed");
   });
+
+  it("accepts verbatim values extracted directly from raw text by fallback without candidate IDs", async () => {
+    const changed = reading(expected.replace("Shipper/Exporter", "Exporter legal entity"));
+    const result = await extractDocumentFields(changed, "si", async () => ({
+      detectedRole: "si",
+      fields: {
+        shipper: { value: "Acme Trading", confidence: 0.95 },
+      },
+    }));
+    expect(result.status).toBe("complete");
+    expect(result.method).toBe("llm_fallback");
+    expect(result.fields.shipper?.value).toBe("Acme Trading");
+    expect(result.fields.shipper?.confidence).toBe(0.95);
+  });
 });
 
 

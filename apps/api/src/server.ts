@@ -15,6 +15,8 @@ import { GmailAuthorization } from './gmail/oauth.js';
 import { GmailPoller } from './gmail/polling.js';
 import { TextRecovery } from './ai/text-recovery.js';
 import { loadDataset } from './dataset.js';
+import { compareCaseWithFullPipeline } from './documents/full-pipeline.js';
+import { createFullPipelineDependencies } from '../../../tools/eval/src/submission.js';
 
 const aiProvider = process.env.AI_PROVIDER ?? 'typesafe';
 if (!['typesafe', 'openrouter'].includes(aiProvider)) throw new Error('AI_PROVIDER must be typesafe or openrouter');
@@ -30,6 +32,9 @@ const batch = (aiProvider === 'openrouter' ? createOpenRouterJevBatchProvider : 
 const service = new ClassificationService({ store, classifier: provider.classify, batchClassifier: batch.classifyBatch,
   configurationKey: `${model}:${questionVersion(variant, 'full')}:packed-v1:provider=${aiProvider}`, batchSize: Number(process.env.JEV_BATCH_SIZE ?? 8),
   concurrency: Number(process.env.JEV_CONCURRENCY ?? 8), requestsPerMinute: Number(process.env.JEV_REQUESTS_PER_MINUTE ?? 1100) });
+const fullPipelineDependencies = createFullPipelineDependencies();
+const operationalDocumentComparator = (record: Parameters<typeof compareCaseWithFullPipeline>[0], root: string) =>
+  compareCaseWithFullPipeline(record, root, fullPipelineDependencies);
 const gmailEnabled = process.env.GMAIL_AUTOMATION_ENABLED === 'true';
 const gmailConfigured = [process.env.GMAIL_CLIENT_ID, process.env.GMAIL_CLIENT_SECRET, process.env.GMAIL_MAILBOX_ADDRESS].every(Boolean);
 if (gmailEnabled && !gmailConfigured) throw new Error('Gmail automation is enabled but OAuth configuration is incomplete');
@@ -40,6 +45,7 @@ const gmail = gmailConfigured ? new GmailAutomation({ store, service,
   client: new GmailClient({ clientId: process.env.GMAIL_CLIENT_ID!, clientSecret: process.env.GMAIL_CLIENT_SECRET!, refreshToken: () => gmailAuthorization!.refreshToken(), onAuthorizationRevoked: () => gmailAuthorization!.markRevoked(), mailboxAddress: process.env.GMAIL_MAILBOX_ADDRESS!,
     authorizedAdditionalRecipients: process.env.GMAIL_DOCUMENTATION_CONTACT ? [process.env.GMAIL_DOCUMENTATION_CONTACT] : [] }),
   attachmentRoot: resolve(process.env.GMAIL_ATTACHMENT_ROOT ?? 'runtime/gmail-attachments'), enabled: gmailEnabled, automaticComparison: true,
+  compareDocuments: operationalDocumentComparator,
   documentationContact: process.env.GMAIL_DOCUMENTATION_CONTACT }) : undefined;
 const gmailPoller = gmail ? new GmailPoller(store, gmail, process.env.GMAIL_MAILBOX_ADDRESS!, process.env.GMAIL_SYNC_QUERY) : undefined;
 const ruleModel = process.env.TYPESAFE_MODEL ?? 'jev-1.13.0';
