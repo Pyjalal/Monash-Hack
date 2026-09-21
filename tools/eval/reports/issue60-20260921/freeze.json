@@ -1,0 +1,337 @@
+{
+  "version": 1,
+  "originalRunId": "2026-09-20T17-26-51.910Z-47c3f12a",
+  "profileSha256": "93355c33d331571f12e11d44d1c78d0e4bbc4ff2c61ecd833e3f175d5160ba86",
+  "config": {
+    "model": "jev-1.13.0",
+    "variant": "boundaries",
+    "questionVersion": "cargolens-email-v3:boundaries:full",
+    "exportVersion": "conservative-projection-v2",
+    "reader": "native-with-ocr-v1",
+    "policy": "dataset-comparison-v1",
+    "documentConcurrency": 2,
+    "batchSize": 8,
+    "concurrency": 8,
+    "requestsPerMinute": 1100,
+    "maxProviderAttempts": 300,
+    "runtime": {
+      "node": "v24.19.0",
+      "platform": "win32",
+      "scorerPython": "Python 3.12.14",
+      "ocrPython": "Python 3.12.14",
+      "tesseract": "tesseract v5.5.3.20260724"
+    },
+    "implementations": {
+      "apps/api/src/store.ts": "faece90163a0ed7e300885fb5301cf751bf0ef469f60d600e4749929d78cf661",
+      "apps/api/src/pipeline.ts": "66932dfcaf9139c55accbd4558da6645df2d34f87cb4ce7cef5df4d9dd001f8b",
+      "apps/api/src/ai/classify.ts": "7f279881b18b072b00db09976b5ffd419b5fcb1a64de53db0ff0a7f157d6d51e",
+      "apps/api/src/ai/jev.ts": "6c5d4b58ae9bddfab5603557afcd081250f495f7398b2a433c98f0e687a938e9",
+      "apps/api/src/ai/jev-batch.ts": "9b9bf6a2823b78eb97ac6a3d3fbbb989b7ce237759934d3e2bfc1b4c041c1a8a",
+      "apps/api/src/documents/index.ts": "07de28c3c917e52e3398dc7ea0aea46a6b209e9759b8023b7d0bf151a0d30460",
+      "apps/api/src/documents/candidates.ts": "0bb503c8c2aeb77c7691bd68565636d83064810c116c6d98f5c75a72c8c46a39",
+      "apps/api/src/documents/readability.ts": "d7568d8ebe2f6bae3f82e4dba424646be8fea3127b13f02cde536c66129a8c74",
+      "packages/shared/src/index.ts": "0a129d18466a65f0dc1591f02c2904a15ed17b5936bdba250b3f85960f8f84e9",
+      "packages/shared/src/questions.ts": "0017d032d171b4ddb734d3ae9881c9a7b6d9377c2ef9aa315bb927a7836c396c",
+      "tools/eval/src/evaluate.ts": "281f05937f53c1c0addb41d5648b0b8261a4e83416cc2f68d09995079efb0597",
+      "tools/eval/src/export.ts": "4cc8dd3112e7e8ec1615131ae7b5961450e2c8d57aaa4ca8b930d6757afb52aa",
+      "tools/eval/src/disputes.ts": "525de98f398005bfd50a6906e22d46d037d4c071ef106db5f6d8a2aa1560a77c",
+      "tools/eval/src/metrics.ts": "7159c09839a21aa1d3f48847720b8abc051fe3c846547cb8f9097de98e28bbd5",
+      "tools/eval/src/independent.ts": "42ed58a0293be5578c8232593a0a7491fd1103718df8fcc6e4be695136a32009",
+      "tools/eval/src/diagnostics.ts": "e8978bbe6aea33b27f91100d1a55b7a2f4403f3a330ef12e4ad91cf3f67eaf9d",
+      "apps/api/src/documents/comparison.ts": "ddccc600868e6456b15c7eebb6050514e9c7cbd3d4c2d07002b9b3b8e17642c5",
+      "apps/api/src/documents/recovery.ts": "cab5fcd8bbf8075a413f7dfaa7860727a0a8fd53b0223d1eed62c136976096c7",
+      "apps/api/src/documents/ocr.ts": "da838beb67e8d4eee13e9a224b54c592fca41eec9e07e306ef4b2635a958fc6d",
+      "apps/api/src/gmail/evidence-validation.ts": "57dc2b512abfef57d2db74afe4f64a8c0246c525e2bb2c35aff43ab99c854a3e",
+      "tools/ocr-sidecar/ocr.py": "ef6bb2a1ecd6dbfb4747552f5df3631d80416accf5b5bcaca949d870225bf144",
+      "package-lock.json": "83f00dd88866bf5f5679e0253e87afbd5438fa6f666c8d9e26acec3df69751ce"
+    }
+  },
+  "datasetSha256": "f70c26b3c6780f71403b1bc00a562a84f33ae035aa9cd5a0dd6ba59eceab7680",
+  "inputArtifactHashes": {
+    "manifest.json": "12eb02526c9aa8c7d4be7a36bf197c5a9bb7a7643b543afaa60cb16bc3806727",
+    "organizer-scorer.json": "579e426cb4dc5b2e8ec73cec2e18a067c07691709429c07ce2c60a797d35fc3b",
+    "reader-profiles.json": "26b516dcb9c6652e3e0e8583fe31edc8536a836349e4d75f66801a82d108080c",
+    "row-diagnostics.json": "ddb831aa72a6e4e519bdc2540bec8fb6ea71809c7be4abfccb9d6864d960fc88",
+    "scorecards.json": "f2135916a810b9873949c2a584d744674d2e4e5d87dadefdc141d5503a95a290",
+    "submission-provenance.json": "fe1083a76f601bfe1bd927fd650417b5986eeca51131ad3d3f369139ad6a0805",
+    "submission.json": "89e8f1267d28f18c67d6e437d4e80140f4af4efd7386c6a31749bdcf16dc64b7"
+  },
+  "officialImplementationHashes": {
+    "apps/api/src/store.ts": "faece90163a0ed7e300885fb5301cf751bf0ef469f60d600e4749929d78cf661",
+    "apps/api/src/pipeline.ts": "66932dfcaf9139c55accbd4558da6645df2d34f87cb4ce7cef5df4d9dd001f8b",
+    "apps/api/src/ai/classify.ts": "7f279881b18b072b00db09976b5ffd419b5fcb1a64de53db0ff0a7f157d6d51e",
+    "apps/api/src/ai/jev.ts": "6c5d4b58ae9bddfab5603557afcd081250f495f7398b2a433c98f0e687a938e9",
+    "apps/api/src/ai/jev-batch.ts": "9b9bf6a2823b78eb97ac6a3d3fbbb989b7ce237759934d3e2bfc1b4c041c1a8a",
+    "apps/api/src/documents/index.ts": "07de28c3c917e52e3398dc7ea0aea46a6b209e9759b8023b7d0bf151a0d30460",
+    "apps/api/src/documents/candidates.ts": "0bb503c8c2aeb77c7691bd68565636d83064810c116c6d98f5c75a72c8c46a39",
+    "apps/api/src/documents/readability.ts": "d7568d8ebe2f6bae3f82e4dba424646be8fea3127b13f02cde536c66129a8c74",
+    "packages/shared/src/index.ts": "0a129d18466a65f0dc1591f02c2904a15ed17b5936bdba250b3f85960f8f84e9",
+    "packages/shared/src/questions.ts": "0017d032d171b4ddb734d3ae9881c9a7b6d9377c2ef9aa315bb927a7836c396c",
+    "tools/eval/src/evaluate.ts": "281f05937f53c1c0addb41d5648b0b8261a4e83416cc2f68d09995079efb0597",
+    "tools/eval/src/export.ts": "4cc8dd3112e7e8ec1615131ae7b5961450e2c8d57aaa4ca8b930d6757afb52aa",
+    "tools/eval/src/disputes.ts": "525de98f398005bfd50a6906e22d46d037d4c071ef106db5f6d8a2aa1560a77c",
+    "tools/eval/src/metrics.ts": "7159c09839a21aa1d3f48847720b8abc051fe3c846547cb8f9097de98e28bbd5",
+    "tools/eval/src/independent.ts": "42ed58a0293be5578c8232593a0a7491fd1103718df8fcc6e4be695136a32009",
+    "tools/eval/src/diagnostics.ts": "e8978bbe6aea33b27f91100d1a55b7a2f4403f3a330ef12e4ad91cf3f67eaf9d",
+    "apps/api/src/documents/comparison.ts": "ddccc600868e6456b15c7eebb6050514e9c7cbd3d4c2d07002b9b3b8e17642c5",
+    "apps/api/src/documents/recovery.ts": "cab5fcd8bbf8075a413f7dfaa7860727a0a8fd53b0223d1eed62c136976096c7",
+    "apps/api/src/documents/ocr.ts": "da838beb67e8d4eee13e9a224b54c592fca41eec9e07e306ef4b2635a958fc6d",
+    "apps/api/src/gmail/evidence-validation.ts": "57dc2b512abfef57d2db74afe4f64a8c0246c525e2bb2c35aff43ab99c854a3e",
+    "tools/ocr-sidecar/ocr.py": "ef6bb2a1ecd6dbfb4747552f5df3631d80416accf5b5bcaca949d870225bf144",
+    "package-lock.json": "83f00dd88866bf5f5679e0253e87afbd5438fa6f666c8d9e26acec3df69751ce"
+  },
+  "componentImplementationHashes": {
+    "apps/api/src/store.ts": "faece90163a0ed7e300885fb5301cf751bf0ef469f60d600e4749929d78cf661",
+    "apps/api/src/pipeline.ts": "cf07f0227ca252303ea0755e1bbe83ade074ac9a9beb302216d1247471a12892",
+    "apps/api/src/ai/classify.ts": "7f279881b18b072b00db09976b5ffd419b5fcb1a64de53db0ff0a7f157d6d51e",
+    "apps/api/src/ai/jev.ts": "6c5d4b58ae9bddfab5603557afcd081250f495f7398b2a433c98f0e687a938e9",
+    "apps/api/src/ai/jev-batch.ts": "9b9bf6a2823b78eb97ac6a3d3fbbb989b7ce237759934d3e2bfc1b4c041c1a8a",
+    "apps/api/src/documents/index.ts": "b10ed0e73e57777034fbc721eb93bdff840f8e1d7279ef7270445b2495d19384",
+    "apps/api/src/documents/candidates.ts": "9ec8a7940ca81de06b771044dc1ec7b7160930e8666b228c83bfabee6e12534b",
+    "apps/api/src/documents/readability.ts": "d7568d8ebe2f6bae3f82e4dba424646be8fea3127b13f02cde536c66129a8c74",
+    "packages/shared/src/index.ts": "0a129d18466a65f0dc1591f02c2904a15ed17b5936bdba250b3f85960f8f84e9",
+    "packages/shared/src/questions.ts": "0017d032d171b4ddb734d3ae9881c9a7b6d9377c2ef9aa315bb927a7836c396c",
+    "tools/eval/src/export.ts": "acc6207d017e7490cd603c94f53dcdb7f086405dbaa62eef1c85cee858821b0c",
+    "apps/api/src/documents/comparison.ts": "aec246d10391e7150d0303df7eedd838c41c7dbd048d5a3e0a26f7d0322bd142",
+    "apps/api/src/documents/recovery.ts": "cab5fcd8bbf8075a413f7dfaa7860727a0a8fd53b0223d1eed62c136976096c7",
+    "apps/api/src/documents/ocr.ts": "da838beb67e8d4eee13e9a224b54c592fca41eec9e07e306ef4b2635a958fc6d",
+    "apps/api/src/gmail/evidence-validation.ts": "57dc2b512abfef57d2db74afe4f64a8c0246c525e2bb2c35aff43ab99c854a3e",
+    "package-lock.json": "5023575638b090ad9c8df5ad33d9d4d85069c18c7668a7794e1bde0a6d53d360"
+  },
+  "fixtureSha256": "69bb4a3342761d1480c7b6081df3b47fb1ba1997c623dee9eda8a5b2b96042af",
+  "fixtures": [
+    {
+      "id": "cedar-match",
+      "group": "cedar",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "DRAFT BILL OF LADING\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "VERIFIED",
+      "blockers": []
+    },
+    {
+      "id": "cedar-weight",
+      "group": "cedar",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "DRAFT BILL OF LADING\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8450\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "gross_weight_kg"
+        ],
+        "has_defect": true
+      },
+      "workflow": "MISMATCH",
+      "blockers": []
+    },
+    {
+      "id": "cedar-missing-value",
+      "group": "cedar",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "DRAFT BILL OF LADING\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee:\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "BLOCKED",
+      "blockers": [
+        "consignee:MISSING"
+      ]
+    },
+    {
+      "id": "cedar-missing-document",
+      "group": "cedar",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "BLOCKED",
+      "blockers": [
+        "UNAMBIGUOUS_PAIR_REQUIRED",
+        "DOCUMENT_ROLES_UNVERIFIED"
+      ]
+    },
+    {
+      "id": "cedar-wrong-document",
+      "group": "cedar",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "COMMERCIAL INVOICE\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "BLOCKED",
+      "blockers": [
+        "WRONG_DOC_TYPE",
+        "DOCUMENT_ROLES_UNVERIFIED"
+      ]
+    },
+    {
+      "id": "cedar-wrong-shipment",
+      "group": "cedar",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: cedar-4821\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "DRAFT BILL OF LADING\nShipment reference: different-9842\nShipper: Cedar Foods\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "BLOCKED",
+      "blockers": [
+        "SHIPMENT_REFERENCE_UNVERIFIED"
+      ]
+    },
+    {
+      "id": "harbour-match",
+      "group": "harbour",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "DRAFT BILL OF LADING\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "VERIFIED",
+      "blockers": []
+    },
+    {
+      "id": "harbour-weight",
+      "group": "harbour",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "DRAFT BILL OF LADING\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8450\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "gross_weight_kg"
+        ],
+        "has_defect": true
+      },
+      "workflow": "MISMATCH",
+      "blockers": []
+    },
+    {
+      "id": "harbour-missing-value",
+      "group": "harbour",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "DRAFT BILL OF LADING\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee:\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "BLOCKED",
+      "blockers": [
+        "consignee:MISSING"
+      ]
+    },
+    {
+      "id": "harbour-missing-document",
+      "group": "harbour",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "BLOCKED",
+      "blockers": [
+        "UNAMBIGUOUS_PAIR_REQUIRED",
+        "DOCUMENT_ROLES_UNVERIFIED"
+      ]
+    },
+    {
+      "id": "harbour-wrong-document",
+      "group": "harbour",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "COMMERCIAL INVOICE\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "BLOCKED",
+      "blockers": [
+        "WRONG_DOC_TYPE",
+        "DOCUMENT_ROLES_UNVERIFIED"
+      ]
+    },
+    {
+      "id": "harbour-wrong-shipment",
+      "group": "harbour",
+      "sources": [
+        "SHIPPING INSTRUCTIONS\nShipment reference: harbour-4821\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n",
+        "DRAFT BILL OF LADING\nShipment reference: different-9842\nShipper: Harbour Machinery\nConsignee: Island Trading\nNotify party: Island Logistics\nPort of loading: Bay Terminal\nPort of discharge: River Terminal\nContainer count: 4\nGross weight kg: 8400\n"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "workflow": "BLOCKED",
+      "blockers": [
+        "SHIPMENT_REFERENCE_UNVERIFIED"
+      ]
+    }
+  ],
+  "evaluatorHashes": {
+    "final.ts": "be0c7126b2a21d40af769d3606443863350104dc15ae160daf194167c50fb77f",
+    "independent-documents.ts": "6d982e48a88748b4294a4c8d3b9e32e49c091208252eace7d3384c7625609911",
+    "triage.ts": "ce1d9f05f878cfdda9d4d25811fe2515542890708a0444a51d02511b41eb486d",
+    "disputes.ts": "a0f62f7a93c566aa374b5778fa10597e8ebc7f810b07fdf398f6d31a39cdd9ef"
+  },
+  "policy": "Preserve final outcomes; no model calls or product retuning. New component fixtures are implementation-informed and not a blind holdout."
+}

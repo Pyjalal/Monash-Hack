@@ -1,5 +1,33 @@
 # Reproducible evaluation
 
+## Final publication
+
+```sh
+npm run eval:final -- --output runtime/eval/final-publication-v1 --python /path/to/python
+```
+
+The [issue #60 scorecards](reports/issue60-20260921/README.md) preserve the chosen
+issue #37 final run, apply the issue #39 ledger, replay the unchanged organizer
+scorer, and measure 12 independently authored document cases in two shipment
+groups. This command makes no provider calls and sends no email. It validates
+the frozen source, artifact, scorer and product implementation hashes before
+publishing into a new directory. `freeze.json` records the exact configuration,
+fixture content and evaluator hashes before document evaluation. Existing output
+directories are refused. A successful publication is not a passing benchmark;
+read `official.valid` and the explicit failures in `scorecards.json`.
+
+Independent document results are component measurements with supplied intent,
+using real native text reads, comparison, evidence checks and export. They do
+not measure classifier, OCR or delivery performance. Related variants share a
+shipment group; there is no train/test split or tuning on this challenge.
+Operational workflow/blocker checks and export-level exact status/reason checks
+are reported separately. Missing exports count as misses. Automation coverage
+counts proof-validated confirmation/amendment decisions, not sent messages.
+
+The default inputs are the committed issue #37 report and issue #39 ledger;
+`--report`, `--dataset`, and `--ledger` can select another frozen revision.
+Human adjudication remains required before accepting any proposed correction.
+
 ## Official pipeline runner
 
 ```sh

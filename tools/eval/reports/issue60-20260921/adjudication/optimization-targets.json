@@ -1,0 +1,4347 @@
+{
+  "datasetSha256": "f70c26b3c6780f71403b1bc00a562a84f33ae035aa9cd5a0dd6ba59eceab7680",
+  "truthSha256": "e9062d0036cc60e767b71eafd8447e05622d9fecb81511b4a4180809e1bf3a86",
+  "ledgerSha256": "51a98ffc010286239df7914c1e7fea825242b8509795fff8c70869aa06d6e4d9",
+  "excluded": {
+    "email_512": [
+      "review_reason"
+    ],
+    "email_513": [
+      "review_reason"
+    ],
+    "email_514": [
+      "review_reason"
+    ]
+  },
+  "correctedCategories": {
+    "email_001": "BL_COMPARISON",
+    "email_002": "INVOICE_QUERY",
+    "email_003": "BL_COMPARISON",
+    "email_004": "BL_COMPARISON",
+    "email_005": "BL_COMPARISON",
+    "email_006": "BL_COMPARISON",
+    "email_007": "SI_REQUEST",
+    "email_008": "SI_REQUEST",
+    "email_009": "BL_COMPARISON",
+    "email_010": "INVOICE_QUERY",
+    "email_011": "GENERAL",
+    "email_012": "GENERAL",
+    "email_013": "BL_COMPARISON",
+    "email_014": "SI_REQUEST",
+    "email_015": "SPAM",
+    "email_016": "BL_COMPARISON",
+    "email_017": "INVOICE_QUERY",
+    "email_018": "BL_COMPARISON",
+    "email_019": "SI_REQUEST",
+    "email_020": "SI_REQUEST",
+    "email_021": "GENERAL",
+    "email_022": "SI_REQUEST",
+    "email_023": "SI_REQUEST",
+    "email_024": "INVOICE_QUERY",
+    "email_025": "BL_COMPARISON",
+    "email_026": "SPAM",
+    "email_027": "SI_REQUEST",
+    "email_028": "SI_REQUEST",
+    "email_029": "SI_REQUEST",
+    "email_030": "SI_REQUEST",
+    "email_031": "BL_COMPARISON",
+    "email_032": "BL_COMPARISON",
+    "email_033": "SI_REQUEST",
+    "email_034": "BL_COMPARISON",
+    "email_035": "SI_REQUEST",
+    "email_036": "BL_COMPARISON",
+    "email_037": "GENERAL",
+    "email_038": "BL_COMPARISON",
+    "email_039": "SI_REQUEST",
+    "email_040": "BL_COMPARISON",
+    "email_041": "INVOICE_QUERY",
+    "email_042": "SI_REQUEST",
+    "email_043": "BL_COMPARISON",
+    "email_044": "BL_COMPARISON",
+    "email_045": "INVOICE_QUERY",
+    "email_046": "BL_COMPARISON",
+    "email_047": "BL_COMPARISON",
+    "email_048": "INVOICE_QUERY",
+    "email_049": "BL_COMPARISON",
+    "email_050": "BL_COMPARISON",
+    "email_051": "BL_COMPARISON",
+    "email_052": "BL_COMPARISON",
+    "email_053": "GENERAL",
+    "email_054": "SI_REQUEST",
+    "email_055": "BL_COMPARISON",
+    "email_056": "BL_COMPARISON",
+    "email_057": "SI_REQUEST",
+    "email_058": "BL_COMPARISON",
+    "email_059": "BL_COMPARISON",
+    "email_060": "INVOICE_QUERY",
+    "email_061": "BL_COMPARISON",
+    "email_062": "INVOICE_QUERY",
+    "email_063": "BL_COMPARISON",
+    "email_064": "BL_COMPARISON",
+    "email_065": "BL_COMPARISON",
+    "email_066": "BL_COMPARISON",
+    "email_067": "SI_REQUEST",
+    "email_068": "BL_COMPARISON",
+    "email_069": "INVOICE_QUERY",
+    "email_070": "GENERAL",
+    "email_071": "BL_COMPARISON",
+    "email_072": "SPAM",
+    "email_073": "SI_REQUEST",
+    "email_074": "INVOICE_QUERY",
+    "email_075": "GENERAL",
+    "email_076": "GENERAL",
+    "email_077": "BL_COMPARISON",
+    "email_078": "INVOICE_QUERY",
+    "email_079": "SI_REQUEST",
+    "email_080": "BL_COMPARISON",
+    "email_081": "BL_COMPARISON",
+    "email_082": "BL_COMPARISON",
+    "email_083": "GENERAL",
+    "email_084": "SI_REQUEST",
+    "email_085": "INVOICE_QUERY",
+    "email_086": "GENERAL",
+    "email_087": "INVOICE_QUERY",
+    "email_088": "BL_COMPARISON",
+    "email_089": "GENERAL",
+    "email_090": "BL_COMPARISON",
+    "email_091": "BL_COMPARISON",
+    "email_092": "BL_COMPARISON",
+    "email_093": "SI_REQUEST",
+    "email_094": "SI_REQUEST",
+    "email_095": "BL_COMPARISON",
+    "email_096": "BL_COMPARISON",
+    "email_097": "BL_COMPARISON",
+    "email_098": "GENERAL",
+    "email_099": "INVOICE_QUERY",
+    "email_100": "BL_COMPARISON",
+    "email_101": "SI_REQUEST",
+    "email_102": "INVOICE_QUERY",
+    "email_103": "SI_REQUEST",
+    "email_104": "INVOICE_QUERY",
+    "email_105": "BL_COMPARISON",
+    "email_106": "SI_REQUEST",
+    "email_107": "BL_COMPARISON",
+    "email_108": "INVOICE_QUERY",
+    "email_109": "BL_COMPARISON",
+    "email_110": "SI_REQUEST",
+    "email_111": "BL_COMPARISON",
+    "email_112": "INVOICE_QUERY",
+    "email_113": "BL_COMPARISON",
+    "email_114": "BL_COMPARISON",
+    "email_115": "INVOICE_QUERY",
+    "email_116": "SPAM",
+    "email_117": "GENERAL",
+    "email_118": "BL_COMPARISON",
+    "email_119": "BL_COMPARISON",
+    "email_120": "SI_REQUEST",
+    "email_121": "BL_COMPARISON",
+    "email_122": "SI_REQUEST",
+    "email_123": "SPAM",
+    "email_124": "SI_REQUEST",
+    "email_125": "SI_REQUEST",
+    "email_126": "GENERAL",
+    "email_127": "SI_REQUEST",
+    "email_128": "BL_COMPARISON",
+    "email_129": "BL_COMPARISON",
+    "email_130": "SI_REQUEST",
+    "email_131": "SI_REQUEST",
+    "email_132": "BL_COMPARISON",
+    "email_133": "BL_COMPARISON",
+    "email_134": "SPAM",
+    "email_135": "SI_REQUEST",
+    "email_136": "BL_COMPARISON",
+    "email_137": "SI_REQUEST",
+    "email_138": "SI_REQUEST",
+    "email_139": "INVOICE_QUERY",
+    "email_140": "SPAM",
+    "email_141": "BL_COMPARISON",
+    "email_142": "GENERAL",
+    "email_143": "BL_COMPARISON",
+    "email_144": "BL_COMPARISON",
+    "email_145": "BL_COMPARISON",
+    "email_146": "BL_COMPARISON",
+    "email_147": "GENERAL",
+    "email_148": "SI_REQUEST",
+    "email_149": "SI_REQUEST",
+    "email_150": "SPAM",
+    "email_151": "SI_REQUEST",
+    "email_152": "BL_COMPARISON",
+    "email_153": "GENERAL",
+    "email_154": "SI_REQUEST",
+    "email_155": "INVOICE_QUERY",
+    "email_156": "SPAM",
+    "email_157": "SI_REQUEST",
+    "email_158": "BL_COMPARISON",
+    "email_159": "GENERAL",
+    "email_160": "BL_COMPARISON",
+    "email_161": "BL_COMPARISON",
+    "email_162": "SI_REQUEST",
+    "email_163": "SI_REQUEST",
+    "email_164": "SI_REQUEST",
+    "email_165": "INVOICE_QUERY",
+    "email_166": "SI_REQUEST",
+    "email_167": "BL_COMPARISON",
+    "email_168": "SI_REQUEST",
+    "email_169": "INVOICE_QUERY",
+    "email_170": "INVOICE_QUERY",
+    "email_171": "BL_COMPARISON",
+    "email_172": "SI_REQUEST",
+    "email_173": "GENERAL",
+    "email_174": "BL_COMPARISON",
+    "email_175": "BL_COMPARISON",
+    "email_176": "BL_COMPARISON",
+    "email_177": "SI_REQUEST",
+    "email_178": "BL_COMPARISON",
+    "email_179": "INVOICE_QUERY",
+    "email_180": "SPAM",
+    "email_181": "SI_REQUEST",
+    "email_182": "BL_COMPARISON",
+    "email_183": "SI_REQUEST",
+    "email_184": "SPAM",
+    "email_185": "GENERAL",
+    "email_186": "BL_COMPARISON",
+    "email_187": "BL_COMPARISON",
+    "email_188": "SPAM",
+    "email_189": "BL_COMPARISON",
+    "email_190": "BL_COMPARISON",
+    "email_191": "INVOICE_QUERY",
+    "email_192": "SI_REQUEST",
+    "email_193": "SI_REQUEST",
+    "email_194": "GENERAL",
+    "email_195": "BL_COMPARISON",
+    "email_196": "SI_REQUEST",
+    "email_197": "BL_COMPARISON",
+    "email_198": "BL_COMPARISON",
+    "email_199": "BL_COMPARISON",
+    "email_200": "GENERAL",
+    "email_201": "SI_REQUEST",
+    "email_202": "SI_REQUEST",
+    "email_203": "INVOICE_QUERY",
+    "email_204": "SPAM",
+    "email_205": "SI_REQUEST",
+    "email_206": "SPAM",
+    "email_207": "BL_COMPARISON",
+    "email_208": "BL_COMPARISON",
+    "email_209": "SI_REQUEST",
+    "email_210": "BL_COMPARISON",
+    "email_211": "INVOICE_QUERY",
+    "email_212": "INVOICE_QUERY",
+    "email_213": "GENERAL",
+    "email_214": "SI_REQUEST",
+    "email_215": "SPAM",
+    "email_216": "INVOICE_QUERY",
+    "email_217": "SI_REQUEST",
+    "email_218": "GENERAL",
+    "email_219": "GENERAL",
+    "email_220": "BL_COMPARISON",
+    "email_221": "SI_REQUEST",
+    "email_222": "SPAM",
+    "email_223": "BL_COMPARISON",
+    "email_224": "INVOICE_QUERY",
+    "email_225": "BL_COMPARISON",
+    "email_226": "SPAM",
+    "email_227": "BL_COMPARISON",
+    "email_228": "SI_REQUEST",
+    "email_229": "BL_COMPARISON",
+    "email_230": "GENERAL",
+    "email_231": "SPAM",
+    "email_232": "GENERAL",
+    "email_233": "SI_REQUEST",
+    "email_234": "GENERAL",
+    "email_235": "BL_COMPARISON",
+    "email_236": "INVOICE_QUERY",
+    "email_237": "BL_COMPARISON",
+    "email_238": "GENERAL",
+    "email_239": "BL_COMPARISON",
+    "email_240": "SI_REQUEST",
+    "email_241": "GENERAL",
+    "email_242": "BL_COMPARISON",
+    "email_243": "BL_COMPARISON",
+    "email_244": "SI_REQUEST",
+    "email_245": "SI_REQUEST",
+    "email_246": "SI_REQUEST",
+    "email_247": "BL_COMPARISON",
+    "email_248": "SPAM",
+    "email_249": "BL_COMPARISON",
+    "email_250": "BL_COMPARISON",
+    "email_251": "SI_REQUEST",
+    "email_252": "GENERAL",
+    "email_253": "SPAM",
+    "email_254": "SPAM",
+    "email_255": "GENERAL",
+    "email_256": "BL_COMPARISON",
+    "email_257": "SI_REQUEST",
+    "email_258": "GENERAL",
+    "email_259": "BL_COMPARISON",
+    "email_260": "SI_REQUEST",
+    "email_261": "BL_COMPARISON",
+    "email_262": "INVOICE_QUERY",
+    "email_263": "BL_COMPARISON",
+    "email_264": "SI_REQUEST",
+    "email_265": "BL_COMPARISON",
+    "email_266": "GENERAL",
+    "email_267": "SPAM",
+    "email_268": "INVOICE_QUERY",
+    "email_269": "INVOICE_QUERY",
+    "email_270": "BL_COMPARISON",
+    "email_271": "BL_COMPARISON",
+    "email_272": "INVOICE_QUERY",
+    "email_273": "BL_COMPARISON",
+    "email_274": "INVOICE_QUERY",
+    "email_275": "BL_COMPARISON",
+    "email_276": "SI_REQUEST",
+    "email_277": "SI_REQUEST",
+    "email_278": "SI_REQUEST",
+    "email_279": "SI_REQUEST",
+    "email_280": "INVOICE_QUERY",
+    "email_281": "BL_COMPARISON",
+    "email_282": "BL_COMPARISON",
+    "email_283": "SI_REQUEST",
+    "email_284": "INVOICE_QUERY",
+    "email_285": "INVOICE_QUERY",
+    "email_286": "INVOICE_QUERY",
+    "email_287": "INVOICE_QUERY",
+    "email_288": "BL_COMPARISON",
+    "email_289": "SI_REQUEST",
+    "email_290": "SI_REQUEST",
+    "email_291": "BL_COMPARISON",
+    "email_292": "BL_COMPARISON",
+    "email_293": "SI_REQUEST",
+    "email_294": "GENERAL",
+    "email_295": "SI_REQUEST",
+    "email_296": "BL_COMPARISON",
+    "email_297": "GENERAL",
+    "email_298": "INVOICE_QUERY",
+    "email_299": "BL_COMPARISON",
+    "email_300": "BL_COMPARISON",
+    "email_301": "BL_COMPARISON",
+    "email_302": "BL_COMPARISON",
+    "email_303": "INVOICE_QUERY",
+    "email_304": "INVOICE_QUERY",
+    "email_305": "BL_COMPARISON",
+    "email_306": "SI_REQUEST",
+    "email_307": "BL_COMPARISON",
+    "email_308": "SI_REQUEST",
+    "email_309": "BL_COMPARISON",
+    "email_310": "SI_REQUEST",
+    "email_311": "SI_REQUEST",
+    "email_312": "BL_COMPARISON",
+    "email_313": "BL_COMPARISON",
+    "email_314": "INVOICE_QUERY",
+    "email_315": "SPAM",
+    "email_316": "INVOICE_QUERY",
+    "email_317": "SI_REQUEST",
+    "email_318": "BL_COMPARISON",
+    "email_319": "BL_COMPARISON",
+    "email_320": "SI_REQUEST",
+    "email_321": "BL_COMPARISON",
+    "email_322": "SI_REQUEST",
+    "email_323": "GENERAL",
+    "email_324": "BL_COMPARISON",
+    "email_325": "GENERAL",
+    "email_326": "BL_COMPARISON",
+    "email_327": "SI_REQUEST",
+    "email_328": "GENERAL",
+    "email_329": "SPAM",
+    "email_330": "GENERAL",
+    "email_331": "INVOICE_QUERY",
+    "email_332": "GENERAL",
+    "email_333": "GENERAL",
+    "email_334": "BL_COMPARISON",
+    "email_335": "BL_COMPARISON",
+    "email_336": "SI_REQUEST",
+    "email_337": "BL_COMPARISON",
+    "email_338": "SI_REQUEST",
+    "email_339": "SI_REQUEST",
+    "email_340": "GENERAL",
+    "email_341": "BL_COMPARISON",
+    "email_342": "BL_COMPARISON",
+    "email_343": "BL_COMPARISON",
+    "email_344": "SI_REQUEST",
+    "email_345": "SPAM",
+    "email_346": "GENERAL",
+    "email_347": "GENERAL",
+    "email_348": "BL_COMPARISON",
+    "email_349": "BL_COMPARISON",
+    "email_350": "BL_COMPARISON",
+    "email_351": "BL_COMPARISON",
+    "email_352": "SI_REQUEST",
+    "email_353": "SI_REQUEST",
+    "email_354": "BL_COMPARISON",
+    "email_355": "INVOICE_QUERY",
+    "email_356": "GENERAL",
+    "email_357": "SI_REQUEST",
+    "email_358": "SI_REQUEST",
+    "email_359": "SI_REQUEST",
+    "email_360": "SI_REQUEST",
+    "email_361": "BL_COMPARISON",
+    "email_362": "SI_REQUEST",
+    "email_363": "SPAM",
+    "email_364": "BL_COMPARISON",
+    "email_365": "SPAM",
+    "email_366": "GENERAL",
+    "email_367": "BL_COMPARISON",
+    "email_368": "SI_REQUEST",
+    "email_369": "INVOICE_QUERY",
+    "email_370": "SI_REQUEST",
+    "email_371": "SI_REQUEST",
+    "email_372": "INVOICE_QUERY",
+    "email_373": "INVOICE_QUERY",
+    "email_374": "INVOICE_QUERY",
+    "email_375": "INVOICE_QUERY",
+    "email_376": "SI_REQUEST",
+    "email_377": "BL_COMPARISON",
+    "email_378": "BL_COMPARISON",
+    "email_379": "BL_COMPARISON",
+    "email_380": "SI_REQUEST",
+    "email_381": "BL_COMPARISON",
+    "email_382": "SPAM",
+    "email_383": "BL_COMPARISON",
+    "email_384": "BL_COMPARISON",
+    "email_385": "BL_COMPARISON",
+    "email_386": "INVOICE_QUERY",
+    "email_387": "SPAM",
+    "email_388": "SI_REQUEST",
+    "email_389": "INVOICE_QUERY",
+    "email_390": "SPAM",
+    "email_391": "BL_COMPARISON",
+    "email_392": "SPAM",
+    "email_393": "SI_REQUEST",
+    "email_394": "GENERAL",
+    "email_395": "SPAM",
+    "email_396": "GENERAL",
+    "email_397": "SI_REQUEST",
+    "email_398": "BL_COMPARISON",
+    "email_399": "GENERAL",
+    "email_400": "SI_REQUEST",
+    "email_401": "BL_COMPARISON",
+    "email_402": "INVOICE_QUERY",
+    "email_403": "INVOICE_QUERY",
+    "email_404": "SPAM",
+    "email_405": "BL_COMPARISON",
+    "email_406": "INVOICE_QUERY",
+    "email_407": "BL_COMPARISON",
+    "email_408": "BL_COMPARISON",
+    "email_409": "BL_COMPARISON",
+    "email_410": "BL_COMPARISON",
+    "email_411": "BL_COMPARISON",
+    "email_412": "INVOICE_QUERY",
+    "email_413": "SI_REQUEST",
+    "email_414": "GENERAL",
+    "email_415": "GENERAL",
+    "email_416": "BL_COMPARISON",
+    "email_417": "SPAM",
+    "email_418": "GENERAL",
+    "email_419": "BL_COMPARISON",
+    "email_420": "INVOICE_QUERY",
+    "email_421": "BL_COMPARISON",
+    "email_422": "INVOICE_QUERY",
+    "email_423": "BL_COMPARISON",
+    "email_424": "BL_COMPARISON",
+    "email_425": "INVOICE_QUERY",
+    "email_426": "BL_COMPARISON",
+    "email_427": "SI_REQUEST",
+    "email_428": "BL_COMPARISON",
+    "email_429": "SI_REQUEST",
+    "email_430": "SI_REQUEST",
+    "email_431": "GENERAL",
+    "email_432": "BL_COMPARISON",
+    "email_433": "SI_REQUEST",
+    "email_434": "BL_COMPARISON",
+    "email_435": "BL_COMPARISON",
+    "email_436": "BL_COMPARISON",
+    "email_437": "SI_REQUEST",
+    "email_438": "SI_REQUEST",
+    "email_439": "INVOICE_QUERY",
+    "email_440": "BL_COMPARISON",
+    "email_441": "GENERAL",
+    "email_442": "BL_COMPARISON",
+    "email_443": "SI_REQUEST",
+    "email_444": "BL_COMPARISON",
+    "email_445": "GENERAL",
+    "email_446": "BL_COMPARISON",
+    "email_447": "BL_COMPARISON",
+    "email_448": "BL_COMPARISON",
+    "email_449": "SPAM",
+    "email_450": "SPAM",
+    "email_451": "BL_COMPARISON",
+    "email_452": "INVOICE_QUERY",
+    "email_453": "BL_COMPARISON",
+    "email_454": "BL_COMPARISON",
+    "email_455": "SPAM",
+    "email_456": "BL_COMPARISON",
+    "email_457": "SPAM",
+    "email_458": "INVOICE_QUERY",
+    "email_459": "BL_COMPARISON",
+    "email_460": "GENERAL",
+    "email_461": "INVOICE_QUERY",
+    "email_462": "BL_COMPARISON",
+    "email_463": "GENERAL",
+    "email_464": "GENERAL",
+    "email_465": "BL_COMPARISON",
+    "email_466": "SI_REQUEST",
+    "email_467": "SI_REQUEST",
+    "email_468": "BL_COMPARISON",
+    "email_469": "SI_REQUEST",
+    "email_470": "SPAM",
+    "email_471": "INVOICE_QUERY",
+    "email_472": "INVOICE_QUERY",
+    "email_473": "INVOICE_QUERY",
+    "email_474": "BL_COMPARISON",
+    "email_475": "SI_REQUEST",
+    "email_476": "BL_COMPARISON",
+    "email_477": "SI_REQUEST",
+    "email_478": "SI_REQUEST",
+    "email_479": "BL_COMPARISON",
+    "email_480": "BL_COMPARISON",
+    "email_481": "BL_COMPARISON",
+    "email_482": "BL_COMPARISON",
+    "email_483": "BL_COMPARISON",
+    "email_484": "SI_REQUEST",
+    "email_485": "SI_REQUEST",
+    "email_486": "BL_COMPARISON",
+    "email_487": "SI_REQUEST",
+    "email_488": "GENERAL",
+    "email_489": "SPAM",
+    "email_490": "INVOICE_QUERY",
+    "email_491": "BL_COMPARISON",
+    "email_492": "INVOICE_QUERY",
+    "email_493": "BL_COMPARISON",
+    "email_494": "BL_COMPARISON",
+    "email_495": "BL_COMPARISON",
+    "email_496": "BL_COMPARISON",
+    "email_497": "INVOICE_QUERY",
+    "email_498": "BL_COMPARISON",
+    "email_499": "BL_COMPARISON",
+    "email_500": "INVOICE_QUERY",
+    "email_501": "BL_COMPARISON",
+    "email_502": "BL_COMPARISON",
+    "email_503": "BL_COMPARISON",
+    "email_504": "BL_COMPARISON",
+    "email_505": "BL_COMPARISON",
+    "email_506": "BL_COMPARISON",
+    "email_507": "BL_COMPARISON",
+    "email_508": "BL_COMPARISON",
+    "email_509": "BL_COMPARISON",
+    "email_510": "BL_COMPARISON",
+    "email_511": "BL_COMPARISON",
+    "email_512": "BL_COMPARISON",
+    "email_513": "BL_COMPARISON",
+    "email_514": "BL_COMPARISON",
+    "email_515": "BL_COMPARISON",
+    "email_516": "BL_COMPARISON",
+    "email_517": "BL_COMPARISON",
+    "email_518": "BL_COMPARISON",
+    "email_519": "BL_COMPARISON",
+    "email_520": "BL_COMPARISON"
+  },
+  "reliableDevelopment": [
+    {
+      "id": "email_001",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_291",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_410",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_002",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_010",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_060",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_062",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_074",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_078",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_085",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_099",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_104",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_112",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_139",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_155",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_212",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_286",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_287",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_316",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_375",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_402",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_420",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_461",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_492",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_497",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_024",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_069",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_087",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_102",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_115",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_169",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_170",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_179",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_203",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_211",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_216",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_262",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_272",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_284",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_285",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_303",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_304",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_314",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_386",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_412",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_422",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_452",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_490",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_047",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_444",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_482",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_088",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_092",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_095",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_141",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_186",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_016",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_080",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_105",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_161",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_195",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_207",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_229",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_265",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_281",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_301",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_305",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_385",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_424",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_448",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_003",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_006",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_018",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_036",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_049",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_050",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_063",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_066",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_077",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_081",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_114",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_158",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_176",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_187",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_189",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_190",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_210",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_220",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_223",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_247",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_259",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_261",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_263",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_271",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_288",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_292",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_299",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_309",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_319",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_321",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_337",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_341",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_343",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_350",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_381",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_384",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_401",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_419",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_421",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_423",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_432",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_436",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_440",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_442",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_447",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_459",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_465",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_476",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_480",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_495",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_025",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_032",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_034",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_059",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_071",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_091",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_118",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_119",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_121",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_143",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_145",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_146",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_160",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_175",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_198",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_313",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_334",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_342",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_348",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_361",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_379",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_409",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_428",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_453",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_468",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_005",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_040",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_068",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_107",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_111",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_128",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_132",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_174",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_182",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_197",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_243",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_256",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_270",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_302",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_377",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_378",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_383",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_391",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_426",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_462",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_278",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_163",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_368",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_244",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_033",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_362",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_122",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_030",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_193",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_240",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_485",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_125",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_181",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_019",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_290",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_221",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_007",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_336",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_135",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_028",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_429",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_430",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_101",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_022",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_380",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_054",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_327",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_177",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_466",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_084",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_283",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_484",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_042",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_162",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_293",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_172",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_093",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_035",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_359",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_353",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_228",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_196",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_308",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_131",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_073",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_306",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_289",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_127",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_251",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_014",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_057",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_245",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_388",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_376",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_023",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_438",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_477",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_192",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_166",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_027",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_320",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_317",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_338",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_130",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_260",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_103",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_322",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_154",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_094",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_357",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_352",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_344",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_487",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_400",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_413",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_295",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_067",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_214",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_339",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_397",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_008",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_149",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_279",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_370",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_201",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_079",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_469",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_029",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_233",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_478",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_437",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_120",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_257",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_277",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_246",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_467",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_013",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_408",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_367",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_491",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_324",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_349",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_009",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_064",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_364",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_312",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_275",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_503",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_129",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_113",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_416",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_505",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_502",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_504",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_507",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_509",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_516",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_517",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_518",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_519",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_520",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_065",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_096",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_167",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_235",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_405",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_498",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_219",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_297",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_185",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_218",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_213",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_445",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_464",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_075",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_340",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_463",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_070",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_241",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_414",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_098",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_394",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_396",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_117",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_194",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_232",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_252",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_053",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_142",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_330",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_333",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_415",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_021",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_089",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_230",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_234",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_266",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_431",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_460",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_011",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_076",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_086",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_126",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_147",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_159",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_173",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_200",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_238",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_255",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_294",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_332",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_366",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_488",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_116",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_134",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_329",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_387",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_404",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_449",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_026",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_150",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_180",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_184",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_188",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_222",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_470",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_226",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_345",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_363",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_382",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_390",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_417",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_455",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_072",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_123",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_204",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_206",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_231",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_248",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_253",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_254",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_267",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_395",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_450",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_055",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_178",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_411",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_483",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_481",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_398",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_512",
+      "targets": [
+        "category",
+        "status",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_273",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_513",
+      "targets": [
+        "category",
+        "status",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_514",
+      "targets": [
+        "category",
+        "status",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_511",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    },
+    {
+      "id": "email_515",
+      "targets": [
+        "category",
+        "status",
+        "review_reason",
+        "defect_fields",
+        "has_defect"
+      ]
+    }
+  ]
+}
