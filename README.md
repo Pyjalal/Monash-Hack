@@ -1,12 +1,14 @@
 <!-- markdownlint-disable MD013 MD033 -->
 
-# CargoLens
 
-<p align="center">
+
+
+<div align="center">
+  <h1>CargoLens</h1>
   <strong>Every shipping email understood. Every document decision evidence-backed.</strong>
-</p>
+</div>
 
-<p align="center">
+<div align="center">
   <a href="https://github.com/Pyjalal/Monash-Hack/issues"><strong>Issue board</strong></a>
   ·
   <a href="apps/api/src/documents/README.md"><strong>Document readers</strong></a>
