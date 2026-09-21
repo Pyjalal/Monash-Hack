@@ -44,7 +44,18 @@ describe("hybrid SI/BL field extraction", () => {
     expect(result.assessment.reasons).toContain("missing_expected_label:shipper");
     expect(result.fallbackSelection?.detectedRole).toBe("si");
     expect(result.fallbackSelection?.fields.shipper).toBeDefined();
+    expect(result.fields.consignee?.method).toBe("deterministic");
+    expect(fallback.mock.calls[0][0].requestedFields).toEqual(["shipper"]);
     expect(fallback).toHaveBeenCalledOnce();
+  });
+
+  it("authoritatively rejects an explicitly labelled non-BL document", async () => {
+    const packingList = reading("PACKING LIST\nShipper: Acme Trading\nConsignee: Buyer Limited");
+    const fallback = vi.fn();
+    const result = await extractDocumentFields(packingList, "bl", fallback);
+    expect(result).toMatchObject({ status: "wrong_document_type", method: "deterministic" });
+    expect(result.assessment.detectedRole).toBe("other");
+    expect(fallback).not.toHaveBeenCalled();
   });
 
   it("treats duplicate expected labels and malformed numeric values as format drift", () => {
@@ -54,7 +65,20 @@ describe("hybrid SI/BL field extraction", () => {
     expect(assessExpectedFormat(malformed, "si").reasons).toContain("implausible_value:gross_weight_kg");
   });
 
-  it("rejects wrong-role, invented, and low-confidence fallback selections", async () => {
+  it("accepts the observed OCR suffix on total gross weight labels", () => {
+    const ocrLabel = reading(expected.replace("Gross Wt (kgs): 42,500 KG", "TOTAL Gross Weight nn: (KGS): 42,500 KG"));
+    expect(assessExpectedFormat(ocrLabel, "si").reasons).not.toContain("missing_expected_label:gross_weight_kg");
+  });
+
+  it("treats blank markers and pending placeholders as missing values", () => {
+    const placeholders = reading(expected
+      .replace("Port Klang (MYPKG)", "____MT")
+      .replace("Rotterdam (NLRTM)", "TBA"));
+    expect(assessExpectedFormat(placeholders, "si").reasons).toContain("implausible_value:port_of_loading");
+    expect(assessExpectedFormat(placeholders, "si").reasons).toContain("implausible_value:port_of_discharge");
+  });
+
+  it("rejects wrong-role and invented fallback selections without replacing supported native fields", async () => {
     const changed = reading(expected.replace("Shipper/Exporter", "Exporter legal entity"));
     const wrongRole = await extractDocumentFields(changed, "si", async input => completeFallback(input, "bl"));
     expect(wrongRole.status).toBe("wrong_document_type");
@@ -66,13 +90,15 @@ describe("hybrid SI/BL field extraction", () => {
       return value;
     });
     expect(unsafe.status).toBe("unresolved");
-    expect(unsafe.unresolvedFields).toEqual(expect.arrayContaining(["shipper", "consignee"]));
+    expect(unsafe.unresolvedFields).toEqual(["shipper"]);
+    expect(unsafe.fields.consignee?.method).toBe("deterministic");
   });
 
   it("fails closed when the fallback provider is unavailable", async () => {
     const changed = reading(expected.replace("Shipper/Exporter", "Exporter legal entity"));
     const result = await extractDocumentFields(changed, "si", async () => { throw new Error("provider unavailable"); });
-    expect(result).toMatchObject({ status: "unresolved", method: "llm_fallback", unresolvedFields: FIELD_NAMES });
+    expect(result).toMatchObject({ status: "unresolved", method: "llm_fallback", unresolvedFields: ["shipper"] });
+    expect(Object.keys(result.fields)).toHaveLength(FIELD_NAMES.length - 1);
     expect(result.assessment.reasons).toContain("fallback_failed");
     expect(result.fallbackError).toBe("provider unavailable");
   });

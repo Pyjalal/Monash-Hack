@@ -3,7 +3,7 @@ import type { AttachmentReadResult, LabelValueCandidate } from "./index.js";
 
 export type FieldName = (typeof FIELD_NAMES)[number];
 export type DocumentRole = "si" | "bl";
-export type ExtractionMethod = "deterministic" | "llm_fallback";
+export type ExtractionMethod = "deterministic" | "llm_fallback" | "vision_recovery";
 
 export interface ExtractedDocumentField {
   value: string;
@@ -15,7 +15,7 @@ export interface ExtractedDocumentField {
 export interface FormatAssessment {
   matchesExpectedFormat: boolean;
   reasons: string[];
-  detectedRole: DocumentRole | "ambiguous" | "unknown";
+  detectedRole: DocumentRole | "other" | "ambiguous" | "unknown";
 }
 
 export interface FallbackSelection {
@@ -27,6 +27,8 @@ export interface FallbackRequest {
   expectedRole: DocumentRole;
   text: string;
   candidates: LabelValueCandidate[];
+  /** Fields that do not already have one trustworthy native candidate. */
+  requestedFields: FieldName[];
 }
 
 export interface DocumentFieldExtraction {
@@ -49,7 +51,7 @@ const LABEL_ALIASES: Record<FieldName, readonly string[]> = {
   port_of_loading: ["port of loading", "port of loading pol", "pol", "load port"],
   port_of_discharge: ["port of discharge", "port of discharge pod", "discharge port", "pod"],
   container_count: ["no of containers", "no of containers or packages", "container count", "total containers"],
-  gross_weight_kg: ["gross weight", "gross weight kg", "gross weight kgs", "gross wt kgs", "gross weight 毛重 kgs", "total gross weight kg", "total gross weight kgs", "total gross wt kgs"],
+  gross_weight_kg: ["gross weight", "gross weight kg", "gross weight kgs", "gross wt kgs", "gross weight 毛重 kgs", "total gross weight kg", "total gross weight kgs", "total gross weight nn", "total gross wt kgs"],
 };
 
 const aliasIndex = new Map<string, FieldName>(Object.entries(LABEL_ALIASES).flatMap(([field, aliases]) =>
@@ -66,6 +68,8 @@ function detectedRole(text: string): FormatAssessment["detectedRole"] {
   const instruction = /\bshipping\s+instructions?\b|\b(?:bl|bill\s+of\s+lading)\s+instruction\b/iu.test(header);
   const si = instruction;
   const bl = !instruction && /\bbill\s+of\s+lading\b|\bdraft\s+b\s*\/\s*l\b/iu.test(header);
+  const other = /\bpacking\s+list\b|\bcommercial\s+invoice\b|\bcertificate\s+of\s+origin\b/iu.test(header);
+  if (other && !si && !bl) return "other";
   if (si && bl) return "ambiguous";
   if (si) return "si";
   if (bl) return "bl";
@@ -75,6 +79,7 @@ function detectedRole(text: string): FormatAssessment["detectedRole"] {
 function plausibleValue(field: FieldName, value: string): boolean {
   const compact = value.replace(/\s+/gu, " ").trim();
   if (!compact) return false;
+  if (/^(?:\?+|_+|[-–—]+|TBA|TBD|N\s*\/\s*A|PENDING|NOT\s+AVAILABLE)(?:\s*(?:KG|KGS|MT|MTS))?$/iu.test(compact)) return false;
   if (field === "container_count") return /\d/u.test(compact);
   if (field === "gross_weight_kg") return /\d/u.test(compact);
   return /[\p{L}\p{N}]/u.test(compact);
@@ -111,6 +116,17 @@ function deterministicFields(reading: AttachmentReadResult): Record<FieldName, E
   })) as Record<FieldName, ExtractedDocumentField>;
 }
 
+function supportedNativeFields(reading: AttachmentReadResult): Partial<Record<FieldName, ExtractedDocumentField>> {
+  const grouped = candidatesByField(reading.candidates ?? []);
+  const fields: Partial<Record<FieldName, ExtractedDocumentField>> = {};
+  for (const field of FIELD_NAMES) {
+    const candidates = grouped[field];
+    if (candidates.length !== 1 || !plausibleValue(field, candidates[0].value)) continue;
+    fields[field] = { value: candidates[0].value, candidateId: candidates[0].id, confidence: 1, method: "deterministic" };
+  }
+  return fields;
+}
+
 function boundedCandidates(candidates: LabelValueCandidate[], maximum: number): LabelValueCandidate[] {
   if (candidates.length <= maximum) return candidates;
   const leading = Math.ceil(maximum * 0.75);
@@ -125,20 +141,25 @@ export async function extractDocumentFields(
 ): Promise<DocumentFieldExtraction> {
   const assessment = assessExpectedFormat(reading, expectedRole);
   if (reading.status !== "READABLE") return { status: "unreadable", method: null, assessment, fields: {}, unresolvedFields: [...FIELD_NAMES] };
+  if (assessment.detectedRole === "other" || (assessment.detectedRole !== "unknown" && assessment.detectedRole !== "ambiguous" && assessment.detectedRole !== expectedRole)) return {
+    status: "wrong_document_type", method: "deterministic", assessment, fields: {}, unresolvedFields: [...FIELD_NAMES],
+  };
   if (assessment.matchesExpectedFormat) return {
     status: "complete", method: "deterministic", assessment, fields: deterministicFields(reading), unresolvedFields: [],
   };
 
   const candidates = boundedCandidates(reading.candidates ?? [], options.maximumFallbackCandidates ?? 80);
+  const nativeFields = supportedNativeFields(reading);
+  const requestedFields = FIELD_NAMES.filter(field => !nativeFields[field]);
   let selection: FallbackSelection;
   try {
-    selection = await fallback({ expectedRole, text: reading.text.slice(0, 16_000), candidates });
+    selection = await fallback({ expectedRole, text: reading.text.slice(0, 16_000), candidates, requestedFields });
   } catch (error) {
     return {
       status: "unresolved", method: "llm_fallback",
       assessment: { ...assessment, reasons: [...assessment.reasons, "fallback_failed"] },
       fallbackError: error instanceof Error ? error.message.slice(0, 500) : "Unknown fallback error",
-      fields: {}, unresolvedFields: [...FIELD_NAMES],
+      fields: nativeFields, unresolvedFields: requestedFields,
     };
   }
   if (selection.detectedRole !== expectedRole) return {
@@ -148,8 +169,8 @@ export async function extractDocumentFields(
 
   const minimumConfidence = options.minimumFallbackConfidence ?? 0.75;
   const available = new Map(candidates.map(candidate => [candidate.id, candidate]));
-  const fields: Partial<Record<FieldName, ExtractedDocumentField>> = {};
-  for (const field of FIELD_NAMES) {
+  const fields: Partial<Record<FieldName, ExtractedDocumentField>> = { ...nativeFields };
+  for (const field of requestedFields) {
     const selected = selection.fields[field];
     const candidate = selected ? available.get(selected.candidateId) : undefined;
     if (!selected || !candidate || selected.confidence === null || selected.confidence < minimumConfidence || !plausibleValue(field, candidate.value)) continue;

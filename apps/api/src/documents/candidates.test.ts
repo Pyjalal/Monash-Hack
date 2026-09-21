@@ -95,4 +95,13 @@ describe("sourced label/value candidates", () => {
     const candidates = splitLabelValueCandidates({ sha256: "a".repeat(64), text, spans: lines(text) }, { adjacentParagraphs: true });
     expect(candidates.map(({ label, value, pairing }) => ({ label, value, pairing }))).toEqual([{ label: "Company", value: "Acme Ltd", pairing: "adjacent-paragraph" }]);
   });
+
+  it("keeps internal address delimiters inside an adjacent value instead of promoting them to labels", () => {
+    const text = "Shipper/Exporter\n\nAPRIL FINE PAPER\nP.O. BOX: 293775, DUBAI\n\nNotify Party\n\nNAGAPPA EXPORTS NEW NO : 23, L-BLOCK";
+    const candidates = splitLabelValueCandidates({ sha256: "a".repeat(64), text, spans: lines(text) }, { adjacentParagraphs: true });
+    expect(candidates.map(({ label, value }) => ({ label, value }))).toEqual([
+      { label: "Shipper/Exporter", value: "APRIL FINE PAPER\nP.O. BOX: 293775, DUBAI" },
+      { label: "Notify Party", value: "NAGAPPA EXPORTS NEW NO : 23, L-BLOCK" },
+    ]);
+  });
 });

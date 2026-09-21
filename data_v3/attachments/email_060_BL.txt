@@ -1,0 +1,18 @@
+BILL OF LADING (DRAFT)
+========================================
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+  80 RAFFLES PLACE, #50-01 UOB PLAZA 1; SINGAPORE 048624
+Consignee: ORIENT LINKS CO (LLC)
+  P.O. BOX 61041; JEBEL ALI, DUBAI, UAE
+Notify Party/Intermediate Consignee: ORIENT LINKS CO (LLC)
+POL: SINGAPORE (SGSIN)
+Discharge Port: MOMBASA, KENYA (KEMBA)
+Container Count: 2 x 40'HC
+GROSS WEIGHT: 40,676 KG
+Vessel: MARCOPOLO 810 V.BS005
+Voy.: BS012
+Kinds of Packages; Description of Goods: MULTIPURPOSE PAPER - A4 - PAPERONE COPIER
+Bill of Lading No.: EGLV054049153216
+Booking No.: 070500287078
+Freight: PREPAID

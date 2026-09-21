@@ -1,0 +1,18 @@
+BILL OF LADING (DRAFT)
+========================================
+
+Shipper (Principal or Seller): ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+  80 RAFFLES PLACE, #50-01 UOB PLAZA 1; SINGAPORE 048624
+To the Order of: AL GURG STATIONERY LLC
+  P.O. BOX 5069; DUBAI, UNITED ARAB EMIRATES
+Notify Party: AL GURG STATIONERY LLC
+Port of Loading (POL): NANTONG, CHINA (CNNTG)
+Port of Discharge (POD): YANGON, MYANMAR (MMRGN)
+No. of Containers or Packages: 6 x 40'HC
+Gross Weight (KG): 124,122 KG
+Ocean Vessel: VISION 202 V.002
+Voy.: QI540A
+Kinds of Packages; Description of Goods: UNCOATED WOODFREE PAPER IN REAMS
+B/L NUMBER: SIN402853249
+BOOKING NO.: SIN430903264
+Freight: PREPAID

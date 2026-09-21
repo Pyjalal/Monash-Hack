@@ -56,7 +56,10 @@ function lineCandidates(input: CandidateInput, lines: SourceSpan[], allowUninden
     let next = index + 1;
     while (next < lines.length) {
       const line = lines[next];
-      if (!line.text.trim() || delimited(line) || (values.length > 0 && !allowUnindentedContinuation && !/^\s/u.test(line.text))) break;
+      const nestedDelimiter = delimited(line);
+      if (!line.text.trim()
+        || (nestedDelimiter && !(allowUnindentedContinuation && values.length > 0 && /^\s/u.test(line.text)))
+        || (values.length > 0 && !allowUnindentedContinuation && !/^\s/u.test(line.text))) break;
       const value = values.length ? slice(line, 0, line.text.trimEnd().length) : trimmed(line);
       values.push(value); next++;
     }
@@ -78,7 +81,7 @@ function paragraphCandidates(input: CandidateInput, lines: SourceSpan[]): LabelV
   const result: LabelValueCandidate[] = [];
   for (let index = 0; index + 1 < blocks.length; index++) {
     const label = blocks[index]; const value = blocks[index + 1];
-    if (label.length !== 1 || delimited(label[0])?.value.text || value.some(span => delimited(span))) continue;
+    if (label.length !== 1 || delimited(label[0])?.value.text) continue;
     const entry = candidate(input, [delimited(label[0])?.label ?? trimmed(label[0], true)], value.map((span, i) => i ? slice(span, 0, span.text.trimEnd().length) : trimmed(span)), "adjacent-paragraph");
     if (entry) { result.push(entry); index++; }
   }
@@ -140,5 +143,8 @@ export function splitLabelValueCandidates(input: CandidateInput, options: Candid
   if (options.adjacentParagraphs) candidates.push(...paragraphCandidates(input, lines));
   for (const span of spans.filter(span => span.kind === "page")) candidates.push(...lineCandidates(input, pageLines(span), true));
   candidates.push(...cellCandidates(input, spans.filter((span): span is Extract<SourceSpan, { kind: "cell" }> => span.kind === "cell")));
-  return [...new Map(candidates.map(entry => [entry.id, entry])).values()].sort((a, b) => a.source.labelSpans[0].start - b.source.labelSpans[0].start);
+  const structuralValues = candidates.filter(entry => entry.pairing !== "delimiter").flatMap(entry => entry.source.valueSpans);
+  const withoutNestedDelimiters = candidates.filter(entry => entry.pairing !== "delimiter" || !structuralValues.some(span =>
+    entry.source.labelSpans[0].start >= span.start && entry.source.valueSpans.at(-1)!.end <= span.end));
+  return [...new Map(withoutNestedDelimiters.map(entry => [entry.id, entry])).values()].sort((a, b) => a.source.labelSpans[0].start - b.source.labelSpans[0].start);
 }
