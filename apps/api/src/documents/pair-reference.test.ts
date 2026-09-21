@@ -26,3 +26,14 @@ describe("document pair references", () => {
     expect(referencesMatch(pairReferences("Shipper", "ONEYSINF68671"), pairReferences("Shipper", "ONEYSINF68671"))).toBe(false);
   });
 });
+
+it('rejects conflicting identifiers even when another identifier matches', () => {
+  expect(referencesMatch([{kind:'shipment',value:'SHIP-1000'},{kind:'booking',value:'BOOK-1000'}],
+    [{kind:'shipment',value:'SHIP-1000'},{kind:'booking',value:'BOOK-2000'}])).toBe(false);
+  expect(referencesMatch([{kind:'shipment',value:'SHIP-1000'},{kind:'shipment',value:'SHIP-2000'}],
+    [{kind:'shipment',value:'SHIP-1000'}])).toBe(false);
+});
+
+it('recognizes bilingual annotations on explicit BL reference labels', () => {
+  expect(pairReferences('B/L NO.(提单号)', 'SIN456015613')).toEqual([{ kind: 'bill_of_lading', value: 'SIN456015613' }]);
+});

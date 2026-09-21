@@ -1,6 +1,7 @@
 import { FIELD_NAMES } from "@cargolens/shared";
+import { canonicalPort } from "./port-codes.js";
 
-export const COMPARISON_POLICY_VERSION = "source-normalization-v5";
+export const COMPARISON_POLICY_VERSION = "source-normalization-v6";
 export const SEMANTIC_SAME_CONFIDENCE = 0.9;
 export const SEMANTIC_DIFFERENT_CONFIDENCE = 0.85;
 
@@ -24,30 +25,37 @@ export function isConfidentSemanticDifference(verdict: SemanticVerdict | undefin
 
 /** Supplies the kilograms unit implied by an explicit gross-weight source label. */
 export function weightValueWithSourceUnit(value: string, label: string): string {
-  return /^[\d,.]+$/u.test(value.trim()) && /\bgross\s+(?:wt|weight)\b/iu.test(label)
-    ? `${value.trim()} KG`
-    : value;
+  if (!/^[\d,.]+$/u.test(value.trim())) return value;
+  const units = label.toUpperCase().match(/\b(?:KG|KGS|KILOGRAMS?|MT|MTS|TONNES?)\b/gu) ?? [];
+  return units.length === 1 ? `${value.trim()} ${units[0]}` : value;
 }
 
 export type ComparableField = (typeof FIELD_NAMES)[number];
 
 export function normaliseFieldValue(field: ComparableField, value: string | null): string | null {
   if (!value) return null;
-  const compact = value.replace(/\s+/gu, " ").trim().toLocaleUpperCase("en-US");
+  const compact = value.normalize("NFKC").replace(/\s+/gu, " ").trim().toLocaleUpperCase("en-US");
   if (field === "container_count") {
+    const written = compact.match(/^([A-Z]+) \((\d+)\) CONTAINERS? - ((?:20|40|45)\s*['’]?\s*(?:HC|HQ|GP|DC|FCL))$/u);
+    if (written) {
+      const words = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE"];
+      const count = Number(written[2]);
+      return count > 0 && words[count] === written[1] ? String(count) : null;
+    }
     const match = compact.match(/^(\d+)(?:\s*[X×]\s*(?:20|40|45)\s*['’]?\s*(?:HC|HQ|GP|DC|FCL))?$/u);
     const count = match ? Number(match[1]) : NaN;
     return Number.isSafeInteger(count) && count > 0 ? String(count) : null;
   }
   if (field === "gross_weight_kg") {
-    const weight = compact.replace(/^\(\s*KGS?\s*\)\s*:\s*/u, "");
-    const match = weight.match(/^(\d+(?:\.\d+)?|\d{1,3}(?:,\d{3})+(?:\.\d+)?)(?:\s*(KG|KGS|KILOGRAMS?|MT|MTS|TONNES?))?$/u);
+    const weight = compact.replace(/^\(\s*(KGS?)\s*\)\s*:\s*(.+)$/u, (_match, unit: string, amount: string) => /^[\d,.]+$/u.test(amount) ? `${amount} ${unit}` : amount);
+    const match = weight.match(/^(\d+(?:\.\d+)?|\d{1,3}(?:,\d{3})+(?:\.\d+)?)\s*(KG|KGS|KILOGRAMS?|MT|MTS|TONNES?|METRIC TONNES?)$/u);
     if (!match) return null;
     const unit = match[2] ?? "KG";
-    const kg = Number(match[1].replaceAll(",", "")) * (/^(MT|MTS|TONNE)/u.test(unit) ? 1000 : 1);
+    const kg = Number(match[1].replaceAll(",", "")) * (/^(MT|MTS|TONNE|METRIC TONNE)/u.test(unit) ? 1000 : 1);
     return Number.isFinite(kg) && kg > 0 ? String(kg) : null;
   }
-  return compact.normalize("NFKC").replace(/&/gu, " AND ").replace(/[^\p{L}\p{N}]+/gu, " ").trim() || null;
+  const text = compact.replace(/&/gu, " AND ").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  return (field === "port_of_loading" || field === "port_of_discharge" ? canonicalPort(text) : text) || null;
 }
 
 /**

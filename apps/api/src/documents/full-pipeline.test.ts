@@ -24,7 +24,7 @@ async function fixture(blFields = fields) {
 it('uses the same full-pipeline result for evaluation and operational decisions', async () => {
   const { root, email } = await fixture(fields.replace('Shipper: Acme', 'Shipper: Other'));
   const fallback = vi.fn();
-  const compareFallback = async () => ({});
+  const compareFallback = async () => ({ shipper: { equivalent: false, confidence: 0.99 } });
   const evaluated = await extractWithFullPipeline(email, root, fallback, compareFallback, null);
   const operational = await compareCaseWithFullPipeline({
     email, sourceVersion: 'source-v1', classification: null, decision: null,
@@ -51,4 +51,46 @@ it('keeps placeholder handling blocked in operational state exactly as in the fu
   expect(operational.decision.workflowState).toBe('BLOCKED');
   expect(operational.decision.knownMismatches).not.toContain('consignee');
   expect(operational.decision.fieldResults.find(result => result.field === 'consignee')?.outcome).toBe('MISSING');
+});
+
+it('blocks pairs without an explicit shared shipment reference', async () => {
+  const { root, email } = await fixture();
+  await writeFile(join(root, 'si.txt'), `SHIPPING INSTRUCTIONS\n${fields}`);
+  await writeFile(join(root, 'bl.txt'), `BILL OF LADING\n${fields}`);
+  const result = await extractWithFullPipeline(email, root, vi.fn(), async () => ({}), null);
+  expect(result.review_reason).toBe('missing_value');
+  expect(result.documents.blockers).toContain('SHIPMENT_REFERENCE_UNVERIFIED');
+});
+
+it.each([0.4, NaN, Infinity, 1.1])('rejects unsupported semantic match confidence %s', async confidence => {
+  const { root, email } = await fixture(fields.replace('Shipper: Acme', 'Shipper: Ac me'));
+  const result = await extractWithFullPipeline(email, root, vi.fn(), async () => ({shipper: {equivalent: true, confidence}}), null);
+  expect(result.review_reason).toBe('missing_value');
+  expect(result.defect_fields).not.toContain('shipper');
+});
+
+it('cannot erase different source facts with a confident model match', async () => {
+  const { root, email } = await fixture(fields.replace('Shipper: Acme', 'Shipper: Other'));
+  const result = await extractWithFullPipeline(email, root, vi.fn(), async () => ({shipper: {equivalent: true, confidence: 0.99}}), null);
+  expect(result.review_reason).toBe('missing_value');
+  expect(result.comparison?.shipper.matches).toBe(false);
+});
+
+it('rejects source changes during model recovery', async () => {
+  const { root, email } = await fixture(fields.replace('Shipper: Acme', 'Shipper: Ac me'));
+  const result = await extractWithFullPipeline(email, root, vi.fn(), async () => {
+    await writeFile(join(root, 'bl.txt'), 'BILL OF LADING\nChanged source');
+    return {shipper: {equivalent: true, confidence: 0.99}};
+  }, null);
+  expect(result.review_reason).toBe('missing_value');
+  expect(result.documents.blockers).toContain('SOURCE_HASH_CHANGED');
+});
+
+it('records the benchmark kilogram convention without allowing it in operations', async () => {
+  const { root, email } = await fixture(fields.replace('100 KG', '100'));
+  const live = await extractWithFullPipeline(email, root, vi.fn(), async () => ({}), null);
+  const benchmark = await extractWithFullPipeline(email, root, vi.fn(), async () => ({}), null, { assumeKilograms: true });
+  expect(live.review_reason).toBe('missing_value');
+  expect(benchmark.review_reason).toBeNull();
+  expect(benchmark.assumptions).toContain('bl:gross_weight_kg:benchmark_assumed_kg');
 });

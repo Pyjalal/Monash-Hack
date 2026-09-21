@@ -31,7 +31,7 @@ export function inlineBodyDocuments(email: Email): InlineBodyDocument[] {
     ? markers.map((marker, index) => ({
       role: marker.role,
       text: body.slice(marker.start, markers[index + 1]?.start ?? body.length).trim(),
-    })).filter((segment, index, all) => segment.text && all.findIndex(value => value.role === segment.role) === index)
+    })).filter(segment => segment.text)
     : [{ role: "body" as const, text: body }];
   return segments.map((segment, index) => {
     const reading = readTextContent(segment.text);

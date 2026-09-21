@@ -78,7 +78,7 @@ export function detectedRole(text: string): FormatAssessment["detectedRole"] {
 }
 
 function plausibleValue(field: FieldName, value: string): boolean {
-  const compact = value.replace(/\s+/gu, " ").trim();
+  const compact = value.normalize("NFKC").replace(/\s+/gu, " ").trim();
   if (!compact) return false;
   if (/^(?:\?+|_+|[-–—]+|TBA|TBD|N\s*\/\s*A|PENDING|NOT\s+AVAILABLE)(?:\s*(?:KG|KGS|MT|MTS))?$/iu.test(compact)) return false;
   if (field === "container_count") return /\d/u.test(compact);
@@ -185,12 +185,10 @@ export async function extractDocumentFields(
       candidateId = candidate.id;
     } else if (typeof selected.value === "string" && selected.value.trim()) {
       const trimmed = selected.value.trim();
-      const compactDoc = reading.text.replace(/\s+/gu, " ");
-      const compactVal = trimmed.replace(/\s+/gu, " ");
-      if (compactDoc.includes(compactVal) || reading.text.includes(trimmed)) {
-        value = trimmed;
-        const matchingCandidate = candidates.find(c => c.value.trim() === trimmed || c.value.includes(trimmed));
-        candidateId = matchingCandidate?.id ?? `candidate_llm_${field}`;
+      const matching = candidates.filter(c => c.value === trimmed);
+      if (matching.length === 1) {
+        value = matching[0].value;
+        candidateId = matching[0].id;
       }
     }
 

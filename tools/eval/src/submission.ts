@@ -3,15 +3,13 @@ import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { TypeSafeClient, choice, noul, type Questions } from "@typesafe-ai/sdk";
-import { FIELD_NAMES, SubmissionSchema, type Attachment, type Category, type Email, type Submission } from "@cargolens/shared";
+import { FIELD_NAMES, SubmissionSchema, type Category, type Email, type Submission } from "@cargolens/shared";
 import { createJevBatchProvider, type BatchClassificationResult } from "../../../apps/api/src/ai/jev-batch.js";
 import { createOpenRouterDecisionClient, createOpenRouterJevBatchProvider } from "../../../apps/api/src/ai/openrouter.js";
-import { createVisionProvider, type VisionProvider, type VisionRecoveryResult } from "../../../apps/api/src/ai/vision.js";
+import { createVisionProvider } from "../../../apps/api/src/ai/vision.js";
 import { loadDataset } from "../../../apps/api/src/dataset.js";
-import { detectedRole, extractDocumentFields, type DocumentFieldExtraction, type DocumentRole, type FallbackExtractor, type FallbackSelection } from "../../../apps/api/src/documents/field-extraction.js";
-import { readAttachment, renderPdfPageImages, type AttachmentReadResult } from "../../../apps/api/src/documents/index.js";
-import { COMPARISON_POLICY_VERSION, normaliseFieldValue } from "../../../apps/api/src/documents/value-comparison.js";
-import { pairReferences, referencesMatch } from "../../../apps/api/src/documents/pair-reference.js";
+import { type FallbackExtractor, type FallbackSelection } from "../../../apps/api/src/documents/field-extraction.js";
+import { COMPARISON_POLICY_VERSION } from "../../../apps/api/src/documents/value-comparison.js";
 import {
   extractWithFullPipeline,
   type FullPipelineDependencies,
@@ -19,7 +17,6 @@ import {
 
 type Mode = "classify" | "pipeline";
 type FieldName = (typeof FIELD_NAMES)[number];
-type ReadDocument = { attachment: Attachment; reading: AttachmentReadResult; role: DocumentRole };
 
 const defaultRoot = resolve(process.env.DATASET_PATH ?? "training_data/sdoc-hackathon-docker/extracted/data_v2");
 const defaultClassification = resolve("outputs/jev-classification-submission.json");
@@ -174,47 +171,6 @@ async function classify(): Promise<void> {
   console.log(`Classified ${classifications.length} emails into ${options.output}`);
 }
 
-function roleFor(attachment: Attachment): DocumentRole | null {
-  const name = attachment.name ?? attachment.relativePath ?? "";
-  if (/_SI(?:\.[^.]*)?$/i.test(name)) return "si";
-  if (/_BL(?:\.[^.]*)?$/i.test(name)) return "bl";
-  return null;
-}
-
-async function documentsFor(email: Email, root: string) {
-  const result: Record<DocumentRole, ReadDocument | undefined> = { si: undefined, bl: undefined };
-  const blockers: string[] = [];
-  let reason: "missing_attachment" | "unreadable" | "wrong_doc_type" | "missing_value" | null = null;
-  if (email.attachments.length !== 2) return { ...result, blockers: ['UNAMBIGUOUS_PAIR_REQUIRED'], reason: "missing_attachment" as const };
-  const documents = await Promise.all(email.attachments.map(async attachment => {
-    if (!attachment.relativePath) return undefined;
-    const reading = await readAttachment({ root, relativePath: attachment.relativePath, mimeType: attachment.mimeType });
-    return { role: detectedRole(reading.text), attachment, reading };
-  }));
-  if (documents.some(document => !document)) { blockers.push('SOURCE_PATH_MISSING'); reason = 'missing_attachment'; }
-  else if (documents.some(document => document!.reading.status !== 'READABLE')) { blockers.push('UNREADABLE'); reason = 'unreadable'; }
-  else if (documents.some(document => document!.role === 'other')) { blockers.push('WRONG_DOC_TYPE'); reason = 'wrong_doc_type'; }
-  for (const role of ["si", "bl"] as const) {
-    let match = documents.find(document => document?.role === role);
-    if (!match) {
-      match = documents.find(document => document?.role === "unknown" && roleFor(document.attachment) === role);
-    }
-    if (match) result[role] = match as ReadDocument;
-  }
-  if (!result.si || !result.bl) { blockers.push('DOCUMENT_ROLES_UNVERIFIED'); reason ??= 'missing_value'; }
-  else {
-    const refs = [result.si, result.bl].map(document =>
-      (document.reading.candidates ?? []).flatMap(candidate => pairReferences(candidate.label, candidate.value))
-    );
-    const hasRefs = refs[0].length > 0 && refs[1].length > 0;
-    const paired = hasRefs
-      ? referencesMatch(refs[0], refs[1]) && result.si.reading.sha256 !== result.bl.reading.sha256
-      : result.si.reading.sha256 !== result.bl.reading.sha256;
-    if (!paired) { blockers.push('SHIPMENT_REFERENCE_UNVERIFIED'); reason ??= 'missing_value'; }
-  }
-  return { ...result, blockers, reason };
-}
-
 function parsedChoice(response: unknown, key: string, allowed: string[]): { choice: string; confidence: number | null } | null {
   if (!response || typeof response !== "object" || Array.isArray(response)) return null;
   const answers = (response as { answers?: unknown }).answers;
@@ -256,7 +212,7 @@ export function createComparisonFallback(client: DecisionClient): ComparisonFall
       const answer = answers?.[request.field]; const probability = answer?.noul;
       const valid = answer?.type === "noul" && typeof probability === "number" && Number.isFinite(probability) && probability >= 0 && probability <= 1;
       const placeholderAnswer = answers?.[`${request.field}_placeholder`]; const placeholderProb = placeholderAnswer?.noul;
-      const isPlaceholder = placeholderAnswer?.type === "noul" && typeof placeholderProb === "number" && Number.isFinite(placeholderProb) && placeholderProb > 0.8;
+      const isPlaceholder = placeholderAnswer?.type === "noul" && typeof placeholderProb === "number" && Number.isFinite(placeholderProb) && placeholderProb > 0.8 && placeholderProb <= 1;
       return [request.field, {
         equivalent: valid ? probability > 0.9 : false,
         confidence: valid ? probability : null,
@@ -439,110 +395,10 @@ export function createOpenRouterFieldFallback(apiKey: string, selectedModel: str
   };
 }
 
-function fieldsNeedingVision(extraction: DocumentFieldExtraction): FieldName[] {
-  const fields = new Set<FieldName>(extraction.unresolvedFields);
-  for (const reason of extraction.assessment.reasons) {
-    const match = /^(?:missing_expected_label|ambiguous_expected_label|implausible_value):(.+)$/u.exec(reason);
-    if (match && FIELD_NAMES.includes(match[1] as FieldName)) fields.add(match[1] as FieldName);
-  }
-  return [...fields];
-}
-
-async function recoverPdfFields(
-  document: ReadDocument,
-  extraction: DocumentFieldExtraction,
-  root: string,
-  vision: VisionProvider | null,
-): Promise<{ extraction: DocumentFieldExtraction; visionRecovery?: VisionRecoveryResult }> {
-  const fields = fieldsNeedingVision(extraction);
-  if (!vision || !fields.length || !document.attachment.relativePath || !document.reading.pdfLayout?.length) return { extraction };
-  const pages = document.reading.pdfLayout.slice(0, 3).map(page => page.page);
-  try {
-    const images = await renderPdfPageImages({ root, relativePath: document.attachment.relativePath, mimeType: document.attachment.mimeType }, pages);
-    const visionRecovery = await vision.recover({
-      unresolvedPages: pages,
-      unresolvedFields: fields,
-      pageImages: images.map(({ page, mimeType, base64 }) => ({ page, mimeType, base64 })),
-      positionedText: document.reading.pdfLayout.filter(page => pages.includes(page.page)).map(page => ({
-        page: page.page, width: page.width, height: page.height,
-        blocks: page.blocks.map(({ id, text, x, y, width, height }) => ({ id, text, x, y, width, height })),
-      })),
-    });
-    if (!visionRecovery.ok) return { extraction, visionRecovery };
-    return { extraction, visionRecovery };
-  } catch {
-    return { extraction };
-  }
-}
-
-export async function legacyExtract(email: Email, root: string, fallback: FallbackExtractor, compareFallback: ComparisonFallback, vision: VisionProvider | null) {
-  const documents = await documentsFor(email, root);
-  if (documents.reason || !documents.si || !documents.bl) return { email_id: email.id, review_reason: documents.reason ?? "missing_value" as const, documents, defect_fields: [] as FieldName[] };
-  const [siNativeExtraction, blNativeExtraction] = await Promise.all([
-    extractDocumentFields(documents.si.reading, "si", fallback),
-    extractDocumentFields(documents.bl.reading, "bl", fallback),
-  ]);
-  const [siRecovered, blRecovered] = await Promise.all([
-    recoverPdfFields(documents.si, siNativeExtraction, root, vision),
-    recoverPdfFields(documents.bl, blNativeExtraction, root, vision),
-  ]);
-  const siExtraction = siRecovered.extraction; const blExtraction = blRecovered.extraction;
-  const extraction = { si: siExtraction, bl: blExtraction, vision: { si: siRecovered.visionRecovery, bl: blRecovered.visionRecovery } };
-  if (siExtraction.status === "wrong_document_type" || blExtraction.status === "wrong_document_type") return { email_id: email.id, review_reason: "wrong_doc_type" as const, documents, extraction, defect_fields: [] as FieldName[] };
-  let unresolved = siExtraction.status !== "complete" || blExtraction.status !== "complete";
-  const fields = { si: siExtraction.fields, bl: blExtraction.fields } as Record<DocumentRole, Record<FieldName, { value: string; candidateId: string; confidence: number; method: string }>>;
-  const comparison = Object.fromEntries(FIELD_NAMES.map(field => {
-    const siNormalized = normaliseFieldValue(field, fields.si[field]?.value ?? null);
-    const blNormalized = normaliseFieldValue(field, fields.bl[field]?.value ?? null);
-    if (siNormalized === null || blNormalized === null) unresolved = true;
-    return [field, {
-      si: fields.si[field]?.value ?? null,
-      bl: fields.bl[field]?.value ?? null,
-      siNormalized,
-      blNormalized,
-      matches: siNormalized !== null && blNormalized !== null && siNormalized === blNormalized,
-      method: siNormalized !== null && blNormalized !== null && siNormalized === blNormalized ? "normalized_exact" : "different",
-      comparisonConfidence: null as number | null,
-    }];
-  })) as Record<FieldName, { si: string | null; bl: string | null; siNormalized: string | null; blNormalized: string | null; matches: boolean; method: string; comparisonConfidence: number | null }>;
-  const pending = FIELD_NAMES.filter(field => comparison[field].siNormalized !== null && comparison[field].blNormalized !== null && !comparison[field].matches && field !== "container_count" && field !== "gross_weight_kg")
-    .map(field => ({ field, si: fields.si[field].value, bl: fields.bl[field].value }));
-  if (pending.length) {
-    try {
-      const verdicts = await compareFallback(pending);
-      for (const request of pending) {
-        const verdict = verdicts[request.field];
-        if (verdict?.placeholder) {
-          unresolved = true;
-          comparison[request.field].comparisonConfidence = verdict.confidence ?? null;
-          comparison[request.field].matches = false;
-          comparison[request.field].method = "jev_placeholder_missing_value";
-        } else {
-          const isSame = verdict?.equivalent === true;
-          comparison[request.field].comparisonConfidence = verdict?.confidence ?? null;
-          comparison[request.field].matches = isSame;
-          comparison[request.field].method = isSame ? "jev_format_equivalent" : "different";
-        }
-      }
-    } catch {
-      for (const request of pending) {
-        comparison[request.field].matches = false;
-        comparison[request.field].method = "different";
-      }
-    }
-  }
-  const defect_fields = FIELD_NAMES.filter(field =>
-    comparison[field].siNormalized !== null &&
-    comparison[field].blNormalized !== null &&
-    !comparison[field].matches &&
-    comparison[field].method !== "jev_placeholder_missing_value"
-  );
-  return { email_id: email.id, review_reason: unresolved ? "missing_value" as const : null, documents, extraction, fields, comparison, defect_fields };
-}
-
-// Evaluation and operations intentionally share one implementation. Keep this
-// export stable for the evaluation tests and downstream tooling.
-export const extract = extractWithFullPipeline;
+// Share extraction logic, but declare the organizer kilogram convention.
+// Live operations use explicit source units; benchmark details record assumptions.
+export const extract = (...args: Parameters<typeof extractWithFullPipeline>) =>
+  extractWithFullPipeline(args[0], args[1], args[2], args[3], args[4], { assumeKilograms: true, benchmarkSemanticPolicy: true });
 
 export function createFullPipelineDependencies(): FullPipelineDependencies {
   const key = aiProvider === "openrouter" ? process.env.OPENROUTER_API_KEY : process.env.TYPESAFE_API_KEY;

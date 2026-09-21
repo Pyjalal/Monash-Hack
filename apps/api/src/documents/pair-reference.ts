@@ -5,7 +5,7 @@ const tokenPattern = "[A-Za-z0-9][A-Za-z0-9_./-]{3,63}";
 const exactToken = new RegExp(`^${tokenPattern}$`, "u");
 
 function normalizedLabel(label: string): string {
-  return label.trim().toLowerCase().replace(/[._]/gu, " ").replace(/\s+/gu, " ").trim();
+  return label.normalize("NFKC").replace(/\([^)]*\)/gu, " ").trim().toLowerCase().replace(/[._]/gu, " ").replace(/\s+/gu, " ").trim();
 }
 
 function add(result: PairReference[], kind: PairReferenceKind, value: string | undefined): void {
@@ -34,5 +34,16 @@ export function pairReferences(label: string, value: string): PairReference[] {
 }
 
 export function referencesMatch(left: PairReference[], right: PairReference[]): boolean {
-  return left.length > 0 && right.length > 0 && left.some(a => right.some(b => a.kind === b.kind && a.value === b.value));
+  if (!left.length || !right.length) return false;
+  let shared = false;
+  for (const kind of ['shipment', 'booking', 'bill_of_lading'] as const) {
+    const a = new Set(left.filter(item => item.kind === kind).map(item => item.value));
+    const b = new Set(right.filter(item => item.kind === kind).map(item => item.value));
+    if (a.size > 1 || b.size > 1) return false;
+    if (a.size && b.size) {
+      if ([...a][0] !== [...b][0]) return false;
+      shared = true;
+    }
+  }
+  return shared;
 }

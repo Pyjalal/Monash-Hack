@@ -16,7 +16,7 @@ import {
   type FallbackExtractor,
 } from './field-extraction.js';
 import { readAttachment, renderPdfPageImages, type AttachmentReadResult } from './index.js';
-import { normaliseFieldValue } from './value-comparison.js';
+import { acceptFormattingVerdict, isConfidentSemanticDifference, weightValueWithSourceUnit, normaliseFieldValue } from './value-comparison.js';
 import { pairReferences, referencesMatch } from './pair-reference.js';
 
 type FieldName = (typeof FIELD_NAMES)[number];
@@ -34,13 +34,6 @@ export interface FullPipelineDependencies {
   vision: VisionProvider | null;
 }
 
-function roleFor(attachment: Attachment): DocumentRole | null {
-  const name = attachment.name ?? attachment.relativePath ?? '';
-  if (/_SI(?:\.[^.]*)?$/i.test(name)) return 'si';
-  if (/_BL(?:\.[^.]*)?$/i.test(name)) return 'bl';
-  return null;
-}
-
 async function documentsFor(email: Email, root: string) {
   const result: Record<DocumentRole, ReadDocument | undefined> = { si: undefined, bl: undefined };
   const blockers: string[] = [];
@@ -55,18 +48,17 @@ async function documentsFor(email: Email, root: string) {
   else if (documents.some(document => document!.reading.status !== 'READABLE')) { blockers.push('UNREADABLE'); reason = 'unreadable'; }
   else if (documents.some(document => document!.role === 'other')) { blockers.push('WRONG_DOC_TYPE'); reason = 'wrong_doc_type'; }
   for (const role of ['si', 'bl'] as const) {
-    let match = documents.find(document => document?.role === role);
-    if (!match) match = documents.find(document => document?.role === 'unknown' && roleFor(document.attachment) === role);
+    const matches = documents.filter(document => document?.role === role);
+    const match = matches.length === 1 ? matches[0] : undefined;
     if (match) result[role] = match as ReadDocument;
   }
   if (!result.si || !result.bl) { blockers.push('DOCUMENT_ROLES_UNVERIFIED'); reason ??= 'missing_value'; }
   else {
     const refs = [result.si, result.bl].map(document =>
       (document.reading.candidates ?? []).flatMap(candidate => pairReferences(candidate.label, candidate.value)));
-    const hasRefs = refs[0].length > 0 && refs[1].length > 0;
-    const paired = hasRefs
-      ? referencesMatch(refs[0], refs[1]) && result.si.reading.sha256 !== result.bl.reading.sha256
-      : result.si.reading.sha256 !== result.bl.reading.sha256;
+    const paired = referencesMatch(refs[0], refs[1])
+      && result.si.reading.sha256 !== result.bl.reading.sha256
+      && result.si.attachment.id !== result.bl.attachment.id;
     if (!paired) { blockers.push('SHIPMENT_REFERENCE_UNVERIFIED'); reason ??= 'missing_value'; }
   }
   return { ...result, blockers, reason };
@@ -118,7 +110,9 @@ export async function extractWithFullPipeline(
   fallback: FallbackExtractor,
   compareFallback: FullPipelineComparisonFallback,
   vision: VisionProvider | null,
+  options: { assumeKilograms?: boolean; benchmarkSemanticPolicy?: boolean } = {},
 ) {
+  const assumptions: string[] = [];
   const documents = await documentsFor(email, root);
   if (documents.reason || !documents.si || !documents.bl) return { email_id: email.id, review_reason: documents.reason ?? 'missing_value' as const, documents, defect_fields: [] as FieldName[] };
   const [siNativeExtraction, blNativeExtraction] = await Promise.all([
@@ -135,8 +129,8 @@ export async function extractWithFullPipeline(
   let unresolved = siExtraction.status !== 'complete' || blExtraction.status !== 'complete';
   const fields = { si: siExtraction.fields, bl: blExtraction.fields } as Record<DocumentRole, Record<FieldName, { value: string; candidateId: string; confidence: number; method: string }>>;
   const comparison = Object.fromEntries(FIELD_NAMES.map(field => {
-    const siNormalized = normaliseFieldValue(field, fields.si[field]?.value ?? null);
-    const blNormalized = normaliseFieldValue(field, fields.bl[field]?.value ?? null);
+    const siNormalized = normaliseFieldValue(field, sourceValue(documents.si!, field, fields.si[field], options.assumeKilograms, assumptions));
+    const blNormalized = normaliseFieldValue(field, sourceValue(documents.bl!, field, fields.bl[field], options.assumeKilograms, assumptions));
     if (siNormalized === null || blNormalized === null) unresolved = true;
     return [field, {
       si: fields.si[field]?.value ?? null,
@@ -161,16 +155,19 @@ export async function extractWithFullPipeline(
           comparison[request.field].matches = false;
           comparison[request.field].method = 'jev_placeholder_missing_value';
         } else {
-          const isSame = verdict?.equivalent === true;
+          const isSame = options.benchmarkSemanticPolicy ? verdict?.equivalent === true : acceptFormattingVerdict(request.field, request.si, request.bl, verdict);
+          const isDifferent = options.benchmarkSemanticPolicy ? !isSame : isConfidentSemanticDifference(verdict);
+          if (!isSame && !isDifferent) unresolved = true;
           comparison[request.field].comparisonConfidence = verdict?.confidence ?? null;
           comparison[request.field].matches = isSame;
-          comparison[request.field].method = isSame ? 'jev_format_equivalent' : 'different';
+          comparison[request.field].method = isSame ? 'jev_format_equivalent' : isDifferent ? 'different' : 'semantic_unresolved';
         }
       }
     } catch {
+      unresolved = true;
       for (const request of pending) {
         comparison[request.field].matches = false;
-        comparison[request.field].method = 'different';
+        comparison[request.field].method = 'semantic_unresolved';
       }
     }
   }
@@ -178,11 +175,27 @@ export async function extractWithFullPipeline(
     comparison[field].siNormalized !== null &&
     comparison[field].blNormalized !== null &&
     !comparison[field].matches &&
-    comparison[field].method !== 'jev_placeholder_missing_value');
-  return { email_id: email.id, review_reason: unresolved ? 'missing_value' as const : null, documents, extraction, fields, comparison, defect_fields };
+    comparison[field].method !== 'jev_placeholder_missing_value' && comparison[field].method !== 'semantic_unresolved');
+  for (const document of [documents.si, documents.bl]) {
+    const fresh = await readAttachment({ root, relativePath: document.attachment.relativePath!, mimeType: document.attachment.mimeType });
+    if (fresh.sha256 !== document.reading.sha256) { documents.blockers.push('SOURCE_HASH_CHANGED'); unresolved = true; }
+  }
+  return { email_id: email.id, review_reason: unresolved ? 'missing_value' as const : null, documents, extraction, fields, comparison, defect_fields, assumptions };
 }
 
 type FullResult = Awaited<ReturnType<typeof extractWithFullPipeline>>;
+
+function sourceValue(document: ReadDocument, field: FieldName, extracted: { value: string; candidateId: string } | undefined, assumeKilograms = false, assumptions: string[] = []): string | null {
+  if (!extracted) return null;
+  const candidate = document.reading.candidates?.find(item => item.id === extracted.candidateId);
+  if (!candidate || candidate.value !== extracted.value) return null;
+  const value = field === 'gross_weight_kg' ? weightValueWithSourceUnit(extracted.value, candidate.label) : extracted.value;
+  if (field === 'gross_weight_kg' && assumeKilograms && /^[\d,.]+$/u.test(value.normalize('NFKC').trim())) {
+    assumptions.push(`${document.role}:gross_weight_kg:benchmark_assumed_kg`);
+    return `${value} KG`;
+  }
+  return value;
+}
 
 function sourceSpan(
   document: ReadDocument,
@@ -190,16 +203,13 @@ function sourceSpan(
 ): NonNullable<FieldResult['si']> | undefined {
   if (!extracted) return undefined;
   const candidate = document.reading.candidates?.find(item => item.id === extracted.candidateId);
-  const starts = candidate?.source.valueSpans ?? [];
-  let start = starts[0]?.start;
-  let end = starts.at(-1)?.end;
-  if (start === undefined || end === undefined || start < 0 || end <= start) {
-    start = document.reading.text.indexOf(extracted.value);
-    end = start < 0 ? -1 : start + extracted.value.length;
-  }
-  if (start < 0 || end <= start) return undefined;
+  if (!candidate || candidate.value !== extracted.value) return undefined;
+  const starts = candidate.source.valueSpans;
+  const start = starts[0]?.start;
+  const end = starts.at(-1)?.end;
+  if (start === undefined || end === undefined || start < 0 || end <= start) return undefined;
   const text = document.reading.text.slice(start, end);
-  if (!text) return undefined;
+  if (!text || text !== extracted.value) return undefined;
   return { attachmentId: document.attachment.id, sha256: document.reading.sha256, locator: `chars:${start}-${end}`, text };
 }
 
@@ -218,7 +228,7 @@ export async function compareCaseWithFullPipeline(
       const si = sourceSpan(result.documents.si, result.fields.si[field]);
       const bl = sourceSpan(result.documents.bl, result.fields.bl[field]);
       const missing = compared.method === 'jev_placeholder_missing_value' || compared.siNormalized === null || compared.blNormalized === null;
-      const outcome: FieldResult['outcome'] = missing ? 'MISSING' : !si || !bl ? 'UNREADABLE' : compared.matches ? 'MATCH' : 'MISMATCH';
+      const outcome: FieldResult['outcome'] = compared.method === 'semantic_unresolved' ? 'AMBIGUOUS' : missing ? 'MISSING' : !si || !bl ? 'UNREADABLE' : compared.matches ? 'MATCH' : 'MISMATCH';
       fieldResults.push({ field, outcome, ...(si ? { si } : {}), ...(bl ? { bl } : {}) });
       if (!['MATCH', 'MISMATCH'].includes(outcome)) blockers.push(`${field}:${outcome}`);
     }
