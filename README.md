@@ -13,7 +13,7 @@
   ·
   <a href="tools/eval/README.md"><strong>Evaluation harness</strong></a>
   ·
-  <a href="docs/connector-verification.md"><strong>Connector verification</strong></a>
+  <a href="docs/si-bl-extraction-architecture.md"><strong>SI/BL extraction architecture</strong></a>
 </p>
 
 CargoLens is a shipping-document intelligence workspace for operations teams
@@ -100,7 +100,7 @@ solely because the benchmark labels it `OK`.
 
 ## Quick start
 
-For a complete teammate walkthrough, including PowerShell, OCR, the dashboard and a no-key synthetic demo, see [Setup and demo](docs/setup.md).
+Follow the steps below for local API, OCR, dashboard and synthetic-demo setup.
 
 ### Prerequisites
 
@@ -123,7 +123,7 @@ Copy `.env.example` to `.env`. The running API requires `TYPESAFE_API_KEY` and
 | `TYPESAFE_MODEL` / `JEV_PROMPT_VARIANT` | Pinned model and question variant; both feed the classifier revision. |
 | `JEV_CONCURRENCY` / `JEV_BATCH_SIZE` / `JEV_REQUESTS_PER_MINUTE` | Throughput controls for classification. |
 | `GMAIL_*` | OAuth registration, polling, sync query and automation switches; see [Gmail configuration](#gmail-configuration). |
-| `OPENROUTER_API_KEY` / `OPENROUTER_TEXT_MODEL` | Optional server-side text recovery; see [backend integration](docs/backend-integration.md). |
+| `OPENROUTER_API_KEY` / `OPENROUTER_TEXT_MODEL` | Optional server-side text recovery provider and model. |
 | `RECOVERY_MAX_CASE_ATTEMPTS` / `RECOVERY_MAX_CASE_TOKENS` / `RECOVERY_MAX_CASE_USD` | Durable per-case recovery reservation ceilings, including failed attempts. |
 | `AI_GATEWAY_API_KEY` | Reserved for gateway integration. |
 
@@ -177,9 +177,7 @@ after loading or updating the extension.
 Badges classify visible subject/snippet text; the urgent tray provides
 shortcuts to native rows. No mailbox OAuth token is needed for these previews.
 Full-thread retrieval and outbound automation use the Gmail connector below.
-Gmail and Outlook Live were checked in signed-in Chrome on 2026-09-20; see
-[connector and adapter verification](docs/connector-verification.md) for tested
-layouts and remaining limitations.
+Gmail and Outlook Live were checked in signed-in Chrome on 2026-09-20.
 
 #### Inbox actions and smart filters
 
