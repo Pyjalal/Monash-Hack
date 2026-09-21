@@ -1,0 +1,144 @@
+{
+  "baselineCommit": "f7064120ccbb52564be4df45b2153a8474c7c5ee",
+  "classification": "Reused fresh untouched-PR live classifications; extraction/comparison rerun after fixes",
+  "v3ExcludedByExistingDatasetPolicy": 10,
+  "results": [
+    {
+      "dataset": "v2",
+      "summary": {
+        "total": 520,
+        "classified": 520,
+        "classificationCorrect": 520,
+        "waitingForFutureDraft": 91,
+        "extracted": 114,
+        "compared": 114,
+        "exactMatches": 520,
+        "comparable": 520
+      },
+      "reportSha256": "3010496f31587dfbe21745df13a6f1e6a274ecf2f17a1f55fb7fe3a02fe90ce8",
+      "failures": []
+    },
+    {
+      "dataset": "v3",
+      "summary": {
+        "total": 210,
+        "classified": 210,
+        "classificationCorrect": 210,
+        "waitingForFutureDraft": 0,
+        "extracted": 150,
+        "compared": 150,
+        "exactMatches": 210,
+        "comparable": 210
+      },
+      "reportSha256": "e7db662f7ff6327e31fc8733ee22dd2d7ed80d40b857db94e6804f0d5962042c",
+      "failures": []
+    },
+    {
+      "dataset": "v4",
+      "summary": {
+        "total": 100,
+        "classified": 100,
+        "classificationCorrect": 100,
+        "waitingForFutureDraft": 0,
+        "extracted": 85,
+        "compared": 85,
+        "exactMatches": 96,
+        "comparable": 100
+      },
+      "reportSha256": "50e24023513b8084bc0a5ec60b5bb7f8658406cff32a2274aa3a5e55656c8ad6",
+      "failures": [
+        {
+          "id": "adv_email_016",
+          "prediction": {
+            "category": "BL_COMPARISON",
+            "status": "MISMATCH",
+            "review_reason": null,
+            "defect_fields": [
+              "port_of_loading"
+            ],
+            "has_defect": true
+          },
+          "groundTruth": {
+            "category": "BL_COMPARISON",
+            "status": "OK",
+            "review_reason": null,
+            "defect_fields": [],
+            "has_defect": false
+          }
+        },
+        {
+          "id": "adv_email_017",
+          "prediction": {
+            "category": "BL_COMPARISON",
+            "status": "MISMATCH",
+            "review_reason": null,
+            "defect_fields": [
+              "port_of_loading"
+            ],
+            "has_defect": true
+          },
+          "groundTruth": {
+            "category": "BL_COMPARISON",
+            "status": "OK",
+            "review_reason": null,
+            "defect_fields": [],
+            "has_defect": false
+          }
+        },
+        {
+          "id": "adv_email_019",
+          "prediction": {
+            "category": "BL_COMPARISON",
+            "status": "MISMATCH",
+            "review_reason": null,
+            "defect_fields": [
+              "port_of_loading"
+            ],
+            "has_defect": true
+          },
+          "groundTruth": {
+            "category": "BL_COMPARISON",
+            "status": "OK",
+            "review_reason": null,
+            "defect_fields": [],
+            "has_defect": false
+          }
+        },
+        {
+          "id": "adv_email_020",
+          "prediction": {
+            "category": "BL_COMPARISON",
+            "status": "MISMATCH",
+            "review_reason": null,
+            "defect_fields": [
+              "port_of_loading"
+            ],
+            "has_defect": true
+          },
+          "groundTruth": {
+            "category": "BL_COMPARISON",
+            "status": "OK",
+            "review_reason": null,
+            "defect_fields": [],
+            "has_defect": false
+          }
+        }
+      ]
+    },
+    {
+      "dataset": "v5",
+      "summary": {
+        "total": 60,
+        "classified": 60,
+        "classificationCorrect": 60,
+        "waitingForFutureDraft": 4,
+        "extracted": 26,
+        "compared": 26,
+        "exactMatches": 60,
+        "comparable": 60
+      },
+      "reportSha256": "676091d08d5e14d7027280db2d54e0248e959f3396cb1fc2bc85122ee13a9aa0",
+      "failures": []
+    }
+  ]
+}
