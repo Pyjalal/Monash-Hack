@@ -1,0 +1,9 @@
+COMMERCIAL INVOICE
+Shipment reference: cedar-4821
+Shipper: Cedar Foods
+Consignee: Island Trading
+Notify party: Island Logistics
+Port of loading: Bay Terminal
+Port of discharge: River Terminal
+Container count: 4
+Gross weight kg: 8400
