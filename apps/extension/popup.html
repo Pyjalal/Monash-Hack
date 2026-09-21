@@ -4,21 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CargoLens</title>
+  <link rel="stylesheet" href="brand/fonts.css">
   <style>
-    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-    body { background: #f4f0f4; color: #342732; margin: 0; min-width: 300px; }
-    main { background: #fdfafd; border: 1px solid #eae1e8; border-radius: 14px; margin: 12px; padding: 14px; }
-    h1 { font-size: 16px; margin: 0 0 12px; }
-    label { color: #735e70; display: block; font-size: 11px; font-weight: 700; letter-spacing: .05em; margin: 12px 0 5px; text-transform: uppercase; }
-    input[type="url"] { border: 1px solid #cdbdca; border-radius: 8px; box-sizing: border-box; color: #342732; font: inherit; padding: 8px; width: 100%; }
+    :root { color-scheme: light; font-family: "Albert Sans", "Segoe UI", system-ui, sans-serif; }
+    body { background: #f7f6f2; color: #16284b; margin: 0; min-width: 300px; }
+    main { background: #fffefa; border: 1px solid #e8e6df; border-radius: 14px; margin: 12px; padding: 14px; }
+    h1 { font-family: "Fraunces", Georgia, serif; font-size: 16px; margin: 0 0 12px; }
+    label { color: #52647d; display: block; font-size: 11px; font-weight: 700; letter-spacing: .05em; margin: 12px 0 5px; text-transform: uppercase; }
+    input[type="url"] { border: 1px solid #a4adb9; border-radius: 8px; box-sizing: border-box; color: #16284b; font: inherit; padding: 8px; width: 100%; }
     .row { align-items: center; display: flex; justify-content: space-between; gap: 12px; }
-    .status { color: #735e70; font-size: 12px; margin: 12px 0 0; min-height: 18px; }
+    .status { color: #52647d; font-size: 12px; margin: 12px 0 0; min-height: 18px; }
     .status.ok { color: #35684f; }
-    .status.error { color: #754369; }
-    button { background: #754369; border: 0; border-radius: 8px; color: #fdfafd; cursor: pointer; font: inherit; font-weight: 700; padding: 8px 10px; }
-    button.secondary { background: #eae1e8; color: #342732; }
+    .status.error { color: #963c3c; }
+    button { background: #16284b; border: 0; border-radius: 8px; color: #fffefa; cursor: pointer; font: inherit; font-weight: 700; padding: 8px 10px; }
+    button.secondary { background: #e8e6df; color: #16284b; }
     .actions { display: flex; gap: 8px; margin-top: 12px; }
-    .switch { accent-color: #754369; height: 18px; width: 18px; }
+    .switch { accent-color: #16284b; height: 18px; width: 18px; }
+    :focus-visible { outline: 2px solid #16284b; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { .switch, .switch::after { transition: none; } }
   </style>
 </head>
 <body>
