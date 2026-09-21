@@ -8,10 +8,12 @@ describe("evaluation routing", () => {
     });
   });
 
-  it("routes only confident current verification states into extraction", () => {
+  it("routes current verification states into extraction", () => {
     expect(evaluationRoute({ category: "BL_COMPARISON", expectation: "VERIFY_NOW", expectationConfidence: 0.8 }).selectedForExtraction).toBe(true);
+    expect(evaluationRoute({ category: "BL_COMPARISON", expectation: "VERIFY_NOW", expectationConfidence: 0.79 }).selectedForExtraction).toBe(true);
     expect(evaluationRoute({ category: "BL_COMPARISON", expectation: "REPORTS_MISSING", expectationConfidence: 1 }).selectedForExtraction).toBe(false);
-    expect(evaluationRoute({ category: "BL_COMPARISON", expectation: "VERIFY_NOW", expectationConfidence: 0.79 }).route).toBe("EXPECTATION_UNCERTAIN");
+    expect(evaluationRoute({ category: "BL_COMPARISON", expectation: "UNCERTAIN" }).route).toBe("EXPECTATION_UNCERTAIN");
+    expect(evaluationRoute({ category: "BL_COMPARISON" }).route).toBe("EXPECTATION_UNCERTAIN");
   });
 
   it("treats wrong documents as an independent issue only for BL comparison", () => {

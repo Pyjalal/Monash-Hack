@@ -11,8 +11,8 @@ export type RequestUsage = { requestId: string; model: string; usage: Usage; ela
 
 export function initialDecision(classification: Classification, sourceVersion: string): OperationalDecision {
   const comparison = classification.category === 'BL_COMPARISON';
-  const deferred = comparison && classification.expectation === 'FUTURE_DRAFT' && (classification.expectationConfidence ?? 0) >= 0.8;
-  const immediate = comparison && classification.expectation === 'VERIFY_NOW' && (classification.expectationConfidence ?? 0) >= 0.8;
+  const deferred = comparison && classification.expectation === 'FUTURE_DRAFT';
+  const immediate = comparison && classification.expectation === 'VERIFY_NOW';
   const wrongDocuments = comparison && classification.documentIssue === 'WRONG_DOCS' && (classification.documentIssueConfidence ?? 0) >= 0.8;
   const recovery = getClassificationRecoverySignals(classification);
   const uncertain = recovery.length > 0 || classification.category === 'UNCERTAIN' || comparison && !deferred && !immediate && !wrongDocuments;

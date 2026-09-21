@@ -64,7 +64,8 @@ describe("untrusted numeric and text values", () => {
   it("preserves units and rejects ambiguous numeric fragments", () => {
     expect(normaliseFieldValue("gross_weight_kg", "100 KG")).not.toBe(normaliseFieldValue("gross_weight_kg", "100 MT"));
     expect(normaliseFieldValue("gross_weight_kg", "1 MT")).toBe(normaliseFieldValue("gross_weight_kg", "1,000 KG"));
-    for (const value of ["100", "100 LB", "100 KG / 200 KG", "TBA"]) expect(normaliseFieldValue("gross_weight_kg", value)).toBeNull();
+    expect(normaliseFieldValue("gross_weight_kg", "100")).toBe("100");
+    for (const value of ["100 LB", "100 KG / 200 KG", "TBA"]) expect(normaliseFieldValue("gross_weight_kg", value)).toBeNull();
     for (const value of ["abc 2", "2 or 3", "0", "1.5"]) expect(normaliseFieldValue("container_count", value)).toBeNull();
   });
   it("does not erase non-Latin company names or accept invalid confidence", () => {

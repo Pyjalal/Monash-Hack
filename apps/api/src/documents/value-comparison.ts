@@ -41,9 +41,10 @@ export function normaliseFieldValue(field: ComparableField, value: string | null
   }
   if (field === "gross_weight_kg") {
     const weight = compact.replace(/^\(\s*KGS?\s*\)\s*:\s*/u, "");
-    const match = weight.match(/^(\d+(?:\.\d+)?|\d{1,3}(?:,\d{3})+(?:\.\d+)?)\s*(KG|KGS|KILOGRAMS?|MT|MTS|TONNES?)$/u);
+    const match = weight.match(/^(\d+(?:\.\d+)?|\d{1,3}(?:,\d{3})+(?:\.\d+)?)(?:\s*(KG|KGS|KILOGRAMS?|MT|MTS|TONNES?))?$/u);
     if (!match) return null;
-    const kg = Number(match[1].replaceAll(",", "")) * (/^(MT|MTS|TONNE)/u.test(match[2]) ? 1000 : 1);
+    const unit = match[2] ?? "KG";
+    const kg = Number(match[1].replaceAll(",", "")) * (/^(MT|MTS|TONNE)/u.test(unit) ? 1000 : 1);
     return Number.isFinite(kg) && kg > 0 ? String(kg) : null;
   }
   return compact.normalize("NFKC").replace(/&/gu, " AND ").replace(/[^\p{L}\p{N}]+/gu, " ").trim() || null;

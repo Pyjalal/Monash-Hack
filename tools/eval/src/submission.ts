@@ -474,15 +474,46 @@ async function pipeline(): Promise<void> {
     : createFieldFallback({ systemOne: (input, request) => typesafe!.systemOne(input as never, request) });
   const compareFallback = createComparisonFallback(comparisonClient);
   const vision = aiProvider === "openrouter" ? createVisionProvider({ apiKey: key, model: visionModel, maxPages: 3 }) : null;
+  const detailsFile = options.classificationDetails ?? resolve(dirname(options.classification), "classification-details.json");
+  const detailsMap = new Map<string, { expectation?: string; documentIssue?: string }>();
+  try {
+    const content = await readFile(detailsFile, "utf8");
+    const parsed = JSON.parse(content) as { classifications?: Array<{ id?: string; email_id?: string; expectation?: string; documentIssue?: string }> };
+    const items = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.classifications) ? parsed.classifications : [];
+    for (const item of items) {
+      const id = String(item.id ?? item.email_id);
+      detailsMap.set(id, item);
+    }
+  } catch {
+    // optional classification details
+  }
   const selected = options.allDocuments
-    ? emails.filter(email => email.attachments.length > 0 || explicitlyRequestsComparison(email))
-    : emails.filter(email => classifications[email.id]?.category === "BL_COMPARISON");
+    ? emails.filter(email => {
+        if (detailsMap.get(email.id)?.expectation === "FUTURE_DRAFT") return false;
+        return email.attachments.length > 0 || explicitlyRequestsComparison(email);
+      })
+    : emails.filter(email => {
+        if (classifications[email.id]?.category !== "BL_COMPARISON") return false;
+        if (detailsMap.get(email.id)?.expectation === "FUTURE_DRAFT") return false;
+        return true;
+      });
   const extracted = await mapLimited(selected, options.concurrency, email => extract(email, options.root, fallback, compareFallback, vision));
   const byId = new Map(extracted.map(result => [result.email_id, result]));
   const submission: Submission = {};
   for (const email of emails) {
     const classified = classifications[email.id];
     if (!classified) throw new Error(`Missing classification for ${email.id}`);
+    const detail = detailsMap.get(email.id);
+    if (detail?.expectation === "FUTURE_DRAFT") {
+      submission[email.id] = {
+        category: classified.category,
+        status: "OK",
+        review_reason: null,
+        defect_fields: [],
+        has_defect: false,
+      };
+      continue;
+    }
     const result = byId.get(email.id);
     submission[email.id] = result
       ? {
