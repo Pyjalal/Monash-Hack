@@ -5,6 +5,7 @@ import type {
   OperationalDecision,
   Usage,
 } from "@cargolens/shared";
+import type { Flow, FlowValidation } from "@cargolens/shared/flows";
 
 export type WorkflowState = OperationalDecision["workflowState"];
 export type CaseStatus = "queued" | "classified" | "failed";
@@ -129,6 +130,16 @@ export class ApiError extends Error {
   }
 }
 
+export interface FlowRunReport {
+  flowId: string;
+  flowVersion: string;
+  caseId: string;
+  status: "COMPLETED" | "SKIPPED" | "BLOCKED" | "FAILED" | "INVALID";
+  nodes: { id: string; type: string; state: string; detail?: string }[];
+  outcome: { kind: string; action?: string; reason?: string } | null;
+  errors: string[];
+}
+
 export interface ApiClient {
   dashboard(): Promise<DashboardReport>;
   run(id: string): Promise<RunReport>;
@@ -156,6 +167,9 @@ export interface ApiClient {
     id: string,
     version: { sourceVersion: string; decisionVersion: number },
   ): Promise<DraftResponse>;
+  flows(): Promise<{ flows: Flow[] }>;
+  saveFlow(flow: Flow): Promise<{ flow: Flow; validation: FlowValidation }>;
+  runFlow(caseId: string, flowId: string): Promise<{ run: FlowRunReport }>;
   gmailStatus(): Promise<GmailStatus>;
   gmailOutbox(): Promise<{ items: Delivery[] }>;
   gmailSync(): Promise<{ job: string }>;
@@ -225,6 +239,10 @@ export function createApiClient(
       post(`/cases/${encodeURIComponent(id)}/compare`, version),
     draft: (id, version) =>
       post(`/cases/${encodeURIComponent(id)}/draft`, version),
+    flows: () => request("/flows"),
+    saveFlow: (flow) => post("/flows", flow),
+    runFlow: (caseId, flowId) =>
+      post(`/cases/${encodeURIComponent(caseId)}/flow-run`, { flowId }),
     gmailStatus: () => request("/gmail/status"),
     gmailOutbox: () => request("/gmail/outbox"),
     gmailSync: () => post("/gmail/sync", {}),
