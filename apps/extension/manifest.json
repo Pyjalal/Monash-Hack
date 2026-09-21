@@ -2,33 +2,54 @@
   "manifest_version": 3,
   "name": "CargoLens",
   "version": "0.1.0",
-  "description": "A local, read-only shipping-document preview for visible inbox rows.",
-  "permissions": ["storage"],
+  "description": "A read-only shipping-document preview for visible inbox rows, backed by a local or your own deployed CargoLens API.",
+  "permissions": [
+    "storage"
+  ],
   "host_permissions": [
     "http://127.0.0.1/*",
     "http://localhost/*",
+    "https://cargolens.fly.dev/*",
     "https://mail.google.com/*",
     "https://outlook.live.com/*",
     "https://outlook.office.com/*",
     "https://outlook.office365.com/*"
   ],
-  "background": { "service_worker": "background.js" },
-  "content_scripts": [{
-    "matches": [
-      "https://mail.google.com/*",
-      "https://outlook.live.com/*",
-      "https://outlook.office.com/*",
-    "https://outlook.office365.com/*"
-    ],
-    "js": ["content.js"],
-    "run_at": "document_idle"
-  }],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*",
+        "https://outlook.live.com/*",
+        "https://outlook.office.com/*",
+        "https://outlook.office365.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
   "commands": {
     "toggle-cargolens": {
-      "suggested_key": { "default": "Ctrl+Shift+L", "mac": "MacCtrl+Shift+L" },
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "MacCtrl+Shift+L"
+      },
       "description": "Toggle CargoLens preview"
     }
   },
-  "options_ui": { "page": "options.html", "open_in_tab": true },
-  "action": { "default_title": "CargoLens", "default_popup": "popup.html" }
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "CargoLens",
+    "default_popup": "popup.html"
+  },
+  "optional_host_permissions": [
+    "https://*/*"
+  ]
 }

@@ -1,4 +1,4 @@
-import { healthEndpoint, normalizeApiUrl, parseSettings, isLoopbackApiUrl, DEFAULT_API_URL } from "./settings.js";
+import { healthEndpoint, normalizeApiUrl, parseSettings, isAllowedApiUrl, ensureHostPermission, DEFAULT_API_URL } from "./settings.js";
 
 const enabled = document.querySelector<HTMLInputElement>("#enabled");
 const apiUrl = document.querySelector<HTMLInputElement>("#api-url");
@@ -28,12 +28,16 @@ async function load(): Promise<void> {
 
 async function saveSettings(): Promise<void> {
   const value = apiUrl?.value.trim() ?? "";
-  if (!isLoopbackApiUrl(value)) {
-    setStatus("Use an http://localhost or http://127.0.0.1 URL.", "error");
+  if (!isAllowedApiUrl(value)) {
+    setStatus("Use an https:// URL, or http://localhost / http://127.0.0.1 for a local API.", "error");
     apiUrl?.focus();
     return;
   }
   const settings = { enabled: enabled?.checked ?? true, apiUrl: normalizeApiUrl(value) };
+  if (!(await ensureHostPermission(settings.apiUrl))) {
+    setStatus(`CargoLens needs permission to reach ${settings.apiUrl}.`, "error");
+    return;
+  }
   const response = await chrome.runtime.sendMessage({ type: "SET_SETTINGS", ...settings });
   if (response && typeof response === "object" && "error" in response) {
     setStatus("Settings were rejected by the extension.", "error");
@@ -48,19 +52,21 @@ async function saveSettings(): Promise<void> {
 }
 
 async function checkHealth(value = apiUrl?.value.trim() ?? DEFAULT_API_URL): Promise<void> {
-  if (!isLoopbackApiUrl(value)) {
-    setStatus("Enter a loopback URL to check health.", "error");
+  if (!isAllowedApiUrl(value)) {
+    setStatus("Enter an https:// or loopback URL to check health.", "error");
     return;
   }
-  setStatus("Checking local API…");
+  setStatus("Checking API…");
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 2500);
   try {
     const response = await fetch(healthEndpoint(value), { signal: controller.signal });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    setStatus("Local API is reachable.", "ok");
+    setStatus("API is reachable.", "ok");
   } catch {
-    setStatus("Local API is unavailable.", "error");
+    setStatus(normalizeApiUrl(value) === DEFAULT_API_URL
+      ? "Local API is unavailable. Start it with: npm run dev"
+      : `API is unavailable at ${normalizeApiUrl(value)}.`, "error");
   } finally {
     clearTimeout(timer);
   }

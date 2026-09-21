@@ -24,7 +24,10 @@ describe('extension document verification', () => {
     await expect(client.get('case/a')).rejects.toThrow('access token');
     request.mockImplementation(async () => Response.json(record()));
     await expect(client.get('different')).rejects.toThrow('stale');
-    expect(() => new VerificationClient('https://example.test', 'token')).toThrow('local API');
+    // A deployed API over HTTPS is a supported base; plaintext to a remote host is not.
+    expect(() => new VerificationClient('https://example.test', 'token')).not.toThrow();
+    expect(() => new VerificationClient('http://example.test', 'token')).toThrow('API URL');
+    expect(() => new VerificationClient('https://example.test/cases', 'token')).toThrow('API URL');
   });
   it('shows blockers together with sourced differences without injecting message HTML', () => {
     const window = new Window(); const root = window.document.createElement('section');

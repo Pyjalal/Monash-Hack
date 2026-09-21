@@ -1,4 +1,4 @@
-import { DEFAULT_API_URL, MAX_RULES, RULE_PRESETS, healthEndpoint, isLoopbackApiUrl, normalizeApiUrl, parseSettings, rulesEndpoint,
+import { DEFAULT_API_URL, MAX_RULES, RULE_PRESETS, ensureHostPermission, healthEndpoint, isAllowedApiUrl, normalizeApiUrl, parseSettings, rulesEndpoint,
   type ExtensionSettings, type FilterRule, type RuleAction } from "./settings.js";
 
 const $ = <T extends HTMLElement>(selector: string): T => document.querySelector<T>(selector)!;
@@ -117,7 +117,7 @@ function field(label: string, control: HTMLElement): HTMLElement {
 }
 
 function validate(): string | null {
-  if (!isLoopbackApiUrl(draft.apiUrl)) return "Use an http://localhost or http://127.0.0.1 URL for the API.";
+  if (!isAllowedApiUrl(draft.apiUrl)) return "Use an https:// URL, or http://localhost / http://127.0.0.1 for a local API.";
   for (const rule of draft.inbox.rules) {
     if (rule.enabled && rule.condition.trim().length < 8) return `“${rule.label || rule.id}” needs a condition of at least 8 characters.`;
     if (!rule.label.trim()) return "Every filter needs a name.";
@@ -137,6 +137,10 @@ async function save(): Promise<void> {
   const problem = validate();
   if (problem) { setStatus(problem, "error"); return; }
   draft.apiUrl = normalizeApiUrl(draft.apiUrl);
+  if (!(await ensureHostPermission(draft.apiUrl))) {
+    setStatus(`CargoLens needs permission to reach ${draft.apiUrl}.`, "error");
+    return;
+  }
   const response = await chrome.runtime.sendMessage({ type: "SET_SETTINGS", enabled: draft.enabled, apiUrl: draft.apiUrl, inbox: draft.inbox });
   if (!response || typeof response !== "object" || "error" in response) { setStatus("The extension rejected these settings.", "error"); return; }
   saved = parseSettings(response);
@@ -147,7 +151,7 @@ async function save(): Promise<void> {
 
 async function checkHealth(): Promise<void> {
   const pill = $("#health-pill");
-  if (!isLoopbackApiUrl(draft.apiUrl)) { pill.textContent = "Invalid API URL"; pill.className = "pill error"; return; }
+  if (!isAllowedApiUrl(draft.apiUrl)) { pill.textContent = "Invalid API URL"; pill.className = "pill error"; return; }
   pill.textContent = "Checking API"; pill.className = "pill";
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 2500);
@@ -167,7 +171,7 @@ async function runTest(): Promise<void> {
   const rules = draft.inbox.rules.filter(rule => rule.condition.trim().length >= 8).map(({ id, condition }) => ({ id, condition: condition.trim() }));
   if (!subject && !snippet) { setStatus("Add a subject or snippet to score.", "error"); return; }
   if (!rules.length) { setStatus("Add at least one filter to score against.", "error"); return; }
-  if (!isLoopbackApiUrl(draft.apiUrl)) { setStatus("Set a valid API URL first.", "error"); return; }
+  if (!isAllowedApiUrl(draft.apiUrl)) { setStatus("Set a valid API URL first.", "error"); return; }
   const button = $<HTMLButtonElement>("#run-test");
   button.disabled = true; results.textContent = "Asking Jev…";
   try {
