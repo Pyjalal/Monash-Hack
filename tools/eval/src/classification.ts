@@ -14,9 +14,11 @@ interface BenchmarkRow { id: string; group: string; category: string; email: Ema
 interface RunConfig { variant: PromptVariant; mode: ClassificationMode; concurrency: number }
 interface RowResult { id: string; sourceHash: string; requestHash: string; expected: string; expectedExpectation?: string; expectedUrgency?: string; classification?: Classification; error?: { type: string; status?: number }; elapsedMs: number }
 const datasetRoot = resolve(process.env.DATASET_PATH ?? "training_data/sdoc-hackathon-docker/extracted/data_v2");
-const output = resolve("runtime/eval/classification");
+// A new question version is a new evaluation cycle: point EVAL_OUTPUT_DIR at a
+// fresh directory rather than overwriting frozen artifacts from a prior cycle.
+const output = resolve(process.env.EVAL_OUTPUT_DIR ?? "runtime/eval/classification");
 const model = "jev-1.13.0";
-const maxCalls = 1500;
+const maxCalls = Number(process.env.EVAL_MAX_CALLS ?? 1500);
 const rpm = 1100;
 let transportCalls = 0;
 let nextSlot = 0;
@@ -80,6 +82,7 @@ async function run(name: string, rows: BenchmarkRow[], config: RunConfig) {
   const key = process.env.TYPESAFE_API_KEY;
   if (!key) throw new Error("TYPESAFE_API_KEY is required for live classification evaluation");
   const started = performance.now(); const beforeCalls = transportCalls; let reusedRequests = 0;
+  let firstResultMs: number | null = null;
   const provider = createJevProvider({ apiKey: key, model, ...config, timeoutMs: 10000, totalTimeoutMs: 20000, maxRetries: 1,
     fetch: async (url, init) => {
       if (transportCalls >= maxCalls) throw new Error("Evaluation API attempt budget exhausted");
@@ -97,7 +100,11 @@ async function run(name: string, rows: BenchmarkRow[], config: RunConfig) {
     const base = { id: row.id, sourceHash, requestHash, expected: row.category,
       expectedExpectation: row.expectedExpectation, expectedUrgency: row.expectedUrgency };
     const start = performance.now();
-    try { return { ...base, classification: await provider.classify(row.email), elapsedMs: performance.now() - start }; }
+    try {
+      const classification = await provider.classify(row.email);
+      firstResultMs ??= performance.now() - started;
+      return { ...base, classification, elapsedMs: performance.now() - start };
+    }
     catch (error) { return { ...base, error: { type: error instanceof Error ? error.name : "UnknownError", status: error instanceof APIError ? error.status : undefined }, elapsedMs: performance.now() - start }; }
   });
   const wallMs = performance.now() - started;
@@ -113,7 +120,7 @@ async function run(name: string, rows: BenchmarkRow[], config: RunConfig) {
   const urgencies = results.filter(row => row.expectedUrgency);
   const report = { name, createdAt: new Date().toISOString(), config, questionVersion: questionVersion(config.variant, config.mode),
     modelRequested: model, modelsReturned: [...new Set(successful.map(row => row.model))], live: true, localCache: false, providerCache: "unknown",
-    metrics, wallMs, throughputEmailsPerSecond: rows.length / (wallMs / 1000), p50Ms: quantile(results.map(row => row.elapsedMs), 0.5), p95Ms: quantile(results.map(row => row.elapsedMs), 0.95),
+    metrics, wallMs, firstResultMs, throughputEmailsPerSecond: rows.length / (wallMs / 1000), p50Ms: quantile(results.map(row => row.elapsedMs), 0.5), p95Ms: quantile(results.map(row => row.elapsedMs), 0.95),
     usage: { inputTokens, outputTokens, usageUnavailableForFailedCalls: results.length - successful.length,
       estimatedUsd: inputTokens * 0.042 / 1000000, estimateBasis: "$0.042/M input tokens; output free. Estimate, not invoice; failed-call billing unknown." },
     apiAttempts: transportCalls - beforeCalls, reusedRequestHashesInThisProcess: reusedRequests,
@@ -133,7 +140,7 @@ async function run(name: string, rows: BenchmarkRow[], config: RunConfig) {
 async function main() {
   await mkdir(output, { recursive: true });
   const phase = process.argv[process.argv.indexOf("--phase") + 1] || "all";
-  const validPhase = ["all", "prepare", "tune", "speed", "full", "independent"].includes(phase) ? phase : "all";
+  const validPhase = ["all", "prepare", "tune", "speed", "concurrency", "full", "independent"].includes(phase) ? phase : "all";
   const rows = await loadRows();
   const split = await prepare(rows);
   if (validPhase === "prepare") { console.log(JSON.stringify({ count: rows.length, dev: split.dev.length, holdout: split.holdout.length, independent: INDEPENDENT_CASES.length })); return; }
@@ -165,6 +172,38 @@ async function main() {
   } else {
     const selection = JSON.parse(await readFile(resolve(output, "selection.json"), "utf8"));
     best = selection.best; bestFull = selection.bestFull;
+  }
+  if (validPhase === "concurrency") {
+    // Full-inbox sweep: one variable changes between runs, the concurrency.
+    // Held-out data is scored but never consulted to pick the configuration.
+    const sweep = [];
+    for (const concurrency of [4, 8, 16]) {
+      sweep.push(await run(`concurrency-${concurrency}`, rows, { ...best, concurrency }));
+      seenRequestHashes.clear();
+    }
+    const held = new Set(split.holdout.map(row => row.id));
+    const measured = sweep.map(report => ({
+      concurrency: report.config.concurrency, wallMs: report.wallMs, firstResultMs: report.firstResultMs,
+      p50Ms: report.p50Ms, p95Ms: report.p95Ms, throughputEmailsPerSecond: report.throughputEmailsPerSecond,
+      errorCount: report.errors.length, apiAttempts: report.apiAttempts,
+      retries: report.apiAttempts - rows.length, estimatedUsd: report.usage.estimatedUsd,
+      localCache: report.localCache, providerCache: report.providerCache,
+      macroF1: report.metrics.macroF1, accuracy: report.metrics.accuracy,
+    }));
+    // Selection is error-free first, then wall time. No sub-second claim is made.
+    const ranked = [...measured].sort((a, b) => a.errorCount - b.errorCount || a.wallMs - b.wallMs);
+    const bestByCategory = sweep.find(report => report.config.concurrency === ranked[0].concurrency)!;
+    const holdout = classificationMetrics((JSON.parse(await readFile(resolve(output, `concurrency-${ranked[0].concurrency}.json`), "utf8")) as { results: RowResult[] })
+      .results.filter(row => held.has(row.id)).map(row => ({ expected: row.expected, predicted: row.classification?.category ?? null })));
+    await jsonFile("concurrency-sweep.json", {
+      createdAt: new Date().toISOString(), inboxSize: rows.length, model, rateLimitRpm: rpm,
+      selectionRule: "Fewest errors, then measured wall time. Held-out data is reported, never used to select.",
+      measured, selected: ranked[0],
+      officialCategory: bestByCategory.metrics, holdoutCategory: holdout,
+      note: "Measured wall time under an 1100 rpm client pace; not a claim of sub-second inbox completion.",
+    });
+    console.log(JSON.stringify({ selected: ranked[0], measured }, null, 2));
+    return;
   }
   if (["all", "speed"].includes(validPhase)) {
     const excluded = new Set(tuningRows.map(row => hash(buildClassificationState(row.email))));

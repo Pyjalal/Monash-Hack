@@ -17,7 +17,9 @@ primary_region = "sin"
   SERVE_DASHBOARD = "true"
   GMAIL_AUTOMATION_ENABLED = "false"
   GMAIL_POLL_ENABLED = "false"
-  JEV_CONCURRENCY = "2"
+  # Measured best over the full 520-email inbox; 16 was slower than 8 with a
+  # retry and roughly doubled P50/P95. See tools/eval/reports/issue10-20260922.
+  JEV_CONCURRENCY = "8"
   JEV_BATCH_SIZE = "8"
   AUTH_REQUIRED = "false"
 

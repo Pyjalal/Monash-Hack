@@ -1,0 +1,2614 @@
+{
+  "createdAt": "2026-09-21T19:42:11.952Z",
+  "datasetRoot": "C:\\Users\\Shahjalal\\Documents\\Monash_hack\\Monash-Hack\\training_data\\sdoc-hackathon-docker\\extracted\\data_v2",
+  "inputCount": 520,
+  "groundTruthSha256": "d2d84f55cd68e9e0e7a62f07616d49968f44be2132c7b6b69a77213adfc0babe",
+  "grouping": "Latest unquoted request; greetings/signatures removed; email/URL/reference/numeric variations normalized; no labels in group fingerprint.",
+  "dev": [
+    {
+      "id": "email_511",
+      "group": "df6114f44dd8fdc7ed705361f19d7fe40a9a52e7d3c3d3196caf12457ecdddaf",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_515",
+      "group": "df6114f44dd8fdc7ed705361f19d7fe40a9a52e7d3c3d3196caf12457ecdddaf",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_507",
+      "group": "e1c0ca7bb684bde6095763e99af7943db7cc0c010dbafbb25a7ffcd10beef97d",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_509",
+      "group": "e1c0ca7bb684bde6095763e99af7943db7cc0c010dbafbb25a7ffcd10beef97d",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_237",
+      "group": "ee9f171514284ce2932869fa4bb4158fc35f4c5a86a9369a2daac819dc32d0eb",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_242",
+      "group": "ee9f171514284ce2932869fa4bb4158fc35f4c5a86a9369a2daac819dc32d0eb",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_249",
+      "group": "07e78b60aa9a29641b6e7f6dea06a8345e7937f0a72a14aebb0e4364c1c1d900",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_407",
+      "group": "07e78b60aa9a29641b6e7f6dea06a8345e7937f0a72a14aebb0e4364c1c1d900",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_434",
+      "group": "07e78b60aa9a29641b6e7f6dea06a8345e7937f0a72a14aebb0e4364c1c1d900",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_038",
+      "group": "5d4f691cf8b0708c849d056f11543f65dba473f2401f26891d8ed605b1926cf3",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_318",
+      "group": "5d4f691cf8b0708c849d056f11543f65dba473f2401f26891d8ed605b1926cf3",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_493",
+      "group": "5d4f691cf8b0708c849d056f11543f65dba473f2401f26891d8ed605b1926cf3",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_047",
+      "group": "8a27ee91542cc52944c6693c91a006b9e6a41716b9b19fa272676c44c8dc4e89",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_444",
+      "group": "8a27ee91542cc52944c6693c91a006b9e6a41716b9b19fa272676c44c8dc4e89",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_482",
+      "group": "8a27ee91542cc52944c6693c91a006b9e6a41716b9b19fa272676c44c8dc4e89",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_051",
+      "group": "a6a511b4f6778300d73f6792e2f28b5f1707884410172004f1d2a65f92acd82a",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_208",
+      "group": "a6a511b4f6778300d73f6792e2f28b5f1707884410172004f1d2a65f92acd82a",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_354",
+      "group": "a6a511b4f6778300d73f6792e2f28b5f1707884410172004f1d2a65f92acd82a",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_001",
+      "group": "f8017662a8ef0b7a8bef53315cfa411722a109a753a2ae3e4f9be9624860d7d4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_291",
+      "group": "f8017662a8ef0b7a8bef53315cfa411722a109a753a2ae3e4f9be9624860d7d4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_410",
+      "group": "f8017662a8ef0b7a8bef53315cfa411722a109a753a2ae3e4f9be9624860d7d4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_004",
+      "group": "1e7a7454978ae6b4724d3f4ded55337380556a5789cdc1dcf6b4f97f9579d4e0",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_056",
+      "group": "1e7a7454978ae6b4724d3f4ded55337380556a5789cdc1dcf6b4f97f9579d4e0",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_335",
+      "group": "1e7a7454978ae6b4724d3f4ded55337380556a5789cdc1dcf6b4f97f9579d4e0",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_351",
+      "group": "1e7a7454978ae6b4724d3f4ded55337380556a5789cdc1dcf6b4f97f9579d4e0",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_055",
+      "group": "718441ee685820788e718a94f35a08a7d6534a256d64bef36a3ba176beab8c6a",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_178",
+      "group": "718441ee685820788e718a94f35a08a7d6534a256d64bef36a3ba176beab8c6a",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_411",
+      "group": "718441ee685820788e718a94f35a08a7d6534a256d64bef36a3ba176beab8c6a",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_483",
+      "group": "718441ee685820788e718a94f35a08a7d6534a256d64bef36a3ba176beab8c6a",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_088",
+      "group": "5833c80c81c8e622b2f7a5fb56ee1d960367e9564a1d169642fe6355629c9057",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_092",
+      "group": "5833c80c81c8e622b2f7a5fb56ee1d960367e9564a1d169642fe6355629c9057",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_095",
+      "group": "5833c80c81c8e622b2f7a5fb56ee1d960367e9564a1d169642fe6355629c9057",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_141",
+      "group": "5833c80c81c8e622b2f7a5fb56ee1d960367e9564a1d169642fe6355629c9057",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_186",
+      "group": "5833c80c81c8e622b2f7a5fb56ee1d960367e9564a1d169642fe6355629c9057",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_516",
+      "group": "ce7b315dd40e40ea768cba163e91f9b63d618b7934336d36950745808e854852",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_517",
+      "group": "ce7b315dd40e40ea768cba163e91f9b63d618b7934336d36950745808e854852",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_518",
+      "group": "ce7b315dd40e40ea768cba163e91f9b63d618b7934336d36950745808e854852",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_519",
+      "group": "ce7b315dd40e40ea768cba163e91f9b63d618b7934336d36950745808e854852",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_520",
+      "group": "ce7b315dd40e40ea768cba163e91f9b63d618b7934336d36950745808e854852",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_065",
+      "group": "00901e5736130af4ed3f58c2d1d99723215c1660f91ce894d772d0a671101773",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_096",
+      "group": "00901e5736130af4ed3f58c2d1d99723215c1660f91ce894d772d0a671101773",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_167",
+      "group": "00901e5736130af4ed3f58c2d1d99723215c1660f91ce894d772d0a671101773",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_235",
+      "group": "00901e5736130af4ed3f58c2d1d99723215c1660f91ce894d772d0a671101773",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_405",
+      "group": "00901e5736130af4ed3f58c2d1d99723215c1660f91ce894d772d0a671101773",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_498",
+      "group": "00901e5736130af4ed3f58c2d1d99723215c1660f91ce894d772d0a671101773",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_043",
+      "group": "1b1e3d673b57b5eaaa1f11bb4330ae13e2c4ffc322c600676f6145a4c5d1ca1b",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_044",
+      "group": "1b1e3d673b57b5eaaa1f11bb4330ae13e2c4ffc322c600676f6145a4c5d1ca1b",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_097",
+      "group": "1b1e3d673b57b5eaaa1f11bb4330ae13e2c4ffc322c600676f6145a4c5d1ca1b",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_225",
+      "group": "1b1e3d673b57b5eaaa1f11bb4330ae13e2c4ffc322c600676f6145a4c5d1ca1b",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_296",
+      "group": "1b1e3d673b57b5eaaa1f11bb4330ae13e2c4ffc322c600676f6145a4c5d1ca1b",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_496",
+      "group": "1b1e3d673b57b5eaaa1f11bb4330ae13e2c4ffc322c600676f6145a4c5d1ca1b",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_046",
+      "group": "d29576c40f8f7b443c6898d4d5bc7c0e4b9f998ba5e367dc6345adaa9c9de81f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_052",
+      "group": "d29576c40f8f7b443c6898d4d5bc7c0e4b9f998ba5e367dc6345adaa9c9de81f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_133",
+      "group": "d29576c40f8f7b443c6898d4d5bc7c0e4b9f998ba5e367dc6345adaa9c9de81f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_144",
+      "group": "d29576c40f8f7b443c6898d4d5bc7c0e4b9f998ba5e367dc6345adaa9c9de81f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_239",
+      "group": "d29576c40f8f7b443c6898d4d5bc7c0e4b9f998ba5e367dc6345adaa9c9de81f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_300",
+      "group": "d29576c40f8f7b443c6898d4d5bc7c0e4b9f998ba5e367dc6345adaa9c9de81f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_435",
+      "group": "d29576c40f8f7b443c6898d4d5bc7c0e4b9f998ba5e367dc6345adaa9c9de81f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_479",
+      "group": "d29576c40f8f7b443c6898d4d5bc7c0e4b9f998ba5e367dc6345adaa9c9de81f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_016",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_080",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_105",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_161",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_195",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_207",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_229",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_265",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_281",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_301",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_305",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_385",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_424",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_448",
+      "group": "411fc507f6e2ede72d1fadb0df058e47ac0cf560ac03790a7dce4da60747c97e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_005",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_040",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_068",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_107",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_111",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_128",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_132",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_174",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_182",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_197",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_243",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_256",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_270",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_302",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_377",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_378",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_383",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_391",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_426",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_462",
+      "group": "09ae073eaa643dcde80c1d10e53b7cc37b55425b2d67f9cf9a9a5d265415c940",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_025",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_032",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_034",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_059",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_071",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_091",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_118",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_119",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_121",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_143",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_145",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_146",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_160",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_175",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_198",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_313",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_334",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_342",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_348",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_361",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_379",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_409",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_428",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_453",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_468",
+      "group": "172733b336f779922cb03a1236fc96e840cfb31aa2793e4398e4b7f420d3c5a9",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_003",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_006",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_018",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_036",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_049",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_050",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_063",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_066",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_077",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_081",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_114",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_158",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_176",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_187",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_189",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_190",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_210",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_220",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_223",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_247",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_259",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_261",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_263",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_271",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_288",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_292",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_299",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_309",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_319",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_321",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_337",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_341",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_343",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_350",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_381",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_384",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_401",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_419",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_421",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_423",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_432",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_436",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_440",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_442",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_447",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_459",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_465",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_476",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_480",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_495",
+      "group": "324a0908cad95a251b838b632360c574b0bdd79f29fdff9636fb1bc0a99ecd74",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_002",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_010",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_060",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_062",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_074",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_078",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_085",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_099",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_104",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_112",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_139",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_155",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_212",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_286",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_287",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_316",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_375",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_402",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_420",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_461",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_492",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_497",
+      "group": "1d5091f5fe6ba87ed6415f7d94d9b05996b2a716f25d15c487c726f6aa2de72f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_024",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_069",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_087",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_102",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_115",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_169",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_170",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_179",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_203",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_211",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_216",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_262",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_272",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_284",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_285",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_303",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_304",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_314",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_386",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_412",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_422",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_452",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_490",
+      "group": "234ee7abfc04299962c4acede6cf6d12fd0b15741a1dca369a7b241182890f1b",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_278",
+      "group": "3b9b6e1d213149e052bcb7d2e436d20b243aab725f2f18779b1f1f8a7cb060fe",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_163",
+      "group": "3cf89b0e923a87334ef95dae423cfcd4dab77212884e43fd3347877f267c88f5",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_368",
+      "group": "3e153d4e7ca177f07ea81c69117e1cd545366c3dc740e960e6d5aff2e4519f87",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_244",
+      "group": "3fb41729ceb5a37d5f7bbcc024772748f8077ca75e7c3ca7fb5e144ad434f24e",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_033",
+      "group": "41c116264a49b0db494af43175203ec79aba26d3d1308fd8c62837f50c86181f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_362",
+      "group": "427286b721659e326350133f950727b52007c33f4e85276083b50455e46ee067",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_122",
+      "group": "427c26d31999edf253aa79394119ef254eb691ca693d8a139f95eee14a7b79ee",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_030",
+      "group": "439c24230b1fd01a3cda054d3702b3947c2bd65ec9aaee004af8e1eb7ce863e9",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_193",
+      "group": "447a41e4ade9f8a25d985f0c90ecd7ed3cccbb3a5e577fdfcc31e14ea9b9998f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_240",
+      "group": "4c3f167c7eb250b013c443099d1eb9b0cd7807d085b9c636be3c493042f7aef8",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_485",
+      "group": "4d45d941b85b722fce1c9343deecc77bb3da548209c97118fdaa95c58d2da511",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_125",
+      "group": "5045a7660305c57c17c024462f9be6ef62bcdb2a17f2e65ac8f23a132454ab9a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_181",
+      "group": "50544a5a61bab43b765359b17ff929f7f43c1b603b66fd79729a8c55e29e8830",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_019",
+      "group": "50886dec69401404044308eea07e4a8fc4ebb1fcc9365a93dec625401f06f587",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_290",
+      "group": "50baa0f3050879a0b5e03ef8374167a313771eeef6d8625762109ca3cf733ab2",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_221",
+      "group": "559228dedde10170a63527fa73ec2f5bbb97c629f50e5923b2bfcf353fb39b1f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_007",
+      "group": "560eae4b598d817a9d338d38441933f99191d86ee497fae2a1d2d53d4bc0e06a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_336",
+      "group": "563c3f924f2631e28dfe0c9fc88743e2f470963e34697fbae15bc16fc700df91",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_135",
+      "group": "56bcb4508c3d6da23efaf781237a5058603b44f48ffc70096620c2b93a4b193e",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_028",
+      "group": "580fd3c7517c190906c6a574262f9d2a56d28f5886483f8c70dc34c7968a508f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_429",
+      "group": "590a1515cc40e4be31a0a738e64df61c6bdaad4228400cd21712b9cf3f42138f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_430",
+      "group": "5d4b89d92017e18208a76b95777532a1d9cf36a745c47606fe21f1bb92aa6985",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_101",
+      "group": "608f957e1893c72a55595f33b555752d9129d985490a5c7ee90f6089d06d90df",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_022",
+      "group": "62552db130660fd85fe0fb3235aff4c10c4e2adf8ffcde7c91cb9539edf6d59b",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_380",
+      "group": "625c1fde3bf1c8bd1b7ec17bc94cfbe11a5b33524b10d5a2bd74758418c137d5",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_054",
+      "group": "65c28da3d83454efc3966a0c05b9df050782a5bd95c3f88739a5dfe43fdd487e",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_327",
+      "group": "669019a3c2e27a6904881a74823a38ebafa5dd49de28df2333dfee0e0caa6927",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_177",
+      "group": "66ef2efd82efcf6e32c85de7e92f284d0fcf73c830b26890f9cfc20a18c97b28",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_466",
+      "group": "67c12759a47c7a6e33da8e8a214e7c85ac026a9476118d1ed84474853b70e905",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_084",
+      "group": "6a97064d44faa7a8d10d5b47baf66c43c13ded380b4f2d4476fb31fc8017eca7",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_283",
+      "group": "6af3f89d8c9d714f433bcec404a43c3fbec1f188b3f5eefcba5dbdc78268a7cd",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_484",
+      "group": "6c452493033f487348a4860774aa3b5639f59501b9d6de48acb9b92a1a244728",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_042",
+      "group": "6d5bb62884a5fbb35efe6641efdfd5bf03b1d7aaba8614045db7ea9e60c53962",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_162",
+      "group": "6de0230b0b03c3964dd30d84ae9028124afb6f8f668a484aa8004a5029ae6679",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_293",
+      "group": "6e9ed82292dfcb953f32beacfdb6c36c617cf9bdac2eb55e3f68405aca336c9d",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_172",
+      "group": "7265fc9516bbe659619eec364e5404fbde0030a92c190e54d2ac61deb2a396f2",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_093",
+      "group": "7332c64cf109041e3d0e509e2953498dfd6ed03deb17f8d3727965e8282a4301",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_035",
+      "group": "75a15532e4c175dc9d558ae2e9b1f17dfb2f27b52840282b61c6a50a85e7757f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_359",
+      "group": "7a7ac53497692f48936e5a1162a5ecb0d5b00d5a71ec46e2afd4fbed720ac61f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_353",
+      "group": "7b39a117bc497ede342bce5dd49920b4a6374e063a689da5dda77c4cda45943b",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_228",
+      "group": "80612e1a797f1cb37724391b50808b8ab21529a7f36ab1f8f55b08fbea081ab2",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_196",
+      "group": "81567415ae8736c771a9f8f79c5cfba029f39cb37f3e6bcfaf30781580691eed",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_308",
+      "group": "838dc2ec18bddd72fdf64280733d3ac784ede613ff650af734a53dd850c4d43b",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_131",
+      "group": "8755cac2482b2ed731d94670c6c88ae615e9f301e20490b077f0ca498caf37dc",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_073",
+      "group": "87f01d61047fd56e4b66c96f1571aba3adcd08a96aeb66e71f579cbd0579a91d",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_306",
+      "group": "8f0730d6bf5262db286e23cbd00ddb3dc7c40789f3e6927896fd64e694dd4ca1",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_289",
+      "group": "8f218c86da88d7ea784adef3f70366e74dc17734be224ea2db0d114605b3f4d0",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_127",
+      "group": "968fbc8f8fda761eb24d2e78ab19422dbee9dbf339a2c4b121104e0bd8c5b6b2",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_251",
+      "group": "9ab70b61842aede08e0bd8ebcc0a424e219066a1d36c1e3cc31f35da4fe8db4a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_014",
+      "group": "9af10716bef670fb8ccc91ddf83b569d54f3689064437ede8cd8550935f8cba3",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_057",
+      "group": "9c9ee0b91512bcfd7dc72d7fe74d2ee18201e3dc811cdeb43ef01340ebeb0e9f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_245",
+      "group": "a20ce8d7211c2083fdd75a04c19a4184eee38e3bd160a3f7f1ecf196a1ce6f0d",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_388",
+      "group": "a42428c932fa06595fb346f8220f6765c803f302559122675051c13ca45fc593",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_376",
+      "group": "aa31f23cff8215fcbd1887d80e17bfea8bb9f0851dcae6c71d0e72b178f98151",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_023",
+      "group": "aafc35ebc44e6912d91052837718283b5c0ba4e95ae3493a57fced176dcfe66c",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_438",
+      "group": "ad7f4c2124f81d26ca845ff579bdc02f70b401648a132d65c86057e736e7d7f9",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_477",
+      "group": "adc0c2fc78a9e58ed023ed06f3ffc7f8d1e518afad4eb9a67282be8bd92a1a8f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_192",
+      "group": "af85a74ee1dd7f38a279f3d4922f4f0aa8d75e2c0c07583f71f125a1a22de692",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_166",
+      "group": "b11e5158382dea5a687e8afdf1952e19f8d8d9c4cb3ffc6fb69653060d9c7368",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_027",
+      "group": "b2d48d688d023df5c93466c83d7cd76cdd955606eea69260106a8222fa75df9a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_320",
+      "group": "b7210fc10a7ae2c174b8fc41d09db35d403d6788116d3d84447315f928bd3558",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_317",
+      "group": "ba5ca80aeac5cf39966ae13228d874134c556494cc4efeb5f79ddeac361a65ed",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_338",
+      "group": "bd0e6a1beaa3d38fd4cb4c77e41074b7bd6176224f8c61eb0a16fc27b454b22a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_130",
+      "group": "bde14022547c5fe8d4b2f6b388a5d4be8ca39f48da5d15e131ea5a97552f7f49",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_260",
+      "group": "bf839773cf2acd14fc9b74f6fb1509b446b38d444e407e91bc81c3cf21fbecad",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_103",
+      "group": "c345ae1f2b7193267e9c5c9fb73aa71e18c8dbe7006848c0c2e3585758408341",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_322",
+      "group": "c60eba82ec80f8c566bffb5d328085c765289602474e17324dced8f6bad8668f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_154",
+      "group": "cb2dbf3ce5b8fc56402a673939ffaef49cdb3eaf1736583bc8b8f224e46b0c11",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_094",
+      "group": "cb4b22ee3d12f74dfd54f229b0281a5a05de5ef3ebd041bc4c6999ebe5c8dad2",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_357",
+      "group": "cdd18d952194538132e33e1f28404852a8a2991f24754e3a0f2b88f3fabcf48a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_352",
+      "group": "cfc12733fa5abe2fee6cb42f581283e812f3fe89caf6181356981bf998c7d488",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_344",
+      "group": "d36aab3d840dd6d2ae746eaa2fc6c20f852a188d2deb6fe62bf166df61afbd3b",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_487",
+      "group": "d4596c7254b028e063e267492ac99b0e6a09e26cd86135d47a13b072528e4f76",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_400",
+      "group": "df2def7f38e7b7b24de187be4e72b450ab92d348974fbf978cfd7e550e0007f0",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_413",
+      "group": "e1467e9f719f8f4c330e8a8f847f0808c3549a4b979355ac1cdf6acd330d8371",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_295",
+      "group": "e1c669569100fa4d6c0990a7978b9c9d693b7eb83cf2183d273621bc1379d952",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_067",
+      "group": "e3fae9259be89e07ecf5f99371f0790c74b2edb0caeb335b7967a9dae8179758",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_214",
+      "group": "e5001b39eebeb3292da40755d3d366dbc0609c8fd61845cacfe2391130565918",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_339",
+      "group": "e7ef78124bc566ce56404d814901eb32875cc8523aa1c05991eb3ec85636317c",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_397",
+      "group": "e88e1516696f2837d8401cf771ee3ee4441dcecb16d4b7202ff997e71e18a639",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_008",
+      "group": "e9bcac137355a09bc2fb67820325921c93c432ec77a52409da04e7440ebdb702",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_149",
+      "group": "eb3f09e28f435f978f864cdc32e23a1b6dfaa1f1ef192b7f0e895fe6fb64a01f",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_279",
+      "group": "eba62858381431cb5ffb9e9a2332843cd5b29a0352f2956e915e9be066f119fd",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_370",
+      "group": "f3111f8b3020e422942c4b86f2611f7c02c1d0a775482293551b0087fb2f66e8",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_201",
+      "group": "f335f211f735b667f73e2e27a64d59eebc3ecdf9a4ad369e8891ef848da62a8c",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_079",
+      "group": "f428462086e7eb9a10a31855818ce9cdbb7073e7ce186f13759f76238a4f2afc",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_469",
+      "group": "f613959c548f98576461d5ce72c996e97cb076163ff236f79cd7469925701a01",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_029",
+      "group": "f8ed44224965b67816c49cd3622b9eb013f491d07c2d108676598d5651363cbf",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_233",
+      "group": "f97e151186c20ef8225e302072edd9b02752c96153287b1f515e9664a88204e0",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_478",
+      "group": "f9e14626e5cb3148dcc4098dfa1ebc98432a5e003d6c96463273904efa38b6ef",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_437",
+      "group": "fb4f7efc2078ac322397e83f07fc6c5c5cd6f304d616cbac663829fe05f06327",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_120",
+      "group": "fc2517fb1d03b555d1658a6c9fc82e373707a69e6c374654b4a71632c67624d9",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_257",
+      "group": "fcdc74ad2ada131dacc8a831089f20b757f64b38ea37ba7caf5c5f4cccd43d78",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_277",
+      "group": "fcf646eeab3d762bdaf6a90005424895df03cfd272cdd5843104093b135c08a0",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_246",
+      "group": "fd5995f90d9739cc6a38dca69623ac4bbe82bb549d02f5442ff4fdd7c5391bfc",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_467",
+      "group": "fec8e937dc493d5ed07be04ea0afa6d73d050c0ba0cc9fa8059012b1c1a9a3b3",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_219",
+      "group": "3dbe4d6a53a5aa87c2d052a8d7cd9ccb08c563f8a745fbe6604c7c878dbe6e51",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_297",
+      "group": "3dbe4d6a53a5aa87c2d052a8d7cd9ccb08c563f8a745fbe6604c7c878dbe6e51",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_185",
+      "group": "4f59fb38dfec2939319769d1825f63f625ea32f9f9aadeb901d1487dae6befcf",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_218",
+      "group": "4f59fb38dfec2939319769d1825f63f625ea32f9f9aadeb901d1487dae6befcf",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_213",
+      "group": "09f7c8c41b53902f2c0daab7f64a88b7acbb30046c843c6c3c426046f788a3a0",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_445",
+      "group": "09f7c8c41b53902f2c0daab7f64a88b7acbb30046c843c6c3c426046f788a3a0",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_464",
+      "group": "09f7c8c41b53902f2c0daab7f64a88b7acbb30046c843c6c3c426046f788a3a0",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_075",
+      "group": "6d3602f22cfb9527d2fbaa1a3246363f28f85955052696bb2f791ac6b2689525",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_340",
+      "group": "6d3602f22cfb9527d2fbaa1a3246363f28f85955052696bb2f791ac6b2689525",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_463",
+      "group": "6d3602f22cfb9527d2fbaa1a3246363f28f85955052696bb2f791ac6b2689525",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_070",
+      "group": "e024129968e2d3a840a9201b5285ec5ee18117a4e6260e0ebe3456199829425e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_241",
+      "group": "e024129968e2d3a840a9201b5285ec5ee18117a4e6260e0ebe3456199829425e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_414",
+      "group": "e024129968e2d3a840a9201b5285ec5ee18117a4e6260e0ebe3456199829425e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_098",
+      "group": "f6d9ba92b9df4a844501c3ebe52154ce4074ab34fc01d361846e97ad892ed2ec",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_394",
+      "group": "f6d9ba92b9df4a844501c3ebe52154ce4074ab34fc01d361846e97ad892ed2ec",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_396",
+      "group": "f6d9ba92b9df4a844501c3ebe52154ce4074ab34fc01d361846e97ad892ed2ec",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_117",
+      "group": "be96092da5f68921d3cf0e8be8cdcba3156c4c7df28da629b7e5464f84453416",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_194",
+      "group": "be96092da5f68921d3cf0e8be8cdcba3156c4c7df28da629b7e5464f84453416",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_232",
+      "group": "be96092da5f68921d3cf0e8be8cdcba3156c4c7df28da629b7e5464f84453416",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_252",
+      "group": "be96092da5f68921d3cf0e8be8cdcba3156c4c7df28da629b7e5464f84453416",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_053",
+      "group": "1f41fc2fbee4fc9af9d9feb43f18dbea4969ade2496ae23e5058e91cdd0a183d",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_142",
+      "group": "1f41fc2fbee4fc9af9d9feb43f18dbea4969ade2496ae23e5058e91cdd0a183d",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_330",
+      "group": "1f41fc2fbee4fc9af9d9feb43f18dbea4969ade2496ae23e5058e91cdd0a183d",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_333",
+      "group": "1f41fc2fbee4fc9af9d9feb43f18dbea4969ade2496ae23e5058e91cdd0a183d",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_415",
+      "group": "1f41fc2fbee4fc9af9d9feb43f18dbea4969ade2496ae23e5058e91cdd0a183d",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_021",
+      "group": "aec43adad46ba36094b0fc4ddd1ec1f35b5882a9ad845693332b40d4e375be28",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_089",
+      "group": "aec43adad46ba36094b0fc4ddd1ec1f35b5882a9ad845693332b40d4e375be28",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_230",
+      "group": "aec43adad46ba36094b0fc4ddd1ec1f35b5882a9ad845693332b40d4e375be28",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_234",
+      "group": "aec43adad46ba36094b0fc4ddd1ec1f35b5882a9ad845693332b40d4e375be28",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_266",
+      "group": "aec43adad46ba36094b0fc4ddd1ec1f35b5882a9ad845693332b40d4e375be28",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_431",
+      "group": "aec43adad46ba36094b0fc4ddd1ec1f35b5882a9ad845693332b40d4e375be28",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_460",
+      "group": "aec43adad46ba36094b0fc4ddd1ec1f35b5882a9ad845693332b40d4e375be28",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_011",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_076",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_086",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_126",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_147",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_159",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_173",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_200",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_238",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_255",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_294",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_332",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_366",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_488",
+      "group": "96a2a2a5d0251572ed43886ec196fb4f17b7a8eeb01ad0a059f1d23d2784ba9e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_116",
+      "group": "87cee471951dc3393e6b9e9307b524d89000f68de1d2d6d49e12e17005a5da9b",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_134",
+      "group": "87cee471951dc3393e6b9e9307b524d89000f68de1d2d6d49e12e17005a5da9b",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_329",
+      "group": "87cee471951dc3393e6b9e9307b524d89000f68de1d2d6d49e12e17005a5da9b",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_387",
+      "group": "87cee471951dc3393e6b9e9307b524d89000f68de1d2d6d49e12e17005a5da9b",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_404",
+      "group": "87cee471951dc3393e6b9e9307b524d89000f68de1d2d6d49e12e17005a5da9b",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_449",
+      "group": "87cee471951dc3393e6b9e9307b524d89000f68de1d2d6d49e12e17005a5da9b",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_026",
+      "group": "d0f72deee90c79218d75900b13308a0cc130a61eb27563a4d2baf91766da2648",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_150",
+      "group": "d0f72deee90c79218d75900b13308a0cc130a61eb27563a4d2baf91766da2648",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_180",
+      "group": "d0f72deee90c79218d75900b13308a0cc130a61eb27563a4d2baf91766da2648",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_184",
+      "group": "d0f72deee90c79218d75900b13308a0cc130a61eb27563a4d2baf91766da2648",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_188",
+      "group": "d0f72deee90c79218d75900b13308a0cc130a61eb27563a4d2baf91766da2648",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_222",
+      "group": "d0f72deee90c79218d75900b13308a0cc130a61eb27563a4d2baf91766da2648",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_470",
+      "group": "d0f72deee90c79218d75900b13308a0cc130a61eb27563a4d2baf91766da2648",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_226",
+      "group": "ddd0c8e2edbf2777ce1ac6f6bbbc9bf63db735cdf2925127bd1e4842fce00c31",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_345",
+      "group": "ddd0c8e2edbf2777ce1ac6f6bbbc9bf63db735cdf2925127bd1e4842fce00c31",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_363",
+      "group": "ddd0c8e2edbf2777ce1ac6f6bbbc9bf63db735cdf2925127bd1e4842fce00c31",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_382",
+      "group": "ddd0c8e2edbf2777ce1ac6f6bbbc9bf63db735cdf2925127bd1e4842fce00c31",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_390",
+      "group": "ddd0c8e2edbf2777ce1ac6f6bbbc9bf63db735cdf2925127bd1e4842fce00c31",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_417",
+      "group": "ddd0c8e2edbf2777ce1ac6f6bbbc9bf63db735cdf2925127bd1e4842fce00c31",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_455",
+      "group": "ddd0c8e2edbf2777ce1ac6f6bbbc9bf63db735cdf2925127bd1e4842fce00c31",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_072",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_123",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_204",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_206",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_231",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_248",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_253",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_254",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_267",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_395",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_450",
+      "group": "414342e44a6ae0b57f04c92a21568ec4f1661be6467aa581dfb75534468ad725",
+      "category": "SPAM"
+    }
+  ],
+  "holdout": [
+    {
+      "id": "email_136",
+      "group": "000aa4453363bbd04d3bc99da6721b7257d690afb5eab25bc02defb6bb5bb5f0",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_058",
+      "group": "0172c9c2a11d074ad0437955b4f6e7a94b9737a83602bce02edead25753fce66",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_227",
+      "group": "066e7a1a58de03646188dd987c841b831e0c759dc0c1bbdf3ea714ee2ae98419",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_499",
+      "group": "0ca79ad8e986e681853f7f724b9c5bf9888a757819c52a75e6169166a688afa4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_031",
+      "group": "0e8278963f047307bbc7a42cd7cf0f5dd322db28af697aa93bd47378407df3ad",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_446",
+      "group": "132c9df2db2eeaa99308cc3f0d589ada956d069221d438bb89c37d6ae5818b77",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_082",
+      "group": "1a5f35c43bd6469554cca13b9589039a6efea3836d98ad3ebb4e4d283fb7e394",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_512",
+      "group": "1aed4975f686cb8300a31c4c13deddf4420fe1c816ebc846346e0f8f6b547daf",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_307",
+      "group": "30d7d1e950cabae892c9c6ae9fc6d88b698c9e139adecf094c19d2f12f81100d",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_061",
+      "group": "315c998628c8743097472fb3108d717c3032cc7e94260ba343c1784bb25d38a4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_494",
+      "group": "3390330a08b463c9f716241d071160834dd43311e80f65803ff0037972a7d166",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_474",
+      "group": "37e13b6c067443a29a5a1b8e44b1a745e440deb9112048153ae3574e412b3966",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_090",
+      "group": "3d79bd0080f32a55c9febfb34d886e4847957aec54b4b0fb3172ba869547dbe8",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_501",
+      "group": "3f0450e408d57d669deecda855e89ca02029d8ddf92876536c81b8640e7a02af",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_013",
+      "group": "403d6f42c93aec4a05d9a18b34afec45c5ab343b78c11728c8ccda9a7e813927",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_408",
+      "group": "4096ae7ed187df868ea57c338a71e01950f8e6f167fc24a74575f74bc3f8abb3",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_152",
+      "group": "465cb609b3306659d5de3a856a15d29448687bf0f3751c5316729a1efcb04780",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_367",
+      "group": "5fd03050c6b04a72b603f7566370e057938f05cf1d6fee06dd1fac960adac18f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_171",
+      "group": "6930e3cbbd1aa865855d1478c8bae5c21adee8e80e86bfefaaf4fe07740c5aff",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_491",
+      "group": "6aefbe4abbf6ab5217d04c3fdc1646ecf4431a81dcfcbd30ce58a2b959bc9f21",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_324",
+      "group": "6b1bb0ce11237e9dbf3ff4e43528fe4bd7316fe69a965ac4eb0e288c09596fc4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_349",
+      "group": "6dedc51fd3e34e9897f494501eecd99628d323be77fa1841c4c7c409105543fb",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_009",
+      "group": "7e56c45c6a6ce0c89ce91d6a39fd374201fdb4908e5827ca1613d2a4e444c5d7",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_454",
+      "group": "7f183ac5e3629709d83d10df6fb665d9f97b339081367c8b370d108ed82607f1",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_064",
+      "group": "86c701cf0bb99d2602d672164de55148f40a04ce0028eef81eca2874b93446a5",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_364",
+      "group": "87e72eeb8c576abbceaaa17dd2f605d2c9e1e36ec622c5950407f3f9c5918d52",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_312",
+      "group": "8d9e823fec04d761976f1f8724e2a3caf51cdc59bbb3cd9bc1793536f572b88a",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_275",
+      "group": "98ad31c8d460002b50d8914a6a51aa0e9c67797b939a5850a8ab9117ac33af97",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_109",
+      "group": "a469223122205e1c1c77b9e20da33060766a998b45bc308a2c55323ddc66bf6e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_503",
+      "group": "a67b3d95e5d1272cd349066f886ad8a9084e119d8d8c68c5dec93a4fa8a3fa5e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_510",
+      "group": "c0a8c6f83526009b2610a35e687c960a43ad17042321a228a40ba80b091b7293",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_129",
+      "group": "c19ba44b59a6cd183f141b0aa3692534dfac4896e5d7ac5c861fa8656a90ecbd",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_113",
+      "group": "c61b00abd086627e46b3f7894b081373f2c3ee35db4dfcbbb4bc67e4aee44cdb",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_416",
+      "group": "e30429d6feb7f2eb1f1b09e537109ff83363110534e884bb08fe291b69d85a42",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_481",
+      "group": "e49875ac2b4a96936c2c25238f111202d506c2944930c95c253ecc6659047dd0",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_398",
+      "group": "e88db30b03ca7d2eb48b4aa801973ddc377bff524dfdf0d4d14e41d4fd627c23",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_273",
+      "group": "e9616e16f97c90ca6fdd9d6db8ea8640005a6467e1a227d4915704c7b53235df",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_505",
+      "group": "f04ceb41121ce6d5ec5b4ec1f5d1ddc566a6785cdd1de86007f84018d88a50c2",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_199",
+      "group": "0bbb3e437b803b57e1ac719b216c1362e9a4127bf6531dda2e8bae223a78e8d3",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_486",
+      "group": "0bbb3e437b803b57e1ac719b216c1362e9a4127bf6531dda2e8bae223a78e8d3",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_513",
+      "group": "190da5229ac0a8d02fabc0ac735f409b77fcc627cb36ebfc7b46f478230a75b4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_514",
+      "group": "190da5229ac0a8d02fabc0ac735f409b77fcc627cb36ebfc7b46f478230a75b4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_282",
+      "group": "1ae4813498b3e09cee9664d318e6011d9a84c04d2e0ef469476513c8fb4661d4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_451",
+      "group": "1ae4813498b3e09cee9664d318e6011d9a84c04d2e0ef469476513c8fb4661d4",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_250",
+      "group": "2515493c2865fb00d1cfe4cc379cd0291079b869c450812e899a08287552792f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_326",
+      "group": "2515493c2865fb00d1cfe4cc379cd0291079b869c450812e899a08287552792f",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_100",
+      "group": "36b32140139ec7bbc76cfb0d9ae9d68ec549d46c9e7a1833445a492d08faa65c",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_456",
+      "group": "36b32140139ec7bbc76cfb0d9ae9d68ec549d46c9e7a1833445a492d08faa65c",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_506",
+      "group": "6e5a3b8be63490c503f4851e9b0c7b86d0499854199cae78ed4c07d57c7d9b77",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_508",
+      "group": "6e5a3b8be63490c503f4851e9b0c7b86d0499854199cae78ed4c07d57c7d9b77",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_502",
+      "group": "ac219c07c186d22d2ed587c8c7b597135d0ae30cde0ddcebca6f384d1664393e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_504",
+      "group": "ac219c07c186d22d2ed587c8c7b597135d0ae30cde0ddcebca6f384d1664393e",
+      "category": "BL_COMPARISON"
+    },
+    {
+      "id": "email_500",
+      "group": "5f3b61b2e905f34e85b47567d6c775bf3be32371f2efe033d5af279fd974de1c",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_108",
+      "group": "83fd0333ee0fb5a0abcef3d2831f45d2caf9391c41935baec09fc682a717195a",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_274",
+      "group": "96ca6ec18b63a9392a6ad24b123e07ff4213cbd3056cf5b7fdebf6e8016d0ebe",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_191",
+      "group": "de03a3f3f3230cfaa9cb68ab9528cb2fb38ad7c19957e1d96dac4aba1e18a7b3",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_471",
+      "group": "e492f5ab38fb55812f165c0045f0326898e4d0584c1e80f12421402a129ed285",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_280",
+      "group": "edb04c9edcd41c5d6d592a04d710266f2011f5cff5c12b8ce0e84e6f22da62c4",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_236",
+      "group": "1a372e7028e546e1a52c28cc8b2a1fab8ad4616f2a496bfc94adf14008b0565f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_406",
+      "group": "1a372e7028e546e1a52c28cc8b2a1fab8ad4616f2a496bfc94adf14008b0565f",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_298",
+      "group": "5647db83ac57019e8905c589f97de0a38a7e172ca8d0c909a2ff4d5dddbacf97",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_425",
+      "group": "5647db83ac57019e8905c589f97de0a38a7e172ca8d0c909a2ff4d5dddbacf97",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_269",
+      "group": "de4ee0bd5f26e9ad319c1618a4a429ade89fe76e9ebf66baafcf0f91e7b7e3fb",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_403",
+      "group": "de4ee0bd5f26e9ad319c1618a4a429ade89fe76e9ebf66baafcf0f91e7b7e3fb",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_472",
+      "group": "de4ee0bd5f26e9ad319c1618a4a429ade89fe76e9ebf66baafcf0f91e7b7e3fb",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_017",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_041",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_045",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_048",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_165",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_224",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_268",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_331",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_355",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_369",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_372",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_373",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_374",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_389",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_439",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_458",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_473",
+      "group": "b3aedaf93994d2ad5ad451fca168dc9af509a57f56ba634405020c1e300d643d",
+      "category": "INVOICE_QUERY"
+    },
+    {
+      "id": "email_393",
+      "group": "02256ec3d5fac59aa5fbe07f6908075e46cde59a347cc88549b5098263a4e9e4",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_358",
+      "group": "03284f0a303541da3766f1774e4440918239b07036fe6c61a055db404da2d49b",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_310",
+      "group": "053c7de1f5698789fc10be537b13606fd3fd68710d45ee5f4ed0f49b2ec14623",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_137",
+      "group": "05e999cd209aedaa43f7f1662054f2fafe33c077085763f1f7cc390ec68535d0",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_157",
+      "group": "066edf5f77a056f8e66a6129c83ec7330dc1a18513d738f6bf6c2edc54fc1e66",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_151",
+      "group": "09a02f9883cccebfdd71386dd0bc79e4bc67d19107effe7a8ae53d038d44b3e0",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_039",
+      "group": "0b094b8bb137242f2672321474dc86f96866c656f604baa4e069a691c3eeed2c",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_360",
+      "group": "0d37bfb76e5fd5ccf51888ea2d83a100fd8f3f61dee5e86914fb2e8f642dfba6",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_217",
+      "group": "0dac3d52b830777216c200545727de31a639ce693f163ca3308b0baea7d7522a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_209",
+      "group": "10ed0ebb5dd121a8ce2c77d63fd1f00e176ae92a7b22458a961cb3901c0072be",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_168",
+      "group": "11d94da6a5e5add4c33ac4692f7aad194e54b4018564d5b786a601c69579b5f7",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_164",
+      "group": "12824d10cd683566efaa67ed0c8b8dd10156a5adc1c29f4c3eb41b5994896c30",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_148",
+      "group": "1b16200c63fb15708ecbb2fab386de3bfc026101077f8a201429a107fb685d62",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_427",
+      "group": "1b3dc6ceb661580aa73f91464bbf74cfa6a1e09838d6a423a11e3e9ea1f3332a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_433",
+      "group": "1f2ecc9aa6d53f89d4db86efab07e5cd36c403603929982f0a5b53e1322ce93a",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_106",
+      "group": "22e8790a56e55b66266d7ea9045264e3f0c003d98ef6a76be3329c16fd5f8b89",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_124",
+      "group": "2391fa2817663d0cd321ac0d697da563aa4e8799777b7d96cece4323f7e23d0d",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_475",
+      "group": "2dce88ff713aa1e2e9193ddc49ee9464f470b875f2f92494274f19f45865b0e0",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_443",
+      "group": "2dde03890c338a27f2865d5f981af70272472aabec96b9f28d28c4baa42eaedf",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_020",
+      "group": "309e6ad34db9924c92cf9665b2694da5c31ffd205c81ba533ec15c17c271ecb3",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_183",
+      "group": "30bce966a5f615c9f3318e6a5f722b3d3f3366d6f5340e7014ecdc4916aa9fde",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_311",
+      "group": "31a6de7bb66bd1d219c5e5551bdd0691232168b0b546ad241eca368cf2e71c85",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_202",
+      "group": "32346947e18e31db0d56298ad42f386c55f9c51018c81ff9b5b6c1561a399d7c",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_371",
+      "group": "330c6b68ab2553fd88f289362dca979e99f17152699a2ea9acea3a9c632de1c8",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_205",
+      "group": "34aaeb5bd3ee396be1e40fbeefa9827fa1ae4faf5b785b3ef1d985f428e3c880",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_110",
+      "group": "351a91008e2dadaef45823249c2c315f5ddcd1b6f49e251b539b29c79aa014a5",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_264",
+      "group": "354ebf24b4cdb7110ea40a233febdccbf04ef7da07776b479ac30a2df2bc247c",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_276",
+      "group": "359189950facbfe887491acdba74a89b2a39d55856b6fc74310d2fb412cc0596",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_138",
+      "group": "36490ff5a8883781ead2b6bc5619576a83d0b08e4555b85ef8c36f22122c1090",
+      "category": "SI_REQUEST"
+    },
+    {
+      "id": "email_012",
+      "group": "216d4b41c243801a6c5b29dbe658d8a62597fed5ea107d41a9f6780dc0c6f7eb",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_356",
+      "group": "225e53e78b38035c29ffce7c06bbb7b79810f0ab780e2a2c315652fd1c482d0a",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_083",
+      "group": "31722bb1644f4fccb7bbdf9704f2eafa87c7f6b61ed3df8403574f19c4b8aa70",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_328",
+      "group": "5f7f0a55407873b698aeaf75224775f85b426ab4e85f17cd00cfbe2504e93303",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_037",
+      "group": "60e5ed16244c349933f018df6c3116b87aa9d80e0592fb650c26800831cfcf4c",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_258",
+      "group": "627869e4b545e1968bbdf692754db954c234015577351176484e4d331f6f1f2e",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_323",
+      "group": "6be8b68010661798f83f07f8d8996eb43fa7ee67e941a8e117d1eb47a673c5d8",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_399",
+      "group": "8e6ae09bbdab91004d3f22440b8bdca128eade08174e5a286c9730578745f31f",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_418",
+      "group": "a0942f3ca105217ae6e85481e6e8d12de252e8fa2a91b7f52c68de9e30aec7e3",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_346",
+      "group": "bf0c15e804904b40471eee2a68c5d52b0cec4a94aad3504c27f87cdb1ac22fc4",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_153",
+      "group": "c1f9e2619c715a3c4b2452bf5d6a2b3dedbd2f580c4839771f439d93ac9d8318",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_441",
+      "group": "df92649d2ffef3b5acfe4abba4591c57ce2e14d12e17e2ea63196aa136cb26aa",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_325",
+      "group": "35b1474bbe425ed1438fcfa02baf6c89c93f63e3cca959c01ee6a6e5ff3d1be4",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_347",
+      "group": "35b1474bbe425ed1438fcfa02baf6c89c93f63e3cca959c01ee6a6e5ff3d1be4",
+      "category": "GENERAL"
+    },
+    {
+      "id": "email_015",
+      "group": "10ad29396f711d13b443e8fa412fbbcdd96f740de7c5c1d21cb8f8c38b221533",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_140",
+      "group": "10ad29396f711d13b443e8fa412fbbcdd96f740de7c5c1d21cb8f8c38b221533",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_156",
+      "group": "10ad29396f711d13b443e8fa412fbbcdd96f740de7c5c1d21cb8f8c38b221533",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_392",
+      "group": "10ad29396f711d13b443e8fa412fbbcdd96f740de7c5c1d21cb8f8c38b221533",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_215",
+      "group": "274572f87544320b46809d26b71809e80fc0a7dfe79fc9a37d76f6adecea0b96",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_315",
+      "group": "274572f87544320b46809d26b71809e80fc0a7dfe79fc9a37d76f6adecea0b96",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_365",
+      "group": "274572f87544320b46809d26b71809e80fc0a7dfe79fc9a37d76f6adecea0b96",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_457",
+      "group": "274572f87544320b46809d26b71809e80fc0a7dfe79fc9a37d76f6adecea0b96",
+      "category": "SPAM"
+    },
+    {
+      "id": "email_489",
+      "group": "274572f87544320b46809d26b71809e80fc0a7dfe79fc9a37d76f6adecea0b96",
+      "category": "SPAM"
+    }
+  ],
+  "independentSha256": "d6e1659805a32d41502cf501ba9921876dc638ee873f47b78af7d10d589f22f2",
+  "independentCount": 32,
+  "claim": "Classification only. No SI/BL field extraction, official composite score, operational false-clear rate or measured Gmail automation score."
+}
