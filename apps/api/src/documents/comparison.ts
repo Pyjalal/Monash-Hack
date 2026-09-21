@@ -1,12 +1,14 @@
 import { FIELD_NAMES, OperationalDecisionSchema, type Attachment, type FieldResult, type OperationalDecision } from '@cargolens/shared';
 import type { CaseRecord } from '../store.js';
-import { readAttachment } from './index.js';
+import { normaliseFieldValue } from './value-comparison.js';
+import { readAttachment, type AttachmentReadResult } from './index.js';
+import { candidatesByField, detectedRole, supportedNativeFields } from './field-extraction.js';
 import { readAttachmentWithRecovery, type AttachmentRecoveryResult } from './recovery.js';
 
 type Span = NonNullable<FieldResult['si']>;
 interface Line { text: string; locator: string; trusted: boolean }
 export interface ComparisonEvidence { attachmentId: string; recovery: AttachmentRecoveryResult }
-interface Document { attachment: Attachment; sha256: string; lines: Line[]; blockers: string[] }
+interface Document { attachment: Attachment; sha256: string; lines: Line[]; blockers: string[]; reading?: AttachmentReadResult }
 const aliases: Record<typeof FIELD_NAMES[number], string[]> = {
   shipper: ['shipper'], consignee: ['consignee'], notify_party: ['notify party'],
   port_of_loading: ['port of loading'], port_of_discharge: ['port of discharge'],
@@ -19,6 +21,8 @@ function sourceLines(attachment: Attachment, recovery: AttachmentRecoveryResult)
   const document: Document = { attachment, sha256: before.sha256, lines: [], blockers: [] };
   if (attachment.sha256 && attachment.sha256 !== before.sha256) document.blockers.push('SOURCE_HASH_CHANGED');
   if (before.status === 'READABLE') {
+    document.reading = before;
+    if (detectedRole(before.text) === 'other') document.blockers.push('WRONG_DOC_TYPE');
     for (const span of before.spans) {
       const locator = span.kind === 'line' ? `line:${span.line}` : span.kind === 'page' ? `page:${span.page}` : `cell:${span.sheet}!${span.cell}`;
       for (const text of span.text.split(/\r?\n/)) if (text.trim()) document.lines.push({ text, locator, trusted: true });
@@ -52,27 +56,36 @@ function entries(document: Document, labels: string[]): Line[] {
 }
 function value(line: Line): string { return line.text.slice(line.text.indexOf(':') + 1).trim(); }
 function role(document: Document): 'si' | 'bl' | null {
-  const si = document.lines.filter(line => /^shipping instructions?$/i.test(line.text.trim()));
-  const bl = document.lines.filter(line => /^(?:draft )?bill of lading$/i.test(line.text.trim()));
-  return si.length === 1 && !bl.length && si[0].trusted ? 'si' : bl.length === 1 && !si.length && bl[0].trusted ? 'bl' : null;
+  const header = document.lines.slice(0, 3);
+  if (header.some(line => !line.trusted)) return null;
+  const detected = detectedRole(header.map(line => line.text).join('\n'));
+  return detected === 'si' || detected === 'bl' ? detected : null;
 }
 function field(document: Document, name: typeof FIELD_NAMES[number]): { span?: Span; canonical?: string; outcome?: FieldResult['outcome'] } {
+  if (document.reading && candidatesByField(document.reading.candidates ?? [])[name].length > 1) return { outcome: 'AMBIGUOUS' };
   const rows = entries(document, aliases[name]);
+  if (!rows.length && document.reading) {
+    const selected = supportedNativeFields(document.reading)[name];
+    const candidate = document.reading.candidates?.find(candidate => candidate.id === selected?.candidateId);
+    if (selected && candidate) {
+      const start = candidate.source.valueSpans[0]?.start;
+      const end = candidate.source.valueSpans.at(-1)?.end;
+      if (start === undefined || end === undefined || document.reading.text.slice(start, end) !== selected.value) return { outcome: 'AMBIGUOUS' };
+      const input = name === 'gross_weight_kg' && /\bkgs?\b/i.test(candidate.label) && /^[\d,.]+$/.test(selected.value) ? `${selected.value} KG` : selected.value;
+      const canonical = normaliseFieldValue(name, input);
+      if (canonical === null) return { outcome: 'AMBIGUOUS' };
+      return { canonical, span: { attachmentId: document.attachment.id, sha256: document.sha256, locator: `chars:${start}-${end}`, text: selected.value } };
+    }
+  }
   if (!rows.length) return { outcome: 'MISSING' };
   if (rows.length !== 1) return { outcome: 'AMBIGUOUS' };
   const line = rows[0]; if (!line.trusted) return { outcome: 'UNREADABLE' };
   const text = value(line); if (!text) return { outcome: 'MISSING' };
-  let canonical = normalize(text);
-  if (name === 'container_count') {
-    if (!/^\d+$/.test(text) || !Number.isSafeInteger(Number(text)) || Number(text) < 1) return { outcome: 'AMBIGUOUS' };
-    canonical = String(Number(text));
-  }
-  if (name === 'gross_weight_kg') {
-    const kgLabel = /\bkg\b/i.test(line.text.slice(0, line.text.indexOf(':')));
-    const match = text.match(/^(\d+(?:\.\d+)?)\s*(kg)?$/i);
-    if (!match || (!kgLabel && !match[2]) || !Number.isFinite(Number(match[1])) || Number(match[1]) <= 0) return { outcome: 'AMBIGUOUS' };
-    canonical = String(Number(match[1]));
-  }
+  if (/^(?:\?+|_+|[-–—]+|TBA|TBD|N\s*\/\s*A|PENDING)$/iu.test(text)) return { outcome: 'MISSING' };
+  const kgLabel = /\bkg\b/i.test(line.text.slice(0, line.text.indexOf(':')));
+  const input = name === 'gross_weight_kg' && kgLabel && /^[\d,.]+$/.test(text) ? `${text} KG` : text;
+  const canonical = normaliseFieldValue(name, input);
+  if (canonical === null) return { outcome: 'AMBIGUOUS' };
   return { span: { attachmentId: document.attachment.id, sha256: document.sha256, locator: line.locator, text: line.text }, canonical };
 }
 

@@ -20,12 +20,11 @@ CargoLens is a shipping-document intelligence workspace for operations teams
 that live in their inbox. It classifies every inbound email — comparison
 request, SI request, invoice query, general, spam — scores its urgency, reads
 the attached Shipping Instruction and draft Bill of Lading, compares the seven
-fields that decide a shipment, and escalates to a human the moment evidence
-runs out. Typed judgments come from [TypeSafe Jev](https://docs.typesafe.ai);
+fields that decide a shipment, and requests clearer evidence when bounded recovery cannot resolve a case. Typed judgments come from [TypeSafe Jev](https://docs.typesafe.ai);
 arithmetic, aliases, completion rules and every state transition stay in
 deterministic, unit-tested code.
 
-The product is designed so that no credential ever reaches the browser: the
+Provider and mailbox credentials stay on the server: the
 Chrome extension calls a local API that owns the TypeSafe key, the dashboard is
 gated by a bearer token, and Gmail access flows through an encrypted OAuth
 connection. Jev proposes; code verifies; only source evidence can clear a
@@ -47,12 +46,10 @@ flowchart LR
   Verified -.-> Export["Benchmark projection, separate contract"]
 ```
 
-Classification is the fast path: one bounded Jev request per email, badges
-streamed to the extension and dashboard over server-sent events. Verification
+Classification is the fast path: bounded packed Jev requests classify multiple emails. The dashboard receives server-sent events; extension previews use background runtime messages. Verification
 is the careful path: documents are read independently, candidates carry exact
 source locations, and a comparison claim is saved only after source-proof
-validation. Both paths share one case store, so the extension badge, the
-dashboard and the benchmark export always describe the same operational state.
+validation. Full cases and benchmark exports share the durable case store. Extension badges classify visible snippets only and cannot establish document verification.
 
 ## What works now — and what still needs a partner
 
@@ -69,6 +66,9 @@ Implemented today:
   recovery reader that preserve native evidence separately, validate source
   hashes, and bound process concurrency, output size and timeouts. See the
   [recovery reader contract](apps/api/src/documents/README.md#optional-ocr-recovery).
+  A dedicated verification harness recovers all 15 supplied scans under neutral
+  and misleading filenames with hash-checked snapshots
+  ([details](tools/eval/ocr-verification/README.md)).
 - Gmail OAuth client with PKCE, thread/reference lookup, durable outbound
   queue, four reply templates, stale-source checks and resume fixtures.
 - Source-proof validation before saving a comparison claim or queueing a
@@ -77,21 +77,30 @@ Implemented today:
 - Version-bound operational drafts shared with the Gmail queue, and optional
   OpenRouter recovery of unresolved fields from selected server-read regions.
   Recovery candidates remain proposals until the field comparator validates them.
+- Extension inbox triage: hide-spam, urgent pinning and plain-language smart
+  filters judged by Jev, configured from the extension settings page
+  (see [Inbox actions and smart filters](#inbox-actions-and-smart-filters)).
 - A one-command organizer evaluation runner with frozen grouped manifests,
   export provenance, explicit failed rows, and source-backed dispute overlays.
 
 Still assigned integration work:
 
-- The document-role/field comparator, OCR-aware field integration and vision
-  escalation, automatic recovery orchestration, dashboard
-  and workflow builder.
-- Low-confidence or conflicting classifications emit recovery signals; a
-  recovery model is not yet connected end to end.
+- The document-role/field comparator and OCR-aware field integration. The
+  OpenRouter vision-escalation provider exists
+  ([VISION.md](apps/api/src/ai/VISION.md)) but is not yet wired into the API;
+  automatic recovery orchestration, dashboard and workflow builder are also
+  pending.
+- Low-confidence or conflicting classifications emit recovery signals. Server
+  side text recovery is connected end to end through the authenticated
+  `POST /cases/:id/recover` route; automatic orchestration and semantic
+  acceptance by the comparator remain pending.
 
 A request for a future draft remains **awaiting documents**, never verified
 solely because the benchmark labels it `OK`.
 
 ## Quick start
+
+For a complete teammate walkthrough, including PowerShell, OCR, the dashboard and a no-key synthetic demo, see [Setup and demo](docs/setup.md).
 
 ### Prerequisites
 
@@ -102,12 +111,12 @@ solely because the benchmark labels it `OK`.
 ### Environment variables
 
 Copy `.env.example` to `.env`. The running API requires `TYPESAFE_API_KEY` and
-`DASHBOARD_TOKEN`; generate a long random token and keep it server-side.
+`DASHBOARD_TOKEN`; generate a long random token. An authorized operator enters this workspace token into the dashboard; provider and mailbox credentials remain server-side.
 
 | Variable | Purpose |
 |---|---|
 | `TYPESAFE_API_KEY` | Jev inference. Never placed in the extension. |
-| `DASHBOARD_TOKEN` | Bearer token for every route except `/health` and `/classify`. |
+| `DASHBOARD_TOKEN` | Workspace bearer token; public local preview and OAuth callback routes are listed below. |
 | `HOST` / `PORT` | API bind address, default `127.0.0.1:3001`. |
 | `DATABASE_PATH` | SQLite location, default `runtime/cargolens.sqlite`. |
 | `DATASET_ROOT` | Dataset root, default `training_data/sdoc-hackathon-docker/extracted/data_v2`. |
@@ -122,20 +131,14 @@ Copy `.env.example` to `.env`. The running API requires `TYPESAFE_API_KEY` and
 
 ```sh
 npm ci
-cp .env.example .env
-```
-
-Set `DASHBOARD_TOKEN` to a long random token and choose one Jev transport in `.env`: `AI_PROVIDER=typesafe` with `TYPESAFE_API_KEY` (the default), or `AI_PROVIDER=openrouter` with `OPENROUTER_API_KEY` and `OPENROUTER_MODEL=typesafe/jev-1.13`. Then run:
-
-```sh
+cp .env.example .env   # then set TYPESAFE_API_KEY and DASHBOARD_TOKEN
 npm run dev
 ```
 
 The API binds to `http://127.0.0.1:3001`. `GET /health` and `POST /classify`
 are public local endpoints. Health includes a `classifierRevision` hash so
 preview clients can invalidate cached results when the model, questions or
-packing configuration changes. Every other route requires
-`Authorization: Bearer <DASHBOARD_TOKEN>`. The extension never receives API
+packing configuration changes. Operational routes require `Authorization: Bearer <DASHBOARD_TOKEN>`; `/rules/evaluate` and the OAuth callback/result routes are also public as listed below. The extension never receives API
 keys or this token. Local environment files, SQLite databases and evaluation
 outputs are ignored by Git.
 
@@ -166,7 +169,8 @@ npm run build:extension
 
 In Chrome's extension manager, enable Developer mode, choose **Load unpacked**,
 and select `apps/extension/dist`. Open the CargoLens popup to check the local
-API and enable previews. The supported inbox hosts are Gmail, Outlook Live and
+API and enable previews, or open **Inbox actions & smart filters** for the full
+settings page. The supported inbox hosts are Gmail, Outlook Live and
 Outlook Office. `Ctrl+Shift+L` toggles previews. Reload existing mailbox tabs
 after loading or updating the extension.
 
@@ -282,8 +286,7 @@ flowchart TD
 
 Three boundaries hold the system honest:
 
-1. **Labels never enter inference.** Ground truth, filenames and email IDs are
-   evaluation-only. Jev answers what the sender requests and what the source
+1. **Labels never enter inference.** Ground-truth labels and corrected references are evaluation-only. Filenames and IDs support retrieval and provenance, never ground-truth lookup or a shortcut to a field value. Jev answers what the sender requests and what the source
    establishes — never which answer a scorer would reward.
 2. **The model proposes, code decides.** Jev returns typed choices and
    probabilities; parsing, arithmetic, alias handling, completion rules and
@@ -303,11 +306,16 @@ npm run lint      # eslint
 `npm run eval -- --prepare` freezes the official dataset, scorer, grouped splits
 and configuration without model calls. `npm run eval` runs the API classification
 pipeline, exports supported decisions and invokes the unchanged organizer scorer.
-Incomplete comparison states are explicit export failures, so a partial run is
-never presented as a valid headline score. Live evaluation makes paid model calls.
+`npm run eval -- --offline` exercises the plumbing with no provider calls and
+deliberately exits nonzero. Incomplete comparison states are explicit export
+failures, so a partial run is never presented as a valid headline score. Live
+evaluation makes paid model calls.
 See the [evaluation guide](tools/eval/README.md) for offline checks, dispute
 adjudication, and final-run protection. `npm run eval:classify` retains the separate
-category tuning harness.
+category tuning harness. OCR recovery has a dedicated verification harness
+(`tools/eval/src/ocr-verification.ts` plus a frozen label audit) proving all 15
+supplied scans recover under neutral and misleading filenames; see
+[its README](tools/eval/ocr-verification/README.md).
 
 ## Measured results
 
@@ -321,6 +329,14 @@ new provider calls.
 
 These are individual measured runs, not latency guarantees, and exclude
 attachment extraction and comparison.
+
+On 21 September 2026, the shared API/evaluation pipeline processed all 520 rows
+including conservative document comparison in 12.58 seconds. Category macro-F1
+was 0.97938; 359 rows exported and 161 failed explicitly. Exact defect detection
+was 0/46 and review recall 0/20. These targets are not met, and the partial
+submission has no valid headline score. See the [issue #37 report and frozen
+artifacts](tools/eval/reports/issue37-20260921/README.md) for actual results,
+failure accounting, environment versions and reproducibility hashes.
 
 Smart-filter presets were calibrated on 20 September 2026: 40 dataset rows
 (stratified, 8 per category, rendered as inbox snippets) plus 12 hand-written
@@ -348,23 +364,31 @@ for the schema, categories, edge cases, and regeneration instructions.
 
 ```
 apps/api/           Hono service: pipeline, document readers, OCR recovery, Gmail connector
-apps/dashboard/     React dashboard workspace (reserved)
+apps/dashboard/     React/Vite operations dashboard
 apps/extension/     MV3 Chrome extension for Gmail and Outlook web
-packages/shared/    Zod schemas and Jev question contracts
-tools/eval/         Classification evaluation harness
+packages/shared/    Zod schemas plus Jev question and smart-filter contracts
+tools/eval/         Evaluation harness: official runner, smart filters, OCR verification
 tools/ocr-sidecar/  Python/Tesseract OCR CLI
-docs/               Connector and adapter verification notes
+docs/               Connector, backend and acceptance verification notes
 training_data/      SDOC dataset, attachments and organizer scorer
 ```
 
 ## Known limitations and next proof points
 
-- The comparator must still populate source-validated seven-field decisions
-  before the evaluation runner can produce a complete submission. Dashboard and
-  workflow builder are pending integration work.
+- The source-only comparator now runs during dataset import and evaluation,
+  but its conservative layout/role/reference support does not yet produce a
+  complete official submission. Failures remain explicit and block a valid score.
 - Live Gmail read, threading and attachment ingestion were verified on
   2026-09-20 with sending disabled; delivery is covered by fixtures only.
 - Text recovery is available through the authenticated API; automatic recovery
   orchestration and semantic acceptance by the comparator remain pending.
-- Measured results cover classification only; extraction, comparison and OCR
-  paths are validated by unit tests and fixtures, not yet by a full scored run.
+- The latest full-inbox run measures classification and comparison attempts;
+  successful official document verification and final independent document
+  scorecards remain outstanding.
+
+
+### Extension document verification
+
+After rebuilding and reloading the extension, choose **Open document verification** in its popup. Connect to the configured local CargoLens API using the dashboard token, then select an imported message. The page displays all seven field outcomes, source excerpts and locators, known mismatches, blockers, and the current decision version. The token remains in page memory and is never saved to Chrome sync storage. Use **Refresh evidence** after new documents arrive. Inbox snippet labels remain intent previews, not document-clearance decisions.
+
+`AI_PROVIDER=openrouter` selects the OpenRouter Jev transport for API classification; the default is `typesafe`. Smart filters use the direct TypeSafe key when configured. Extraction research commands retain source candidates and vision proposals separately; unsupported units and incomplete evidence cannot establish a verified match. The Fly image includes the Python/Tesseract OCR runtime and excludes the additional evaluation dataset from the production image.

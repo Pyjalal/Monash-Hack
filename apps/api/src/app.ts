@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { bodyLimit } from 'hono/body-limit';
 import { cors } from 'hono/cors';
 import { streamSSE } from 'hono/streaming';
+import { serveStatic } from '@hono/node-server/serve-static';
 import { z } from 'zod';
 import { ClassifyRequestSchema, FieldNameSchema, OperationalDecisionSchema, type ClassifyResult } from '@cargolens/shared';
 import { RulesRequestSchema } from '@cargolens/shared/rules';
@@ -20,7 +21,7 @@ import { readAttachment } from './documents/index.js';
 import { compareDocuments } from './documents/comparison.js';
 import { dashboardReports } from './dashboard.js';
 
-export type AppOptions = { store: Store; service: ClassificationService; dashboardToken: string; datasetRoot?: string; allowedOrigins?: string[];
+export type AppOptions = { store: Store; service: ClassificationService; dashboardToken: string; authRequired?: boolean; datasetRoot?: string; dashboardDist?: string; allowedOrigins?: string[];
   dataMode?: 'operational' | 'synthetic';
   documentationContact?: string;
   textRecovery?: TextRecovery; gmailAttachmentRoot?: string;
@@ -44,8 +45,9 @@ export function createApp(options: AppOptions): Hono {
   app.use('*', bodyLimit({ maxSize: 1024 * 1024, onError: c => c.json({ error: 'PAYLOAD_TOO_LARGE' }, 413) }));
   app.use('*', async (c, next) => {
     if (c.req.method === 'GET' && ['/gmail/oauth/callback', '/gmail/connection-result'].includes(c.req.path)) return next();
+    if (c.req.method === 'GET' && (c.req.path === '/' || c.req.path.startsWith('/assets/'))) return next();
     if (c.req.path === '/health' || (['/classify', '/rules/evaluate'].includes(c.req.path) && c.req.method === 'POST') || c.req.method === 'OPTIONS') return next();
-    if (!tokenMatches(c.req.header('Authorization') ?? '', options.dashboardToken)) return c.json({ error: 'UNAUTHORIZED' }, 401);
+    if (options.authRequired !== false && !tokenMatches(c.req.header('Authorization') ?? '', options.dashboardToken)) return c.json({ error: 'UNAUTHORIZED' }, 401);
     await next();
   });
   app.onError((_error, c) => c.json({ error: 'INTERNAL_ERROR' }, 500));
@@ -122,7 +124,7 @@ export function createApp(options: AppOptions): Hono {
       const job = `import-${Date.now()}`;
       const run = reports.begin(emails.map(email => email.id), service.configurationRevision, options.dataMode);
       store.emit('import.started', null, { job, count: emails.length });
-      void Promise.all(emails.map(email => service.processCase(email))).then(() => { run.finish(); store.emit('import.completed', null, { job, count: emails.length, runId: run.id }); })
+      void Promise.all(emails.map(email => service.processCase(email, options.datasetRoot))).then(() => { run.finish(); store.emit('import.completed', null, { job, count: emails.length, runId: run.id }); })
         .catch(() => { run.finish(true); store.emit('import.failed', null, { job }); }).finally(() => { importing = false; });
       return c.json({ job, queued: emails.length, events: '/events' }, 202);
     } catch { importing = false; return c.json({ error: 'IMPORT_FAILED' }, 400); }
@@ -130,7 +132,7 @@ export function createApp(options: AppOptions): Hono {
   app.post('/cases/:id/retry', async c => {
     const record = store.getCase(c.req.param('id'));
     if (!record) return c.json({ error: 'NOT_FOUND' }, 404);
-    await service.processCase(record.email); return c.json(store.getCase(record.email.id));
+    await service.processCase(record.email, record.email.id.startsWith('gmail:') ? undefined : options.datasetRoot); return c.json(store.getCase(record.email.id));
   });
   app.post('/cases/:id/decision', async c => {
     const parsed = OperationalDecisionSchema.safeParse(await c.req.json().catch(() => null));
@@ -291,5 +293,8 @@ export function createApp(options: AppOptions): Hono {
       if (events.length === 0) { await stream.writeSSE({ event: 'heartbeat', data: '{}' }); await stream.sleep(1000); }
     }
   }));
+  if (options.dashboardDist) {
+    app.use('*', serveStatic({ root: options.dashboardDist, index: 'index.html' }));
+  }
   return app;
 }

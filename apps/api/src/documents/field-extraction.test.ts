@@ -81,7 +81,8 @@ describe("hybrid SI/BL field extraction", () => {
   it("rejects wrong-role and invented fallback selections without replacing supported native fields", async () => {
     const changed = reading(expected.replace("Shipper/Exporter", "Exporter legal entity"));
     const wrongRole = await extractDocumentFields(changed, "si", async input => completeFallback(input, "bl"));
-    expect(wrongRole.status).toBe("wrong_document_type");
+    expect(wrongRole.status).toBe("unresolved");
+    expect(wrongRole.fields.consignee?.method).toBe("deterministic");
 
     const unsafe = await extractDocumentFields(changed, "si", async input => {
       const value = completeFallback(input);
@@ -100,6 +101,22 @@ describe("hybrid SI/BL field extraction", () => {
     expect(result).toMatchObject({ status: "unresolved", method: "llm_fallback", unresolvedFields: ["shipper"] });
     expect(Object.keys(result.fields)).toHaveLength(FIELD_NAMES.length - 1);
     expect(result.assessment.reasons).toContain("fallback_failed");
-    expect(result.fallbackError).toBe("provider unavailable");
+    expect(result.fallbackError).toBe("Field recovery failed");
   });
+});
+
+
+it("blocks conflicting role headers before consulting a model", async () => {
+  const fallback = vi.fn();
+  const result = await extractDocumentFields(reading(`BILL OF LADING
+${expected}`), "si", fallback);
+  expect(result.status).toBe("unresolved");
+  expect(result.assessment.detectedRole).toBe("ambiguous");
+  expect(fallback).not.toHaveBeenCalled();
+});
+it.each([NaN, Infinity, 1.1, -1])("rejects invalid fallback probability %s", async confidence => {
+  const input = reading(expected.replace("Shipper/Exporter", "Exporter legal entity"));
+  const result = await extractDocumentFields(input, "si", async request => ({ detectedRole: "si", fields: { shipper: { candidateId: request.candidates[0].id, confidence } } }));
+  expect(result.unresolvedFields).toContain("shipper");
+  expect(result.fields.consignee?.value).toBe("Buyer Limited");
 });

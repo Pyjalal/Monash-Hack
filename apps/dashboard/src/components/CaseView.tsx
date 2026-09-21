@@ -319,7 +319,7 @@ export function CaseView({
           </div>
           <div className="next-action">
             <div>
-              <p className="overline">NEXT ACTION</p>
+              <p className="overline">Next action</p>
               <h3>{d ? human(d.nextAction) : "Classify this email"}</h3>
               <p className="small muted">
                 {d?.requestedAction === "REQUEST_DRAFT"

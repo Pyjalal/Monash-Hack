@@ -57,20 +57,21 @@ const LABEL_ALIASES: Record<FieldName, readonly string[]> = {
 const aliasIndex = new Map<string, FieldName>(Object.entries(LABEL_ALIASES).flatMap(([field, aliases]) =>
   aliases.map(alias => [alias, field as FieldName] as const)));
 
-function normalizedLabel(value: string): string {
+export function normalizedLabel(value: string): string {
   const words = value.normalize("NFKC").toLocaleLowerCase("en-US")
     .replace(/\p{Script=Han}+/gu, " ").replace(/[./_-]+/gu, " ").replace(/[^\p{L}\p{N}]+/gu, " ").trim().split(/\s+/gu);
   return words.filter((word, index) => word !== words[index - 1]).join(" ");
 }
 
-function detectedRole(text: string): FormatAssessment["detectedRole"] {
+export function detectedRole(text: string): FormatAssessment["detectedRole"] {
   const header = text.split(/\r?\n/gu).filter(line => line.trim()).slice(0, 3).join("\n").slice(0, 500);
   const instruction = /\bshipping\s+instructions?\b|\b(?:bl|bill\s+of\s+lading)\s+instruction\b/iu.test(header);
   const si = instruction;
-  const bl = !instruction && /\bbill\s+of\s+lading\b|\bdraft\s+b\s*\/\s*l\b/iu.test(header);
+  const bl = header.split("\n").some(line => /\bbill\s+of\s+lading\b|\bdraft\s+b\s*\/\s*l\b/iu.test(line)
+    && !/\b(?:bl|bill\s+of\s+lading)\s+instruction\b/iu.test(line));
   const other = /\bpacking\s+list\b|\bcommercial\s+invoice\b|\bcertificate\s+of\s+origin\b/iu.test(header);
   if (other && !si && !bl) return "other";
-  if (si && bl) return "ambiguous";
+  if ((si && bl) || (other && (si || bl))) return "ambiguous";
   if (si) return "si";
   if (bl) return "bl";
   return "unknown";
@@ -85,7 +86,7 @@ function plausibleValue(field: FieldName, value: string): boolean {
   return /[\p{L}\p{N}]/u.test(compact);
 }
 
-function candidatesByField(candidates: LabelValueCandidate[]): Record<FieldName, LabelValueCandidate[]> {
+export function candidatesByField(candidates: LabelValueCandidate[]): Record<FieldName, LabelValueCandidate[]> {
   const result = {} as Record<FieldName, LabelValueCandidate[]>;
   for (const field of FIELD_NAMES) result[field] = [];
   for (const candidate of candidates) {
@@ -116,7 +117,7 @@ function deterministicFields(reading: AttachmentReadResult): Record<FieldName, E
   })) as Record<FieldName, ExtractedDocumentField>;
 }
 
-function supportedNativeFields(reading: AttachmentReadResult): Partial<Record<FieldName, ExtractedDocumentField>> {
+export function supportedNativeFields(reading: AttachmentReadResult): Partial<Record<FieldName, ExtractedDocumentField>> {
   const grouped = candidatesByField(reading.candidates ?? []);
   const fields: Partial<Record<FieldName, ExtractedDocumentField>> = {};
   for (const field of FIELD_NAMES) {
@@ -141,7 +142,8 @@ export async function extractDocumentFields(
 ): Promise<DocumentFieldExtraction> {
   const assessment = assessExpectedFormat(reading, expectedRole);
   if (reading.status !== "READABLE") return { status: "unreadable", method: null, assessment, fields: {}, unresolvedFields: [...FIELD_NAMES] };
-  if (assessment.detectedRole === "other" || (assessment.detectedRole !== "unknown" && assessment.detectedRole !== "ambiguous" && assessment.detectedRole !== expectedRole)) return {
+  if (assessment.detectedRole === "ambiguous") return { status: "unresolved", method: null, assessment, fields: {}, unresolvedFields: [...FIELD_NAMES] };
+  if (assessment.detectedRole === "other" || (assessment.detectedRole !== "unknown" && assessment.detectedRole !== expectedRole)) return {
     status: "wrong_document_type", method: "deterministic", assessment, fields: {}, unresolvedFields: [...FIELD_NAMES],
   };
   if (assessment.matchesExpectedFormat) return {
@@ -154,17 +156,17 @@ export async function extractDocumentFields(
   let selection: FallbackSelection;
   try {
     selection = await fallback({ expectedRole, text: reading.text.slice(0, 16_000), candidates, requestedFields });
-  } catch (error) {
+  } catch {
     return {
       status: "unresolved", method: "llm_fallback",
       assessment: { ...assessment, reasons: [...assessment.reasons, "fallback_failed"] },
-      fallbackError: error instanceof Error ? error.message.slice(0, 500) : "Unknown fallback error",
+      fallbackError: "Field recovery failed",
       fields: nativeFields, unresolvedFields: requestedFields,
     };
   }
   if (selection.detectedRole !== expectedRole) return {
-    status: "wrong_document_type", method: "llm_fallback", assessment, fallbackSelection: selection,
-    fields: {}, unresolvedFields: [...FIELD_NAMES],
+    status: "unresolved", method: "llm_fallback", assessment: { ...assessment, reasons: [...assessment.reasons, "fallback_role_conflict"] }, fallbackSelection: selection,
+    fields: nativeFields, unresolvedFields: requestedFields,
   };
 
   const minimumConfidence = options.minimumFallbackConfidence ?? 0.75;
@@ -173,7 +175,7 @@ export async function extractDocumentFields(
   for (const field of requestedFields) {
     const selected = selection.fields[field];
     const candidate = selected ? available.get(selected.candidateId) : undefined;
-    if (!selected || !candidate || selected.confidence === null || selected.confidence < minimumConfidence || !plausibleValue(field, candidate.value)) continue;
+    if (!selected || !candidate || selected.confidence === null || !Number.isFinite(selected.confidence) || selected.confidence > 1 || selected.confidence < minimumConfidence || !plausibleValue(field, candidate.value)) continue;
     fields[field] = { value: candidate.value, candidateId: candidate.id, confidence: selected.confidence, method: "llm_fallback" };
   }
   const unresolvedFields = FIELD_NAMES.filter(field => !fields[field]);

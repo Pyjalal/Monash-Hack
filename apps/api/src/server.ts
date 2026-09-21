@@ -3,9 +3,9 @@ import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { serve } from '@hono/node-server';
 import { questionVersion } from '@cargolens/shared/questions';
+import { createOpenRouterJevProvider, createOpenRouterJevBatchProvider } from './ai/openrouter.js';
 import { createJevProvider } from './ai/jev.js';
 import { createJevBatchProvider } from './ai/jev-batch.js';
-import { createOpenRouterJevBatchProvider, createOpenRouterJevProvider } from './ai/openrouter.js';
 import { createJevRuleEvaluator, RuleService } from './ai/rules.js';
 import { createApp } from './app.js';
 import { ClassificationService } from './pipeline.js';
@@ -14,25 +14,21 @@ import { GmailAutomation, GmailClient } from './gmail/index.js';
 import { GmailAuthorization } from './gmail/oauth.js';
 import { GmailPoller } from './gmail/polling.js';
 import { TextRecovery } from './ai/text-recovery.js';
+import { loadDataset } from './dataset.js';
 
-if (!process.env.DASHBOARD_TOKEN) throw new Error('Set DASHBOARD_TOKEN in the local .env file');
+const aiProvider = process.env.AI_PROVIDER ?? 'typesafe';
+if (!['typesafe', 'openrouter'].includes(aiProvider)) throw new Error('AI_PROVIDER must be typesafe or openrouter');
+const apiKey = aiProvider === 'openrouter' ? process.env.OPENROUTER_API_KEY : process.env.TYPESAFE_API_KEY;
+if (!apiKey || !process.env.DASHBOARD_TOKEN) throw new Error('Set the selected provider API key and DASHBOARD_TOKEN in the local environment');
 const dbPath = resolve(process.env.DATABASE_PATH ?? 'runtime/cargolens.sqlite');
 mkdirSync(dirname(dbPath), { recursive: true });
 const store = new Store(dbPath);
-const aiProvider = process.env.AI_PROVIDER ?? 'typesafe';
-if (aiProvider !== 'typesafe' && aiProvider !== 'openrouter') throw new Error('AI_PROVIDER must be typesafe or openrouter');
-if (aiProvider === 'typesafe' && !process.env.TYPESAFE_API_KEY) throw new Error('Set TYPESAFE_API_KEY when AI_PROVIDER=typesafe');
-if (aiProvider === 'openrouter' && !process.env.OPENROUTER_API_KEY) throw new Error('Set OPENROUTER_API_KEY when AI_PROVIDER=openrouter');
 const model = aiProvider === 'openrouter' ? process.env.OPENROUTER_MODEL ?? 'typesafe/jev-1.13' : process.env.TYPESAFE_MODEL ?? 'jev-1.13.0';
 const variant = process.env.JEV_PROMPT_VARIANT === 'concise' ? 'concise' : 'boundaries';
-const provider = aiProvider === 'openrouter'
-  ? createOpenRouterJevProvider({ apiKey: process.env.OPENROUTER_API_KEY!, model, variant, mode: 'full' })
-  : createJevProvider({ apiKey: process.env.TYPESAFE_API_KEY!, model, variant, mode: 'full' });
-const batch = aiProvider === 'openrouter'
-  ? createOpenRouterJevBatchProvider({ apiKey: process.env.OPENROUTER_API_KEY!, model, variant, mode: 'full' })
-  : createJevBatchProvider({ apiKey: process.env.TYPESAFE_API_KEY!, model, variant, mode: 'full' });
+const provider = (aiProvider === 'openrouter' ? createOpenRouterJevProvider : createJevProvider)({ apiKey, model, variant, mode: 'full' });
+const batch = (aiProvider === 'openrouter' ? createOpenRouterJevBatchProvider : createJevBatchProvider)({ apiKey, model, variant, mode: 'full' });
 const service = new ClassificationService({ store, classifier: provider.classify, batchClassifier: batch.classifyBatch,
-  configurationKey: `${aiProvider}:${model}:${questionVersion(variant, 'full')}:packed-v1`, batchSize: Number(process.env.JEV_BATCH_SIZE ?? 8),
+  configurationKey: `${model}:${questionVersion(variant, 'full')}:packed-v1:provider=${aiProvider}`, batchSize: Number(process.env.JEV_BATCH_SIZE ?? 8),
   concurrency: Number(process.env.JEV_CONCURRENCY ?? 8), requestsPerMinute: Number(process.env.JEV_REQUESTS_PER_MINUTE ?? 1100) });
 const gmailEnabled = process.env.GMAIL_AUTOMATION_ENABLED === 'true';
 const gmailConfigured = [process.env.GMAIL_CLIENT_ID, process.env.GMAIL_CLIENT_SECRET, process.env.GMAIL_MAILBOX_ADDRESS].every(Boolean);
@@ -46,17 +42,17 @@ const gmail = gmailConfigured ? new GmailAutomation({ store, service,
   attachmentRoot: resolve(process.env.GMAIL_ATTACHMENT_ROOT ?? 'runtime/gmail-attachments'), enabled: gmailEnabled, automaticComparison: true,
   documentationContact: process.env.GMAIL_DOCUMENTATION_CONTACT }) : undefined;
 const gmailPoller = gmail ? new GmailPoller(store, gmail, process.env.GMAIL_MAILBOX_ADDRESS!, process.env.GMAIL_SYNC_QUERY) : undefined;
-const rules = new RuleService({ store, model: `rules:${process.env.TYPESAFE_MODEL ?? 'jev-1.13.0'}`,
-  evaluator: process.env.TYPESAFE_API_KEY
-    ? createJevRuleEvaluator({ apiKey: process.env.TYPESAFE_API_KEY, model: process.env.TYPESAFE_MODEL ?? 'jev-1.13.0' })
-    : async () => { throw new Error('Rules require TYPESAFE_API_KEY'); } });
-const app = createApp({ store, service, rules, dashboardToken: process.env.DASHBOARD_TOKEN,
+const ruleModel = process.env.TYPESAFE_MODEL ?? 'jev-1.13.0';
+const rules = process.env.TYPESAFE_API_KEY ? new RuleService({ store, model: ruleModel, evaluator: createJevRuleEvaluator({ apiKey: process.env.TYPESAFE_API_KEY, model: ruleModel }) }) : undefined;
+const datasetRoot = resolve(process.env.DATASET_ROOT ?? 'training_data/sdoc-hackathon-docker/extracted/data_v2');
+const app = createApp({ store, service, rules, dashboardToken: process.env.DASHBOARD_TOKEN, authRequired: process.env.AUTH_REQUIRED !== 'false',
   textRecovery: new TextRecovery({ store, apiKey: process.env.OPENROUTER_API_KEY, model: process.env.OPENROUTER_TEXT_MODEL,
     maxCaseAttempts: Number(process.env.RECOVERY_MAX_CASE_ATTEMPTS ?? 3), maxCaseTokens: Number(process.env.RECOVERY_MAX_CASE_TOKENS ?? 30000),
     maxCaseUsd: Number(process.env.RECOVERY_MAX_CASE_USD ?? 0.02) }),
   gmailAttachmentRoot: resolve(process.env.GMAIL_ATTACHMENT_ROOT ?? 'runtime/gmail-attachments'),
   documentationContact: process.env.GMAIL_DOCUMENTATION_CONTACT,
-  datasetRoot: resolve(process.env.DATASET_ROOT ?? 'training_data/sdoc-hackathon-docker/extracted/data_v2'),
+  datasetRoot,
+  dashboardDist: process.env.SERVE_DASHBOARD === 'false' ? undefined : resolve(process.env.DASHBOARD_DIST ?? 'apps/dashboard/dist'),
   allowedOrigins: process.env.ALLOWED_ORIGINS?.split(','), gmail, gmailAuthorization, gmailPoller });
 let poll: NodeJS.Timeout | undefined;
 if (gmailPoller && process.env.GMAIL_POLL_ENABLED === 'true') {
@@ -66,7 +62,19 @@ if (gmailPoller && process.env.GMAIL_POLL_ENABLED === 'true') {
   poll = setInterval(synchronize, pollMs); poll.unref();
   synchronize();
 }
-void Promise.all(store.listCases(1000).filter(record => !record.email.id.startsWith('gmail:') && record.status === 'queued').map(record => service.processCase(record.email)));
+const processQueuedDataset = () => {
+  void Promise.all(store.listCases(1000).filter(record => !record.email.id.startsWith('gmail:') && record.status === 'queued').map(record => service.processCase(record.email, datasetRoot)));
+};
+if (process.env.AUTO_IMPORT_DATASET === 'true' && store.listCases(1).length === 0) {
+  void loadDataset(datasetRoot).then(emails => {
+    for (const email of emails) store.upsertEmail(email);
+    console.log(`Loaded ${emails.length} competition dataset messages`);
+    processQueuedDataset();
+  }).catch(error => console.error('Competition dataset import failed', error));
+} else {
+  processQueuedDataset();
+}
+
 const server = serve({ fetch: app.fetch, port: Number(process.env.PORT ?? 3001), hostname: process.env.HOST ?? '127.0.0.1' }, info => {
   console.log(`CargoLens API listening on http://${info.address}:${info.port}`);
 });

@@ -15,3 +15,16 @@ describe("OpenRouter Jev transport", () => {
     });
   });
 });
+
+it('does not retry authentication failures or reveal provider error payloads', async () => {
+  const request = vi.fn(async () => Response.json({ error: { message: 'private provider detail' } }, { status: 401 }));
+  const client = createOpenRouterDecisionClient({ apiKey: 'test-key', fetch: request, maxRetries: 2 });
+  await expect(client.systemOne({ state: {}, questions: {} })).rejects.toThrow('HTTP 401');
+  expect(request).toHaveBeenCalledOnce();
+});
+it('does not send a request when its caller has already aborted', async () => {
+  const request = vi.fn(); const controller = new AbortController(); controller.abort();
+  const client = createOpenRouterDecisionClient({ apiKey: 'test-key', fetch: request });
+  await expect(client.systemOne({ state: {}, questions: {} }, { signal: controller.signal })).rejects.toThrow();
+  expect(request).not.toHaveBeenCalled();
+});

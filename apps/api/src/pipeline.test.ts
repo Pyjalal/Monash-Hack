@@ -61,6 +61,14 @@ describe('API boundaries', () => {
     expect(JSON.stringify(first)).not.toContain('private-dashboard-token');
     store.close();
   });
+  it('can expose the prototype workspace without a dashboard token when explicitly disabled', async () => {
+    const store = new Store(':memory:');
+    store.upsertEmail(email);
+    const service = new ClassificationService({ store, classifier: async source => result(source), configurationKey: 'v1' });
+    const app = createApp({ store, service, dashboardToken: 'private-dashboard-token', authRequired: false });
+    expect((await app.request('/emails')).status).toBe(200);
+    store.close();
+  });
   it('exposes Gmail only through privileged routes and validates sync limits', async () => {
     const store = new Store(':memory:');
     const service = new ClassificationService({ store, classifier: async source => result(source), configurationKey: 'v1' });

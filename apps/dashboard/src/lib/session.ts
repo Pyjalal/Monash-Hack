@@ -14,7 +14,9 @@ export function defaultApiUrl(
     string | undefined
   >,
 ): string {
-  return (env.VITE_API_URL ?? "http://127.0.0.1:3001").replace(/\/+$/, "");
+  const sameOrigin =
+    typeof window === "undefined" ? "http://127.0.0.1:3001" : window.location.origin;
+  return (env.VITE_API_URL ?? sameOrigin).replace(/\/+$/, "");
 }
 
 export function readSession(

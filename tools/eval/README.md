@@ -56,10 +56,34 @@ a partial submission is **diagnostic only**, and the valid headline is `null`.
 Every omitted row is included in the failure list. Runs with missing exports or
 scorer errors exit nonzero after writing their report.
 
-The document comparator has not yet been integrated into `processCase`.
-Immediate comparison cases remain unsupported until it supplies validated
-seven-field decisions. Full independent document status/reason and live sending
-checks are explicitly `NOT_RUN`; they cannot be inferred from classifier tests.
+The runner and API dataset import/retry now call the same `processCase` path
+with the attachment root. Confident immediate comparison requests run the
+source-only comparator, with two document jobs at a time. Future draft requests
+remain awaiting documents. Existing decisions survive unchanged-source replay.
+Missing attachments become explicit review decisions; unsupported roles, layouts,
+references, and uncertain classifications remain blockers, never fallback matches.
+Fresh evidence checks run before export; failed proof is recorded per row.
+
+Install the dependencies from `tools/ocr-sidecar/requirements.txt` and make both
+Python and Tesseract available on PATH for OCR. `--python` selects the organizer
+scorer executable; the OCR sidecar uses `python` from PATH. The manifest records
+the actual Node, Python, and Tesseract versions (or `UNAVAILABLE`). A total
+300-request transport budget bounds classification attempts, including retries
+and the reused independent classification fixtures.
+
+`row-diagnostics.json` records exact category/status/reason/defect-set results
+and blockers for every evaluated row. `reader-profiles.json` records native/OCR
+profiles and source hashes. The terminal prints observed category macro-F1,
+exact end-to-end defects caught, review recall, unsafe clears, full-inbox time,
+and request-level token use beside their targets. Full-inbox time includes
+classification, bounded comparison, proof checks, export and organizer scoring;
+independent validation timing is separate. `scorecards.json` contains the full
+category confusion matrix and performance breakdown.
+
+The comparator has independent source fixtures in the test suite. Full final
+independent document scorecards and live sending measurements remain separate
+from this runner's reused classification validation; those checks are explicitly
+`NOT_RUN` and cannot be inferred from classifier tests.
 
 ## Source-backed dispute ledger
 
@@ -74,8 +98,13 @@ Each entry requires `id`, `emailId`, one `target` (`category`, `status`,
 and exact `evidence` spans with `path`, byte `sha256`, UTF-16 `start`/`end`
 offsets, and `text`. Evidence must come from the cited email JSON or attachment
 under the dataset root, never the ground truth. Text spans are verified against
-UTF-8 source files; binary-document disputes must first provide a reviewed
-source-text representation through a future extraction-ledger extension.
+UTF-8 source files. Pending `CAPABILITY_ASSUMPTION` entries may instead cite a
+hash-bound source-only reader observation using `observation: {path, sha256}`.
+The outer path/hash still identifies the original attachment; offsets/text then
+identify an exact observation object in that artifact, relative to the ledger.
+The validator checks both hashes, source ownership, recovery and unresolved pages.
+These observations can quarantine a target but **cannot support an accepted
+correction**: readability alone does not prove field accuracy or a match.
 
 Kinds are `SCHEMA_CONVENTION`, `CAPABILITY_ASSUMPTION`,
 `SOURCE_LABEL_CONTRADICTION`, `AMBIGUOUS_SOURCE`, and `SCORER_LIMITATION`.
@@ -97,6 +126,29 @@ validates the official reference hash and records the overlay hash. Official
 full/holdout scores still use original references. Without a supplied ledger,
 no adjudications are claimed.
 
+### Offline miss triage
+
+```sh
+npm run eval:triage -- --report tools/eval/reports/issue37-20260921 --ledger tools/eval/disputes/issue39-v1/ledger.json --output runtime/eval/issue39-review-v1
+```
+
+The output parent must exist and the output directory must be new. This command
+makes no provider calls, does not rerun the final partition, and verifies report,
+email, attachment and official-reference hashes before analysis. It writes a
+versioned `reference-overlay.json`, a frozen ledger and linked observations,
+`optimization-targets.json`, separate official/adjudicated/independent scorecards,
+and a row-level `triage.json`. Changes in adjudication require a new output
+directory. The ledger hash identifies the exact overlay revision.
+
+Triage distinguishes inference, reader, semantic and export stages from label
+conventions/disputes. Stages overlap: a refused export often follows an upstream
+blocker, rather than an exporter bug. Model disagreement never creates a dispute.
+Missing exports count as missed targets, not observed field mismatches. Original
+official and independent scorecards retain their validity/coverage limitations.
+The [issue #39 report](reports/issue39-20260921/README.md) includes the measured
+accounting and human review queue. No runtime or classifier policy was tuned
+using those final-run misses.
+
 ## Existing classification experiments
 
 The older classification harness measures categories only. Use
@@ -117,29 +169,3 @@ The runner freezes grouped development/holdout membership and independent fixtur
 Reports and individual outputs go to the ignored `runtime/eval/classification/` directory. They include model, question version, request usage, wall time, latency quantiles, coverage, confusion matrices and exact misses. Estimates use $0.042 per million input tokens. Packed usage is accounted once per batch, with no invented per-email allocation. All calls are live; provider-side caching is unknown.
 
 The packed study first compares batches of four and eight on the frozen development subset, then checks the chosen shape on the fixed independent fixtures before a full run. The fixtures are reused validation cases, not a new unseen test set. The single-email provider is the unchanged baseline.
-
-## Benchmark submission pipeline
-
-The feature branch's useful end-to-end submission workflow is available here without replacing CargoLens's operational pipeline:
-
-## OpenRouter smoke test
-
-Use the smoke test to separate API-key/model/provider problems from extraction-prompt problems. It sends one ordinary `Hi` chat request to OpenRouter and never prints the API key:
-
-```powershell
-$env:DOTENV_CONFIG_PATH="..\\Monash-Hack\\.env"
-npm run test:openrouter
-npm run test:openrouter -- --model deepseek/deepseek-v4-flash --provider streamlake/fp8
-npm run test:openrouter -- --model google/gemma-3-27b-it --message "Hi from CargoLens"
-```
-
-Configuration precedence is CLI flag, then environment variable, then the default: `--model` / `OPENROUTER_SMOKE_MODEL`, `--provider` / `OPENROUTER_SMOKE_PROVIDER`, `--endpoint` / `OPENROUTER_CHAT_URL`, and `--timeout-ms` / `OPENROUTER_SMOKE_TIMEOUT_MS`. The request uses the standard `/api/v1/chat/completions` endpoint, so it also works for models that are not available on the alpha Decisions endpoint.
-
-```sh
-npm run submission:classify
-npm run submission:pipeline
-```
-
-The first command writes `outputs/jev-classification-submission.json` and its detailed model output. The second command reads that classification submission, processes only `BL_COMPARISON` records, selects the seven fields from the native-reader's sourced candidates, and writes `outputs/jev-full-pipeline-submission.json` plus source-aware details.
-
-Both commands use the selected TypeSafe/OpenRouter Jev transport. Classification uses `TYPESAFE_MODEL` or `OPENROUTER_MODEL`; out-of-template document extraction can use a separate low-cost `TYPESAFE_EXTRACTION_MODEL` or `OPENROUTER_EXTRACTION_MODEL`. The extraction model is called only when the deterministic seven-field format contract fails for a document. Use `--data-dir <dataset-root>`, `--classification <submission.json>`, `--output <submission.json>`, `--details <details.json>`, `--batch-size <1-8>`, or `--concurrency <n>` as needed. `submission:pipeline` is a benchmark/export tool: it does not save operational decisions, send Gmail replies, or bypass the API's source-evidence gate.

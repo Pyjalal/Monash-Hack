@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "datasetSha256": "f70c26b3c6780f71403b1bc00a562a84f33ae035aa9cd5a0dd6ba59eceab7680",
+  "entries": [
+    {
+      "id": "readability-512-v1",
+      "emailId": "email_512",
+      "target": "review_reason",
+      "kind": "CAPABILITY_ASSUMPTION",
+      "status": "PROPOSED",
+      "rationale": "The source-only reader audit recovered both supplied scans with no unresolved pages, while the official review reason is unreadable. Human review must decide whether unreadable means unavailable native text or unreadable after supported OCR. Readability does not establish field accuracy, an OK status, or authorization to confirm a match. No corrected reference is proposed.",
+      "evidence": [
+        {
+          "path": "attachments/email_512_SI.pdf",
+          "sha256": "63b8ae6368fdbd1a2410d1354166cc75eb4776c3cc023f40e38057f62fa27edb",
+          "start": 1035,
+          "end": 1454,
+          "text": "{\n      \"key\": \"email_512_SI\",\n      \"source\": \"training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_512_SI.pdf\",\n      \"sha256\": \"63b8ae6368fdbd1a2410d1354166cc75eb4776c3cc023f40e38057f62fa27edb\",\n      \"filenameInvariant\": true,\n      \"nativeStatus\": \"OCR_REQUIRED\",\n      \"readerProfile\": \"ocr_recovered\",\n      \"unresolvedPages\": [],\n      \"averageConfidence\": 83.56,\n      \"ocrError\": null\n    }",
+          "observation": {
+            "path": "observations.json",
+            "sha256": "316e583c16306cd525c3d43d9a46f93a1eb983e3a220fba46dd868663f33fdf6"
+          }
+        },
+        {
+          "path": "attachments/email_512_BL.pdf",
+          "sha256": "71b23cd364f1efd8578fc29ab02c5e1a99876c183a74ef994859eec46e400b4f",
+          "start": 1460,
+          "end": 1879,
+          "text": "{\n      \"key\": \"email_512_BL\",\n      \"source\": \"training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_512_BL.pdf\",\n      \"sha256\": \"71b23cd364f1efd8578fc29ab02c5e1a99876c183a74ef994859eec46e400b4f\",\n      \"filenameInvariant\": true,\n      \"nativeStatus\": \"OCR_REQUIRED\",\n      \"readerProfile\": \"ocr_recovered\",\n      \"unresolvedPages\": [],\n      \"averageConfidence\": 77.27,\n      \"ocrError\": null\n    }",
+          "observation": {
+            "path": "observations.json",
+            "sha256": "316e583c16306cd525c3d43d9a46f93a1eb983e3a220fba46dd868663f33fdf6"
+          }
+        }
+      ]
+    },
+    {
+      "id": "readability-513-v1",
+      "emailId": "email_513",
+      "target": "review_reason",
+      "kind": "CAPABILITY_ASSUMPTION",
+      "status": "PROPOSED",
+      "rationale": "The source-only reader audit recovered both supplied scans with no unresolved pages, while the official review reason is unreadable. Human review must decide whether unreadable means unavailable native text or unreadable after supported OCR. Readability does not establish field accuracy, an OK status, or authorization to confirm a match. No corrected reference is proposed.",
+      "evidence": [
+        {
+          "path": "attachments/email_513_SI.pdf",
+          "sha256": "c98a4945de75e903932957c81a6f55efe32d403ad1777cbdaf2fabf3e9a3e049",
+          "start": 1885,
+          "end": 2304,
+          "text": "{\n      \"key\": \"email_513_SI\",\n      \"source\": \"training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_513_SI.pdf\",\n      \"sha256\": \"c98a4945de75e903932957c81a6f55efe32d403ad1777cbdaf2fabf3e9a3e049\",\n      \"filenameInvariant\": true,\n      \"nativeStatus\": \"OCR_REQUIRED\",\n      \"readerProfile\": \"ocr_recovered\",\n      \"unresolvedPages\": [],\n      \"averageConfidence\": 82.74,\n      \"ocrError\": null\n    }",
+          "observation": {
+            "path": "observations.json",
+            "sha256": "316e583c16306cd525c3d43d9a46f93a1eb983e3a220fba46dd868663f33fdf6"
+          }
+        },
+        {
+          "path": "attachments/email_513_BL.pdf",
+          "sha256": "45bbd0ce9c2b8e9cd25d7fa844a8a66966037228e3f1cf965c66feaba9ae5501",
+          "start": 2310,
+          "end": 2729,
+          "text": "{\n      \"key\": \"email_513_BL\",\n      \"source\": \"training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_513_BL.pdf\",\n      \"sha256\": \"45bbd0ce9c2b8e9cd25d7fa844a8a66966037228e3f1cf965c66feaba9ae5501\",\n      \"filenameInvariant\": true,\n      \"nativeStatus\": \"OCR_REQUIRED\",\n      \"readerProfile\": \"ocr_recovered\",\n      \"unresolvedPages\": [],\n      \"averageConfidence\": 81.26,\n      \"ocrError\": null\n    }",
+          "observation": {
+            "path": "observations.json",
+            "sha256": "316e583c16306cd525c3d43d9a46f93a1eb983e3a220fba46dd868663f33fdf6"
+          }
+        }
+      ]
+    },
+    {
+      "id": "readability-514-v1",
+      "emailId": "email_514",
+      "target": "review_reason",
+      "kind": "CAPABILITY_ASSUMPTION",
+      "status": "PROPOSED",
+      "rationale": "The source-only reader audit recovered both supplied scans with no unresolved pages, while the official review reason is unreadable. Human review must decide whether unreadable means unavailable native text or unreadable after supported OCR. Readability does not establish field accuracy, an OK status, or authorization to confirm a match. No corrected reference is proposed.",
+      "evidence": [
+        {
+          "path": "attachments/email_514_SI.pdf",
+          "sha256": "008657118b19c99e8d92cb9a43e0bdbd0339bcfc94d101abeea21795dc8374b2",
+          "start": 2735,
+          "end": 3154,
+          "text": "{\n      \"key\": \"email_514_SI\",\n      \"source\": \"training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_514_SI.pdf\",\n      \"sha256\": \"008657118b19c99e8d92cb9a43e0bdbd0339bcfc94d101abeea21795dc8374b2\",\n      \"filenameInvariant\": true,\n      \"nativeStatus\": \"OCR_REQUIRED\",\n      \"readerProfile\": \"ocr_recovered\",\n      \"unresolvedPages\": [],\n      \"averageConfidence\": 77.71,\n      \"ocrError\": null\n    }",
+          "observation": {
+            "path": "observations.json",
+            "sha256": "316e583c16306cd525c3d43d9a46f93a1eb983e3a220fba46dd868663f33fdf6"
+          }
+        },
+        {
+          "path": "attachments/email_514_BL.pdf",
+          "sha256": "df4092e9cd70592a9e524756aa19d3a7e15808cbb53a6baf597866322d18cfce",
+          "start": 3160,
+          "end": 3579,
+          "text": "{\n      \"key\": \"email_514_BL\",\n      \"source\": \"training_data/sdoc-hackathon-docker/extracted/data_v2/attachments/email_514_BL.pdf\",\n      \"sha256\": \"df4092e9cd70592a9e524756aa19d3a7e15808cbb53a6baf597866322d18cfce\",\n      \"filenameInvariant\": true,\n      \"nativeStatus\": \"OCR_REQUIRED\",\n      \"readerProfile\": \"ocr_recovered\",\n      \"unresolvedPages\": [],\n      \"averageConfidence\": 80.31,\n      \"ocrError\": null\n    }",
+          "observation": {
+            "path": "observations.json",
+            "sha256": "316e583c16306cd525c3d43d9a46f93a1eb983e3a220fba46dd868663f33fdf6"
+          }
+        }
+      ]
+    }
+  ]
+}

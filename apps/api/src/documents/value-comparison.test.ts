@@ -13,6 +13,7 @@ describe("field value comparison policy", () => {
       "APRIL FINE PAPER TRADING | 77 ROBINSON ROAD, #21-01; SINGAPORE 068896",
       "APRIL FINE PAPER TRADING\n77 ROBINSON ROAD #21-01\nSINGAPORE 068896")).toBe(true);
     expect(isFormattingOnlyDifference("consignee", "A & B TRADING", "A AND B TRADING")).toBe(true);
+    expect(normaliseFieldValue("consignee", "A & B TRADING")).toBe(normaliseFieldValue("consignee", "A AND B TRADING"));
   });
 
   it("rejects missing specificity even if an AI were to call the values equivalent", () => {
@@ -29,13 +30,27 @@ describe("field value comparison policy", () => {
     expect(acceptFormattingVerdict("consignee", si, bl, { equivalent: false, confidence: 1 })).toBe(false);
   });
 
-  it("permits an omitted postal address only for the same party and a confident Jev verdict", () => {
+  it("rejects omitted postal address even with a confident model verdict", () => {
     const company = "APRIL FAR EAST (M) SDN BHD";
     const companyWithAddress = "APRIL FAR EAST (M) SDN BHD\nTOWER 2, AVENUE 5, LEVEL 6\n59200 KUALA LUMPUR, MALAYSIA";
-    expect(isPartyWithOmittedAddress("shipper", company, companyWithAddress)).toBe(true);
-    expect(acceptFormattingVerdict("shipper", company, companyWithAddress, { equivalent: true, confidence: 0.95 })).toBe(true);
+    expect(isPartyWithOmittedAddress("shipper", company, companyWithAddress)).toBe(false);
+    expect(acceptFormattingVerdict("shipper", company, companyWithAddress, { equivalent: true, confidence: 0.95 })).toBe(false);
     expect(acceptFormattingVerdict("shipper", company, companyWithAddress, { equivalent: false, confidence: 1 })).toBe(false);
     expect(isPartyWithOmittedAddress("port_of_loading", "KUALA LUMPUR, MALAYSIA", "MALAYSIA")).toBe(false);
     expect(isPartyWithOmittedAddress("shipper", "ACME TRADING", "ACME TRADING SUBSIDIARY")).toBe(false);
+  });
+});
+
+
+describe("untrusted numeric and text values", () => {
+  it("preserves units and rejects ambiguous numeric fragments", () => {
+    expect(normaliseFieldValue("gross_weight_kg", "100 KG")).not.toBe(normaliseFieldValue("gross_weight_kg", "100 MT"));
+    expect(normaliseFieldValue("gross_weight_kg", "1 MT")).toBe(normaliseFieldValue("gross_weight_kg", "1,000 KG"));
+    for (const value of ["100", "100 LB", "100 KG / 200 KG", "TBA"]) expect(normaliseFieldValue("gross_weight_kg", value)).toBeNull();
+    for (const value of ["abc 2", "2 or 3", "0", "1.5"]) expect(normaliseFieldValue("container_count", value)).toBeNull();
+  });
+  it("does not erase non-Latin company names or accept invalid confidence", () => {
+    expect(normaliseFieldValue("shipper", "中远")).not.toBe(normaliseFieldValue("shipper", "中海"));
+    for (const confidence of [NaN, Infinity, 1.1, -1]) expect(acceptFormattingVerdict("shipper", "ACME, LTD", "ACME LTD", { equivalent: true, confidence })).toBe(false);
   });
 });

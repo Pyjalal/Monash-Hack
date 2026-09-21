@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CargoLens settings</title>
+  <link rel="stylesheet" href="brand/fonts.css">
   <style>
-    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; --bg: #f4f0f4; --surface: #fdfafd; --wash: #eae1e8; --ink: #342732; --muted: #735e70; --accent: #754369; --ok: #35684f; --line: #cdbdca; }
+    :root { color-scheme: light; font-family: "Albert Sans", "Segoe UI", system-ui, sans-serif; --bg: #f7f6f2; --surface: #fffefa; --wash: #e8e6df; --ink: #16284b; --muted: #52647d; --accent: #16284b; --ok: #35684f; --line: #a4adb9; }
     * { box-sizing: border-box; }
     body { background: var(--bg); color: var(--ink); margin: 0; font-size: 14px; line-height: 1.45; }
     .page { margin: 0 auto; max-width: 860px; padding: 28px 20px 120px; }
     header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
-    h1 { font-size: 24px; letter-spacing: -.01em; margin: 0; }
-    h1 small { color: var(--muted); display: block; font-size: 13px; font-weight: 500; letter-spacing: 0; margin-top: 4px; }
+    h1 { font-family: "Fraunces", Georgia, serif; font-size: 24px; letter-spacing: -.01em; margin: 0; }
+    h1 small { font-family: "Albert Sans", "Segoe UI", sans-serif; color: var(--muted); display: block; font-size: 13px; font-weight: 500; letter-spacing: 0; margin-top: 4px; }
     h2 { font-size: 15px; margin: 0; }
     .card { background: var(--surface); border: 1px solid var(--wash); border-radius: 16px; margin-bottom: 16px; padding: 18px 20px; }
     .card > p.lead { color: var(--muted); font-size: 13px; margin: 4px 0 14px; }
@@ -30,7 +31,7 @@
     .switch:checked::after { transform: translateX(18px); }
     .pill { background: var(--wash); border-radius: 999px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 4px 10px; text-transform: uppercase; white-space: nowrap; }
     .pill.ok { background: #e2efe7; color: var(--ok); }
-    .pill.error { background: #f3e2ee; color: var(--accent); }
+    .pill.error { background: #f9e7e2; color: #963c3c; }
     .pill.accent { background: var(--accent); color: var(--surface); }
     button { background: var(--accent); border: 0; border-radius: 9px; color: var(--surface); cursor: pointer; font: inherit; font-weight: 700; padding: 9px 14px; }
     button.secondary { background: var(--wash); color: var(--ink); }
@@ -53,13 +54,15 @@
     .result { align-items: center; display: grid; gap: 10px; grid-template-columns: 200px 1fr 48px auto; padding: 6px 0; }
     .result .fired { color: var(--ok); font-size: 12px; font-weight: 700; }
     .result .quiet { color: var(--muted); font-size: 12px; }
-    footer { background: rgba(253,250,253,.94); backdrop-filter: blur(8px); border-top: 1px solid var(--wash); bottom: 0; left: 0; position: fixed; right: 0; }
+    footer { background: rgba(255,254,250,.96); backdrop-filter: blur(8px); border-top: 1px solid var(--wash); bottom: 0; left: 0; position: fixed; right: 0; }
     footer .inner { align-items: center; display: flex; gap: 14px; justify-content: space-between; margin: 0 auto; max-width: 860px; padding: 12px 20px; }
     .status { color: var(--muted); font-size: 12.5px; margin: 0; min-height: 18px; }
     .status.ok { color: var(--ok); }
-    .status.error { color: var(--accent); }
+    .status.error { color: #963c3c; }
     kbd { background: var(--wash); border-radius: 5px; font: 600 11px ui-monospace, monospace; padding: 2px 6px; }
     @media (max-width: 640px) { .rule .body { grid-template-columns: 1fr; } .result { grid-template-columns: 1fr 1fr 48px; } }
+    :focus-visible { outline: 2px solid #16284b; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { .switch, .switch::after { transition: none; } }
   </style>
 </head>
 <body>

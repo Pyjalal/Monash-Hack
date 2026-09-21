@@ -20,10 +20,14 @@ export interface OpenRouterJevOptions {
 type DecisionResponse = { model?: unknown; usage?: unknown; answers?: unknown };
 type DecisionInput = { state: unknown; questions: Questions };
 
+class OpenRouterHttpError extends Error {}
+
 function pause(milliseconds: number, signal?: AbortSignal): Promise<void> {
   return new Promise((resolve, reject) => {
-    const timer = setTimeout(resolve, milliseconds);
-    signal?.addEventListener("abort", () => { clearTimeout(timer); reject(signal.reason); }, { once: true });
+    if (signal?.aborted) { reject(signal.reason); return; }
+    const abort = () => { clearTimeout(timer); reject(signal?.reason); };
+    const timer = setTimeout(() => { signal?.removeEventListener("abort", abort); resolve(); }, milliseconds);
+    signal?.addEventListener("abort", abort, { once: true });
   });
 }
 
@@ -48,6 +52,7 @@ export function createOpenRouterDecisionClient(options: OpenRouterJevOptions) {
   return {
     async systemOne(input: DecisionInput, request: { signal?: AbortSignal } = {}): Promise<unknown> {
       for (let attempt = 0; ; attempt += 1) {
+        request.signal?.throwIfAborted();
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(new DOMException("OpenRouter request timed out", "AbortError")), timeoutMs);
         const abort = () => controller.abort(request.signal?.reason);
@@ -62,11 +67,9 @@ export function createOpenRouterDecisionClient(options: OpenRouterJevOptions) {
           catch { throw new InvalidJevResponseError("openrouter.json"); }
           if (response.ok) return normalized(body);
           if (retryable(response.status) && attempt < retries) { await pause(250 * 2 ** attempt, request.signal); continue; }
-          const message = body && typeof body === "object" && "error" in body && typeof body.error === "object" && body.error && "message" in body.error
-            ? String(body.error.message) : `HTTP ${response.status}`;
-          throw new Error(`OpenRouter Decisions request failed: ${message}`);
+          throw new OpenRouterHttpError(`OpenRouter Decisions request failed: HTTP ${response.status}`);
         } catch (error) {
-          if (request.signal?.aborted || controller.signal.aborted || attempt >= retries || error instanceof InvalidJevResponseError) throw error;
+          if (request.signal?.aborted || controller.signal.aborted || attempt >= retries || error instanceof InvalidJevResponseError || error instanceof OpenRouterHttpError) throw error;
           await pause(250 * 2 ** attempt, request.signal);
         } finally { clearTimeout(timeout); request.signal?.removeEventListener("abort", abort); }
       }
