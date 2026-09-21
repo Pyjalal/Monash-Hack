@@ -1,0 +1,9 @@
+DRAFT BILL OF LADING
+Shipment reference: harbour-4821
+Shipper: Harbour Machinery
+Consignee: Island Trading
+Notify party: Island Logistics
+Port of loading: Bay Terminal
+Port of discharge: River Terminal
+Container count: 4
+Gross weight kg: 8450
