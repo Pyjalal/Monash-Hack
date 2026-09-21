@@ -94,3 +94,14 @@ it('records the benchmark kilogram convention without allowing it in operations'
   expect(benchmark.review_reason).toBeNull();
   expect(benchmark.assumptions).toContain('bl:gross_weight_kg:benchmark_assumed_kg');
 });
+
+it.each([
+  ['BUATAN, INDONESIA', 'IDBUA'],
+  ['RUGAO/NANTONG/SHANGHAI, CHINA', 'CNSHA'],
+])('uses the competition port rule in live decisions for %s', async (siPort, blPort) => {
+  const { root, email } = await fixture(fields.replace('North Port', blPort));
+  await writeFile(join(root, 'si.txt'), `SHIPPING INSTRUCTIONS\nShipment reference: SHIP-1000\n${fields.replace('North Port', siPort)}`);
+  const result = await compareCaseWithFullPipeline({ email, sourceVersion: 'ports-v1', classification: null, decision: null, status: 'classified', updatedAt: new Date().toISOString() }, root, { fallback: vi.fn(), compareFallback: vi.fn(), vision: null });
+  expect(result.decision.workflowState).toBe('VERIFIED');
+  expect(result.decision.fieldResults.find(field => field.field === 'port_of_loading')).toMatchObject({ outcome: 'MATCH', si: { text: siPort }, bl: { text: blPort } });
+});

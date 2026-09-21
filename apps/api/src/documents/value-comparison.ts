@@ -1,7 +1,7 @@
 import { FIELD_NAMES } from "@cargolens/shared";
-import { canonicalPort } from "./port-codes.js";
+import { canonicalPort, PORT_POLICY_VERSION } from "./port-codes.js";
 
-export const COMPARISON_POLICY_VERSION = "source-normalization-v6";
+export const COMPARISON_POLICY_VERSION = `source-normalization-v7:${PORT_POLICY_VERSION}`;
 export const SEMANTIC_SAME_CONFIDENCE = 0.9;
 export const SEMANTIC_DIFFERENT_CONFIDENCE = 0.85;
 

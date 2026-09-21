@@ -89,9 +89,9 @@ it('reads written container counts only when words agree with digits', () => {
   expect(normaliseFieldValue('container_count', "TWO (3) CONTAINERS - 40'HC")).toBeNull();
 });
 
-it('resolves verified UN location codes only for complete port names', () => {
+it('resolves complete port names using the competition port policy', () => {
   expect(normaliseFieldValue('port_of_loading', 'NHAVA SHEVA, INDIA')).toBe(normaliseFieldValue('port_of_loading', 'INNSA'));
   expect(normaliseFieldValue('port_of_discharge', 'KLAIPEDA, LITHUANIA')).toBe(normaliseFieldValue('port_of_discharge', 'LTKLJ'));
-  expect(normaliseFieldValue('port_of_loading', 'BUATAN, INDONESIA')).not.toBe(normaliseFieldValue('port_of_loading', 'IDBUA'));
-  expect(normaliseFieldValue('port_of_loading', 'RUGAO/NANTONG/SHANGHAI, CHINA')).not.toBe(normaliseFieldValue('port_of_loading', 'CNSHA'));
+  expect(normaliseFieldValue('port_of_loading', 'BUATAN, INDONESIA')).toBe(normaliseFieldValue('port_of_loading', 'IDBUA'));
+  expect(normaliseFieldValue('port_of_loading', 'RUGAO/NANTONG/SHANGHAI, CHINA')).toBe(normaliseFieldValue('port_of_loading', 'CNSHA'));
 });

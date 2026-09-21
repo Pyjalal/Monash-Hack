@@ -15,7 +15,7 @@
         "exactMatches": 520,
         "comparable": 520
       },
-      "reportSha256": "3010496f31587dfbe21745df13a6f1e6a274ecf2f17a1f55fb7fe3a02fe90ce8",
+      "reportSha256": "227ff68160f2447dd386639c01d95723e7bb6f56bbf21f5cf1fbdd4ac8096031",
       "failures": []
     },
     {
@@ -30,7 +30,7 @@
         "exactMatches": 210,
         "comparable": 210
       },
-      "reportSha256": "e7db662f7ff6327e31fc8733ee22dd2d7ed80d40b857db94e6804f0d5962042c",
+      "reportSha256": "92f37a7917746905ec1e50fa8a3c7a9ca5a39862bda9c00df28a3f685598f8b6",
       "failures": []
     },
     {
@@ -42,88 +42,11 @@
         "waitingForFutureDraft": 0,
         "extracted": 85,
         "compared": 85,
-        "exactMatches": 96,
+        "exactMatches": 100,
         "comparable": 100
       },
-      "reportSha256": "50e24023513b8084bc0a5ec60b5bb7f8658406cff32a2274aa3a5e55656c8ad6",
-      "failures": [
-        {
-          "id": "adv_email_016",
-          "prediction": {
-            "category": "BL_COMPARISON",
-            "status": "MISMATCH",
-            "review_reason": null,
-            "defect_fields": [
-              "port_of_loading"
-            ],
-            "has_defect": true
-          },
-          "groundTruth": {
-            "category": "BL_COMPARISON",
-            "status": "OK",
-            "review_reason": null,
-            "defect_fields": [],
-            "has_defect": false
-          }
-        },
-        {
-          "id": "adv_email_017",
-          "prediction": {
-            "category": "BL_COMPARISON",
-            "status": "MISMATCH",
-            "review_reason": null,
-            "defect_fields": [
-              "port_of_loading"
-            ],
-            "has_defect": true
-          },
-          "groundTruth": {
-            "category": "BL_COMPARISON",
-            "status": "OK",
-            "review_reason": null,
-            "defect_fields": [],
-            "has_defect": false
-          }
-        },
-        {
-          "id": "adv_email_019",
-          "prediction": {
-            "category": "BL_COMPARISON",
-            "status": "MISMATCH",
-            "review_reason": null,
-            "defect_fields": [
-              "port_of_loading"
-            ],
-            "has_defect": true
-          },
-          "groundTruth": {
-            "category": "BL_COMPARISON",
-            "status": "OK",
-            "review_reason": null,
-            "defect_fields": [],
-            "has_defect": false
-          }
-        },
-        {
-          "id": "adv_email_020",
-          "prediction": {
-            "category": "BL_COMPARISON",
-            "status": "MISMATCH",
-            "review_reason": null,
-            "defect_fields": [
-              "port_of_loading"
-            ],
-            "has_defect": true
-          },
-          "groundTruth": {
-            "category": "BL_COMPARISON",
-            "status": "OK",
-            "review_reason": null,
-            "defect_fields": [],
-            "has_defect": false
-          }
-        }
-      ]
+      "reportSha256": "b323f3520a98da08fade91738ba7226b9fcfef222064ce39e94e07f0d247c0cb",
+      "failures": []
     },
     {
       "dataset": "v5",
@@ -137,8 +60,9 @@
         "exactMatches": 60,
         "comparable": 60
       },
-      "reportSha256": "676091d08d5e14d7027280db2d54e0248e959f3396cb1fc2bc85122ee13a9aa0",
+      "reportSha256": "547b78f78979ab73fc6994ede4d8773d7a101cfb3a99d692e3df3400fc857934",
       "failures": []
     }
-  ]
+  ],
+  "portPolicy": "competition-ports-v1 (shared runtime and evaluation)"
 }
