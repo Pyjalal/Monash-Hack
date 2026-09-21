@@ -1,0 +1,18 @@
+{
+  "note": "sha256 of every artifact in the runtime evaluation directory; per-row result files are not committed for size.",
+  "directory": "runtime/eval/classification-v4",
+  "artifacts": {
+    "concurrency-16.json": "25ca79f46ea1d0a11aee297442cf43c2094d144a059241af305222b168a00d90",
+    "concurrency-4.json": "c9482cb1ceea70e41bcb20043490d14e3f21cb8d43ef82477f7649b1c4d3d65d",
+    "concurrency-8.json": "562fe08f0053f7c81499d8800f4cb9c8af04a30e4c2ec1347bfa412fac6011a6",
+    "concurrency-sweep.json": "9517453042856786bc2405e1c33aebcb6f9d04cd81e9007ad69fbc6a08434129",
+    "independent-frozen.json": "53d55d935a3967c64a076ccf865ba3131e05cabd0272dc545fa654047176adae",
+    "manifest.json": "f4d89b28c0f0f1cd09f65998f1238fc0063c77bbc6c2d4c34c95ddd16c19a2f2",
+    "question-contracts.json": "1eea417ebcf1e652cd135237cae479c8e23580019198ecb4a9f8bfd61ce64b27",
+    "selection.json": "43bb9ecaf609a46d701ab86904aae2fdc9ee27f0589ae41422b73dcb55b3b025",
+    "tune-boundaries-full.json": "47c39dc985ea53bfd1099576244a877efc5586cfcf3d9b9f5939e73c5ca4a436",
+    "tune-boundaries-intent-only.json": "e262814807ca374de43215826fa4608913524e0afe4d83c66c768985345eb5cb",
+    "tune-concise-full.json": "79f652f9b07b28eb90d2750f26e54e138a24a88fde4b80ab040608a9e0bb626f",
+    "tune-concise-intent-only.json": "06567370a5032ceea26ae1b60127a1a37444b3f348e5e0fbaa6e607fbf041112"
+  }
+}

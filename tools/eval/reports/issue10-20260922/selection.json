@@ -1,0 +1,462 @@
+{
+  "selectedAt": "2026-09-21T19:43:20.843Z",
+  "selectionRule": "Development macro-F1, decision coverage, then observed full-run wall time; independent and holdout not consulted.",
+  "best": {
+    "variant": "boundaries",
+    "mode": "full",
+    "concurrency": 16
+  },
+  "bestFull": {
+    "variant": "boundaries",
+    "mode": "full",
+    "concurrency": 16
+  },
+  "tuningIds": [
+    "email_128",
+    "email_073",
+    "email_112",
+    "email_294",
+    "email_134",
+    "email_302",
+    "email_477",
+    "email_104",
+    "email_390",
+    "email_207",
+    "email_353",
+    "email_139",
+    "email_185",
+    "email_222",
+    "email_313",
+    "email_306",
+    "email_420",
+    "email_252",
+    "email_382",
+    "email_428",
+    "email_338",
+    "email_078",
+    "email_297",
+    "email_329",
+    "email_341",
+    "email_339",
+    "email_285",
+    "email_075",
+    "email_343",
+    "email_130",
+    "email_087",
+    "email_415",
+    "email_404",
+    "email_350",
+    "email_214",
+    "email_492",
+    "email_431",
+    "email_363",
+    "email_208",
+    "email_149",
+    "email_074",
+    "email_021",
+    "email_206",
+    "email_182",
+    "email_057",
+    "email_314",
+    "email_488",
+    "email_292",
+    "email_131",
+    "email_497",
+    "email_173",
+    "email_381",
+    "email_094",
+    "email_216",
+    "email_194",
+    "email_288",
+    "email_192",
+    "email_287",
+    "email_340",
+    "email_417",
+    "email_055",
+    "email_033",
+    "email_002",
+    "email_238"
+  ],
+  "reports": [
+    {
+      "name": "tune-boundaries-full",
+      "createdAt": "2026-09-21T19:43:16.858Z",
+      "config": {
+        "variant": "boundaries",
+        "mode": "full",
+        "concurrency": 16
+      },
+      "questionVersion": "cargolens-email-v4:boundaries:full",
+      "modelRequested": "jev-1.13.0",
+      "modelsReturned": [
+        "jev-1.13.0"
+      ],
+      "live": true,
+      "localCache": false,
+      "providerCache": "unknown",
+      "metrics": {
+        "count": 64,
+        "accuracy": 1,
+        "providerCoverage": 1,
+        "decisionCoverage": 1,
+        "macroF1": 1,
+        "perCategory": {
+          "BL_COMPARISON": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "SI_REQUEST": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "INVOICE_QUERY": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "GENERAL": {
+            "support": 13,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "SPAM": {
+            "support": 9,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          }
+        },
+        "confusion": {
+          "BL_COMPARISON": {
+            "BL_COMPARISON": 14
+          },
+          "SI_REQUEST": {
+            "SI_REQUEST": 14
+          },
+          "INVOICE_QUERY": {
+            "INVOICE_QUERY": 14
+          },
+          "GENERAL": {
+            "GENERAL": 13
+          },
+          "SPAM": {
+            "SPAM": 9
+          }
+        }
+      },
+      "wallMs": 3856.1069000000007,
+      "firstResultMs": 441.57990000000063,
+      "throughputEmailsPerSecond": 16.597050252937745,
+      "p50Ms": 870.0942000000014,
+      "p95Ms": 1121.8104000000003,
+      "usage": {
+        "inputTokens": 153995,
+        "outputTokens": 15009,
+        "usageUnavailableForFailedCalls": 0,
+        "estimatedUsd": 0.00646779,
+        "estimateBasis": "$0.042/M input tokens; output free. Estimate, not invoice; failed-call billing unknown."
+      },
+      "apiAttempts": 64,
+      "reusedRequestHashesInThisProcess": 0,
+      "uniqueInputHashes": 64,
+      "rateLimitRpm": 1100,
+      "expectationAccuracy": null,
+      "expectationCount": 0,
+      "urgencyAccuracy": null,
+      "urgencyCount": 0,
+      "errors": [],
+      "misses": []
+    },
+    {
+      "name": "tune-concise-intent-only",
+      "createdAt": "2026-09-21T19:43:12.998Z",
+      "config": {
+        "variant": "concise",
+        "mode": "intent-only",
+        "concurrency": 16
+      },
+      "questionVersion": "cargolens-email-v4:concise:intent-only",
+      "modelRequested": "jev-1.13.0",
+      "modelsReturned": [
+        "jev-1.13.0"
+      ],
+      "live": true,
+      "localCache": false,
+      "providerCache": "unknown",
+      "metrics": {
+        "count": 64,
+        "accuracy": 1,
+        "providerCoverage": 1,
+        "decisionCoverage": 1,
+        "macroF1": 1,
+        "perCategory": {
+          "BL_COMPARISON": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "SI_REQUEST": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "INVOICE_QUERY": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "GENERAL": {
+            "support": 13,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "SPAM": {
+            "support": 9,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          }
+        },
+        "confusion": {
+          "BL_COMPARISON": {
+            "BL_COMPARISON": 14
+          },
+          "SI_REQUEST": {
+            "SI_REQUEST": 14
+          },
+          "INVOICE_QUERY": {
+            "INVOICE_QUERY": 14
+          },
+          "GENERAL": {
+            "GENERAL": 13
+          },
+          "SPAM": {
+            "SPAM": 9
+          }
+        }
+      },
+      "wallMs": 3896.2160999999996,
+      "firstResultMs": 489.59430000000066,
+      "throughputEmailsPerSecond": 16.42619360871693,
+      "p50Ms": 658.4888000000001,
+      "p95Ms": 2342.8359999999993,
+      "usage": {
+        "inputTokens": 74699,
+        "outputTokens": 4523,
+        "usageUnavailableForFailedCalls": 0,
+        "estimatedUsd": 0.0031373580000000002,
+        "estimateBasis": "$0.042/M input tokens; output free. Estimate, not invoice; failed-call billing unknown."
+      },
+      "apiAttempts": 64,
+      "reusedRequestHashesInThisProcess": 0,
+      "uniqueInputHashes": 64,
+      "rateLimitRpm": 1100,
+      "expectationAccuracy": null,
+      "expectationCount": 0,
+      "urgencyAccuracy": null,
+      "urgencyCount": 0,
+      "errors": [],
+      "misses": []
+    },
+    {
+      "name": "tune-boundaries-intent-only",
+      "createdAt": "2026-09-21T19:43:20.837Z",
+      "config": {
+        "variant": "boundaries",
+        "mode": "intent-only",
+        "concurrency": 16
+      },
+      "questionVersion": "cargolens-email-v4:boundaries:intent-only",
+      "modelRequested": "jev-1.13.0",
+      "modelsReturned": [
+        "jev-1.13.0"
+      ],
+      "live": true,
+      "localCache": false,
+      "providerCache": "unknown",
+      "metrics": {
+        "count": 64,
+        "accuracy": 1,
+        "providerCoverage": 1,
+        "decisionCoverage": 1,
+        "macroF1": 1,
+        "perCategory": {
+          "BL_COMPARISON": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "SI_REQUEST": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "INVOICE_QUERY": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "GENERAL": {
+            "support": 13,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "SPAM": {
+            "support": 9,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          }
+        },
+        "confusion": {
+          "BL_COMPARISON": {
+            "BL_COMPARISON": 14
+          },
+          "SI_REQUEST": {
+            "SI_REQUEST": 14
+          },
+          "INVOICE_QUERY": {
+            "INVOICE_QUERY": 14
+          },
+          "GENERAL": {
+            "GENERAL": 13
+          },
+          "SPAM": {
+            "SPAM": 9
+          }
+        }
+      },
+      "wallMs": 3973.6058999999987,
+      "firstResultMs": 508.8831000000009,
+      "throughputEmailsPerSecond": 16.10627767590138,
+      "p50Ms": 792.5475999999999,
+      "p95Ms": 1258.6162999999997,
+      "usage": {
+        "inputTokens": 100939,
+        "outputTokens": 4523,
+        "usageUnavailableForFailedCalls": 0,
+        "estimatedUsd": 0.004239438,
+        "estimateBasis": "$0.042/M input tokens; output free. Estimate, not invoice; failed-call billing unknown."
+      },
+      "apiAttempts": 64,
+      "reusedRequestHashesInThisProcess": 0,
+      "uniqueInputHashes": 64,
+      "rateLimitRpm": 1100,
+      "expectationAccuracy": null,
+      "expectationCount": 0,
+      "urgencyAccuracy": null,
+      "urgencyCount": 0,
+      "errors": [],
+      "misses": []
+    },
+    {
+      "name": "tune-concise-full",
+      "createdAt": "2026-09-21T19:43:09.095Z",
+      "config": {
+        "variant": "concise",
+        "mode": "full",
+        "concurrency": 16
+      },
+      "questionVersion": "cargolens-email-v4:concise:full",
+      "modelRequested": "jev-1.13.0",
+      "modelsReturned": [
+        "jev-1.13.0"
+      ],
+      "live": true,
+      "localCache": false,
+      "providerCache": "unknown",
+      "metrics": {
+        "count": 64,
+        "accuracy": 1,
+        "providerCoverage": 1,
+        "decisionCoverage": 1,
+        "macroF1": 1,
+        "perCategory": {
+          "BL_COMPARISON": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "SI_REQUEST": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "INVOICE_QUERY": {
+            "support": 14,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "GENERAL": {
+            "support": 13,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          },
+          "SPAM": {
+            "support": 9,
+            "precision": 1,
+            "recall": 1,
+            "f1": 1
+          }
+        },
+        "confusion": {
+          "BL_COMPARISON": {
+            "BL_COMPARISON": 14
+          },
+          "SI_REQUEST": {
+            "SI_REQUEST": 14
+          },
+          "INVOICE_QUERY": {
+            "INVOICE_QUERY": 14
+          },
+          "GENERAL": {
+            "GENERAL": 13
+          },
+          "SPAM": {
+            "SPAM": 9
+          }
+        }
+      },
+      "wallMs": 5186.9564,
+      "firstResultMs": 2087.1711999999998,
+      "throughputEmailsPerSecond": 12.338642368383896,
+      "p50Ms": 842.1180000000004,
+      "p95Ms": 2594.5229,
+      "usage": {
+        "inputTokens": 127755,
+        "outputTokens": 15009,
+        "usageUnavailableForFailedCalls": 0,
+        "estimatedUsd": 0.00536571,
+        "estimateBasis": "$0.042/M input tokens; output free. Estimate, not invoice; failed-call billing unknown."
+      },
+      "apiAttempts": 64,
+      "reusedRequestHashesInThisProcess": 0,
+      "uniqueInputHashes": 64,
+      "rateLimitRpm": 1100,
+      "expectationAccuracy": null,
+      "expectationCount": 0,
+      "urgencyAccuracy": null,
+      "urgencyCount": 0,
+      "errors": [],
+      "misses": []
+    }
+  ]
+}
