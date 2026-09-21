@@ -21,10 +21,6 @@ export interface InboxResponse {
   emails: InboxRow[];
   queue: { active: number; queued: number; inFlight: number };
 }
-export interface UsageResponse extends Usage {
-  requests: number;
-  coverage: string;
-}
 export interface DraftResponse {
   draft: {
     id: string;
@@ -47,12 +43,6 @@ export interface GmailStatus {
   mailbox?: string;
   lastError?: string | null;
   [key: string]: unknown;
-}
-export interface HealthResponse {
-  service: string;
-  apiVersion: number;
-  status: string;
-  classifierRevision: string;
 }
 export interface RunReport {
   id: string;
@@ -147,8 +137,6 @@ export interface ApiClient {
     id: string,
   ): Promise<{ sourceVersion: string; sources: SourceReading[] }>;
   recover(id: string, payload: unknown): Promise<{ recovery: unknown }>;
-  health(): Promise<HealthResponse>;
-  usage(): Promise<UsageResponse>;
   emails(): Promise<InboxResponse>;
   getCase(id: string): Promise<Case>;
   comparison(
@@ -221,8 +209,6 @@ export function createApiClient(
     sources: (id) => request(`/cases/${encodeURIComponent(id)}/sources`),
     recover: (id, payload) =>
       post(`/cases/${encodeURIComponent(id)}/recover`, payload),
-    health: () => request("/health"),
-    usage: () => request("/usage"),
     emails: () => request("/emails?limit=1000"),
     getCase: (id) => request(`/cases/${encodeURIComponent(id)}`),
     comparison: async (id) => {

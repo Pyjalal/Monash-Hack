@@ -53,6 +53,22 @@ import { counts, duration, filterRows } from "./lib/view-model";
 
 const AUTH_REQUIRED = import.meta.env.VITE_AUTH_REQUIRED !== "false";
 
+/** Long form for screen readers/labels; short form replaces ellipses where screen space is limited. */
+const STREAM_LABEL: Record<StreamState, string> = {
+  connecting: "Event stream connecting",
+  replaying: "Replaying saved events",
+  live: "Live event stream",
+  reconnecting: "Event stream reconnecting",
+  offline: "Event stream offline",
+};
+const STREAM_LABEL_SHORT: Record<StreamState, string> = {
+  connecting: "Connecting…",
+  replaying: "Replaying saved events",
+  live: "Live event stream",
+  reconnecting: "Reconnecting…",
+  offline: "Offline",
+};
+
 function anonymousSession(): Session {
   return { token: "", apiUrl: defaultApiUrl(), issuedAt: Date.now() };
 }
@@ -494,30 +510,10 @@ function Workspace({
           <div
             className="connection"
             role="status"
-            aria-label={
-              stream === "live"
-                ? "Live event stream"
-                : stream === "replaying"
-                  ? "Replaying saved events"
-                  : stream === "reconnecting"
-                    ? "Event stream reconnecting"
-                    : stream === "offline"
-                      ? "Event stream offline"
-                      : "Event stream connecting"
-            }
+            aria-label={STREAM_LABEL[stream]}
           >
             <span className={`dot ${stream === "live" ? "green" : ""}`} />
-            <span className="sidebar-label">
-              {stream === "live"
-                ? "Live event stream"
-                : stream === "replaying"
-                  ? "Replaying saved events"
-                  : stream === "reconnecting"
-                    ? "Reconnecting…"
-                    : stream === "offline"
-                      ? "Offline"
-                      : "Connecting…"}
-            </span>
+            <span className="sidebar-label">{STREAM_LABEL_SHORT[stream]}</span>
           </div>
           <p className="sidebar-label">
             {gmail?.configured
