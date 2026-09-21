@@ -281,7 +281,7 @@ function Workspace({
   const [loaded, setLoaded] = useState(false);
   const [commands, setCommands] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [revision, setRevision] = useState(0);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;

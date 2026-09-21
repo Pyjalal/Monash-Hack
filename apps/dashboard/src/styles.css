@@ -379,7 +379,22 @@ label {
 .sidebar-collapsed .sidebar nav button,
 .sidebar-collapsed .sidebar-bottom button {
   justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 52px;
   padding-inline: 0;
+}
+.sidebar-collapsed .sidebar nav button .sidebar-label,
+.sidebar-collapsed .sidebar-bottom button .sidebar-label,
+.sidebar-collapsed .connection .sidebar-label {
+  display: block;
+  max-width: 64px;
+  color: #c4d0e0;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  line-height: 1.15;
+  text-align: center;
 }
 .sidebar-collapsed .sidebar-bottom {
   display: grid;
@@ -389,6 +404,8 @@ label {
 .sidebar-collapsed .connection {
   min-height: 28px;
   justify-content: center;
+  flex-direction: column;
+  gap: 5px;
 }
 .sidebar-collapsed .dot {
   width: 8px;
