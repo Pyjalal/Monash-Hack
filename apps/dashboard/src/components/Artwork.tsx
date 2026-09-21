@@ -26,16 +26,16 @@ export function DocumentArt({ large = false }: { large?: boolean }) {
       role="img"
       aria-label="Shipping instruction and bill of lading connected by an evidence lens"
     >
-      <path d="M32 26h74l20 20v104H32Z" fill="#fcfdff" stroke="#97abc9" />
-      <path d="M106 26v20h20" fill="#e4ecfb" stroke="#97abc9" />
-      <path d="M234 26h74l20 20v104h-94Z" fill="#fcfdff" stroke="#97abc9" />
-      <path d="M308 26v20h20" fill="#e4ecfb" stroke="#97abc9" />
+      <path d="M32 26h74l20 20v104H32Z" fill="#fffefa" stroke="#97abc9" />
+      <path d="M106 26v20h20" fill="#e7ce93" stroke="#97abc9" />
+      <path d="M234 26h74l20 20v104h-94Z" fill="#fffefa" stroke="#97abc9" />
+      <path d="M308 26v20h20" fill="#e7ce93" stroke="#97abc9" />
       <text
         x="48"
         y="60"
-        fill="#142641"
+        fill="#16284b"
         fontSize="17"
-        fontFamily="Segoe UI, sans-serif"
+        fontFamily="Albert Sans, sans-serif"
         fontWeight="650"
       >
         SI
@@ -43,9 +43,9 @@ export function DocumentArt({ large = false }: { large?: boolean }) {
       <text
         x="250"
         y="60"
-        fill="#142641"
+        fill="#16284b"
         fontSize="17"
-        fontFamily="Segoe UI, sans-serif"
+        fontFamily="Albert Sans, sans-serif"
         fontWeight="650"
       >
         BL
@@ -55,12 +55,12 @@ export function DocumentArt({ large = false }: { large?: boolean }) {
         stroke="#9bacc4"
         strokeLinecap="round"
       />
-      <path d="M126 86h29m50 0h29" stroke="#2355ce" strokeDasharray="3 4" />
-      <circle cx="180" cy="85" r="28" fill="#edf2ff" stroke="#2355ce" />
-      <circle cx="179" cy="83" r="11" stroke="#2355ce" strokeWidth="2" />
+      <path d="M126 86h29m50 0h29" stroke="#16284b" strokeDasharray="3 4" />
+      <circle cx="180" cy="85" r="28" fill="#f3ecdd" stroke="#16284b" />
+      <circle cx="179" cy="83" r="11" stroke="#16284b" strokeWidth="2" />
       <path
         d="m187 91 15 15m-28-23 4 4 7-8"
-        stroke="#2355ce"
+        stroke="#16284b"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

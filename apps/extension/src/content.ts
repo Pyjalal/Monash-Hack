@@ -1,3 +1,4 @@
+import { palette, installInboxFont } from "./theme.js";
 import type { InboxAdapter } from "./adapters.js";
 import { adapterForHost } from "./adapters.js";
 import type { ClassificationPreview, ExtensionMessage, RowClassifyResult, RowResultMessage } from "./messages.js";
@@ -33,20 +34,13 @@ type BadgeState =
   | { kind: "error"; code: string; message: string }
   | { kind: "classified"; classification: ClassificationPreview };
 
-const palette = {
-  bg: "#f4f0f4",
-  surface: "#fdfafd",
-  accent: "#754369",
-  ink: "#342732",
-  muted: "#735e70",
-  wash: "#eae1e8",
-};
+
 
 const badgeStyle = `
-:host { all: initial; display: inline-flex; vertical-align: middle; margin-inline-start: 8px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+:host { all: initial; display: inline-flex; vertical-align: middle; margin-inline-start: 8px; font-family: "CargoLens Albert Sans", "Segoe UI", system-ui, sans-serif; }
 .badge { align-items: center; border: 1px solid ${palette.wash}; border-radius: 999px; background: ${palette.bg}; color: ${palette.ink}; display: inline-flex; gap: 5px; line-height: 1; max-width: 300px; padding: 5px 8px; font-size: 11px; font-weight: 650; }
 .badge.urgent { background: ${palette.accent}; border-color: ${palette.accent}; color: ${palette.surface}; }
-.badge.error { color: ${palette.accent}; }
+.badge.error { color: ${palette.error}; }
 .badge.uncertain { border-color: ${palette.accent}; color: ${palette.accent}; }
 .badge.filtered { border-color: ${palette.accent}; }
 .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -104,6 +98,7 @@ export class CargoLensController {
 
   async start(): Promise<void> {
     if (this.stopped) return;
+    installInboxFont(this.root);
     try {
       this.removeRuntimeListener = this.runtime.onMessage((message) => this.handleMessage(message));
     } catch (error) {
@@ -551,7 +546,7 @@ export class CargoLensController {
     const shadow = this.trayHost.shadowRoot ?? this.trayHost.attachShadow({ mode: "open" });
     shadow.replaceChildren();
     const style = document.createElement("style");
-    style.textContent = `:host { all: initial; position: fixed; z-index: 2147483646; top: 76px; right: 16px; width: 280px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; } .tray { border: 1px solid ${palette.wash}; border-radius: 14px; background: ${palette.surface}; box-shadow: 0 16px 40px rgba(52,39,50,.18); color: ${palette.ink}; padding: 10px; } .header { align-items: center; display: flex; gap: 8px; justify-content: space-between; } .title { font-size: 12px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; } .count { color: ${palette.accent}; font-size: 11px; } button { border: 0; border-radius: 9px; background: ${palette.bg}; color: ${palette.ink}; cursor: pointer; display: block; font: inherit; margin-top: 8px; padding: 9px; text-align: left; width: 100%; } button:hover, button:focus-visible { background: ${palette.wash}; outline: 2px solid ${palette.accent}; outline-offset: 1px; } .hint { color: ${palette.muted}; font-size: 11px; margin: 8px 0 0; }`;
+    style.textContent = `:host { all: initial; position: fixed; z-index: 2147483646; top: 76px; right: 16px; width: 280px; font-family: "CargoLens Albert Sans", "Segoe UI", system-ui, sans-serif; } .tray { border: 1px solid ${palette.wash}; border-radius: 14px; background: ${palette.surface}; box-shadow: 0 16px 40px rgba(52,39,50,.18); color: ${palette.ink}; padding: 10px; } .header { align-items: center; display: flex; gap: 8px; justify-content: space-between; } .title { font-size: 12px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; } .count { color: ${palette.accent}; font-size: 11px; } button { border: 0; border-radius: 9px; background: ${palette.bg}; color: ${palette.ink}; cursor: pointer; display: block; font: inherit; margin-top: 8px; padding: 9px; text-align: left; width: 100%; } button:hover, button:focus-visible { background: ${palette.wash}; outline: 2px solid ${palette.accent}; outline-offset: 1px; } .hint { color: ${palette.muted}; font-size: 11px; margin: 8px 0 0; }`;
     shadow.append(style);
     const tray = document.createElement("div");
     tray.className = "tray";
