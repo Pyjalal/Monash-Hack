@@ -18,6 +18,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "eval": "tsx tools/eval/src/evaluate.ts",
+    "eval:final": "tsx tools/eval/src/final.ts",
     "eval:triage": "tsx tools/eval/src/triage.ts",
     "eval:classify": "tsx tools/eval/src/classification.ts",
     "build:extension": "npm run build --workspace @cargolens/extension",

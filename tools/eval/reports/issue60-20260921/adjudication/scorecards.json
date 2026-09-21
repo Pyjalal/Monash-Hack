@@ -1,0 +1,477 @@
+{
+  "version": 1,
+  "runId": "2026-09-20T17-26-51.910Z-47c3f12a",
+  "datasetSha256": "f70c26b3c6780f71403b1bc00a562a84f33ae035aa9cd5a0dd6ba59eceab7680",
+  "official": {
+    "valid": false,
+    "score": null,
+    "diagnosticScorer": "organizer-scorer.json",
+    "warning": "Partial submissions trigger organizer defaults. Diagnostic numbers are not a valid headline score.",
+    "targets": {
+      "categoryMacroF1": 0.85,
+      "endToEndDefectRate": 0.8,
+      "reviewRecallCount": "15/20"
+    },
+    "category": {
+      "count": 520,
+      "accuracy": 0.9711538461538461,
+      "providerCoverage": 0.9846153846153847,
+      "decisionCoverage": 0.9846153846153847,
+      "macroF1": 0.9793779174009277,
+      "perCategory": {
+        "BL_COMPARISON": {
+          "support": 220,
+          "precision": 1,
+          "recall": 0.9681818181818181,
+          "f1": 0.9838337182448037
+        },
+        "SI_REQUEST": {
+          "support": 125,
+          "precision": 0.9609375,
+          "recall": 0.984,
+          "f1": 0.9723320158102767
+        },
+        "INVOICE_QUERY": {
+          "support": 75,
+          "precision": 1,
+          "recall": 0.9333333333333333,
+          "f1": 0.9655172413793104
+        },
+        "GENERAL": {
+          "support": 60,
+          "precision": 0.9672131147540983,
+          "recall": 0.9833333333333333,
+          "f1": 0.9752066115702479
+        },
+        "SPAM": {
+          "support": 40,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        }
+      },
+      "confusion": {
+        "BL_COMPARISON": {
+          "BL_COMPARISON": 213,
+          "PROVIDER_ERROR": 2,
+          "SI_REQUEST": 5
+        },
+        "INVOICE_QUERY": {
+          "INVOICE_QUERY": 70,
+          "PROVIDER_ERROR": 3,
+          "GENERAL": 2
+        },
+        "SI_REQUEST": {
+          "SI_REQUEST": 123,
+          "PROVIDER_ERROR": 2
+        },
+        "GENERAL": {
+          "GENERAL": 59,
+          "PROVIDER_ERROR": 1
+        },
+        "SPAM": {
+          "SPAM": 40
+        }
+      }
+    },
+    "exactTargets": {
+      "category": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "status": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "review_reason": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "defect_fields": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "has_defect": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      }
+    },
+    "scorerError": null
+  },
+  "adjudicated": {
+    "label": "Evaluation-only target scores; pending disputes excluded, no inferred corrections.",
+    "ledgerSha256": "51a98ffc010286239df7914c1e7fea825242b8509795fff8c70869aa06d6e4d9",
+    "accepted": [],
+    "unresolvedByTarget": {
+      "category": 0,
+      "status": 0,
+      "review_reason": 3,
+      "defect_fields": 0,
+      "has_defect": 0
+    },
+    "exactTargets": {
+      "category": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "status": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "review_reason": {
+        "total": 517,
+        "correct": 359,
+        "excluded": 3,
+        "accuracy": 0.6943907156673114
+      },
+      "defect_fields": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      },
+      "has_defect": {
+        "total": 520,
+        "correct": 359,
+        "excluded": 0,
+        "accuracy": 0.6903846153846154
+      }
+    }
+  },
+  "independent": {
+    "status": "REUSED_INDEPENDENT_VALIDATION",
+    "fixtureSha256": "3a57d86214d951588e2ff889b3117c9045f60d5eddb1d60988801986c441f97a",
+    "rows": [
+      {
+        "id": "independent-1",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-2",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-3",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-4",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-5",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-6",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-7",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-8",
+        "expected": "BL_COMPARISON",
+        "predicted": "BL_COMPARISON",
+        "expectationCorrect": true,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-9",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-10",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-11",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-12",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-13",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-14",
+        "expected": "SI_REQUEST",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-15",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-16",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-17",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-18",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-19",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-20",
+        "expected": "INVOICE_QUERY",
+        "predicted": "INVOICE_QUERY",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-21",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-22",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-23",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-24",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-25",
+        "expected": "GENERAL",
+        "predicted": "SI_REQUEST",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": false
+      },
+      {
+        "id": "independent-26",
+        "expected": "GENERAL",
+        "predicted": "GENERAL",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-27",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-28",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-29",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-30",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-31",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      },
+      {
+        "id": "independent-32",
+        "expected": "SPAM",
+        "predicted": "SPAM",
+        "expectationCorrect": null,
+        "falseClear": false,
+        "automated": true
+      }
+    ],
+    "category": {
+      "count": 32,
+      "accuracy": 0.96875,
+      "providerCoverage": 1,
+      "decisionCoverage": 1,
+      "macroF1": 0.9664335664335665,
+      "perCategory": {
+        "BL_COMPARISON": {
+          "support": 8,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "SI_REQUEST": {
+          "support": 6,
+          "precision": 0.8571428571428571,
+          "recall": 1,
+          "f1": 0.9230769230769231
+        },
+        "INVOICE_QUERY": {
+          "support": 6,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "GENERAL": {
+          "support": 6,
+          "precision": 1,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091
+        },
+        "SPAM": {
+          "support": 6,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        }
+      },
+      "confusion": {
+        "BL_COMPARISON": {
+          "BL_COMPARISON": 8
+        },
+        "SI_REQUEST": {
+          "SI_REQUEST": 6
+        },
+        "INVOICE_QUERY": {
+          "INVOICE_QUERY": 6
+        },
+        "GENERAL": {
+          "GENERAL": 5,
+          "SI_REQUEST": 1
+        },
+        "SPAM": {
+          "SPAM": 6
+        }
+      }
+    },
+    "falseClears": 0,
+    "automationCoverage": 0.6875,
+    "documentStatusReasonChecks": "NOT_RUN: independently authored document comparator fixtures are not integrated"
+  }
+}
