@@ -10,7 +10,7 @@ import { createVisionProvider, type VisionProvider, type VisionRecoveryResult } 
 import { loadDataset } from "../../../apps/api/src/dataset.js";
 import { detectedRole, extractDocumentFields, type DocumentFieldExtraction, type DocumentRole, type FallbackExtractor, type FallbackSelection } from "../../../apps/api/src/documents/field-extraction.js";
 import { readAttachment, renderPdfPageImages, type AttachmentReadResult } from "../../../apps/api/src/documents/index.js";
-import { COMPARISON_POLICY_VERSION, acceptFormattingVerdict, isFormattingOnlyDifference, isPartyWithOmittedAddress, normaliseFieldValue } from "../../../apps/api/src/documents/value-comparison.js";
+import { COMPARISON_POLICY_VERSION, acceptFormattingVerdict, normaliseFieldValue } from "../../../apps/api/src/documents/value-comparison.js";
 
 type Mode = "classify" | "pipeline";
 type FieldName = (typeof FIELD_NAMES)[number];
@@ -375,20 +375,19 @@ export async function extract(email: Email, root: string, fallback: FallbackExtr
       const verdicts = await compareFallback(pending);
       for (const request of pending) {
         const verdict = verdicts[request.field];
-        const formattingOnly = isFormattingOnlyDifference(request.field, request.si, request.bl);
-        const partyWithOmittedAddress = isPartyWithOmittedAddress(request.field, request.si, request.bl);
-        const guardPassed = formattingOnly || partyWithOmittedAddress;
         comparison[request.field].comparisonConfidence = verdict?.confidence ?? null;
         comparison[request.field].matches = acceptFormattingVerdict(request.field, request.si, request.bl, verdict);
-        comparison[request.field].method = comparison[request.field].matches
-          ? partyWithOmittedAddress ? "jev_party_address_equivalent" : "jev_format_equivalent"
-          : guardPassed ? "jev_rejected_or_uncertain" : "material_difference_guard";
+        const confidentDifference = verdict?.equivalent === false && verdict.confidence !== null && Number.isFinite(verdict.confidence) && verdict.confidence >= 0.95 && verdict.confidence <= 1;
+        comparison[request.field].method = comparison[request.field].matches ? "jev_format_equivalent" : confidentDifference ? "jev_confirmed_difference" : "unresolved_semantics";
+        if (!comparison[request.field].matches && !confidentDifference) unresolved = true;
+
       }
     } catch {
-      for (const request of pending) comparison[request.field].method = "jev_comparison_failed";
+      unresolved = true;
+      for (const request of pending) comparison[request.field].method = "unresolved_semantics";
     }
   }
-  const defect_fields = FIELD_NAMES.filter(field => comparison[field].siNormalized !== null && comparison[field].blNormalized !== null && !comparison[field].matches);
+  const defect_fields = FIELD_NAMES.filter(field => comparison[field].siNormalized !== null && comparison[field].blNormalized !== null && !comparison[field].matches && comparison[field].method !== "unresolved_semantics");
   return { email_id: email.id, review_reason: unresolved ? "missing_value" as const : null, documents, extraction, fields, comparison, defect_fields };
 }
 

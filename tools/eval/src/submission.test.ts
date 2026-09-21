@@ -24,9 +24,9 @@ it('derives roles from content despite swapped filenames', async () => {
   expect(result.documents.si?.attachment.id).toBe('first');
 });
 it('retains known mismatches alongside a missing field', async () => {
-  const { root, email } = await fixture(fields.replace('Shipper: Acme', 'Shipper: Other').replace('100 KG', 'TBA'));
+  const { root, email } = await fixture(fields.replace('Container count: 2', 'Container count: 3').replace('100 KG', 'TBA'));
   const result = await extract(email, root, async () => { throw new Error('unavailable'); }, async () => ({}), null);
-  expect(result.review_reason).toBe('missing_value'); expect(result.defect_fields).toContain('shipper');
+  expect(result.review_reason).toBe('missing_value'); expect(result.defect_fields).toContain('container_count');
 });
 it('rejects unrelated shipment references', async () => {
   const { root, email } = await fixture(fields, 'BILL OF LADING', 'OTHER-2000');
@@ -43,4 +43,10 @@ it('distinguishes positively wrong documents from unreadable evidence', async ()
 it('never treats two unknown numeric values as a match', async () => {
   const { root, email } = await fixture(fields.replace('100 KG', '100 LB'));
   expect((await extract(email, root, vi.fn(), vi.fn(), null)).review_reason).toBe('missing_value');
+});
+
+it('blocks an unresolved semantic difference instead of asserting a defect', async () => {
+  const { root, email } = await fixture(fields.replace('Shipper: Acme', 'Shipper: Other'));
+  const result = await extract(email, root, vi.fn(), async () => ({}), null);
+  expect(result.review_reason).toBe('missing_value'); expect(result.defect_fields).toEqual([]);
 });
