@@ -13,6 +13,41 @@ export interface BatchClassificationResult {
   questionVersion: string;
 }
 
+const MAX_LONGEST_QUESTION_BYTES = 28_000;
+const MAX_PACKED_REQUEST_BYTES = 56_000;
+
+export function assertPackedBatch(emails: readonly Email[]): void {
+  if (emails.length < 1 || emails.length > 8 || new Set(emails.map(email => email.id)).size !== emails.length)
+    throw new RangeError("A packed batch must contain 1 to 8 emails with unique IDs");
+}
+
+export function packBatchQuestions(questions: Questions, emails: readonly Email[]): Questions {
+  const packedQuestions: Questions = {};
+  emails.forEach((_email, index) => {
+    for (const [key, question] of Object.entries(questions)) {
+      const instructions = String(question.instructions).replaceAll("`email.", `\`emails[${index}].`);
+      packedQuestions[`e${index}_${key}`] = { ...question,
+        instructions: `Evaluate ONLY the message at \`emails[${index}]\`. Ignore every other message in this request. ${instructions}` };
+    }
+  });
+  return packedQuestions;
+}
+
+export function assertPackedContextBudget(state: unknown, packedQuestions: Questions): void {
+  const stateBytes = Buffer.byteLength(JSON.stringify(state), "utf8");
+  const longestQuestionBytes = Math.max(...Object.values(packedQuestions).map(question => Buffer.byteLength(JSON.stringify(question), "utf8")));
+  if (stateBytes + longestQuestionBytes > MAX_LONGEST_QUESTION_BYTES || stateBytes + Buffer.byteLength(JSON.stringify(packedQuestions), "utf8") > MAX_PACKED_REQUEST_BYTES)
+    throw new RangeError("Packed request exceeds conservative context budget; split into smaller batches");
+}
+
+export function packedAnswers(answers: unknown, packedQuestions: Questions): Record<string, unknown> {
+  if (!answers || typeof answers !== "object" || Array.isArray(answers) ||
+      Object.keys(answers).length !== Object.keys(packedQuestions).length ||
+      Object.keys(packedQuestions).some(key => !Object.hasOwn(answers, key)))
+    throw new InvalidJevResponseError("packed.answers");
+  return answers as Record<string, unknown>;
+}
+
 export function createJevBatchProvider(options: JevProviderOptions) {
   const variant = options.variant ?? "concise";
   const mode = options.mode ?? "intent-only";
@@ -25,29 +60,15 @@ export function createJevBatchProvider(options: JevProviderOptions) {
 
   return {
     async classifyBatch(emails: Email[]): Promise<BatchClassificationResult> {
-      if (emails.length < 1 || emails.length > 8 || new Set(emails.map(email => email.id)).size !== emails.length)
-        throw new RangeError("A packed batch must contain 1 to 8 emails with unique IDs");
-      const packedQuestions: Questions = {};
-      emails.forEach((_email, index) => {
-        for (const [key, question] of Object.entries(questions)) {
-          const instructions = String(question.instructions).replaceAll("`email.", `\`emails[${index}].`);
-          packedQuestions[`e${index}_${key}`] = { ...question,
-            instructions: `Evaluate ONLY the message at \`emails[${index}]\`. Ignore every other message in this request. ${instructions}` };
-        }
-      });
+      assertPackedBatch(emails);
+      const packedQuestions = packBatchQuestions(questions, emails);
       const state = { emails: emails.map(email => buildClassificationState(email).email) };
-      const stateBytes = Buffer.byteLength(JSON.stringify(state), "utf8");
-      const longestQuestionBytes = Math.max(...Object.values(packedQuestions).map(question => Buffer.byteLength(JSON.stringify(question), "utf8")));
-      const requestBytes = stateBytes + Buffer.byteLength(JSON.stringify(packedQuestions), "utf8");
-      if (stateBytes + longestQuestionBytes > 28_000 || requestBytes > 56_000)
-        throw new RangeError("Packed request exceeds conservative context budget; split into smaller batches");
+      assertPackedContextBudget(state, packedQuestions);
       const started = performance.now();
       const response = await client.systemOne({ state, questions: packedQuestions },
         { signal: AbortSignal.timeout(totalTimeoutMs) });
       const elapsedMs = performance.now() - started;
-      const answers = response?.answers;
-      if (!answers || typeof answers !== "object" || Array.isArray(answers) || Object.keys(answers).length !== Object.keys(packedQuestions).length ||
-          Object.keys(packedQuestions).some(key => !Object.hasOwn(answers, key))) throw new InvalidJevResponseError("packed.answers");
+      const answers = packedAnswers(response?.answers, packedQuestions);
       let usage: Usage | undefined;
       const classifications = emails.map((email, index) => {
         const selected = Object.fromEntries(Object.keys(questions).map(key => [key, answers[`e${index}_${key}`]]));

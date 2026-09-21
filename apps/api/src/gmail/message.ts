@@ -1,3 +1,6 @@
+import { createHash } from 'node:crypto';
+import type { Email } from '@cargolens/shared';
+
 export interface GmailPart {
   mimeType?: string;
   filename?: string;
@@ -158,5 +161,3 @@ export function buildReplyRaw(reply: ReplyInput, mailbox: string): string {
   if (attachments.length) lines.push(`--${boundary}--`, '');
   return Buffer.from(lines.join('\r\n')).toString('base64url');
 }
-import { createHash } from 'node:crypto';
-import type { Email } from '@cargolens/shared';

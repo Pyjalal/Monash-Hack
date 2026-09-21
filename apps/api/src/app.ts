@@ -40,6 +40,12 @@ export function createApp(options: AppOptions): Hono {
   const reports = dashboardReports(store);
   const origins = options.allowedOrigins ?? ['http://localhost:5173', 'http://127.0.0.1:5173'];
   let previewBudget = 600; let refillAt = Date.now(); let importing = false;
+  function consumePreviewBudget(count: number): boolean {
+    previewBudget = Math.min(600, previewBudget + (Date.now() - refillAt) / 6000); refillAt = Date.now();
+    if (previewBudget < count) return false;
+    previewBudget -= count;
+    return true;
+  }
   app.use('*', cors({ origin: origin => origins.includes(origin) || /^chrome-extension:\/\/[a-p]{32}$/.test(origin) ? origin : undefined,
     allowHeaders: ['Content-Type', 'Authorization', 'Last-Event-ID'], allowMethods: ['GET', 'POST', 'OPTIONS'], maxAge: 600 }));
   app.use('*', bodyLimit({ maxSize: 1024 * 1024, onError: c => c.json({ error: 'PAYLOAD_TOO_LARGE' }, 413) }));
@@ -56,9 +62,7 @@ export function createApp(options: AppOptions): Hono {
     if (!/^application\/json(?:;|$)/i.test(c.req.header('Content-Type') ?? '')) return c.json({ error: 'JSON_REQUIRED' }, 415);
     const parsed = ClassifyRequestSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'INVALID_BATCH', details: parsed.error.flatten() }, 400);
-    previewBudget = Math.min(600, previewBudget + (Date.now() - refillAt) / 6000); refillAt = Date.now();
-    if (previewBudget < parsed.data.emails.length) return c.json({ error: 'PREVIEW_BUDGET_EXHAUSTED', retryAfterSeconds: 60 }, 429);
-    previewBudget -= parsed.data.emails.length;
+    if (!consumePreviewBudget(parsed.data.emails.length)) return c.json({ error: 'PREVIEW_BUDGET_EXHAUSTED', retryAfterSeconds: 60 }, 429);
     const start = performance.now();
     const results: ClassifyResult[] = await Promise.all(parsed.data.emails.map(async source => {
       const email = { id: source.id, subject: source.subject, from: source.from, snippet: source.snippet ?? '', contentScope: 'inbox_snippet' as const, attachments: [] };
@@ -75,9 +79,7 @@ export function createApp(options: AppOptions): Hono {
     if (!/^application\/json(?:;|$)/i.test(c.req.header('Content-Type') ?? '')) return c.json({ error: 'JSON_REQUIRED' }, 415);
     const parsed = RulesRequestSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'INVALID_RULES_BATCH', details: parsed.error.flatten() }, 400);
-    previewBudget = Math.min(600, previewBudget + (Date.now() - refillAt) / 6000); refillAt = Date.now();
-    if (previewBudget < parsed.data.emails.length) return c.json({ error: 'PREVIEW_BUDGET_EXHAUSTED', retryAfterSeconds: 60 }, 429);
-    previewBudget -= parsed.data.emails.length;
+    if (!consumePreviewBudget(parsed.data.emails.length)) return c.json({ error: 'PREVIEW_BUDGET_EXHAUSTED', retryAfterSeconds: 60 }, 429);
     const start = performance.now();
     const emails = parsed.data.emails.map(source => ({ ...source, snippet: source.snippet ?? '', contentScope: 'inbox_snippet' as const, attachments: [] }));
     const results = await options.rules.evaluate(emails, parsed.data.rules);
