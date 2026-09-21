@@ -11,6 +11,7 @@ import {
   Inbox,
   ChartNoAxesCombined,
   Send,
+  Workflow,
   Search,
   ArrowUpRight,
   Upload,
@@ -31,6 +32,7 @@ import { CaseView } from "./components/CaseView";
 import { Measurements, DeliveryLog } from "./components/Measurements";
 import { InboxMap } from "./components/InboxMap";
 import { Tour, shouldOpenTour } from "./components/Tour";
+import { FlowBuilder } from "./components/FlowBuilder";
 import {
   createApiClient,
   CATEGORY_LABEL,
@@ -488,6 +490,7 @@ function Workspace({
               label: "Measurements",
               icon: ChartNoAxesCombined,
             },
+            { id: "builder", label: "Workflow builder", icon: Workflow },
             { id: "deliveries", label: "Delivery log", icon: Send },
           ].map((item) => (
             <button
@@ -579,7 +582,9 @@ function Workspace({
                   ? "Inbox"
                   : page === "measurements"
                     ? "Measurements"
-                    : "Delivery log"}
+                    : page === "builder"
+                      ? "Workflow builder"
+                      : "Delivery log"}
               </strong>
             </div>
           </div>
@@ -611,14 +616,18 @@ function Workspace({
                   ? "Your operations, in focus."
                   : page === "measurements"
                     ? "Know what really happened."
-                    : "Every reply, accounted for."}
+                    : page === "builder"
+                      ? "Build the checking flow."
+                      : "Every reply, accounted for."}
               </h1>
               <p className="muted">
                 {page === "inbox"
                   ? "A clear view of your documents, decisions and next steps."
                   : page === "measurements"
                     ? "Saved measurements. Explicit limits. No simulated benchmark claims."
-                    : "Follow queued, delivered and unresolved messages in one place."}
+                    : page === "builder"
+                      ? "A saved flow runs through the same functions as the pipeline."
+                      : "Follow queued, delivered and unresolved messages in one place."}
               </p>
             </div>
             <DocumentArt />
@@ -913,6 +922,8 @@ function Workspace({
             </>
           ) : page === "measurements" ? (
             <Measurements report={report} api={api} />
+          ) : page === "builder" ? (
+            <FlowBuilder api={api} />
           ) : (
             <DeliveryLog
               items={outbox}

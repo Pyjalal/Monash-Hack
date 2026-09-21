@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { Button } from "./ui/button";
 
 /** Bumped when the steps change, so a returning operator sees what is new. */
-export const TOUR_VERSION = 3;
+export const TOUR_VERSION = 4;
 const STORAGE_KEY = "cargolens.tour.seen";
 
 export interface TourStep {
@@ -87,6 +87,11 @@ export const TOUR_STEPS: TourStep[] = [
     title: "The next action, and the reply",
     body:
       "Compare documents runs the seven-field check. Preview shows the exact reply the case would send, and nothing is sent from a preview. A match can only be confirmed when all seven fields are verified from two different documents with no blockers.",
+  },
+  {
+    title: "The workflow builder",
+    body:
+      "Workflow builder, in the sidebar, draws the SI-to-BL checking flow as a graph you can change: six node types, a trigger, the comparison, conditions and the two outcomes. It runs through the same functions as the pipeline, and a graph that would not execute is refused with the reason rather than saved as a drawing.",
   },
   {
     target: "deliveries",
