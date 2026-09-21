@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { FieldNameSchema } from "@cargolens/shared";
+import { FIELD_NAMES, FieldNameSchema } from "@cargolens/shared";
 import type { z } from "zod";
 
 type FieldName = z.infer<typeof FieldNameSchema>;
@@ -23,6 +23,14 @@ export interface VisionRecoveryRequest {
     page: number;
     mimeType: "image/png" | "image/jpeg";
     base64: string;
+  }>;
+
+  /** Positioned native/OCR text is transcription assistance; images remain the layout authority. */
+  positionedText?: Array<{
+    page: number;
+    width: number;
+    height: number;
+    blocks: Array<{ id: string; text: string; x: number; y: number; width: number; height: number }>;
   }>;
 }
 
@@ -284,6 +292,25 @@ function validateVisionRequest(
       );
     }
   }
+  if (request.positionedText !== undefined) {
+    if (request.positionedText.length > maxPages || new Set(request.positionedText.map(page => page.page)).size !== request.positionedText.length)
+      throw new Error("Positioned text pages must be bounded and unique.");
+    let blockCount = 0;
+    let textCharacters = 0;
+    for (const page of request.positionedText) {
+      if (!unresolvedPageSet.has(page.page) || !Number.isFinite(page.width) || !Number.isFinite(page.height) || page.width <= 0 || page.height <= 0)
+        throw new Error("Positioned text must belong to supplied pages with valid dimensions.");
+      for (const block of page.blocks) {
+        blockCount += 1; textCharacters += block.text.length;
+        if (!block.id || !block.text.trim() || block.text.length > 1_000
+          || [block.x, block.y, block.width, block.height].some(value => !Number.isFinite(value))
+          || block.x < 0 || block.y < 0 || block.width < 0 || block.height < 0
+          || block.x + block.width > page.width + 1 || block.y > page.height + 1)
+          throw new Error("Positioned text block is invalid.");
+      }
+    }
+    if (blockCount > 1_500 || textCharacters > 60_000) throw new Error("Positioned text evidence exceeds its budget.");
+  }
 }
 
 function emptyUsage(): VisionRecoveryUsage {
@@ -404,8 +431,11 @@ export function parseVisionCandidate(
 function parseModelPayload(
   content: string,
 ): VisionModelPayload | null {
+  const trimmed = content.trim();
+  const json = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i)?.[1] ?? trimmed;
+
   try {
-    const parsed: unknown = JSON.parse(content);
+    const parsed: unknown = JSON.parse(json);
 
     if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
       return null;
@@ -421,15 +451,21 @@ function parseModelPayload(
 }
 
 function buildVisionPrompt(request: VisionRecoveryRequest): string {
+  const positionedText = request.positionedText?.length
+    ? ` Positioned text-layer evidence (coordinates use PDF page space): ${JSON.stringify(request.positionedText)}.`
+    : "";
   return [
     "Recover only the requested unresolved fields from the supplied source-document pages.",
     `Requested fields: ${request.unresolvedFields.join(", ")}.`,
     "Use only evidence visibly present in the supplied pages.",
     "Do not infer, guess, or invent missing values.",
+    "Use the page image as the authority for layout and field boundaries; use positioned text only as transcription assistance.",
+    "A colon inside an address (for example P.O. BOX: or NEW NO:) does not start a new top-level field.",
     "Do not use any expected answer, target value, comparison-side document, or evaluation label.",
     "If the evidence is insufficient for a field, do not create a candidate for it.",
     "Return JSON only using this exact structure:",
     '{"candidates":[{"field":"shipper","value":"visible value","page":1,"confidence":0.95}],"unresolvedFields":[]}',
+    positionedText,
   ].join(" ");
 }
 
@@ -485,6 +521,40 @@ async function fetchWithTimeout(
       signal: controller.signal,
       body: JSON.stringify({
         model,
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "vision_field_recovery",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                candidates: {
+                  type: "array",
+                  maxItems: FIELD_NAMES.length,
+                  items: {
+                    type: "object",
+                    properties: {
+                      field: { type: "string", enum: FIELD_NAMES },
+                      value: { type: "string", minLength: 1 },
+                      page: { type: "integer", minimum: 1 },
+                      confidence: { type: "number", minimum: 0, maximum: 1 },
+                    },
+                    required: ["field", "value", "page", "confidence"],
+                    additionalProperties: false,
+                  },
+                },
+                unresolvedFields: {
+                  type: "array",
+                  maxItems: FIELD_NAMES.length,
+                  items: { type: "string", enum: FIELD_NAMES },
+                },
+              },
+              required: ["candidates", "unresolvedFields"],
+              additionalProperties: false,
+            },
+          },
+        },
         max_tokens:
           options.maxOutputTokens ??
           DEFAULT_MAX_OUTPUT_TOKENS,

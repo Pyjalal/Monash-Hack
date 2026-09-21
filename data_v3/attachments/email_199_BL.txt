@@ -1,0 +1,17 @@
+COMMERCIAL INVOICE
+========================================
+
+Invoice No.: 5250077526
+Invoice Date: 22-JAN-2026
+Seller: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+Buyer: PACIFIC OFFICE (M) SDN BHD
+Booking Ref: 53135948
+
+Description                         Qty        Unit Price       Amount (USD)
+MULTIPURPOSE PAPER - A4 - PA       600     45.00           27,000
+
+Total Amount: USD 27,000.00
+Payment Terms: 30 days from B/L date
+Incoterms: CFR
+
+*** THIS IS A COMMERCIAL INVOICE - NOT A SHIPPING INSTRUCTION ***

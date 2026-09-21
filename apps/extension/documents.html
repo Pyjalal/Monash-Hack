@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Document verification · CargoLens</title>
+<link rel="stylesheet" href="brand/fonts.css">
+<style>
+:root{font-family:"Albert Sans","Segoe UI",sans-serif;color:#16284b;background:#f7f6f2;color-scheme:light}body{margin:0}main{max-width:1200px;margin:40px auto;padding:24px}header{display:flex;align-items:baseline;justify-content:space-between;gap:20px}h1,h2{font-family:"Fraunces",Georgia,serif}h1{font-size:32px}h2{font-size:24px}p,small{color:#52647d}section,form{background:#fffefa;border:1px solid #e8e6df;border-radius:14px;padding:24px;margin:20px 0}form{display:flex;align-items:end;gap:12px;flex-wrap:wrap}label{display:block;font-weight:600;margin-bottom:6px}input,select,button{font:inherit;border-radius:8px;padding:10px;border:1px solid #a4adb9}input{width:300px;max-width:80vw}select{max-width:80%;background:#fffefa;color:#16284b}button{background:#16284b;color:#fffefa;cursor:pointer;font-weight:600}table{width:100%;border-collapse:collapse;margin-top:24px}td,th{text-align:left;vertical-align:top;padding:14px;border-bottom:1px solid #e8e6df;overflow-wrap:anywhere}td{white-space:pre-wrap}th{font-size:13px}small{display:block;margin-top:8px;font-size:11px}#evidence{overflow-x:auto}#status{min-height:24px}:focus-visible{outline:2px solid #16284b;outline-offset:3px}@media(max-width:700px){main{margin:0;padding:16px}table{min-width:650px}header{display:block}}
+</style>
+</head>
+<body><main>
+<header><h1>CargoLens</h1><p>Document verification</p></header>
+<p>Review SI and BL evidence from your connected CargoLens service.</p>
+<form id="connection"><div><label for="token">Dashboard access token</label><input id="token" type="password" autocomplete="off" aria-describedby="token-help"><small id="token-help">Kept only in this page’s memory. Leave blank if your local service does not require authentication.</small></div><button type="submit">Connect</button></form>
+<label for="cases">Imported message</label><select id="cases"><option value="">Connect to load messages</option></select> <button id="refresh" type="button">Refresh evidence</button>
+<p id="status" role="status" aria-live="polite">Connect to view current decisions and their source evidence.</p>
+<section id="evidence" aria-label="Document verification results"></section>
+</main><script src="documents.js"></script></body></html>

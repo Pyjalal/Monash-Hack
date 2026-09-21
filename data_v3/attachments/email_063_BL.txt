@@ -1,0 +1,14 @@
+PACKING LIST
+========================================
+
+Shipper: APRIL FINE PAPER TRADING
+Consignee: AL GURG STATIONERY LLC
+Booking Ref: MCLSINJEA2521960
+Commodity: PAPERONE DIGITAL COPIER PAPER
+
+Carton No.      Net Wt (kg)     Gross Wt (kg)     Dimensions
+CTN-001          486             641             120x100x110
+CTN-002          408             466             120x100x110
+CTN-003          544             476             120x100x110
+
+*** PACKING LIST ONLY - NO PORT OR VESSEL DETAILS ***

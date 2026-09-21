@@ -11,7 +11,7 @@ await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
 await build({
   absWorkingDir: extensionRoot,
-  entryPoints: { background: "src/background.ts", content: "src/content.ts", popup: "src/popup.ts", options: "src/options.ts" },
+  entryPoints: { background: "src/background.ts", content: "src/content.ts", popup: "src/popup.ts", options: "src/options.ts", documents: "src/documents.ts" },
   bundle: true,
   loader: { ".woff2": "dataurl" },
   format: "iife",
@@ -26,3 +26,5 @@ await copyFile(resolve(extensionRoot, "popup.html"), resolve(dist, "popup.html")
 await copyFile(resolve(extensionRoot, "options.html"), resolve(dist, "options.html"));
 
 await cp(resolve(extensionRoot, "../../packages/brand"), resolve(dist, "brand"), { recursive: true });
+
+await copyFile(resolve(extensionRoot, "documents.html"), resolve(dist, "documents.html"));

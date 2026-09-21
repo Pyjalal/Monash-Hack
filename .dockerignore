@@ -23,3 +23,7 @@ training_data/sdoc-hackathon-docker/extracted/data_v2/*.py
 training_data/sdoc-hackathon-docker/extracted/data_v2/README.md
 training_data/sdoc-hackathon-docker/extracted/data_v2/ground_truth.json
 training_data/sdoc-hackathon-docker/extracted/data_v2/sample_submission.json
+
+data_v3
+apps/extraction-dashboard/src
+apps/extraction-dashboard/public

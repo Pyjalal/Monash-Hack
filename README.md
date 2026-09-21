@@ -385,3 +385,10 @@ training_data/      SDOC dataset, attachments and organizer scorer
 - The latest full-inbox run measures classification and comparison attempts;
   successful official document verification and final independent document
   scorecards remain outstanding.
+
+
+### Extension document verification
+
+After rebuilding and reloading the extension, choose **Open document verification** in its popup. Connect to the configured local CargoLens API using the dashboard token, then select an imported message. The page displays all seven field outcomes, source excerpts and locators, known mismatches, blockers, and the current decision version. The token remains in page memory and is never saved to Chrome sync storage. Use **Refresh evidence** after new documents arrive. Inbox snippet labels remain intent previews, not document-clearance decisions.
+
+`AI_PROVIDER=openrouter` selects the OpenRouter Jev transport for API classification; the default is `typesafe`. Smart filters use the direct TypeSafe key when configured. Extraction research commands retain source candidates and vision proposals separately; unsupported units and incomplete evidence cannot establish a verified match. The Fly image includes the Python/Tesseract OCR runtime and excludes the additional evaluation dataset from the production image.

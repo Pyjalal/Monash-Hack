@@ -1,0 +1,12 @@
+PACKING LIST
+========================================
+
+Shipper: APRIL FINE PAPER TRADING
+Consignee: CLIFFORD PAPER INC
+Booking Ref: I749622459
+Commodity: ASIA SYMBOL FOOD SERVICE BOARD (CUPSTOCK/HI-BULK) - ALLINONE
+
+Carton No.      Net Wt (kg)     Gross Wt (kg)     Dimensions
+CTN-001          573             475             120x100x110
+
+*** PACKING LIST ONLY - NO PORT OR VESSEL DETAILS ***

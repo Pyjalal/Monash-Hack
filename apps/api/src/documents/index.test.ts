@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import ExcelJS from "exceljs";
-import { readAttachment } from "./index.js";
+import { readAttachment, renderPdfPageImages } from "./index.js";
 
 const temporaryRoots: string[] = [];
 
@@ -141,6 +141,31 @@ describe("readAttachment", () => {
     expect(result.spans).toEqual([{ kind: "page", start: 0, end: result.text.length, page: 1, text: result.text }]);
   });
 
+  it("uses PDF coordinates to retain multi-column party boundaries", async () => {
+    const root = join(process.cwd(), "training_data/sdoc-hackathon-docker/extracted/data_v2");
+    for (const role of ["SI", "BL"] as const) {
+      const result = await readAttachment({
+        root,
+        relativePath: `attachments/email_407_${role}.pdf`,
+        mimeType: "application/pdf",
+      });
+      const consignee = result.candidates?.find(candidate => candidate.label.toLowerCase().startsWith("consignee"));
+      const notify = result.candidates?.find(candidate => candidate.label.toLowerCase().startsWith("notify party"));
+      const compact = (value: string | undefined) => value?.replace(/^\s+/gmu, "");
+      expect(compact(consignee?.value)).toBe("NAGAPPA EXPORTS\nNEW NO : 23, L-BLOCK, 17TH STREET\nANNA NAGAR EAST\nCHENNAI, TAMIL NADU 600102\nGST NO - 33AACFN6792L1ZU");
+      expect(compact(notify?.value)).toBe(compact(consignee?.value));
+      expect(result.pdfLayout?.[0].blocks.some(block => block.text === "Notify Party" || block.text.startsWith("Notify Party/"))).toBe(true);
+    }
+  });
+
+  it("renders bounded PDF page evidence for vision recovery", async () => {
+    const root = join(process.cwd(), "training_data/sdoc-hackathon-docker/extracted/data_v2");
+    const pages = await renderPdfPageImages({ root, relativePath: "attachments/email_407_BL.pdf", mimeType: "application/pdf" }, [1], 100);
+    expect(pages).toHaveLength(1);
+    expect(pages[0]).toMatchObject({ page: 1, mimeType: "image/png", sha256: expect.stringMatching(/^[a-f0-9]{64}$/) });
+    expect(Buffer.from(pages[0].base64, "base64").subarray(0, 8)).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  });
+
   it("retains extracted pages while marking image-only pages for OCR", async () => {
     const root = await createRoot();
     const relativePath = "attachments/mixed.pdf";
@@ -192,10 +217,28 @@ describe("readAttachment", () => {
 
     expect(result.status).toBe("READABLE");
     expect(result.text.length).toBeGreaterThan(0);
-    expect(result.spans.every((span) => span.kind === "line")).toBe(true);
+    expect(result.spans.some((span) => span.kind === "cell")).toBe(true);
     expect(result.spans.some((span) => span.start < span.end)).toBe(true);
     expect(result.candidates?.some(candidate => candidate.label === "Consignee (收货人)" && candidate.value.startsWith("AL GURG STATIONERY"))).toBe(true);
     expect(result.candidates?.every(candidate => [...candidate.source.labelSpans, ...candidate.source.valueSpans].every(span => result.text.slice(span.start, span.end) === span.text))).toBe(true);
+  });
+
+  it("preserves DOCX tables and hard line breaks so address delimiters remain part of their values", async () => {
+    const root = join(process.cwd(), "training_data/sdoc-hackathon-docker/extracted/data_v2");
+    const result = await readAttachment({
+      root,
+      relativePath: "attachments/email_097_BL.docx",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    });
+
+    const shipper = result.candidates?.find(candidate => candidate.label.startsWith("Shipper/Exporter"));
+    const notify = result.candidates?.find(candidate => candidate.label.startsWith("Notify Party"));
+    expect(shipper).toMatchObject({ pairing: "adjacent-cell" });
+    expect(shipper?.value).toContain("APRIL FINE PAPER TRADING (MIDDLE EAST) FZE\n#813");
+    expect(shipper?.value).toContain("P.O. BOX: 293775, DUBAI, UNITED ARAB EMIRATES");
+    expect(notify?.value).toContain("NAGAPPA EXPORTS\nNEW NO : 23, L-BLOCK");
+    expect(result.candidates?.some(candidate => candidate.label.includes("P.O. BOX"))).toBe(false);
+    expect(result.text).toContain("ROXCEL TRADING GMBH\nOPERNRING 3-5\n1010 VIENNA, AUSTRIA");
   });
 
   it("extracts XLSX values with sheet and cell provenance", async () => {

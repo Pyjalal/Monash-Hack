@@ -1,0 +1,18 @@
+BILL OF LADING (DRAFT)
+========================================
+
+Shipper (Principal or Seller): ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+  80 RAFFLES PLACE, #50-01 UOB PLAZA 1; SINGAPORE 048624
+Consignee (Non-Negotiable): CLIFFORD PAPER INC
+  70 EAST STREET; RIDGEFIELD, NJ 07657, USA
+Notify Party: CLIFFORD PAPER INC
+Port of Loading: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Port of Discharge (POD): CEBU, PHILIPPINES (PHCEB)
+No. of Containers or Packages: 4 x 20'GP
+GROSS WEIGHT: 88,584 KG
+Export Carrier (vessel, voyage): VISION 202 V.002
+Voyage: BS012
+Commodity: PAPERONE DIGITAL COPIER PAPER
+B/L No.: MEDUUD692789
+BOOKING NO.: MSDUL0942500144
+Freight: PREPAID

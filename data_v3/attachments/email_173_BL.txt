@@ -1,0 +1,17 @@
+COMMERCIAL INVOICE
+========================================
+
+Invoice No.: 5250075866
+Invoice Date: 11-JAN-2026
+Seller: APRIL FAR EAST (M) SDN BHD
+Buyer: CLIFFORD PAPER INC
+Booking Ref: I152237073
+
+Description                         Qty        Unit Price       Amount (USD)
+FUJITO PAPERONE INKJET PAPER       100     45.00            4,500
+
+Total Amount: USD 4,500.00
+Payment Terms: 30 days from B/L date
+Incoterms: CFR
+
+*** THIS IS A COMMERCIAL INVOICE - NOT A SHIPPING INSTRUCTION ***

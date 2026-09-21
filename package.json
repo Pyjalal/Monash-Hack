@@ -12,7 +12,7 @@
     "gateway:setup": "npx -y vercel@latest ai-gateway setup",
     "dev": "tsx watch apps/api/src/server.ts",
     "start": "tsx apps/api/src/server.ts",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p apps/extension/tsconfig.json && tsc --noEmit -p apps/dashboard/tsconfig.json",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p apps/extension/tsconfig.json && tsc --noEmit -p apps/dashboard/tsconfig.json && tsc --noEmit -p apps/extraction-dashboard/tsconfig.json",
     "dev:dashboard": "vite apps/dashboard",
     "build:dashboard": "vite build apps/dashboard",
     "lint": "eslint .",
@@ -20,7 +20,13 @@
     "eval": "tsx tools/eval/src/evaluate.ts",
     "eval:triage": "tsx tools/eval/src/triage.ts",
     "eval:classify": "tsx tools/eval/src/classification.ts",
-    "build:extension": "npm run build --workspace @cargolens/extension"
+    "build:extension": "npm run build --workspace @cargolens/extension",
+    "submission:classify": "tsx tools/eval/src/submission.ts classify",
+    "submission:pipeline": "tsx tools/eval/src/submission.ts pipeline",
+    "test:openrouter": "tsx tools/eval/src/openrouter-smoke.ts",
+    "dev:extraction-dashboard": "vite apps/extraction-dashboard --config apps/extraction-dashboard/vite.config.ts",
+    "build:extraction-dashboard": "vite build apps/extraction-dashboard --config apps/extraction-dashboard/vite.config.ts",
+    "submission:extract-all": "tsx tools/eval/src/submission.ts pipeline --all-documents"
   },
   "engines": {
     "node": ">=20.19"

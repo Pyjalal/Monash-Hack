@@ -1,8 +1,13 @@
-export const DEFAULT_API_URL = "http://127.0.0.1:3001";
+import {
+  MAX_RULES,
+  RULE_ACTIONS,
+  RULE_PRESETS,
+  type RuleAction,
+} from "@cargolens/shared/rules";
 
-export const RULE_ACTIONS = ["pin", "hide", "highlight"] as const;
-export type RuleAction = (typeof RULE_ACTIONS)[number];
-export const MAX_RULES = 8;
+export { MAX_RULES, RULE_ACTIONS, RULE_PRESETS, type RuleAction, type RulePreset } from "@cargolens/shared/rules";
+
+export const DEFAULT_API_URL = "http://127.0.0.1:3001";
 
 /** A smart filter: Jev judges `condition`; the extension applies `action` when the probability reaches `threshold`. */
 export interface FilterRule {
@@ -28,33 +33,6 @@ export interface ExtensionSettings {
   apiUrl: string;
   inbox: InboxPolicy;
 }
-
-export interface RulePreset { id: string; label: string; description: string; condition: string; action: RuleAction; threshold: number }
-
-/**
- * Shipping-and-logistics starter filters. Mirrors `@cargolens/shared/rules` presets; kept inline so the
- * content bundle stays dependency-free. Thresholds were chosen from `tools/eval/src/rules.ts` runs.
- */
-export const RULE_PRESETS: readonly RulePreset[] = [
-  { id: "needs_reply_now", label: "Needs my reply now", action: "pin", threshold: 0.7,
-    description: "Direct questions, confirmations, approvals or documents the sender is waiting on today.",
-    condition: "The sender is waiting on a reply or action from the recipient's operations team and expects it today or before an imminent stated cutoff: a direct question, a request to confirm, approve, amend or send documents, or a decision that is blocking them. Pure FYI updates, thank-you notes and automated notices do not qualify." },
-  { id: "cargo_blocked", label: "Cargo or release blocked", action: "pin", threshold: 0.7,
-    description: "Customs holds, missing documents, unpaid charges or unreleased delivery orders stopping cargo.",
-    condition: "Cargo release, customs clearance, loading, gate-in or delivery for a specific booked shipment (identified by a booking, container, vessel or BL reference) is currently on hold or blocked pending an action, for example a customs hold or inspection, a missing or rejected document, unpaid charges, or a delivery order that has not been released. Generic parcel-delivery or small-fee payment notices with no shipment reference and a link to pay do not qualify." },
-  { id: "schedule_change", label: "Vessel or cut-off change", action: "highlight", threshold: 0.7,
-    description: "Rollovers, blank sailings, cut-off changes, port omissions and transshipment delays.",
-    condition: "A vessel schedule change affecting a booked shipment: a rollover to a later vessel, blank sailing, changed SI or cargo cut-off, port omission, transshipment delay or revised ETD/ETA that the recipient must plan around." },
-  { id: "charges_dispute", label: "Charges or payment issue", action: "highlight", threshold: 0.7,
-    description: "Demurrage, detention, storage disputes and overdue freight payment reminders.",
-    condition: "A dispute or reminder about money for a shipment: demurrage, detention, storage or other surcharge disputes, an overdue freight invoice, a payment reminder, or a request to correct billed amounts." },
-  { id: "automated_notice", label: "Automated notice, no action", action: "hide", threshold: 0.8,
-    description: "Tracking updates, auto-acknowledgements, EDI status messages and process-completed notices.",
-    condition: "An automated system notification that requires no action from the recipient, such as a container tracking update, an auto-acknowledgement or ticket receipt, an EDI or portal status message, or a process-completed notice. Anything asking for a decision, document or reply does not qualify." },
-  { id: "marketing", label: "Marketing and newsletters", action: "hide", threshold: 0.8,
-    description: "Rate promotions, webinars, newsletters and carrier or forwarder advertising not tied to a booking.",
-    condition: "Marketing or promotional content not tied to a specific booked shipment: newsletters, webinar or event invitations, rate promotions, service announcements sent to a mailing list, or carrier and forwarder advertising." },
-];
 
 export function defaultInboxPolicy(): InboxPolicy {
   return { hideSpam: true, spamThreshold: 0.8, pinUrgent: true,

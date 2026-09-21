@@ -542,6 +542,36 @@ describe("vision recovery provider", () => {
 });
 
 describe("vision review regressions", () => {
+  it("requests a strict JSON schema response and tolerates a fenced JSON payload", async () => {
+    const bodies: Array<{ response_format?: { type?: string; json_schema?: { strict?: boolean } } }> = [];
+    const fencedResponse = () => new Response(JSON.stringify({
+      choices: [{ message: { content: '```json\n{"candidates":[{"field":"shipper","value":"Acme Shipping","page":2,"confidence":0.96}],"unresolvedFields":[]}\n```' } }],
+    }));
+    const result = await createVisionProvider({ apiKey: "test", fetch: async (_, init) => {
+      bodies.push(JSON.parse(String(init?.body)) as { response_format?: { type?: string; json_schema?: { strict?: boolean } } });
+      return fencedResponse();
+    } }).recover(requestFixture());
+
+    expect(result.profile).toBe("vision_recovered");
+    expect(bodies).toHaveLength(2);
+    expect(bodies.every(body => body.response_format?.type === "json_schema" && body.response_format.json_schema?.strict === true)).toBe(true);
+  });
+
+  it("sends bounded positioned text as transcription assistance while keeping the image authoritative", async () => {
+    const bodies: string[] = [];
+    const request = requestFixture();
+    request.positionedText = [{ page: 2, width: 600, height: 800, blocks: [
+      { id: "p2_b1", text: "Notify Party", x: 50, y: 500, width: 80, height: 10 },
+      { id: "p2_b2", text: "NAGAPPA EXPORTS", x: 170, y: 500, width: 100, height: 10 },
+    ] }];
+    const result = await createVisionProvider({ apiKey: "test", fetch: async (_, init) => {
+      bodies.push(String(init?.body)); return successResponse();
+    } }).recover(request);
+    expect(result.profile).toBe("vision_recovered");
+    expect(bodies).toHaveLength(2);
+    expect(bodies.every(body => body.includes("Positioned text-layer evidence") && body.includes("Notify Party"))).toBe(true);
+  });
+
   it("labels original page numbers and never feeds first-pass answers into revalidation", async () => {
     const bodies: string[] = [];
     const request = Object.assign(requestFixture(), { targetValues: { shipper: "SECRET TARGET" } });

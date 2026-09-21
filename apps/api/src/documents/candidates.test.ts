@@ -43,6 +43,15 @@ describe("sourced label/value candidates", () => {
     expect(candidates[1].source.valueSpans[0]).toMatchObject({ kind: "page", page: 2, text: "12" });
   });
 
+  it("recovers PDF-style aligned labels and their unindented continuation lines", () => {
+    const page = "Shipper   Acme Trading\nAddress line one\nAddress line two\nConsignee   Buyer Limited";
+    const input = { sha256: "a".repeat(64), text: page, spans: [{ kind: "page" as const, start: 0, end: page.length, page: 1, text: page }] };
+    expect(splitLabelValueCandidates(input).map(({ label, value }) => ({ label, value }))).toEqual([
+      { label: "Shipper", value: "Acme Trading\nAddress line one\nAddress line two" },
+      { label: "Consignee", value: "Buyer Limited" },
+    ]);
+  });
+
   it("uses adjacent spreadsheet cells and aligned next rows without crossing sheets", () => {
     const cells = [
       { text: "Weight", sheet: "Sheet A", cell: "A1" }, { text: "1250", sheet: "Sheet A", cell: "B1" },
@@ -85,5 +94,14 @@ describe("sourced label/value candidates", () => {
     const text = "Company:\n\nAcme Ltd\n\n";
     const candidates = splitLabelValueCandidates({ sha256: "a".repeat(64), text, spans: lines(text) }, { adjacentParagraphs: true });
     expect(candidates.map(({ label, value, pairing }) => ({ label, value, pairing }))).toEqual([{ label: "Company", value: "Acme Ltd", pairing: "adjacent-paragraph" }]);
+  });
+
+  it("keeps internal address delimiters inside an adjacent value instead of promoting them to labels", () => {
+    const text = "Shipper/Exporter\n\nAPRIL FINE PAPER\nP.O. BOX: 293775, DUBAI\n\nNotify Party\n\nNAGAPPA EXPORTS NEW NO : 23, L-BLOCK";
+    const candidates = splitLabelValueCandidates({ sha256: "a".repeat(64), text, spans: lines(text) }, { adjacentParagraphs: true });
+    expect(candidates.map(({ label, value }) => ({ label, value }))).toEqual([
+      { label: "Shipper/Exporter", value: "APRIL FINE PAPER\nP.O. BOX: 293775, DUBAI" },
+      { label: "Notify Party", value: "NAGAPPA EXPORTS NEW NO : 23, L-BLOCK" },
+    ]);
   });
 });
