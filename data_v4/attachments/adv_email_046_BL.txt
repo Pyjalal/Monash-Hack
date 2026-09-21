@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / ONEYSINF54303
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: AL GURG STATIONERY LLC
+Notify: AL GURG STATIONERY LLC
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: CONAKRY, GUINEA (GNCKY)
+Total Containers: 6 x 20'GP
+Total Gross Wt (KGS): 137,436 KG
+Vessel: NAP 914 V.BS007
+Booking No.: ONEYSINF54303
+Freight: PREPAID

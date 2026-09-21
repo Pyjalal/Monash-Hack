@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 070500220886
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: MOORIM SP CO., LTD
+Notify: MOORIM SP CO., LTD
+Load Port: BUATAN, INDONESIA (CNSHA)
+Discharge Port: KARACHI, PAKISTAN (PKKHI)
+Total Containers: 3 x 20'GP
+Total Gross Wt (KGS): 66,261 KG
+Vessel: VISION 202 V.002
+Booking No.: 070500220886
+Freight: PREPAID

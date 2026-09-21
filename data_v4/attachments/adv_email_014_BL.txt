@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / I018694716
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: MOORIM SP CO., LTD
+Notify: MOORIM SP CO., LTD
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: KARACHI, PAKISTAN (PKKHI)
+Total Containers: 5 x 20'GP
+Total Gross Wt (KGS): 116.605 METRIC TONNES
+Vessel: SOLID 16 V.044NW2
+Booking No.: I018694716
+Freight: PREPAID

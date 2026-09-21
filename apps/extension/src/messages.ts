@@ -17,6 +17,10 @@ export interface ClassificationPreview {
   urgency: { level: string; score: number; confidence: number } | null;
   expectation: string | null;
   expectationConfidence: number | null;
+  documentIssue?: string | null;
+  documentIssueConfidence?: number | null;
+  bodyDocument?: string | null;
+  bodyDocumentConfidence?: number | null;
   cached: boolean;
   /** Smart-filter probabilities keyed by rule id; absent when no rules were active or evaluation failed. */
   rules?: Record<string, number>;
@@ -46,6 +50,8 @@ export type ExtensionMessage =
 const categories = new Set(["BL_COMPARISON", "SI_REQUEST", "INVOICE_QUERY", "GENERAL", "SPAM", "UNCERTAIN"]);
 const urgencyLevels = new Set(["routine", "week", "today", "blocking"]);
 const expectations = new Set(["FUTURE_DRAFT", "VERIFY_NOW", "REPORTS_MISSING", "UNCLEAR"]);
+const documentIssues = new Set(["NONE", "REPORTS_MISSING", "WRONG_DOCS", "UNCLEAR"]);
+const bodyDocuments = new Set(["HAS_SI_BL_CONTENT", "NO_SI_BL_CONTENT", "UNCLEAR"]);
 
 function finiteProbability(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1;
@@ -76,6 +82,10 @@ export function isClassifyResult(value: unknown): value is RowClassifyResult {
     }
     if (classification.expectation !== null && !expectations.has(classification.expectation as string)) return false;
     if (classification.expectationConfidence !== null && !finiteProbability(classification.expectationConfidence)) return false;
+    if (classification.documentIssue !== undefined && classification.documentIssue !== null && !documentIssues.has(classification.documentIssue as string)) return false;
+    if (classification.documentIssueConfidence !== undefined && classification.documentIssueConfidence !== null && !finiteProbability(classification.documentIssueConfidence)) return false;
+    if (classification.bodyDocument !== undefined && classification.bodyDocument !== null && !bodyDocuments.has(classification.bodyDocument as string)) return false;
+    if (classification.bodyDocumentConfidence !== undefined && classification.bodyDocumentConfidence !== null && !finiteProbability(classification.bodyDocumentConfidence)) return false;
     if (typeof classification.model !== "string" || classification.model.length === 0 || !finiteProbability(classification.confidence)) return false;
     if (classification.usage !== null) {
       if (typeof classification.usage !== "object") return false;

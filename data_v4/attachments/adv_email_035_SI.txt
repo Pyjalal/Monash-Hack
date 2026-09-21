@@ -1,0 +1,20 @@
+SHIPPING INSTRUCTION
+======================================================
+Document revision: CURRENT / MCLSINJEA2569741
+
+Shipper / Exporter: APRIL FAR EAST (M) SDN BHD
+Consignee: TOPKOPY MIDDLE EAST FZE
+Notify Party: TOPKOPY MIDDLE EAST FZE
+Port of Loading (POL): SINGAPORE (SGSIN)
+Port of Discharge (POD): KARACHI, PAKISTAN (PKKHI)
+No. of Containers: 15 x 20'GP
+Gross Weight (KG): 309,915 KG
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: MCLSINJEA2569741
+Freight: PREPAID
+
+--- AMENDMENT HISTORY (SUPERSEDED - DO NOT USE) ---
+Old consignee before customer correction: CLIFFORD PAPER INC
+Old discharge port before amendment: LONG BEACH, US
+Old gross weight before final VGM: 308,915 KG
+--- END SUPERSEDED HISTORY ---

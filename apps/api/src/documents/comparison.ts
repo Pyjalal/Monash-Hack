@@ -1,9 +1,11 @@
 import { FIELD_NAMES, OperationalDecisionSchema, type Attachment, type FieldResult, type OperationalDecision } from '@cargolens/shared';
 import type { CaseRecord } from '../store.js';
-import { normaliseFieldValue } from './value-comparison.js';
+import { normaliseFieldValue, weightValueWithSourceUnit } from './value-comparison.js';
 import { readAttachment, type AttachmentReadResult } from './index.js';
+import { inlineBodyDocuments } from './inline-body.js';
 import { candidatesByField, detectedRole, supportedNativeFields } from './field-extraction.js';
 import { readAttachmentWithRecovery, type AttachmentRecoveryResult } from './recovery.js';
+import { pairReferences, referencesMatch, type PairReference } from './pair-reference.js';
 
 type Span = NonNullable<FieldResult['si']>;
 interface Line { text: string; locator: string; trusted: boolean }
@@ -15,6 +17,17 @@ const aliases: Record<typeof FIELD_NAMES[number], string[]> = {
   container_count: ['container count', 'number of containers'], gross_weight_kg: ['gross weight kg', 'gross weight (kg)', 'gross weight'],
 };
 const normalize = (text: string) => text.trim().replace(/\s+/g, ' ').toLowerCase();
+
+function inlineRecovery(reading: AttachmentReadResult): AttachmentRecoveryResult {
+  return {
+    before: reading, ocr: null,
+    profile: {
+      parser_readable: reading.status === 'READABLE', parser_status: reading.status, parser_readability: reading.readability,
+      pages_needing_ocr: [], ocr_attempted: false, ocr_ok: null, ocr_average_confidence: null, ocr_unresolved_pages: [],
+      reader_profile: reading.status === 'READABLE' ? 'native' : 'native_blocked',
+    },
+  };
+}
 
 function sourceLines(attachment: Attachment, recovery: AttachmentRecoveryResult): Document {
   const { before, ocr, profile } = recovery;
@@ -55,6 +68,13 @@ function entries(document: Document, labels: string[]): Line[] {
   });
 }
 function value(line: Line): string { return line.text.slice(line.text.indexOf(':') + 1).trim(); }
+function documentReferences(document: Document): PairReference[] {
+  return document.lines.flatMap(line => {
+    if (!line.trusted) return [];
+    const colon = line.text.indexOf(':');
+    return colon < 0 ? [] : pairReferences(line.text.slice(0, colon), line.text.slice(colon + 1));
+  });
+}
 function role(document: Document): 'si' | 'bl' | null {
   const header = document.lines.slice(0, 3);
   if (header.some(line => !line.trusted)) return null;
@@ -71,7 +91,7 @@ function field(document: Document, name: typeof FIELD_NAMES[number]): { span?: S
       const start = candidate.source.valueSpans[0]?.start;
       const end = candidate.source.valueSpans.at(-1)?.end;
       if (start === undefined || end === undefined || document.reading.text.slice(start, end) !== selected.value) return { outcome: 'AMBIGUOUS' };
-      const input = name === 'gross_weight_kg' && /\bkgs?\b/i.test(candidate.label) && /^[\d,.]+$/.test(selected.value) ? `${selected.value} KG` : selected.value;
+      const input = name === 'gross_weight_kg' ? weightValueWithSourceUnit(selected.value, candidate.label) : selected.value;
       const canonical = normaliseFieldValue(name, input);
       if (canonical === null) return { outcome: 'AMBIGUOUS' };
       return { canonical, span: { attachmentId: document.attachment.id, sha256: document.sha256, locator: `chars:${start}-${end}`, text: selected.value } };
@@ -82,8 +102,8 @@ function field(document: Document, name: typeof FIELD_NAMES[number]): { span?: S
   const line = rows[0]; if (!line.trusted) return { outcome: 'UNREADABLE' };
   const text = value(line); if (!text) return { outcome: 'MISSING' };
   if (/^(?:\?+|_+|[-–—]+|TBA|TBD|N\s*\/\s*A|PENDING)$/iu.test(text)) return { outcome: 'MISSING' };
-  const kgLabel = /\bkg\b/i.test(line.text.slice(0, line.text.indexOf(':')));
-  const input = name === 'gross_weight_kg' && kgLabel && /^[\d,.]+$/.test(text) ? `${text} KG` : text;
+  const label = line.text.slice(0, line.text.indexOf(':'));
+  const input = name === 'gross_weight_kg' ? weightValueWithSourceUnit(text, label) : text;
   const canonical = normaliseFieldValue(name, input);
   if (canonical === null) return { outcome: 'AMBIGUOUS' };
   return { span: { attachmentId: document.attachment.id, sha256: document.sha256, locator: line.locator, text: line.text }, canonical };
@@ -92,11 +112,19 @@ function field(document: Document, name: typeof FIELD_NAMES[number]): { span?: S
 /** Conservative source-only comparison. Unsupported layouts remain explicit blockers. */
 export async function compareDocuments(record: CaseRecord, root: string): Promise<{ decision: OperationalDecision; evidence: ComparisonEvidence[] }> {
   const evidence: ComparisonEvidence[] = []; const documents: Document[] = []; const blockers: string[] = [];
-  if (record.email.attachments.length !== 2) blockers.push('UNAMBIGUOUS_PAIR_REQUIRED');
+  const useInlineBody = !record.email.attachments.length && record.classification?.bodyDocument === 'HAS_SI_BL_CONTENT'
+    && (record.classification.bodyDocumentConfidence ?? 0) >= 0.8;
+  const inline = useInlineBody ? inlineBodyDocuments(record.email) : [];
+  const sources = inline.length
+    ? inline.map(item => ({ ...item, inline: true as const }))
+    : record.email.attachments.map(attachment => ({ attachment, inline: false as const }));
+  if (sources.length !== 2) blockers.push('UNAMBIGUOUS_PAIR_REQUIRED');
   // A hard cap avoids starting OCR for an unbounded/ambiguous attachment set.
-  if (!blockers.length) for (const attachment of record.email.attachments) {
-    if (!attachment.relativePath) { blockers.push('SOURCE_PATH_MISSING'); continue; }
-    const recovery = await readAttachmentWithRecovery({ root, relativePath: attachment.relativePath, mimeType: attachment.mimeType });
+  if (!blockers.length) for (const source of sources) {
+    const { attachment } = source;
+    if (!source.inline && !attachment.relativePath) { blockers.push('SOURCE_PATH_MISSING'); continue; }
+    const recovery = source.inline ? inlineRecovery(source.reading)
+      : await readAttachmentWithRecovery({ root, relativePath: attachment.relativePath!, mimeType: attachment.mimeType });
     evidence.push({ attachmentId: attachment.id, recovery });
     const document = sourceLines(attachment, recovery); documents.push(document); blockers.push(...document.blockers);
   }
@@ -104,9 +132,8 @@ export async function compareDocuments(record: CaseRecord, root: string): Promis
   let pairValidated = false; const fieldResults: FieldResult[] = [];
   if (si.length !== 1 || bl.length !== 1 || si[0].sha256 === bl[0].sha256 || si[0].attachment.id === bl[0].attachment.id) blockers.push('DOCUMENT_ROLES_UNVERIFIED');
   else {
-    const refs = [si[0], bl[0]].map(document => entries(document, ['shipment reference', 'booking reference', 'booking number']));
-    pairValidated = refs.every(rows => rows.length === 1 && rows[0].trusted && /^[A-Za-z0-9][A-Za-z0-9_./-]{3,63}$/.test(value(rows[0])))
-      && value(refs[0][0]) === value(refs[1][0]);
+    const refs = [si[0], bl[0]].map(document => documentReferences(document));
+    pairValidated = referencesMatch(refs[0], refs[1]);
     if (!pairValidated) blockers.push('SHIPMENT_REFERENCE_UNVERIFIED');
     if (pairValidated && !blockers.length) for (const name of FIELD_NAMES) {
       const a = field(si[0], name); const b = field(bl[0], name);
@@ -117,6 +144,11 @@ export async function compareDocuments(record: CaseRecord, root: string): Promis
   }
   // Recovery runs asynchronously; reject mutations during either document read.
   for (const document of documents) {
+    if (!document.attachment.relativePath) {
+      if (document.sha256 !== inlineBodyDocuments(record.email).find(item => item.attachment.id === document.attachment.id)?.reading.sha256)
+        blockers.push('SOURCE_HASH_CHANGED');
+      continue;
+    }
     const current = await readAttachment({ root, relativePath: document.attachment.relativePath!, mimeType: document.attachment.mimeType });
     if (current.sha256 !== document.sha256) blockers.push('SOURCE_HASH_CHANGED');
   }

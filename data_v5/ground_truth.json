@@ -1,0 +1,1060 @@
+{
+  "v5_email_001": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "18500"
+      },
+      "bl": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "18500"
+      }
+    }
+  },
+  "v5_email_002": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "WEST COAST PAPER IMPORTS INC",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "18875"
+      },
+      "bl": {
+        "shipper": "NUSANTARA PULP & PAPER LTD.",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "WEST COAST PAPER IMPORTS INC",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2 x 40' HC",
+        "gross_weight_kg": "18.875 MT"
+      }
+    }
+  },
+  "v5_email_003": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "19250"
+      },
+      "bl": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "19250"
+      }
+    }
+  },
+  "v5_email_004": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "SURABAYA, INDONESIA",
+        "port_of_discharge": "NHAVA SHEVA, INDIA",
+        "container_count": "4",
+        "gross_weight_kg": "19625"
+      },
+      "bl": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD.",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "SURABAYA, INDONESIA",
+        "port_of_discharge": "NHAVA SHEVA, INDIA",
+        "container_count": "4 x 40' HC",
+        "gross_weight_kg": "19.625 MT"
+      }
+    }
+  },
+  "v5_email_005": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "PACIFIC PAPER MERCHANTS LLC",
+        "port_of_loading": "LAEM CHABANG, THAILAND",
+        "port_of_discharge": "BUSAN, SOUTH KOREA",
+        "container_count": "5",
+        "gross_weight_kg": "20000"
+      },
+      "bl": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "PACIFIC PAPER MERCHANTS LLC",
+        "port_of_loading": "LAEM CHABANG, THAILAND",
+        "port_of_discharge": "BUSAN, SOUTH KOREA",
+        "container_count": "5",
+        "gross_weight_kg": "20000"
+      }
+    }
+  },
+  "v5_email_006": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "WEST COAST PAPER IMPORTS INC",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "20375"
+      },
+      "bl": {
+        "shipper": "NUSANTARA PULP & PAPER LTD.",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "WEST COAST PAPER IMPORTS INC",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1 x 40' HC",
+        "gross_weight_kg": "20.375 MT"
+      }
+    }
+  },
+  "v5_email_007": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "20750"
+      },
+      "bl": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "20750"
+      }
+    }
+  },
+  "v5_email_008": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "21125"
+      },
+      "bl": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD.",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3 x 40' HC",
+        "gross_weight_kg": "21.125 MT"
+      }
+    }
+  },
+  "v5_email_009": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "PACIFIC PAPER MERCHANTS LLC",
+        "port_of_loading": "SURABAYA, INDONESIA",
+        "port_of_discharge": "NHAVA SHEVA, INDIA",
+        "container_count": "4",
+        "gross_weight_kg": "21500"
+      },
+      "bl": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "PACIFIC PAPER MERCHANTS LLC",
+        "port_of_loading": "SURABAYA, INDONESIA",
+        "port_of_discharge": "NHAVA SHEVA, INDIA",
+        "container_count": "4",
+        "gross_weight_kg": "21500"
+      }
+    }
+  },
+  "v5_email_010": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "LAEM CHABANG, THAILAND",
+        "port_of_discharge": "BUSAN, SOUTH KOREA",
+        "container_count": "5",
+        "gross_weight_kg": "21875"
+      },
+      "bl": {
+        "shipper": "NUSANTARA PULP & PAPER LTD.",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "LAEM CHABANG, THAILAND",
+        "port_of_discharge": "BUSAN, SOUTH KOREA",
+        "container_count": "5 x 40' HC",
+        "gross_weight_kg": "21.875 MT"
+      }
+    }
+  },
+  "v5_email_011": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "22250"
+      },
+      "bl": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "22250"
+      }
+    }
+  },
+  "v5_email_012": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "verified match across formatting and mixed native formats",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "22625"
+      },
+      "bl": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD.",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2 x 40' HC",
+        "gross_weight_kg": "22.625 MT"
+      }
+    }
+  },
+  "v5_email_013": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "shipper"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in shipper",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "PACIFIC PAPER MERCHANTS LLC",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "26000"
+      },
+      "bl": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD HOLDINGS",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "PACIFIC PAPER MERCHANTS LLC",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "26000"
+      }
+    }
+  },
+  "v5_email_014": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "consignee"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in consignee",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "26375"
+      },
+      "bl": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC HOLDINGS",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "26375"
+      }
+    }
+  },
+  "v5_email_015": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "notify_party"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in notify_party",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "26750"
+      },
+      "bl": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE HOLDINGS",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "26750"
+      }
+    }
+  },
+  "v5_email_016": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_loading"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in port_of_loading",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "SURABAYA, INDONESIA",
+        "port_of_discharge": "NHAVA SHEVA, INDIA",
+        "container_count": "4",
+        "gross_weight_kg": "27125"
+      },
+      "bl": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "MANILA, PHILIPPINES",
+        "port_of_discharge": "NHAVA SHEVA, INDIA",
+        "container_count": "4",
+        "gross_weight_kg": "27125"
+      }
+    }
+  },
+  "v5_email_017": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_discharge"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in port_of_discharge",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "LAEM CHABANG, THAILAND",
+        "port_of_discharge": "BUSAN, SOUTH KOREA",
+        "container_count": "5",
+        "gross_weight_kg": "27500"
+      },
+      "bl": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "LAEM CHABANG, THAILAND",
+        "port_of_discharge": "HAMBURG, GERMANY",
+        "container_count": "5",
+        "gross_weight_kg": "27500"
+      }
+    }
+  },
+  "v5_email_018": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "container_count"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in container_count",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "WEST COAST PAPER IMPORTS INC",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "27875"
+      },
+      "bl": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "WEST COAST PAPER IMPORTS INC",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "2",
+        "gross_weight_kg": "27875"
+      }
+    }
+  },
+  "v5_email_019": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "gross_weight_kg"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in gross_weight_kg",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "28250"
+      },
+      "bl": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "29000"
+      }
+    }
+  },
+  "v5_email_020": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "shipper"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in shipper",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "28625"
+      },
+      "bl": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD HOLDINGS",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "28625"
+      }
+    }
+  },
+  "v5_email_021": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "consignee"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in consignee",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC",
+        "notify_party": "PACIFIC PAPER MERCHANTS LLC",
+        "port_of_loading": "SURABAYA, INDONESIA",
+        "port_of_discharge": "NHAVA SHEVA, INDIA",
+        "container_count": "4",
+        "gross_weight_kg": "29000"
+      },
+      "bl": {
+        "shipper": "APRIL FINE PAPER TRADING SDN BHD",
+        "consignee": "PACIFIC PAPER MERCHANTS LLC HOLDINGS",
+        "notify_party": "PACIFIC PAPER MERCHANTS LLC",
+        "port_of_loading": "SURABAYA, INDONESIA",
+        "port_of_discharge": "NHAVA SHEVA, INDIA",
+        "container_count": "4",
+        "gross_weight_kg": "29000"
+      }
+    }
+  },
+  "v5_email_022": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "notify_party"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in notify_party",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "WEST COAST PAPER IMPORTS INC",
+        "port_of_loading": "LAEM CHABANG, THAILAND",
+        "port_of_discharge": "BUSAN, SOUTH KOREA",
+        "container_count": "5",
+        "gross_weight_kg": "29375"
+      },
+      "bl": {
+        "shipper": "NUSANTARA PULP AND PAPER LTD",
+        "consignee": "WEST COAST PAPER IMPORTS INC",
+        "notify_party": "WEST COAST PAPER IMPORTS INC HOLDINGS",
+        "port_of_loading": "LAEM CHABANG, THAILAND",
+        "port_of_discharge": "BUSAN, SOUTH KOREA",
+        "container_count": "5",
+        "gross_weight_kg": "29375"
+      }
+    }
+  },
+  "v5_email_023": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_loading"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in port_of_loading",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "PORT KLANG, MALAYSIA",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "29750"
+      },
+      "bl": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "SAME AS CONSIGNEE",
+        "port_of_loading": "MANILA, PHILIPPINES",
+        "port_of_discharge": "JEBEL ALI, UAE",
+        "container_count": "1",
+        "gross_weight_kg": "29750"
+      }
+    }
+  },
+  "v5_email_024": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_discharge"
+    ],
+    "has_defect": true,
+    "scenario": "single factual defect in port_of_discharge",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "30125"
+      },
+      "bl": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "HAMBURG, GERMANY",
+        "container_count": "2",
+        "gross_weight_kg": "30125"
+      }
+    }
+  },
+  "v5_email_025": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_attachment",
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "safe escalation for missing_attachment",
+    "extraction_ground_truth": null
+  },
+  "v5_email_026": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_attachment",
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "safe escalation for missing_attachment",
+    "extraction_ground_truth": null
+  },
+  "v5_email_027": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "wrong_doc_type",
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "safe escalation for wrong_doc_type",
+    "extraction_ground_truth": null
+  },
+  "v5_email_028": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "wrong_doc_type",
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "safe escalation for wrong_doc_type",
+    "extraction_ground_truth": null
+  },
+  "v5_email_029": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "unreadable",
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "safe escalation for unreadable",
+    "extraction_ground_truth": null
+  },
+  "v5_email_030": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "unreadable",
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "safe escalation for unreadable",
+    "extraction_ground_truth": null
+  },
+  "v5_email_031": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_value",
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "safe escalation for missing_value",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": "GLOBAL STATIONERY FZE",
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "35750"
+      },
+      "bl": {
+        "shipper": "ASIA PACIFIC RESOURCES INTERNATIONAL",
+        "consignee": null,
+        "notify_party": "GLOBAL STATIONERY FZE",
+        "port_of_loading": "SINGAPORE, SINGAPORE",
+        "port_of_discharge": "LONG BEACH, USA",
+        "container_count": "2",
+        "gross_weight_kg": "35750"
+      }
+    }
+  },
+  "v5_email_032": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_value",
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "safe escalation for missing_value",
+    "extraction_ground_truth": {
+      "si": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": "METRO PRINTING SOLUTIONS BV",
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "36125"
+      },
+      "bl": {
+        "shipper": "RIVERLAND EXPORTS PTE LTD",
+        "consignee": null,
+        "notify_party": "METRO PRINTING SOLUTIONS BV",
+        "port_of_loading": "NANTONG, CHINA",
+        "port_of_discharge": "ROTTERDAM, NETHERLANDS",
+        "container_count": "3",
+        "gross_weight_kg": "36125"
+      }
+    }
+  },
+  "v5_email_033": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "future draft request; extraction must be deferred",
+    "extraction_ground_truth": null
+  },
+  "v5_email_034": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "future draft request; extraction must be deferred",
+    "extraction_ground_truth": null
+  },
+  "v5_email_035": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "future draft request; extraction must be deferred",
+    "extraction_ground_truth": null
+  },
+  "v5_email_036": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "future draft request; extraction must be deferred",
+    "extraction_ground_truth": null
+  },
+  "v5_email_037": {
+    "category": "SI_REQUEST",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "SI provision with secondary future-draft request",
+    "extraction_ground_truth": null
+  },
+  "v5_email_038": {
+    "category": "SI_REQUEST",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "SI provision with secondary future-draft request",
+    "extraction_ground_truth": null
+  },
+  "v5_email_039": {
+    "category": "SI_REQUEST",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "SI provision with secondary future-draft request",
+    "extraction_ground_truth": null
+  },
+  "v5_email_040": {
+    "category": "SI_REQUEST",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "SI provision with secondary future-draft request",
+    "extraction_ground_truth": null
+  },
+  "v5_email_041": {
+    "category": "SI_REQUEST",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "SI provision with secondary future-draft request",
+    "extraction_ground_truth": null
+  },
+  "v5_email_042": {
+    "category": "SI_REQUEST",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "SI provision with secondary future-draft request",
+    "extraction_ground_truth": null
+  },
+  "v5_email_043": {
+    "category": "SI_REQUEST",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "SI provision with secondary future-draft request",
+    "extraction_ground_truth": null
+  },
+  "v5_email_044": {
+    "category": "SI_REQUEST",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "SI provision with secondary future-draft request",
+    "extraction_ground_truth": null
+  },
+  "v5_email_045": {
+    "category": "INVOICE_QUERY",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "billing request mentioning a BL reference",
+    "extraction_ground_truth": null
+  },
+  "v5_email_046": {
+    "category": "INVOICE_QUERY",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "billing request mentioning a BL reference",
+    "extraction_ground_truth": null
+  },
+  "v5_email_047": {
+    "category": "INVOICE_QUERY",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "billing request mentioning a BL reference",
+    "extraction_ground_truth": null
+  },
+  "v5_email_048": {
+    "category": "INVOICE_QUERY",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "billing request mentioning a BL reference",
+    "extraction_ground_truth": null
+  },
+  "v5_email_049": {
+    "category": "INVOICE_QUERY",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "billing request mentioning a BL reference",
+    "extraction_ground_truth": null
+  },
+  "v5_email_050": {
+    "category": "INVOICE_QUERY",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "billing request mentioning a BL reference",
+    "extraction_ground_truth": null
+  },
+  "v5_email_051": {
+    "category": "GENERAL",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "legitimate operational update",
+    "extraction_ground_truth": null
+  },
+  "v5_email_052": {
+    "category": "GENERAL",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "legitimate operational update",
+    "extraction_ground_truth": null
+  },
+  "v5_email_053": {
+    "category": "GENERAL",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "legitimate operational update",
+    "extraction_ground_truth": null
+  },
+  "v5_email_054": {
+    "category": "GENERAL",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "legitimate operational update",
+    "extraction_ground_truth": null
+  },
+  "v5_email_055": {
+    "category": "GENERAL",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "legitimate operational update",
+    "extraction_ground_truth": null
+  },
+  "v5_email_056": {
+    "category": "GENERAL",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "legitimate operational update",
+    "extraction_ground_truth": null
+  },
+  "v5_email_057": {
+    "category": "SPAM",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "unsolicited logistics-themed promotion",
+    "extraction_ground_truth": null
+  },
+  "v5_email_058": {
+    "category": "SPAM",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "unsolicited logistics-themed promotion",
+    "extraction_ground_truth": null
+  },
+  "v5_email_059": {
+    "category": "SPAM",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "unsolicited logistics-themed promotion",
+    "extraction_ground_truth": null
+  },
+  "v5_email_060": {
+    "category": "SPAM",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false,
+    "scenario": "unsolicited logistics-themed promotion",
+    "extraction_ground_truth": null
+  }
+}

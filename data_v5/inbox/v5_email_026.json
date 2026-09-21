@@ -1,0 +1,9 @@
+{
+  "email_id": "v5_email_026",
+  "from": "documentation@carrier-example.com",
+  "subject": "Document check requires attention · V5BK10026",
+  "body": "Please verify the attached SI and current draft BL for V5BK10026. Do not confirm unless the source evidence is complete and readable.",
+  "attachments": [
+    "attachments/v5_email_026_SI.txt"
+  ]
+}

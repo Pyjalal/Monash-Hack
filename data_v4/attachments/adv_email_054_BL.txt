@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN925862352
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: KPP-ANTALIS (SINGAPORE) PTE. LTD.
+Notify: AL GURG STATIONERY LLC
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: KARACHI, PAKISTAN (PKKHI)
+Total Containers: 10 x 20'GP
+Total Gross Wt (KGS): 207,830 KG
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: SIN925862352
+Freight: PREPAID

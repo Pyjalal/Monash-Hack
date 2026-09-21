@@ -1,0 +1,782 @@
+{
+  "adv_email_001": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_002": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_003": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_004": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_005": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_006": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_007": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_008": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_009": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_010": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_011": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_012": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_013": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_014": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_015": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_016": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_017": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_018": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_019": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_020": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_021": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_022": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_023": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_024": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_025": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_026": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_027": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_028": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_029": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_030": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_031": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_032": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_033": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_034": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_035": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_036": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_037": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_038": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_039": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_040": {
+    "category": "BL_COMPARISON",
+    "status": "OK",
+    "review_reason": null,
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_041": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "shipper"
+    ],
+    "has_defect": true
+  },
+  "adv_email_042": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "shipper"
+    ],
+    "has_defect": true
+  },
+  "adv_email_043": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "shipper"
+    ],
+    "has_defect": true
+  },
+  "adv_email_044": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "shipper"
+    ],
+    "has_defect": true
+  },
+  "adv_email_045": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "shipper"
+    ],
+    "has_defect": true
+  },
+  "adv_email_046": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "shipper"
+    ],
+    "has_defect": true
+  },
+  "adv_email_047": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "consignee"
+    ],
+    "has_defect": true
+  },
+  "adv_email_048": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "consignee"
+    ],
+    "has_defect": true
+  },
+  "adv_email_049": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "consignee"
+    ],
+    "has_defect": true
+  },
+  "adv_email_050": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "consignee"
+    ],
+    "has_defect": true
+  },
+  "adv_email_051": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "consignee"
+    ],
+    "has_defect": true
+  },
+  "adv_email_052": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "consignee"
+    ],
+    "has_defect": true
+  },
+  "adv_email_053": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "notify_party"
+    ],
+    "has_defect": true
+  },
+  "adv_email_054": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "notify_party"
+    ],
+    "has_defect": true
+  },
+  "adv_email_055": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "notify_party"
+    ],
+    "has_defect": true
+  },
+  "adv_email_056": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "notify_party"
+    ],
+    "has_defect": true
+  },
+  "adv_email_057": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "notify_party"
+    ],
+    "has_defect": true
+  },
+  "adv_email_058": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "notify_party"
+    ],
+    "has_defect": true
+  },
+  "adv_email_059": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_loading"
+    ],
+    "has_defect": true
+  },
+  "adv_email_060": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_loading"
+    ],
+    "has_defect": true
+  },
+  "adv_email_061": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_loading"
+    ],
+    "has_defect": true
+  },
+  "adv_email_062": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_loading"
+    ],
+    "has_defect": true
+  },
+  "adv_email_063": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_loading"
+    ],
+    "has_defect": true
+  },
+  "adv_email_064": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_loading"
+    ],
+    "has_defect": true
+  },
+  "adv_email_065": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_discharge"
+    ],
+    "has_defect": true
+  },
+  "adv_email_066": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_discharge"
+    ],
+    "has_defect": true
+  },
+  "adv_email_067": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_discharge"
+    ],
+    "has_defect": true
+  },
+  "adv_email_068": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_discharge"
+    ],
+    "has_defect": true
+  },
+  "adv_email_069": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_discharge"
+    ],
+    "has_defect": true
+  },
+  "adv_email_070": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "port_of_discharge"
+    ],
+    "has_defect": true
+  },
+  "adv_email_071": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "container_count"
+    ],
+    "has_defect": true
+  },
+  "adv_email_072": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "container_count"
+    ],
+    "has_defect": true
+  },
+  "adv_email_073": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "container_count"
+    ],
+    "has_defect": true
+  },
+  "adv_email_074": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "container_count"
+    ],
+    "has_defect": true
+  },
+  "adv_email_075": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "container_count"
+    ],
+    "has_defect": true
+  },
+  "adv_email_076": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "gross_weight_kg"
+    ],
+    "has_defect": true
+  },
+  "adv_email_077": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "gross_weight_kg"
+    ],
+    "has_defect": true
+  },
+  "adv_email_078": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "gross_weight_kg"
+    ],
+    "has_defect": true
+  },
+  "adv_email_079": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "gross_weight_kg"
+    ],
+    "has_defect": true
+  },
+  "adv_email_080": {
+    "category": "BL_COMPARISON",
+    "status": "MISMATCH",
+    "review_reason": null,
+    "defect_fields": [
+      "gross_weight_kg"
+    ],
+    "has_defect": true
+  },
+  "adv_email_081": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "wrong_doc_type",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_082": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "wrong_doc_type",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_083": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "wrong_doc_type",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_084": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "wrong_doc_type",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_085": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "wrong_doc_type",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_086": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_attachment",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_087": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_attachment",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_088": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_attachment",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_089": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_attachment",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_090": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_attachment",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_091": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "unreadable",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_092": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "unreadable",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_093": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "unreadable",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_094": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "unreadable",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_095": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "unreadable",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_096": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_value",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_097": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_value",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_098": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_value",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_099": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_value",
+    "defect_fields": [],
+    "has_defect": false
+  },
+  "adv_email_100": {
+    "category": "BL_COMPARISON",
+    "status": "NEEDS_REVIEW",
+    "review_reason": "missing_value",
+    "defect_fields": [],
+    "has_defect": false
+  }
+}

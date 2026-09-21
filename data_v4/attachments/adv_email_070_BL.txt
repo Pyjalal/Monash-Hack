@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942543591
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: EAST BRIGHT FZ-LLC
+Notify: EAST BRIGHT FZ-LLC
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: LONG BEACH, US (PECLL)
+Total Containers: 12 x 20'FCL
+Total Gross Wt (KGS): 270,324 KG
+Vessel: VISION 202 V.002
+Booking No.: MSDUL0942543591
+Freight: PREPAID

@@ -1,0 +1,1831 @@
+{
+  "schema_version": 1,
+  "name": "CargoLens adversarial document-verification pack",
+  "seed": 20260921,
+  "count": 100,
+  "purpose": "Post-benchmark stress testing; keep separate from the official 520-row score.",
+  "distribution": {
+    "status": {
+      "OK": 40,
+      "MISMATCH": 40,
+      "NEEDS_REVIEW": 20
+    },
+    "family": {
+      "party_formatting": 5,
+      "unicode_spacing": 5,
+      "weight_unit_equivalence": 5,
+      "port_alias_unlocode": 5,
+      "container_notation": 5,
+      "multilingual_labels": 5,
+      "amendment_history": 5,
+      "cross_format_binary": 5,
+      "subtle_mismatch_shipper": 6,
+      "subtle_mismatch_consignee": 6,
+      "subtle_mismatch_notify_party": 6,
+      "subtle_mismatch_port_of_loading": 6,
+      "subtle_mismatch_port_of_discharge": 6,
+      "subtle_mismatch_container_count": 5,
+      "subtle_mismatch_gross_weight_kg": 5,
+      "wrong_doc_type": 5,
+      "missing_attachment": 5,
+      "unreadable": 5,
+      "missing_value": 5
+    },
+    "category": {
+      "BL_COMPARISON": 100
+    }
+  },
+  "spotlight_ids": [
+    "adv_email_001",
+    "adv_email_006",
+    "adv_email_011",
+    "adv_email_016",
+    "adv_email_021",
+    "adv_email_026",
+    "adv_email_031",
+    "adv_email_036",
+    "adv_email_041",
+    "adv_email_059",
+    "adv_email_071",
+    "adv_email_076",
+    "adv_email_081",
+    "adv_email_086",
+    "adv_email_091",
+    "adv_email_096"
+  ],
+  "cases": [
+    {
+      "email_id": "adv_email_001",
+      "tier": "adversarial",
+      "family": "party_formatting",
+      "why_hard": "Company names differ only in case, punctuation, and '&' versus 'AND'",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_001_SI.txt",
+        "attachments/adv_email_001_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_002",
+      "tier": "adversarial",
+      "family": "party_formatting",
+      "why_hard": "Company names differ only in case, punctuation, and '&' versus 'AND'",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_002_SI.txt",
+        "attachments/adv_email_002_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_003",
+      "tier": "adversarial",
+      "family": "party_formatting",
+      "why_hard": "Company names differ only in case, punctuation, and '&' versus 'AND'",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_003_SI.txt",
+        "attachments/adv_email_003_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_004",
+      "tier": "adversarial",
+      "family": "party_formatting",
+      "why_hard": "Company names differ only in case, punctuation, and '&' versus 'AND'",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_004_SI.txt",
+        "attachments/adv_email_004_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_005",
+      "tier": "adversarial",
+      "family": "party_formatting",
+      "why_hard": "Company names differ only in case, punctuation, and '&' versus 'AND'",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_005_SI.txt",
+        "attachments/adv_email_005_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_006",
+      "tier": "adversarial",
+      "family": "unicode_spacing",
+      "why_hard": "Values contain Unicode width, non-breaking-space, and whitespace variation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_006_SI.txt",
+        "attachments/adv_email_006_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_007",
+      "tier": "adversarial",
+      "family": "unicode_spacing",
+      "why_hard": "Values contain Unicode width, non-breaking-space, and whitespace variation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_007_SI.txt",
+        "attachments/adv_email_007_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_008",
+      "tier": "adversarial",
+      "family": "unicode_spacing",
+      "why_hard": "Values contain Unicode width, non-breaking-space, and whitespace variation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_008_SI.txt",
+        "attachments/adv_email_008_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_009",
+      "tier": "adversarial",
+      "family": "unicode_spacing",
+      "why_hard": "Values contain Unicode width, non-breaking-space, and whitespace variation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_009_SI.txt",
+        "attachments/adv_email_009_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_010",
+      "tier": "adversarial",
+      "family": "unicode_spacing",
+      "why_hard": "Values contain Unicode width, non-breaking-space, and whitespace variation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_010_SI.txt",
+        "attachments/adv_email_010_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_011",
+      "tier": "adversarial",
+      "family": "weight_unit_equivalence",
+      "why_hard": "The same gross weight is expressed in kilograms and metric tonnes",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_011_SI.txt",
+        "attachments/adv_email_011_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_012",
+      "tier": "adversarial",
+      "family": "weight_unit_equivalence",
+      "why_hard": "The same gross weight is expressed in kilograms and metric tonnes",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_012_SI.txt",
+        "attachments/adv_email_012_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_013",
+      "tier": "adversarial",
+      "family": "weight_unit_equivalence",
+      "why_hard": "The same gross weight is expressed in kilograms and metric tonnes",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_013_SI.txt",
+        "attachments/adv_email_013_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_014",
+      "tier": "adversarial",
+      "family": "weight_unit_equivalence",
+      "why_hard": "The same gross weight is expressed in kilograms and metric tonnes",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_014_SI.txt",
+        "attachments/adv_email_014_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_015",
+      "tier": "adversarial",
+      "family": "weight_unit_equivalence",
+      "why_hard": "The same gross weight is expressed in kilograms and metric tonnes",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_015_SI.txt",
+        "attachments/adv_email_015_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_016",
+      "tier": "adversarial",
+      "family": "port_alias_unlocode",
+      "why_hard": "The same port is expressed as a place name versus its UN/LOCODE",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_016_SI.txt",
+        "attachments/adv_email_016_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_017",
+      "tier": "adversarial",
+      "family": "port_alias_unlocode",
+      "why_hard": "The same port is expressed as a place name versus its UN/LOCODE",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_017_SI.txt",
+        "attachments/adv_email_017_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_018",
+      "tier": "adversarial",
+      "family": "port_alias_unlocode",
+      "why_hard": "The same port is expressed as a place name versus its UN/LOCODE",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_018_SI.txt",
+        "attachments/adv_email_018_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_019",
+      "tier": "adversarial",
+      "family": "port_alias_unlocode",
+      "why_hard": "The same port is expressed as a place name versus its UN/LOCODE",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_019_SI.txt",
+        "attachments/adv_email_019_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_020",
+      "tier": "adversarial",
+      "family": "port_alias_unlocode",
+      "why_hard": "The same port is expressed as a place name versus its UN/LOCODE",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_020_SI.txt",
+        "attachments/adv_email_020_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_021",
+      "tier": "adversarial",
+      "family": "container_notation",
+      "why_hard": "The same container quantity uses compact and natural-language notation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_021_SI.txt",
+        "attachments/adv_email_021_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_022",
+      "tier": "adversarial",
+      "family": "container_notation",
+      "why_hard": "The same container quantity uses compact and natural-language notation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_022_SI.txt",
+        "attachments/adv_email_022_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_023",
+      "tier": "adversarial",
+      "family": "container_notation",
+      "why_hard": "The same container quantity uses compact and natural-language notation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_023_SI.txt",
+        "attachments/adv_email_023_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_024",
+      "tier": "adversarial",
+      "family": "container_notation",
+      "why_hard": "The same container quantity uses compact and natural-language notation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_024_SI.txt",
+        "attachments/adv_email_024_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_025",
+      "tier": "adversarial",
+      "family": "container_notation",
+      "why_hard": "The same container quantity uses compact and natural-language notation",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_025_SI.txt",
+        "attachments/adv_email_025_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_026",
+      "tier": "adversarial",
+      "family": "multilingual_labels",
+      "why_hard": "Bilingual labels and full-width punctuation preserve the same seven values",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_026_SI.txt",
+        "attachments/adv_email_026_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_027",
+      "tier": "adversarial",
+      "family": "multilingual_labels",
+      "why_hard": "Bilingual labels and full-width punctuation preserve the same seven values",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_027_SI.txt",
+        "attachments/adv_email_027_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_028",
+      "tier": "adversarial",
+      "family": "multilingual_labels",
+      "why_hard": "Bilingual labels and full-width punctuation preserve the same seven values",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_028_SI.txt",
+        "attachments/adv_email_028_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_029",
+      "tier": "adversarial",
+      "family": "multilingual_labels",
+      "why_hard": "Bilingual labels and full-width punctuation preserve the same seven values",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_029_SI.txt",
+        "attachments/adv_email_029_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_030",
+      "tier": "adversarial",
+      "family": "multilingual_labels",
+      "why_hard": "Bilingual labels and full-width punctuation preserve the same seven values",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_030_SI.txt",
+        "attachments/adv_email_030_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_031",
+      "tier": "adversarial",
+      "family": "amendment_history",
+      "why_hard": "Superseded values appear as decoys while the current values still match",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_031_SI.txt",
+        "attachments/adv_email_031_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_032",
+      "tier": "adversarial",
+      "family": "amendment_history",
+      "why_hard": "Superseded values appear as decoys while the current values still match",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_032_SI.txt",
+        "attachments/adv_email_032_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_033",
+      "tier": "adversarial",
+      "family": "amendment_history",
+      "why_hard": "Superseded values appear as decoys while the current values still match",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_033_SI.txt",
+        "attachments/adv_email_033_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_034",
+      "tier": "adversarial",
+      "family": "amendment_history",
+      "why_hard": "Superseded values appear as decoys while the current values still match",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_034_SI.txt",
+        "attachments/adv_email_034_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_035",
+      "tier": "adversarial",
+      "family": "amendment_history",
+      "why_hard": "Superseded values appear as decoys while the current values still match",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_035_SI.txt",
+        "attachments/adv_email_035_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_036",
+      "tier": "adversarial",
+      "family": "cross_format_binary",
+      "why_hard": "The matching pair spans PDF, DOCX, and XLSX native document formats",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_036_SI.xlsx",
+        "attachments/adv_email_036_BL.docx"
+      ]
+    },
+    {
+      "email_id": "adv_email_037",
+      "tier": "adversarial",
+      "family": "cross_format_binary",
+      "why_hard": "The matching pair spans PDF, DOCX, and XLSX native document formats",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_037_SI.xlsx",
+        "attachments/adv_email_037_BL.xlsx"
+      ]
+    },
+    {
+      "email_id": "adv_email_038",
+      "tier": "adversarial",
+      "family": "cross_format_binary",
+      "why_hard": "The matching pair spans PDF, DOCX, and XLSX native document formats",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_038_SI.pdf",
+        "attachments/adv_email_038_BL.docx"
+      ]
+    },
+    {
+      "email_id": "adv_email_039",
+      "tier": "adversarial",
+      "family": "cross_format_binary",
+      "why_hard": "The matching pair spans PDF, DOCX, and XLSX native document formats",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_039_SI.pdf",
+        "attachments/adv_email_039_BL.xlsx"
+      ]
+    },
+    {
+      "email_id": "adv_email_040",
+      "tier": "adversarial",
+      "family": "cross_format_binary",
+      "why_hard": "The matching pair spans PDF, DOCX, and XLSX native document formats",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_040_SI.pdf",
+        "attachments/adv_email_040_BL.pdf"
+      ]
+    },
+    {
+      "email_id": "adv_email_041",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_shipper",
+      "why_hard": "One plausible legal party is substituted while addresses and references remain distracting",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "shipper"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_041_SI.txt",
+        "attachments/adv_email_041_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_042",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_shipper",
+      "why_hard": "One plausible legal party is substituted while addresses and references remain distracting",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "shipper"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_042_SI.txt",
+        "attachments/adv_email_042_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_043",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_shipper",
+      "why_hard": "One plausible legal party is substituted while addresses and references remain distracting",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "shipper"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_043_SI.txt",
+        "attachments/adv_email_043_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_044",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_shipper",
+      "why_hard": "One plausible legal party is substituted while addresses and references remain distracting",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "shipper"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_044_SI.txt",
+        "attachments/adv_email_044_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_045",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_shipper",
+      "why_hard": "One plausible legal party is substituted while addresses and references remain distracting",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "shipper"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_045_SI.txt",
+        "attachments/adv_email_045_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_046",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_shipper",
+      "why_hard": "One plausible legal party is substituted while addresses and references remain distracting",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "shipper"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_046_SI.txt",
+        "attachments/adv_email_046_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_047",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_consignee",
+      "why_hard": "The consignee changes but the notify party and all shipment references remain plausible",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "consignee"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_047_SI.txt",
+        "attachments/adv_email_047_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_048",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_consignee",
+      "why_hard": "The consignee changes but the notify party and all shipment references remain plausible",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "consignee"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_048_SI.txt",
+        "attachments/adv_email_048_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_049",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_consignee",
+      "why_hard": "The consignee changes but the notify party and all shipment references remain plausible",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "consignee"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_049_SI.txt",
+        "attachments/adv_email_049_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_050",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_consignee",
+      "why_hard": "The consignee changes but the notify party and all shipment references remain plausible",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "consignee"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_050_SI.txt",
+        "attachments/adv_email_050_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_051",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_consignee",
+      "why_hard": "The consignee changes but the notify party and all shipment references remain plausible",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "consignee"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_051_SI.txt",
+        "attachments/adv_email_051_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_052",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_consignee",
+      "why_hard": "The consignee changes but the notify party and all shipment references remain plausible",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "consignee"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_052_SI.txt",
+        "attachments/adv_email_052_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_053",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_notify_party",
+      "why_hard": "Only the notify party changes; it is often incorrectly assumed to equal the consignee",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "notify_party"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_053_SI.txt",
+        "attachments/adv_email_053_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_054",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_notify_party",
+      "why_hard": "Only the notify party changes; it is often incorrectly assumed to equal the consignee",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "notify_party"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_054_SI.txt",
+        "attachments/adv_email_054_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_055",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_notify_party",
+      "why_hard": "Only the notify party changes; it is often incorrectly assumed to equal the consignee",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "notify_party"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_055_SI.txt",
+        "attachments/adv_email_055_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_056",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_notify_party",
+      "why_hard": "Only the notify party changes; it is often incorrectly assumed to equal the consignee",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "notify_party"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_056_SI.txt",
+        "attachments/adv_email_056_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_057",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_notify_party",
+      "why_hard": "Only the notify party changes; it is often incorrectly assumed to equal the consignee",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "notify_party"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_057_SI.txt",
+        "attachments/adv_email_057_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_058",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_notify_party",
+      "why_hard": "Only the notify party changes; it is often incorrectly assumed to equal the consignee",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "notify_party"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_058_SI.txt",
+        "attachments/adv_email_058_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_059",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_loading",
+      "why_hard": "A plausible alternate load port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_loading"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_059_SI.txt",
+        "attachments/adv_email_059_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_060",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_loading",
+      "why_hard": "A plausible alternate load port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_loading"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_060_SI.txt",
+        "attachments/adv_email_060_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_061",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_loading",
+      "why_hard": "A plausible alternate load port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_loading"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_061_SI.txt",
+        "attachments/adv_email_061_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_062",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_loading",
+      "why_hard": "A plausible alternate load port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_loading"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_062_SI.txt",
+        "attachments/adv_email_062_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_063",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_loading",
+      "why_hard": "A plausible alternate load port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_loading"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_063_SI.txt",
+        "attachments/adv_email_063_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_064",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_loading",
+      "why_hard": "A plausible alternate load port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_loading"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_064_SI.txt",
+        "attachments/adv_email_064_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_065",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_discharge",
+      "why_hard": "A plausible alternate discharge port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_discharge"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_065_SI.txt",
+        "attachments/adv_email_065_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_066",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_discharge",
+      "why_hard": "A plausible alternate discharge port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_discharge"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_066_SI.txt",
+        "attachments/adv_email_066_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_067",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_discharge",
+      "why_hard": "A plausible alternate discharge port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_discharge"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_067_SI.txt",
+        "attachments/adv_email_067_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_068",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_discharge",
+      "why_hard": "A plausible alternate discharge port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_discharge"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_068_SI.txt",
+        "attachments/adv_email_068_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_069",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_discharge",
+      "why_hard": "A plausible alternate discharge port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_discharge"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_069_SI.txt",
+        "attachments/adv_email_069_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_070",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_port_of_discharge",
+      "why_hard": "A plausible alternate discharge port is hidden among matching routing details",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_discharge"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_070_SI.txt",
+        "attachments/adv_email_070_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_071",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_container_count",
+      "why_hard": "The container count differs by only one while size and commodity remain identical",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "container_count"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_071_SI.txt",
+        "attachments/adv_email_071_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_072",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_container_count",
+      "why_hard": "The container count differs by only one while size and commodity remain identical",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "container_count"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_072_SI.txt",
+        "attachments/adv_email_072_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_073",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_container_count",
+      "why_hard": "The container count differs by only one while size and commodity remain identical",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "container_count"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_073_SI.txt",
+        "attachments/adv_email_073_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_074",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_container_count",
+      "why_hard": "The container count differs by only one while size and commodity remain identical",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "container_count"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_074_SI.txt",
+        "attachments/adv_email_074_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_075",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_container_count",
+      "why_hard": "The container count differs by only one while size and commodity remain identical",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "container_count"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_075_SI.txt",
+        "attachments/adv_email_075_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_076",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_gross_weight_kg",
+      "why_hard": "A small but material gross-weight delta is buried in otherwise matching documents",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "gross_weight_kg"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_076_SI.txt",
+        "attachments/adv_email_076_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_077",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_gross_weight_kg",
+      "why_hard": "A small but material gross-weight delta is buried in otherwise matching documents",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "gross_weight_kg"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_077_SI.txt",
+        "attachments/adv_email_077_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_078",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_gross_weight_kg",
+      "why_hard": "A small but material gross-weight delta is buried in otherwise matching documents",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "gross_weight_kg"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_078_SI.txt",
+        "attachments/adv_email_078_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_079",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_gross_weight_kg",
+      "why_hard": "A small but material gross-weight delta is buried in otherwise matching documents",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "gross_weight_kg"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_079_SI.txt",
+        "attachments/adv_email_079_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_080",
+      "tier": "adversarial",
+      "family": "subtle_mismatch_gross_weight_kg",
+      "why_hard": "A small but material gross-weight delta is buried in otherwise matching documents",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "gross_weight_kg"
+        ],
+        "has_defect": true
+      },
+      "attachments": [
+        "attachments/adv_email_080_SI.txt",
+        "attachments/adv_email_080_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_081",
+      "tier": "adversarial",
+      "family": "wrong_doc_type",
+      "why_hard": "The second file is a realistic Commercial Invoice containing overlapping shipment fields, not a draft B/L",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_081_SI.txt",
+        "attachments/adv_email_081_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_082",
+      "tier": "adversarial",
+      "family": "wrong_doc_type",
+      "why_hard": "The second file is a realistic Packing List containing overlapping shipment fields, not a draft B/L",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_082_SI.txt",
+        "attachments/adv_email_082_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_083",
+      "tier": "adversarial",
+      "family": "wrong_doc_type",
+      "why_hard": "The second file is a realistic Certificate of Origin containing overlapping shipment fields, not a draft B/L",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_083_SI.txt",
+        "attachments/adv_email_083_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_084",
+      "tier": "adversarial",
+      "family": "wrong_doc_type",
+      "why_hard": "The second file is a realistic Commercial Invoice containing overlapping shipment fields, not a draft B/L",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_084_SI.txt",
+        "attachments/adv_email_084_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_085",
+      "tier": "adversarial",
+      "family": "wrong_doc_type",
+      "why_hard": "The second file is a realistic Packing List containing overlapping shipment fields, not a draft B/L",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_085_SI.txt",
+        "attachments/adv_email_085_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_086",
+      "tier": "adversarial",
+      "family": "missing_attachment",
+      "why_hard": "The email claims both documents are attached, but no files arrived",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": []
+    },
+    {
+      "email_id": "adv_email_087",
+      "tier": "adversarial",
+      "family": "missing_attachment",
+      "why_hard": "Only the SI arrived; the system must not invent or infer a draft B/L",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_087_SI.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_088",
+      "tier": "adversarial",
+      "family": "missing_attachment",
+      "why_hard": "Only the SI arrived; the system must not invent or infer a draft B/L",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_088_SI.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_089",
+      "tier": "adversarial",
+      "family": "missing_attachment",
+      "why_hard": "Only the draft B/L arrived; the comparison source SI is absent",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_089_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_090",
+      "tier": "adversarial",
+      "family": "missing_attachment",
+      "why_hard": "Only the draft B/L arrived; the comparison source SI is absent",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_090_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_091",
+      "tier": "adversarial",
+      "family": "unreadable",
+      "why_hard": "The B/L has a convincing PDF filename but contains zero bytes",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_091_SI.txt",
+        "attachments/adv_email_091_BL.pdf"
+      ]
+    },
+    {
+      "email_id": "adv_email_092",
+      "tier": "adversarial",
+      "family": "unreadable",
+      "why_hard": "The B/L is truncated or random binary data with a PDF extension",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_092_SI.txt",
+        "attachments/adv_email_092_BL.pdf"
+      ]
+    },
+    {
+      "email_id": "adv_email_093",
+      "tier": "adversarial",
+      "family": "unreadable",
+      "why_hard": "The B/L is truncated or random binary data with a PDF extension",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_093_SI.txt",
+        "attachments/adv_email_093_BL.pdf"
+      ]
+    },
+    {
+      "email_id": "adv_email_094",
+      "tier": "adversarial",
+      "family": "unreadable",
+      "why_hard": "The B/L has a convincing PDF filename but contains zero bytes",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_094_SI.txt",
+        "attachments/adv_email_094_BL.pdf"
+      ]
+    },
+    {
+      "email_id": "adv_email_095",
+      "tier": "adversarial",
+      "family": "unreadable",
+      "why_hard": "The B/L is truncated or random binary data with a PDF extension",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_095_SI.txt",
+        "attachments/adv_email_095_BL.pdf"
+      ]
+    },
+    {
+      "email_id": "adv_email_096",
+      "tier": "adversarial",
+      "family": "missing_value",
+      "why_hard": "Required SI field(s) shipper are blank/TBA; absence must not be scored as a mismatch",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_096_SI.txt",
+        "attachments/adv_email_096_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_097",
+      "tier": "adversarial",
+      "family": "missing_value",
+      "why_hard": "Required SI field(s) consignee are blank/TBA; absence must not be scored as a mismatch",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_097_SI.txt",
+        "attachments/adv_email_097_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_098",
+      "tier": "adversarial",
+      "family": "missing_value",
+      "why_hard": "Required SI field(s) notify_party are blank/TBA; absence must not be scored as a mismatch",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_098_SI.txt",
+        "attachments/adv_email_098_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_099",
+      "tier": "adversarial",
+      "family": "missing_value",
+      "why_hard": "Required SI field(s) port_of_loading are blank/TBA; absence must not be scored as a mismatch",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_099_SI.txt",
+        "attachments/adv_email_099_BL.txt"
+      ]
+    },
+    {
+      "email_id": "adv_email_100",
+      "tier": "adversarial",
+      "family": "missing_value",
+      "why_hard": "Required SI field(s) port_of_discharge, gross_weight_kg are blank/TBA; absence must not be scored as a mismatch",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": [],
+        "has_defect": false
+      },
+      "attachments": [
+        "attachments/adv_email_100_SI.txt",
+        "attachments/adv_email_100_BL.txt"
+      ]
+    }
+  ]
+}

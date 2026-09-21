@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIJ9620165
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: TOAN LUC PAPER JOINT STOCK COMPANY
+Notify: TOAN LUC PAPER JOINT STOCK COMPANY
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: KARACHI, PAKISTAN (PKKHI)
+Total Containers: THREE (3) CONTAINERS - 20'FCL
+Total Gross Wt (KGS): 65,370 KG
+Vessel: NAP 914 V.BS007
+Booking No.: SIJ9620165
+Freight: PREPAID

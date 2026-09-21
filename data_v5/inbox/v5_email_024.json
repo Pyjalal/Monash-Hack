@@ -1,0 +1,10 @@
+{
+  "email_id": "v5_email_024",
+  "from": "documentation@carrier-example.com",
+  "subject": "Cut-off today — check SI against draft BL V5BK10024",
+  "body": "Current request: verify the attached SI and draft bill of lading for V5BK10024. Report factual differences before the carrier cut-off.\n\nQuoted history: invoice query resolved last week; no billing action remains.",
+  "attachments": [
+    "attachments/v5_email_024_SI.docx",
+    "attachments/v5_email_024_BL.xlsx"
+  ]
+}

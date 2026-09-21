@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / I773139646
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: 3S PAPER PRODUCTS SDN BHD
+Notify: MOORIM SP CO., LTD
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: FREMANTLE, AUSTRALIA (AUFRE)
+Total Containers: 1 x 40'HC
+Total Gross Wt (KGS): 25,190 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: I773139646
+Freight: PREPAID

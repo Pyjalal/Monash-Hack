@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942547064
+
+Shipper: April Fine Paper Trading (Middle East) Fze
+To the Order of: Pacific Office (M) Sdn Bhd
+Notify: Pacific Office (M) Sdn Bhd
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: ASHDOD, ISRAEL (ILASH)
+Total Containers: 15 x 20'GP
+Total Gross Wt (KGS): 311,565 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: MSDUL0942547064
+Freight: PREPAID

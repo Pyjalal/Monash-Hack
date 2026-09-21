@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE9999918
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: MOORIM SP CO., LTD
+Notify: MOORIM SP CO., LTD
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: PYEONGTAEK, SOUTH KOREA (KRPTK)
+Total Containers: 6 x 40'HC
+Total Gross Wt (KGS): １３１５９２ ＫＧ
+Vessel: LE HAVRE V.QI540A
+Booking No.: PSGSE9999918
+Freight: PREPAID

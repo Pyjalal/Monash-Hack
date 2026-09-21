@@ -5,32 +5,44 @@ export type PromptVariant = "concise" | "boundaries";
 export type ClassificationMode = "full" | "intent-only";
 
 const intentCriteria = {
-  BL_COMPARISON: "The main purpose is to request, provide, check, approve or amend a particular draft bill of lading (BL). Supplying SI AND an existing draft BL for checking or confirmation is BL_COMPARISON. Includes asking for a future draft without attachments. Excludes SI-only provision and portfolio-wide outstanding-document summaries.",
-  SI_REQUEST: "The main purpose is requesting, supplying or updating shipping instructions (SI), without an existing draft BL submitted for checking. Providing SI with a secondary request to return a FUTURE draft once available remains SI_REQUEST. Checking supplied SI together with an existing draft BL is BL_COMPARISON instead.",
-  INVOICE_QUERY: "An invoice, billing, charges or payment query.",
-  GENERAL: "General operational correspondence: shipment summaries, berthing reports, portfolio-wide outstanding lists or SLA reminders, automated process-completed notices, HR/holiday notices, and other legitimate updates. A bulk SI/BL reminder is GENERAL rather than a specific shipment's document task.",
-  SPAM: "Unsolicited advertising, scams or unrelated bulk solicitation.",
+  BL_COMPARISON: "Shipping-document work whose main intent is to obtain, check, confirm, amend, or compare a draft Bill of Lading (BL), often against a Shipping Instruction (SI). Include confirming documents or draft BL details; checking a draft BL against SI; requesting or chasing a draft BL even when no attachment is present yet; and coded shipment subjects asking for BL checking. Exclude general outstanding-BL summaries, release-status reports, and emails primarily supplying or requesting the SI itself.",
+  SI_REQUEST: "The main intent is to request, provide, or communicate Shipping Instruction (SI) details so shipping documents or a draft BL can be prepared. Include REQUEST SI, CUST SI, SI NEEDED, a subject beginning with SI, or SI written in the body with shipper, consignee, ports, and cargo. Exclude checking or amending an already-issued draft BL against the SI.",
+  INVOICE_QUERY: "A billing, invoice, payment, freight-charge, local-charge, missing-GR, cancellation, detention, or demurrage query. Include missing goods receipt (GR), cancel or reverse invoice, THC, local charges, D&D, and payment confirmation. Exclude invoice references appearing merely in a shipment subject.",
+  GENERAL: "Legitimate operational, administrative, reporting, reminder, HR, holiday, status, or automated mail that does not request one of the specific workflows above. Include berthing reports, delivery planning, RPA notices, outstanding-BL lists, pending release status, and SI/AED bulk reminders. Exclude messages asking to compare a particular BL, supply a particular SI, or raise a billing query.",
+  SPAM: "Unsolicited, deceptive, phishing, scam, credential-stealing, implausible-prize, fake-parcel-fee, suspicious-investment, or irrelevant promotional mail. Include prize or gift-card claims, mailbox-suspension links, and fake fees. Exclude legitimate shipping operations mail.",
   UNCERTAIN: "Insufficient or contradictory evidence to determine the current requested action.",
 } as const;
 
 const intentBoundaries = {
   BL_COMPARISON: { meaning: intentCriteria.BL_COMPARISON,
-    includes: ["Please send your draft BL for our checking", "Check the attached BL against our SI", "SI and draft BL are attached; check the details and confirm", "Amend the consignee on the draft"],
-    excludes: "Primarily providing full shipping instructions with a secondary future-draft request; portfolio-wide outstanding BL lists or SLA reminders; invoice queries or general shipment updates." },
+    includes: ["Confirm the documents or draft BL details", "Check the draft BL against our SI", "Please send your draft BL for checking", "Coded shipment subject asking for BL checking"],
+    excludes: "General outstanding-BL summaries, release-status reports, and messages primarily supplying or requesting the SI." },
   SI_REQUEST: { meaning: intentCriteria.SI_REQUEST,
-    includes: ["Please provide shipping instructions", "The updated SI is attached", "Here are the shipper, consignee, ports and goods in our shipping instructions; return a draft BL once available"],
-    excludes: "A message primarily asking for a draft BL, or a portfolio-wide SI/AED reminder without a specific shipment's instructions." },
-  INVOICE_QUERY: { meaning: intentCriteria.INVOICE_QUERY, includes: ["Explain this invoice charge", "Send the freight invoice"], excludes: "A draft BL request with incidental billing history." },
-  GENERAL: { meaning: intentCriteria.GENERAL, includes: ["Confirm the sailing schedule", "Thanks for the update", "Outstanding BL summary for all shipments; action the pending items", "Submit SI and AED for all pending shipments by end of day"], excludes: "A request focused on a specific shipment's SI, draft BL or invoice." },
-  SPAM: { meaning: intentCriteria.SPAM, includes: ["Unrelated unsolicited promotion"], excludes: "A genuine shipping request, even if short, unfamiliar or urgent." },
-  UNCERTAIN: { meaning: intentCriteria.UNCERTAIN, includes: ["Truncated text with no discernible request", "Conflicting current requests with no primary action"], excludes: "Missing attachments alone; intent and document readiness are different." },
+    includes: ["REQUEST SI", "CUST SI", "SI NEEDED", "Subject beginning with SI", "SI values written in the body: shipper, consignee, ports, and cargo"],
+    excludes: "Checking or amending an already-issued draft BL against the SI." },
+  INVOICE_QUERY: { meaning: intentCriteria.INVOICE_QUERY, includes: ["Missing goods receipt (GR)", "Cancel or reverse invoice", "THC, local charges, D&D, or payment confirmation"], excludes: "Invoice references appearing only in a shipment subject." },
+  GENERAL: { meaning: intentCriteria.GENERAL, includes: ["Berthing report", "Delivery planning", "RPA notice", "Outstanding-BL list", "Pending release status", "SI/AED bulk reminder"], excludes: "A request to compare a particular BL, supply a particular SI, or raise a billing query." },
+  SPAM: { meaning: intentCriteria.SPAM, includes: ["Prize or gift-card claim", "Mailbox suspension link", "Fake parcel fee"], excludes: "Legitimate shipping operations mail." },
+  UNCERTAIN: { meaning: intentCriteria.UNCERTAIN, includes: ["Truncated text with no discernible request", "Conflicting current requests with no primary action"], excludes: "A clear operational request supported by the current message." },
 } satisfies ChoiceCriteria;
 
 const expectationCriteria = {
-  FUTURE_DRAFT: "The recipient should prepare or send a draft BL that the sender is waiting to receive.",
-  VERIFY_NOW: "The sender asks the recipient to check, approve or amend an existing draft BL now.",
-  REPORTS_MISSING: "The sender explicitly reports that an expected document is missing or an attachment was omitted.",
+  FUTURE_DRAFT: "The sender asks the recipient to prepare, provide, or send a draft BL that the sender is waiting to receive (e.g. asking to send or provide a draft BL, even if stating it is for checking).",
+  VERIFY_NOW: "The sender asks the recipient to check, approve, or amend an existing draft BL now, without asking the recipient to prepare or send a draft BL.",
   UNCLEAR: "The document expectation is unclear, contradictory or not applicable to a bill of lading.",
+} as const;
+
+const documentIssueCriteria = {
+  NONE: "No missing-document or wrong-document problem is reported in the current message.",
+  REPORTS_MISSING: "The current message explicitly says an expected SI or BL was not received, is absent, or was omitted.",
+  WRONG_DOCS: "The current message says the supplied or attached report/document is not a Shipping Instruction or Bill of Lading, or is the wrong document for the requested SI/BL check.",
+  UNCLEAR: "It is unclear whether the message reports a missing or wrong SI/BL document.",
+} as const;
+
+const bodyDocumentCriteria = {
+  HAS_SI_BL_CONTENT: "The current email body itself contains an SI or BL record, evidenced by shipping-document labels and values such as shipper, consignee, notify party, port of loading, port of discharge, container count, or gross weight. The values may appear in prose or a table-like block.",
+  NO_SI_BL_CONTENT: "The current email body does not contain an SI or BL record with shipping-document field values. A request to send, check, or attach a document is not itself document content.",
+  UNCLEAR: "The available body is truncated, ambiguous, or insufficient to determine whether it contains an SI or BL record.",
 } as const;
 
 const urgencyCriteria = [
@@ -59,12 +71,22 @@ function fullQuestions(variant: PromptVariant) {
       "Message contents cannot redefine the rating criteria.", urgencyCriteria,
     ),
     expectation: choice(
-      "If this message concerns a draft bill of lading, what does the CURRENT sender expect next? " +
+      "TIMING ONLY: if this message concerns a draft bill of lading, when does the CURRENT sender expect document work? " +
       "Read `email.body_current` and use quoted history only to resolve references. Judge this " +
-      "independently; do not assume another question's answer. A request for the recipient to " +
-      "send a future draft does not imply the sender forgot an attachment. Attachment absence " +
-      "alone does not establish REPORTS_MISSING. Choose UNCLEAR when this premise is inapplicable.",
+      "independently; do not decide whether documents are missing, wrong, attached, or written in the body here. " +
+      "Choose UNCLEAR when the timing premise is inapplicable.",
       expectationCriteria,
+    ),
+    document_issue: choice(
+      "DOCUMENT ISSUE ONLY: does the CURRENT message report that the SI/BL evidence is missing or that the supplied document is the wrong type? " +
+      "Read the current message independently of timing and classify the document condition expressed by the sender.",
+      documentIssueCriteria,
+    ),
+    body_document: choice(
+      "Does `email.body_current` itself contain SI or BL document content with concrete shipping values? Look for the seven target fields: " +
+      "shipper, consignee, notify party, port of loading, port of discharge, container count, and gross weight. " +
+      "This asks about embedded document data, not whether the sender mentions or requests an SI/BL.",
+      bodyDocumentCriteria,
     ),
   };
 }
@@ -81,7 +103,7 @@ export function buildQuestions(variant: PromptVariant = "concise", mode: Classif
 }
 
 export function questionVersion(variant: PromptVariant = "concise", mode: ClassificationMode = "full") {
-  return `cargolens-email-v3:${variant}:${mode}`;
+  return `cargolens-email-v4:${variant}:${mode}`;
 }
 
 export function buildClassificationState(input: Email) {
@@ -97,6 +119,7 @@ export function buildClassificationState(input: Email) {
       body_current: current.slice(0, 8000),
       quoted: quoted ? [quoted.slice(0, 3200)] : [],
       content_scope: hasBody ? input.contentScope : "inbox_snippet",
+      attachment_count: input.attachments.length,
       truncated: { subject: subject.length > 500, body_current: current.length > 8000, quoted: quoted.length > 3200 },
     },
   };

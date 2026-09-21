@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2559619
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: BALL & DOGGETT AUSTRALIA PTY LTD
+Notify: HABRAS INTERNATIONAL LIMITED
+Load Port: PORT KLANG (WESTPORT), MALAYSIA (IDBUA)
+Discharge Port: BRISBANE, AUSTRALIA (AUBNE)
+Total Containers: 3 x 20'FCL
+Total Gross Wt (KGS): 62,889 KG
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: MCLSINJEA2559619
+Freight: PREPAID

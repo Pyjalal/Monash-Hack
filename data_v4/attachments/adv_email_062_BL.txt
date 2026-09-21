@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE2994167
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: HABRAS INTERNATIONAL LIMITED
+Notify: HABRAS INTERNATIONAL LIMITED
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNNTG)
+Discharge Port: CALLAO, PERU (PECLL)
+Total Containers: 4 x 20'FCL
+Total Gross Wt (KGS): 91,432 KG
+Vessel: MMSS 2507 V.257087E
+Booking No.: PSGSE2994167
+Freight: PREPAID

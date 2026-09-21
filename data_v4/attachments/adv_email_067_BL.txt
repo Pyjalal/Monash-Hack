@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2514123
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: AL GURG STATIONERY LLC
+Notify: AL GURG STATIONERY LLC
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: KLAIPEDA, LITHUANIA (SIKOP)
+Total Containers: 1 x 40'HC
+Total Gross Wt (KGS): 20,776 KG
+Vessel: PACIFIC SUN 1 V.251073E
+Booking No.: MCLSINJEA2514123
+Freight: PREPAID

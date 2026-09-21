@@ -3,6 +3,7 @@ import { mkdtemp, open, realpath, rmdir, unlink, writeFile } from 'node:fs/promi
 import { tmpdir } from 'node:os';
 import { extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { readAttachment, type AttachmentReadResult, type ReadAttachmentOptions } from './index.js';
+import { splitLabelValueCandidates } from './candidates.js';
 import { ocrFailure, runOcrSidecar, validateOcrResult, type OcrSidecarResult, type RunOcrOptions } from './ocr.js';
 import { assessReadability } from './readability.js';
 
@@ -27,6 +28,38 @@ export interface AttachmentRecoveryResult {
 
 export interface RecoveryOptions extends Omit<RunOcrOptions, 'inputPath'> {
   enabled?: boolean;
+}
+
+/**
+ * Returns the native reading when available, otherwise materializes a fully
+ * recovered OCR result into the same evidence contract used by PDF, DOCX and
+ * XLSX readers. Only lines whose every word meets the operational confidence
+ * boundary are admitted as extraction evidence.
+ */
+export function readingFromRecovery(recovery: AttachmentRecoveryResult): AttachmentReadResult {
+  if (recovery.before.status === 'READABLE' || recovery.profile.reader_profile !== 'ocr_recovered' || !recovery.ocr?.ok) return recovery.before;
+  let text = '';
+  const spans: AttachmentReadResult['spans'] = [];
+  for (const page of recovery.ocr.pages) {
+    const lines: typeof page.words[] = [];
+    let start = 0;
+    for (let end = 1; end <= page.words.length; end += 1) {
+      const previous = page.words[end - 1]; const next = page.words[end];
+      if (next && Math.abs((previous.bbox.y + previous.bbox.height / 2) - (next.bbox.y + next.bbox.height / 2)) <= Math.min(previous.bbox.height, next.bbox.height) / 2 && next.bbox.x >= previous.bbox.x) continue;
+      lines.push(page.words.slice(start, end)); start = end;
+    }
+    const pageText = lines.filter(line => line.every(word => word.confidence !== null && word.confidence >= 85))
+      .map(line => line.map(word => word.text).join(' ')).join('\n').trim();
+    if (!pageText) continue;
+    if (text) text += '\n\f\n';
+    const offset = text.length; text += pageText;
+    spans.push({ kind: 'page', start: offset, end: text.length, page: page.page, text: pageText });
+  }
+  const readability = assessReadability(text);
+  if (readability.status !== 'READABLE') return recovery.before;
+  const reading: AttachmentReadResult = { sha256: recovery.before.sha256, text, spans, status: 'READABLE', readability: readability.facts };
+  reading.candidates = splitLabelValueCandidates(reading);
+  return reading;
 }
 
 const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.tif', '.tiff', '.bmp', '.webp']);

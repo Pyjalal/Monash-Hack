@@ -1,0 +1,10 @@
+{
+  "email_id": "v5_email_011",
+  "from": "documentation@carrier-example.com",
+  "subject": "Please approve revised draft BL · V5BK10011",
+  "body": "Hi documentation team,\n\nPlease compare the attached current SI and revised draft BL for booking V5BK10011. The older draft quoted below is superseded.\n\n> Earlier draft was sent before the consignee punctuation correction.\n\nPlease confirm today if all seven shipping fields agree.",
+  "attachments": [
+    "attachments/v5_email_011_SI.docx",
+    "attachments/v5_email_011_BL.xlsx"
+  ]
+}

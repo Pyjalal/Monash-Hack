@@ -1,0 +1,20 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2569741
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: TOPKOPY MIDDLE EAST FZE
+Notify: TOPKOPY MIDDLE EAST FZE
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: KARACHI, PAKISTAN (PKKHI)
+Total Containers: 15 x 20'GP
+Total Gross Wt (KGS): 309,915 KG
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: MCLSINJEA2569741
+Freight: PREPAID
+
+--- AMENDMENT HISTORY (SUPERSEDED - DO NOT USE) ---
+Old consignee before customer correction: 3S PAPER PRODUCTS SDN BHD
+Old discharge port before amendment: YANGON, MYANMAR
+Old gross weight before final VGM: 308,915 KG
+--- END SUPERSEDED HISTORY ---

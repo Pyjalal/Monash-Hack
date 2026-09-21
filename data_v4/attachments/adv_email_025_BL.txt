@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2524904
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: ORIENT LINKS CO (LLC)
+Notify: ORIENT LINKS CO (LLC)
+Load Port: NANTONG, CHINA (CNNTG)
+Discharge Port: BALTIMORE, US (USBAL)
+Total Containers: ONE (1) CONTAINERS - 20'FCL
+Total Gross Wt (KGS): 22,123 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: MCLSINJEA2524904
+Freight: PREPAID

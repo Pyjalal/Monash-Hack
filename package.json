@@ -27,7 +27,9 @@
     "test:openrouter": "tsx tools/eval/src/openrouter-smoke.ts",
     "dev:extraction-dashboard": "vite apps/extraction-dashboard --config apps/extraction-dashboard/vite.config.ts",
     "build:extraction-dashboard": "vite build apps/extraction-dashboard --config apps/extraction-dashboard/vite.config.ts",
-    "submission:extract-all": "tsx tools/eval/src/submission.ts pipeline --all-documents"
+    "submission:extract-all": "tsx tools/eval/src/submission.ts pipeline --all-documents",
+    "pipeline:full": "tsx tools/eval/src/full-pipeline.ts",
+    "pipeline:report": "tsx tools/eval/src/pipeline-report.ts"
   },
   "engines": {
     "node": ">=20.19"

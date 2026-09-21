@@ -1,5 +1,5 @@
 import type { Questions } from "@typesafe-ai/sdk";
-import type { Category, Classification, Email, Expectation, Urgency, Usage } from "@cargolens/shared";
+import type { BodyDocument, Category, Classification, DocumentIssue, Email, Expectation, Urgency, Usage } from "@cargolens/shared";
 import type { ClassificationMode } from "@cargolens/shared/questions";
 
 export type Classifier = (email: Email) => Promise<Classification>;
@@ -42,6 +42,10 @@ export function parseClassification(raw: unknown, email: Email, meta: Classifica
   let urgency: Urgency | null = null;
   let expectation: Expectation | null = null;
   let expectationConfidence: number | null = null;
+  let documentIssue: DocumentIssue | null = null;
+  let documentIssueConfidence: number | null = null;
+  let bodyDocument: BodyDocument | null = null;
+  let bodyDocumentConfidence: number | null = null;
   if (meta.mode === "full") {
     const expectedUrgency = meta.questions.urgency;
     if (!expectedUrgency || expectedUrgency.type !== "score") fail("question.urgency");
@@ -66,13 +70,23 @@ export function parseClassification(raw: unknown, email: Email, meta: Classifica
     const selected = parseChoice(answers.expectation, Object.keys(expectedExpectation.criteria), "expectation");
     expectation = selected.choice as Expectation;
     expectationConfidence = selected.confidence;
+    const expectedDocumentIssue = meta.questions.document_issue;
+    if (!expectedDocumentIssue || expectedDocumentIssue.type !== "choice") fail("question.document_issue");
+    const issue = parseChoice(answers.document_issue, Object.keys(expectedDocumentIssue.criteria), "document_issue");
+    documentIssue = issue.choice as DocumentIssue;
+    documentIssueConfidence = issue.confidence;
+    const expectedBodyDocument = meta.questions.body_document;
+    if (!expectedBodyDocument || expectedBodyDocument.type !== "choice") fail("question.body_document");
+    const inline = parseChoice(answers.body_document, Object.keys(expectedBodyDocument.criteria), "body_document");
+    bodyDocument = inline.choice as BodyDocument;
+    bodyDocumentConfidence = inline.confidence;
   }
   return {
     id: email.id,
     category: intent.choice as Category,
     confidence: intent.confidence,
     probabilities: intent.probabilities,
-    urgency, expectation, expectationConfidence,
+    urgency, expectation, expectationConfidence, documentIssue, documentIssueConfidence, bodyDocument, bodyDocumentConfidence,
     model: response.model,
     usage: { input_tokens: usage.input_tokens as number, output_tokens: usage.output_tokens as number },
     elapsedMs: meta.elapsedMs,

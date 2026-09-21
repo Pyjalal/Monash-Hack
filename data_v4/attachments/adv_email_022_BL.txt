@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2501330
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: TOPKOPY MIDDLE EAST FZE
+Notify: HABRAS INTERNATIONAL LIMITED
+Load Port: NANTONG, CHINA (CNNTG)
+Discharge Port: YANGON, MYANMAR (MMRGN)
+Total Containers: TWO (2) CONTAINERS - 40'HC
+Total Gross Wt (KGS): 40,804 KG
+Vessel: SOLID 16 V.044NW2
+Booking No.: MCLSINJEA2501330
+Freight: PREPAID

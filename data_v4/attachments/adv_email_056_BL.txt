@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2521376
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: MOORIM SP CO., LTD
+Notify: TOAN LUC PAPER JOINT STOCK COMPANY
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: KOPER, SLOVENIA (SIKOP)
+Total Containers: 1 x 40'HC
+Total Gross Wt (KGS): 20,289 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: MCLSINJEA2521376
+Freight: PREPAID

@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942585326
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: TOPKOPY MIDDLE EAST FZE
+Notify: TOPKOPY MIDDLE EAST FZE
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: ASHDOD, ISRAEL (ILASH)
+Total Containers: 4 x 20'FCL
+Total Gross Wt (KGS): ８１６６８ ＫＧ
+Vessel: LE HAVRE V.QI540A
+Booking No.: MSDUL0942585326
+Freight: PREPAID

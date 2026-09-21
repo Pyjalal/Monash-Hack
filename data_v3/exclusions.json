@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "dataset": "v3",
+  "reason": "Rows excluded from end-to-end evaluation because the email and ground truth require an attached SI/BL pair but the inbox record contains no attachments.",
+  "cases": {
+    "email_001": "Ground truth is OK and the message says SI and draft BL are attached, but attachments is empty.",
+    "email_022": "Ground truth is OK and the message says SI and draft BL are attached, but attachments is empty.",
+    "email_046": "Ground truth is OK and the message requests immediate attached-document verification, but attachments is empty.",
+    "email_069": "Ground truth is OK and the message says SI and draft BL are attached, but attachments is empty.",
+    "email_070": "Ground truth is OK and the message says SI and draft BL are attached, but attachments is empty.",
+    "email_158": "Ground truth is OK and the message says SI and draft BL are attached, but attachments is empty.",
+    "email_162": "Ground truth is OK and the message says SI and draft BL are attached, but attachments is empty.",
+    "email_166": "Ground truth is OK and the message says SI and draft BL are attached, but attachments is empty.",
+    "email_197": "Ground truth is OK and the message says SI and draft BL are attached, but attachments is empty.",
+    "email_201": "Ground truth is OK and the message requests attached-document verification, but attachments is empty."
+  }
+}

@@ -1,0 +1,11 @@
+DRAFT BILL OF LADING
+Booking Reference: V5BK10014
+Shipper: NUSANTARA PULP AND PAPER LTD
+Consignee (Non-Negotiable): WEST COAST PAPER IMPORTS INC HOLDINGS
+Notify Party: SAME AS CONSIGNEE
+POL: SINGAPORE, SINGAPORE
+Port of Discharge: LONG BEACH, USA
+No. of Containers: 2
+Gross Weight (KG): 26375
+Cargo Description: PRINTING PAPER IN REELS
+Freight Terms: PREPAID

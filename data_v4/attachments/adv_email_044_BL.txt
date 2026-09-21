@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN301455591
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: KPP-ANTALIS (SINGAPORE) PTE. LTD.
+Notify: CERIEX
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: HOCHIMINH CITY, VIETNAM (VNSGN)
+Total Containers: 5 x 40'HC
+Total Gross Wt (KGS): 116,905 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: SIN301455591
+Freight: PREPAID

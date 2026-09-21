@@ -1,0 +1,20 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 070500296379
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: KPP-ANTALIS (SINGAPORE) PTE. LTD.
+Notify: KPP-ANTALIS (SINGAPORE) PTE. LTD.
+Load Port: NANTONG, CHINA (CNNTG)
+Discharge Port: ASHDOD, ISRAEL (ILASH)
+Total Containers: 3 x 40'HC
+Total Gross Wt (KGS): 60,228 KG
+Vessel: VISION 202 V.002
+Booking No.: 070500296379
+Freight: PREPAID
+
+--- AMENDMENT HISTORY (SUPERSEDED - DO NOT USE) ---
+Old consignee before customer correction: BALL & DOGGETT AUSTRALIA PTY LTD
+Old discharge port before amendment: VALPARAISO, CHILE
+Old gross weight before final VGM: 59,228 KG
+--- END SUPERSEDED HISTORY ---

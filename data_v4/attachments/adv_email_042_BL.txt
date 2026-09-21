@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 070500208549
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: TOAN LUC PAPER JOINT STOCK COMPANY
+Notify: TOAN LUC PAPER JOINT STOCK COMPANY
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: TUTICORIN, INDIA (INTUT)
+Total Containers: 10 x 20'GP
+Total Gross Wt (KGS): 233,960 KG
+Vessel: NAP 914 V.BS007
+Booking No.: 070500208549
+Freight: PREPAID

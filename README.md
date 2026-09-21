@@ -246,6 +246,11 @@ responsible documentation contact: requests for a draft from us are routed
 there, or ask for clarification when responsibility is unknown. No BL is
 fabricated.
 
+Eligible real-time Gmail verification uses the same hybrid field extraction,
+comparison fallback, placeholder policy and optional vision recovery as
+`npm run pipeline:full`. The shared result is converted into source-bound
+operational field evidence before any confirmation or amendment can be queued.
+
 Live read, full-thread ingestion, attachment bytes and classification were
 verified on 2026-09-20 with outbound sending disabled. Delivery remains covered
 by fixtures; no live email was sent during this verification.

@@ -1,0 +1,20 @@
+SHIPPING INSTRUCTION
+======================================================
+Document revision: CURRENT / 070500231929
+
+Shipper / Exporter: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+Consignee: ROXCEL TRADING GMBH
+Notify Party: ROXCEL TRADING GMBH
+Port of Loading (POL): NANTONG, CHINA (CNNTG)
+Port of Discharge (POD): NEW YORK, US (USNYC)
+No. of Containers: 12 x 20'GP
+Gross Weight (KG): 287,508 KG
+Vessel: PACIFIC SUN 1 V.251073E
+Booking No.: 070500231929
+Freight: PREPAID
+
+--- AMENDMENT HISTORY (SUPERSEDED - DO NOT USE) ---
+Old consignee before customer correction: HABRAS INTERNATIONAL LIMITED
+Old discharge port before amendment: KLAIPEDA, LITHUANIA
+Old gross weight before final VGM: 286,508 KG
+--- END SUPERSEDED HISTORY ---

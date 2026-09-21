@@ -1,0 +1,11 @@
+DRAFT BILL OF LADING
+Booking Reference: V5BK10007
+Shipper / Exporter: ASIA PACIFIC RESOURCES INTERNATIONAL
+Consignee: GLOBAL STATIONERY FZE
+Notify: SAME AS CONSIGNEE
+Port of Loading: SINGAPORE, SINGAPORE
+POD: LONG BEACH, USA
+Container Count: 2
+Total Gross Weight KGS: 20750
+Cargo Description: PRINTING PAPER IN REELS
+Freight Terms: PREPAID

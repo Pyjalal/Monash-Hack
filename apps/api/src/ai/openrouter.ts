@@ -69,7 +69,7 @@ export function createOpenRouterDecisionClient(options: OpenRouterJevOptions) {
           if (retryable(response.status) && attempt < retries) { await pause(250 * 2 ** attempt, request.signal); continue; }
           throw new OpenRouterHttpError(`OpenRouter Decisions request failed: HTTP ${response.status}`);
         } catch (error) {
-          if (request.signal?.aborted || controller.signal.aborted || attempt >= retries || error instanceof InvalidJevResponseError || error instanceof OpenRouterHttpError) throw error;
+          if (request.signal?.aborted || attempt >= retries || error instanceof InvalidJevResponseError || error instanceof OpenRouterHttpError) throw error;
           await pause(250 * 2 ** attempt, request.signal);
         } finally { clearTimeout(timeout); request.signal?.removeEventListener("abort", abort); }
       }

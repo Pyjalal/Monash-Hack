@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE3064812
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: TOAN LUC PAPER JOINT STOCK COMPANY
+Notify: AL GURG STATIONERY LLC
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: SAVANNAH, US (USSAV)
+Total Containers: 6 x 20'GP
+Total Gross Wt (KGS): 130,158 KG
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: PSGSE3064812
+Freight: PREPAID

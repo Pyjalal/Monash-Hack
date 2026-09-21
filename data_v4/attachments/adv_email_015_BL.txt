@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE8292138
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: TOPKOPY MIDDLE EAST FZE
+Notify: TOPKOPY MIDDLE EAST FZE
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: APAPA, NIGERIA (NGAPP)
+Total Containers: 1 x 20'FCL
+Total Gross Wt (KGS): 20.060 METRIC TONNES
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: PSGSE8292138
+Freight: PREPAID

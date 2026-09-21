@@ -27,3 +27,8 @@ training_data/sdoc-hackathon-docker/extracted/data_v2/sample_submission.json
 data_v3
 apps/extraction-dashboard/src
 apps/extraction-dashboard/public
+
+# Synthetic challenge corpus and reference labels are evaluation-only.
+data_v4
+
+data_v5/

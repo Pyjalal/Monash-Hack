@@ -1,0 +1,11 @@
+DRAFT BILL OF LADING
+Booking Reference: V5BK10020
+Shipper: RIVERLAND EXPORTS PTE LTD HOLDINGS
+Consignee (Non-Negotiable): METRO PRINTING SOLUTIONS BV
+Notify Party: SAME AS CONSIGNEE
+POL: NANTONG, CHINA
+Port of Discharge: ROTTERDAM, NETHERLANDS
+No. of Containers: 3
+Gross Weight (KG): 28625
+Cargo Description: PRINTING PAPER IN REELS
+Freight Terms: PREPAID

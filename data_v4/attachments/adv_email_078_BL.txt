@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942527128
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: ROXCEL TRADING GMBH
+Notify: BALL & DOGGETT AUSTRALIA PTY LTD
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: HOUSTON, US (USHOU)
+Total Containers: 6 x 20'GP
+Total Gross Wt (KGS): 124,064 KG
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: MSDUL0942527128
+Freight: PREPAID

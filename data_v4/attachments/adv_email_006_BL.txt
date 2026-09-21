@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 66815941
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: AL GURG STATIONERY LLC
+Notify: AL GURG STATIONERY LLC
+Load Port: PORT KLANG (WESTPORT), MALAYSIA (MYPKG)
+Discharge Port: AQABA, JORDAN (JOAQB)
+Total Containers: 10 x 40'HC
+Total Gross Wt (KGS): ２０９５１０ ＫＧ
+Vessel: PACIFIC SUN 1 V.251073E
+Booking No.: 66815941
+Freight: PREPAID

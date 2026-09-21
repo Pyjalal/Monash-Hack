@@ -1,0 +1,68 @@
+{
+  "baselineCommit": "f7064120ccbb52564be4df45b2153a8474c7c5ee",
+  "classification": "Reused fresh untouched-PR live classifications; extraction/comparison rerun after fixes",
+  "v3ExcludedByExistingDatasetPolicy": 10,
+  "results": [
+    {
+      "dataset": "v2",
+      "summary": {
+        "total": 520,
+        "classified": 520,
+        "classificationCorrect": 520,
+        "waitingForFutureDraft": 91,
+        "extracted": 114,
+        "compared": 114,
+        "exactMatches": 520,
+        "comparable": 520
+      },
+      "reportSha256": "227ff68160f2447dd386639c01d95723e7bb6f56bbf21f5cf1fbdd4ac8096031",
+      "failures": []
+    },
+    {
+      "dataset": "v3",
+      "summary": {
+        "total": 210,
+        "classified": 210,
+        "classificationCorrect": 210,
+        "waitingForFutureDraft": 0,
+        "extracted": 150,
+        "compared": 150,
+        "exactMatches": 210,
+        "comparable": 210
+      },
+      "reportSha256": "92f37a7917746905ec1e50fa8a3c7a9ca5a39862bda9c00df28a3f685598f8b6",
+      "failures": []
+    },
+    {
+      "dataset": "v4",
+      "summary": {
+        "total": 100,
+        "classified": 100,
+        "classificationCorrect": 100,
+        "waitingForFutureDraft": 0,
+        "extracted": 85,
+        "compared": 85,
+        "exactMatches": 100,
+        "comparable": 100
+      },
+      "reportSha256": "b323f3520a98da08fade91738ba7226b9fcfef222064ce39e94e07f0d247c0cb",
+      "failures": []
+    },
+    {
+      "dataset": "v5",
+      "summary": {
+        "total": 60,
+        "classified": 60,
+        "classificationCorrect": 60,
+        "waitingForFutureDraft": 4,
+        "extracted": 26,
+        "compared": 26,
+        "exactMatches": 60,
+        "comparable": 60
+      },
+      "reportSha256": "547b78f78979ab73fc6994ede4d8773d7a101cfb3a99d692e3df3400fc857934",
+      "failures": []
+    }
+  ],
+  "portPolicy": "competition-ports-v1 (shared runtime and evaluation)"
+}

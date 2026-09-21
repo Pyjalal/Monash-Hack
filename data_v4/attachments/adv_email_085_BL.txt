@@ -1,0 +1,15 @@
+PACKING LIST
+========================================
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+Consignee: TOAN LUC PAPER JOINT STOCK COMPANY
+Booking Ref: 070500220387
+Commodity: PAPERBOARD
+
+Carton No.      Net Wt (kg)     Gross Wt (kg)     Dimensions
+CTN-001          416             595             120x100x110
+CTN-002          478             602             120x100x110
+CTN-003          504             458             120x100x110
+CTN-004          412             488             120x100x110
+
+*** PACKING LIST ONLY - NO PORT OR VESSEL DETAILS ***

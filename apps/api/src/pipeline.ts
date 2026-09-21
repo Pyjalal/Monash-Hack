@@ -152,7 +152,9 @@ export class ClassificationService {
       const decision = current?.decision;
       if (!current || current.sourceVersion !== record.sourceVersion || !decision || decision.decisionVersion !== 1 ||
         decision.category !== 'BL_COMPARISON' || decision.requestedAction !== 'VERIFY_DOCUMENTS' || decision.documentExpectation !== 'EXPECTED_NOW' || decision.blockers.length) return;
-      if (!current.email.attachments.length) {
+      const inlineBodyAvailable = current.classification?.bodyDocument === 'HAS_SI_BL_CONTENT'
+        && (current.classification.bodyDocumentConfidence ?? 0) >= 0.8;
+      if (!current.email.attachments.length && !inlineBodyAvailable) {
         this.options.store.saveDecision(email.id, { ...decision, decisionVersion: 2, verificationState: 'BLOCKED', workflowState: 'AWAITING_DOCUMENTS',
           blockers: ['MISSING_ATTACHMENT'], nextAction: 'REQUEST_DOCUMENTS' });
         return;

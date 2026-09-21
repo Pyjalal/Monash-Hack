@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 070500271630
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: CLIFFORD PAPER INC
+Notify: BALL & DOGGETT AUSTRALIA PTY LTD
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: CONAKRY, GUINEA (GNCKY)
+Total Containers: 5 x 20'FCL
+Total Gross Wt (KGS): 113,295 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: 070500271630
+Freight: PREPAID

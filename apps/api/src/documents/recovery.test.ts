@@ -5,7 +5,7 @@ import { join, resolve } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as native from './index.js';
 import * as sidecar from './ocr.js';
-import { readAttachmentWithRecovery } from './recovery.js';
+import { readAttachmentWithRecovery, readingFromRecovery } from './recovery.js';
 
 const attachmentsRoot = resolve('training_data/sdoc-hackathon-docker/extracted/data_v2/attachments');
 const scan = { root: attachmentsRoot, relativePath: 'email_512_SI.pdf' };
@@ -38,6 +38,7 @@ describe('OCR recovery facts', () => {
     expect(result.before.text).toBe('');
     expect(result.profile).toMatchObject({ parser_readable: false, parser_status: 'OCR_REQUIRED', pages_needing_ocr: [1], ocr_attempted: true, ocr_ok: true, reader_profile: 'ocr_recovered' });
     expect(result.ocr?.ok && result.ocr.input.sha256).toBe(baseline.sha256);
+    expect(readingFromRecovery(result)).toMatchObject({ status: 'READABLE', text: 'Shipping Instructions', sha256: baseline.sha256 });
     expect(snapshot).not.toBe(resolve(scan.root, scan.relativePath));
     await expect(readFile(snapshot)).rejects.toThrow();
   });

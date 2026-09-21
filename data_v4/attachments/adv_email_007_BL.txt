@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 42502045
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: INTERNATIONAL FOREST PRODUCTS LLC
+Notify: INTERNATIONAL FOREST PRODUCTS LLC
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: BALTIMORE, US (USBAL)
+Total Containers: 3 x 40'HC
+Total Gross Wt (KGS): ７１６４６ ＫＧ
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: 42502045
+Freight: PREPAID

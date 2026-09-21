@@ -1,11 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { acceptFormattingVerdict, isFormattingOnlyDifference, isPartyWithOmittedAddress, normaliseFieldValue } from "./value-comparison.js";
+import { acceptFormattingVerdict, isConfidentSemanticDifference, isFormattingOnlyDifference, isPartyWithOmittedAddress, normaliseFieldValue, semanticVerdictFromSameProbability, weightValueWithSourceUnit } from "./value-comparison.js";
 
 describe("field value comparison policy", () => {
   it("normalizes exact numeric fields without semantic comparison", () => {
     expect(normaliseFieldValue("gross_weight_kg", "243,588 KG")).toBe("243588");
+    expect(normaliseFieldValue("gross_weight_kg", "(KGS): 143,940 KG")).toBe("143940");
     expect(normaliseFieldValue("container_count", "12 x 20'FCL")).toBe("12");
     expect(isFormattingOnlyDifference("gross_weight_kg", "243588", "243,588")).toBe(false);
+  });
+
+  it("supplies kilograms only when the source label explicitly names the unit", () => {
+    expect(weightValueWithSourceUnit("341715", "GROSS WEIGHT (KG)")).toBe("341715 KG");
+    expect(normaliseFieldValue("gross_weight_kg", weightValueWithSourceUnit("341715", "GROSS WEIGHT (KG)"))).toBe("341715");
+    expect(weightValueWithSourceUnit("341715", "Invoice total")).toBe("341715");
   });
 
   it("allows only whitespace, line-break, punctuation and symbol presentation differences", () => {
@@ -30,6 +37,17 @@ describe("field value comparison policy", () => {
     expect(acceptFormattingVerdict("consignee", si, bl, { equivalent: false, confidence: 1 })).toBe(false);
   });
 
+  it("uses separate confidence boundaries for same and different verdicts", () => {
+    const same = semanticVerdictFromSameProbability(0.9);
+    const different = semanticVerdictFromSameProbability(0.14);
+    const uncertain = semanticVerdictFromSameProbability(0.16);
+    expect(same).toEqual({ equivalent: true, confidence: 0.9 });
+    expect(acceptFormattingVerdict("consignee", "ACME, LTD", "ACME LTD", same)).toBe(true);
+    expect(different).toEqual({ equivalent: false, confidence: 0.86 });
+    expect(isConfidentSemanticDifference(different)).toBe(true);
+    expect(isConfidentSemanticDifference(uncertain)).toBe(false);
+  });
+
   it("rejects omitted postal address even with a confident model verdict", () => {
     const company = "APRIL FAR EAST (M) SDN BHD";
     const companyWithAddress = "APRIL FAR EAST (M) SDN BHD\nTOWER 2, AVENUE 5, LEVEL 6\n59200 KUALA LUMPUR, MALAYSIA";
@@ -46,11 +64,34 @@ describe("untrusted numeric and text values", () => {
   it("preserves units and rejects ambiguous numeric fragments", () => {
     expect(normaliseFieldValue("gross_weight_kg", "100 KG")).not.toBe(normaliseFieldValue("gross_weight_kg", "100 MT"));
     expect(normaliseFieldValue("gross_weight_kg", "1 MT")).toBe(normaliseFieldValue("gross_weight_kg", "1,000 KG"));
-    for (const value of ["100", "100 LB", "100 KG / 200 KG", "TBA"]) expect(normaliseFieldValue("gross_weight_kg", value)).toBeNull();
+    expect(normaliseFieldValue("gross_weight_kg", "100")).toBeNull();
+    for (const value of ["100 LB", "100 KG / 200 KG", "TBA"]) expect(normaliseFieldValue("gross_weight_kg", value)).toBeNull();
     for (const value of ["abc 2", "2 or 3", "0", "1.5"]) expect(normaliseFieldValue("container_count", value)).toBeNull();
   });
   it("does not erase non-Latin company names or accept invalid confidence", () => {
     expect(normaliseFieldValue("shipper", "中远")).not.toBe(normaliseFieldValue("shipper", "中海"));
     for (const confidence of [NaN, Infinity, 1.1, -1]) expect(acceptFormattingVerdict("shipper", "ACME, LTD", "ACME LTD", { equivalent: true, confidence })).toBe(false);
   });
+});
+
+it('never guesses kilograms when source has no unit', () => {
+  expect(normaliseFieldValue('gross_weight_kg', '100')).toBeNull();
+});
+
+it('normalizes fullwidth weights and explicit metric tonnes', () => {
+  expect(normaliseFieldValue('gross_weight_kg', '６３，７９２ KG')).toBe('63792');
+  expect(normaliseFieldValue('gross_weight_kg', '63.792 METRIC TONNES')).toBe('63792');
+  expect(normaliseFieldValue('gross_weight_kg', '63.792 TONS')).toBeNull();
+});
+it('reads written container counts only when words agree with digits', () => {
+  expect(normaliseFieldValue('container_count', "TWO (2) CONTAINERS - 40'HC")).toBe('2');
+  expect(normaliseFieldValue('container_count', "THREE (3) CONTAINERS - 20'FCL")).toBe('3');
+  expect(normaliseFieldValue('container_count', "TWO (3) CONTAINERS - 40'HC")).toBeNull();
+});
+
+it('resolves complete port names using the competition port policy', () => {
+  expect(normaliseFieldValue('port_of_loading', 'NHAVA SHEVA, INDIA')).toBe(normaliseFieldValue('port_of_loading', 'INNSA'));
+  expect(normaliseFieldValue('port_of_discharge', 'KLAIPEDA, LITHUANIA')).toBe(normaliseFieldValue('port_of_discharge', 'LTKLJ'));
+  expect(normaliseFieldValue('port_of_loading', 'BUATAN, INDONESIA')).toBe(normaliseFieldValue('port_of_loading', 'IDBUA'));
+  expect(normaliseFieldValue('port_of_loading', 'RUGAO/NANTONG/SHANGHAI, CHINA')).toBe(normaliseFieldValue('port_of_loading', 'CNSHA'));
 });

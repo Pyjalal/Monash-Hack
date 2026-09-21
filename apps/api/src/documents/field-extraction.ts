@@ -20,7 +20,7 @@ export interface FormatAssessment {
 
 export interface FallbackSelection {
   detectedRole: DocumentRole | "other";
-  fields: Partial<Record<FieldName, { candidateId: string; confidence: number | null }>>;
+  fields: Partial<Record<FieldName, { candidateId?: string; value?: string; confidence: number | null }>>;
 }
 
 export interface FallbackRequest {
@@ -51,7 +51,7 @@ const LABEL_ALIASES: Record<FieldName, readonly string[]> = {
   port_of_loading: ["port of loading", "port of loading pol", "pol", "load port"],
   port_of_discharge: ["port of discharge", "port of discharge pod", "discharge port", "pod"],
   container_count: ["no of containers", "no of containers or packages", "container count", "total containers"],
-  gross_weight_kg: ["gross weight", "gross weight kg", "gross weight kgs", "gross wt kgs", "gross weight 毛重 kgs", "total gross weight kg", "total gross weight kgs", "total gross weight nn", "total gross wt kgs"],
+  gross_weight_kg: ["gross weight", "gross weight kg", "gross weight kgs", "gross wt kgs", "gross weight 毛重 kgs", "total gross weight", "total gross weight kg", "total gross weight kgs", "total gross weight nn", "total gross wt kgs"],
 };
 
 const aliasIndex = new Map<string, FieldName>(Object.entries(LABEL_ALIASES).flatMap(([field, aliases]) =>
@@ -78,7 +78,7 @@ export function detectedRole(text: string): FormatAssessment["detectedRole"] {
 }
 
 function plausibleValue(field: FieldName, value: string): boolean {
-  const compact = value.replace(/\s+/gu, " ").trim();
+  const compact = value.normalize("NFKC").replace(/\s+/gu, " ").trim();
   if (!compact) return false;
   if (/^(?:\?+|_+|[-–—]+|TBA|TBD|N\s*\/\s*A|PENDING|NOT\s+AVAILABLE)(?:\s*(?:KG|KGS|MT|MTS))?$/iu.test(compact)) return false;
   if (field === "container_count") return /\d/u.test(compact);
@@ -174,9 +174,26 @@ export async function extractDocumentFields(
   const fields: Partial<Record<FieldName, ExtractedDocumentField>> = { ...nativeFields };
   for (const field of requestedFields) {
     const selected = selection.fields[field];
-    const candidate = selected ? available.get(selected.candidateId) : undefined;
-    if (!selected || !candidate || selected.confidence === null || !Number.isFinite(selected.confidence) || selected.confidence > 1 || selected.confidence < minimumConfidence || !plausibleValue(field, candidate.value)) continue;
-    fields[field] = { value: candidate.value, candidateId: candidate.id, confidence: selected.confidence, method: "llm_fallback" };
+    if (!selected || selected.confidence === null || !Number.isFinite(selected.confidence) || selected.confidence > 1 || selected.confidence < minimumConfidence) continue;
+
+    let value: string | undefined;
+    let candidateId: string | undefined;
+
+    if (selected.candidateId && available.has(selected.candidateId)) {
+      const candidate = available.get(selected.candidateId)!;
+      value = candidate.value;
+      candidateId = candidate.id;
+    } else if (typeof selected.value === "string" && selected.value.trim()) {
+      const trimmed = selected.value.trim();
+      const matching = candidates.filter(c => c.value === trimmed);
+      if (matching.length === 1) {
+        value = matching[0].value;
+        candidateId = matching[0].id;
+      }
+    }
+
+    if (!value || !candidateId || !plausibleValue(field, value)) continue;
+    fields[field] = { value, candidateId, confidence: selected.confidence, method: "llm_fallback" };
   }
   const unresolvedFields = FIELD_NAMES.filter(field => !fields[field]);
   return {

@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIJ6852068
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: HABRAS INTERNATIONAL LIMITED
+Notify: HABRAS INTERNATIONAL LIMITED
+Load Port: PORT KLANG (WESTPORT), MALAYSIA (MYPKG)
+Discharge Port: HOUSTON, US (NGAPP)
+Total Containers: 10 x 20'GP
+Total Gross Wt (KGS): 213,790 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: SIJ6852068
+Freight: PREPAID

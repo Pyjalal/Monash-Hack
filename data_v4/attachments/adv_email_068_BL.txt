@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942580645
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: CERIEX
+Notify: CERIEX
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: HOUSTON, US (JOAQB)
+Total Containers: 10 x 20'FCL
+Total Gross Wt (KGS): 234,100 KG
+Vessel: MMSS 2507 V.257087E
+Booking No.: MSDUL0942580645
+Freight: PREPAID

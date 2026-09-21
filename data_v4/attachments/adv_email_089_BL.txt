@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942565216
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: EAST BRIGHT FZ-LLC
+Notify: EAST BRIGHT FZ-LLC
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: KOPER, SLOVENIA (SIKOP)
+Total Containers: 4 x 20'GP
+Total Gross Wt (KGS): 93,612 KG
+Vessel: VISION 202 V.002
+Booking No.: MSDUL0942565216
+Freight: PREPAID

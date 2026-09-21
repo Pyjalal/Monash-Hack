@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / I479618042
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: VITAL SOLUTIONS PTE. LTD.
+Notify: VITAL SOLUTIONS PTE. LTD.
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: SAVANNAH, US (USSAV)
+Total Containers: 6 x 40'HC
+Total Gross Wt (KGS): 140,306 KG
+Vessel: MMSS 2507 V.257087E
+Booking No.: I479618042
+Freight: PREPAID

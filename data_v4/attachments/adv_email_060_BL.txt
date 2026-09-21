@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 78438171
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: ROXCEL TRADING GMBH
+Notify: ROXCEL TRADING GMBH
+Load Port: SINGAPORE, SINGAPORE (IDBUA)
+Discharge Port: AQABA, JORDAN (JOAQB)
+Total Containers: 4 x 20'FCL
+Total Gross Wt (KGS): 94,144 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: 78438171
+Freight: PREPAID

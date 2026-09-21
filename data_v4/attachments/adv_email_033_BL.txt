@@ -1,0 +1,20 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN704303765
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: EAST BRIGHT FZ-LLC
+Notify: EAST BRIGHT FZ-LLC
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: AQABA, JORDAN (JOAQB)
+Total Containers: 2 x 20'FCL
+Total Gross Wt (KGS): 45,306 KG
+Vessel: NAP 914 V.BS007
+Booking No.: SIN704303765
+Freight: PREPAID
+
+--- AMENDMENT HISTORY (SUPERSEDED - DO NOT USE) ---
+Old consignee before customer correction: ORIENT LINKS CO (LLC)
+Old discharge port before amendment: HOCHIMINH CITY, VIETNAM
+Old gross weight before final VGM: 44,306 KG
+--- END SUPERSEDED HISTORY ---

@@ -13,7 +13,8 @@ import { GmailAuthorizationError } from './oauth.js';
 import { composeDraft } from '../drafts.js';
 import { compareDocuments } from '../documents/comparison.js';
 
-export interface GmailAutomationOptions { store: Store; service: ClassificationService; client: GmailClient; attachmentRoot: string; enabled: boolean; documentationContact?: string; automaticComparison?: boolean }
+type DocumentComparator = (record: CaseRecord, root: string) => Promise<{ decision: OperationalDecision; evidence: unknown }>;
+export interface GmailAutomationOptions { store: Store; service: ClassificationService; client: GmailClient; attachmentRoot: string; enabled: boolean; documentationContact?: string; automaticComparison?: boolean; compareDocuments?: DocumentComparator }
 export interface GmailSyncResult { processed: number; skipped: number; errors: { threadId: string; code: string }[]; nextPageToken?: string }
 interface Snapshot { sourceVersion: string; latest: DecodedGmailMessage; retrievalComplete: boolean }
 interface RetainedGoal { requestedAction: OperationalDecision['requestedAction']; documentExpectation: OperationalDecision['documentExpectation']; active?: boolean }
@@ -120,9 +121,11 @@ export class GmailAutomation {
     }
     if (current.decision?.category !== 'BL_COMPARISON') return true;
     if (current.decision.nextAction === 'FETCH_THREAD') {
-      if (attachments.length) {
+      const inlineBodyAvailable = current.classification?.bodyDocument === 'HAS_SI_BL_CONTENT'
+        && (current.classification.bodyDocumentConfidence ?? 0) >= 0.8;
+      if (attachments.length || inlineBodyAvailable) {
         store.saveDecision(caseId, { ...current.decision, decisionVersion: current.decision.decisionVersion + 1, verificationState: 'IN_PROGRESS', workflowState: 'PROCESSING', nextAction: 'RECOVER_FIELDS' });
-        store.emit('evidence.ready', caseId, { sourceVersion: current.sourceVersion, attachments: attachments.length, validatedPair: false, truncated: evidence.truncated });
+        store.emit('evidence.ready', caseId, { sourceVersion: current.sourceVersion, attachments: attachments.length, inlineBody: inlineBodyAvailable, validatedPair: false, truncated: evidence.truncated });
       } else if (!evidence.truncated) {
         const plan = planMissingEvidence({ requestedAction: current.decision.requestedAction, requester: current.email.from, documentationContact: this.options.documentationContact, missingRoles: ['SI', 'BL'], retrievalComplete: true });
         if (plan.replyType) {
@@ -138,7 +141,7 @@ export class GmailAutomation {
     if (this.options.automaticComparison && !evidence.truncated && ready.decision?.nextAction === 'RECOVER_FIELDS'
       && ready.decision.requestedAction === 'VERIFY_DOCUMENTS' && ready.decision.documentExpectation === 'EXPECTED_NOW'
       && !ready.decision.blockers.length) {
-      const comparison = await compareDocuments(ready, this.options.attachmentRoot);
+      const comparison = await (this.options.compareDocuments ?? compareDocuments)(ready, this.options.attachmentRoot);
       if (!store.saveDocumentComparison(caseId, comparison.decision, comparison.evidence)) throw new Error('Comparison source changed');
     }
     if (previous?.sourceVersion !== record.sourceVersion) store.emit('gmail.case.resumed', caseId, { sourceVersion: record.sourceVersion, sourceMessageId: latest.raw.id });

@@ -45,8 +45,29 @@ it('never treats two unknown numeric values as a match', async () => {
   expect((await extract(email, root, vi.fn(), vi.fn(), null)).review_reason).toBe('missing_value');
 });
 
-it('blocks an unresolved semantic difference instead of asserting a defect', async () => {
+it('asserts a defect when field comparison does not confirm equivalence', async () => {
   const { root, email } = await fixture(fields.replace('Shipper: Acme', 'Shipper: Other'));
   const result = await extract(email, root, vi.fn(), async () => ({}), null);
-  expect(result.review_reason).toBe('missing_value'); expect(result.defect_fields).toEqual([]);
+  expect(result.review_reason).toBeNull();
+  expect(result.defect_fields).toEqual(['shipper']);
+});
+
+it('escalates to missing_value when Jev identifies a field as an unconfirmed placeholder', async () => {
+  const { root, email } = await fixture(fields.replace('Consignee: Buyer', 'Consignee: TBC'));
+  const result = await extract(email, root, vi.fn(), async () => ({
+    consignee: { equivalent: false, confidence: 0.98, placeholder: true },
+  }), null);
+  expect(result.review_reason).toBe('missing_value');
+  expect(result.defect_fields).not.toContain('consignee');
+});
+
+it.each([
+  ['BUATAN, INDONESIA', 'IDBUA'],
+  ['RUGAO/NANTONG/SHANGHAI, CHINA', 'CNSHA'],
+])('uses the shared competition port rule for %s while preserving source text', async (si, bl) => {
+  const { root, email } = await fixture(fields.replace('North Port', bl));
+  await writeFile(join(root, 'misleading_BL.txt'), `SHIPPING INSTRUCTIONS\nShipment reference: SHIP-1000\n${fields.replace('North Port', si)}`);
+  const result = await extract(email, root, vi.fn(), async () => ({}), null);
+  expect(result.defect_fields).toEqual([]);
+  expect(result.comparison?.port_of_loading.si).toBe(si);
 });

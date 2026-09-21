@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 070500229696
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: AL GURG STATIONERY LLC
+Notify: VITAL SOLUTIONS PTE. LTD.
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: MERSIN, TURKEY (TRMER)
+Total Containers: 5 x 40'HC
+Total Gross Wt (KGS): 117,645 KG
+Vessel: NAP 914 V.BS007
+Booking No.: 070500229696
+Freight: PREPAID

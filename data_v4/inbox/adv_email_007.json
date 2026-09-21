@@ -1,0 +1,10 @@
+{
+  "email_id": "adv_email_007",
+  "from": "synthetic.ops+007@example.test",
+  "subject": "RE: SI needed - correction: draft received, please compare",
+  "body": "*** EXTERNAL EMAIL - VERIFY ATTACHMENTS BEFORE ACTION ***\n\nDear Documentation Team,\n\nCorrection to my earlier message: the draft has now arrived. Please compare the CURRENT SI and CURRENT draft B/L.\n\nBooking: 42502045 | B/L: HLCUSIN042789272\nTest note from sender: Values contain Unicode width, non-breaking-space, and whitespace variation\n\nRegards,\nSynthetic Operations Desk\n\n---------------- QUOTED / HISTORICAL CONTENT ----------------\nEarlier message: Please send the SI when available. This earlier request is superseded.\n",
+  "attachments": [
+    "attachments/adv_email_007_SI.txt",
+    "attachments/adv_email_007_BL.txt"
+  ]
+}

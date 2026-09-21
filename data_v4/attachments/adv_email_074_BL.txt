@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / I450317751
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: CERIEX
+Notify: NAGAPPA EXPORTS
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: PYEONGTAEK, SOUTH KOREA (KRPTK)
+Total Containers: 2 x 20'FCL
+Total Gross Wt (KGS): 21,513 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: I450317751
+Freight: PREPAID

@@ -354,7 +354,8 @@ export function CaseView({
               )}
               {d &&
                 d.verificationState !== "COMPLETE" &&
-                record.email.attachments.length > 0 && (
+                (record.email.attachments.length > 0 ||
+                  record.classification?.bodyDocument === "HAS_SI_BL_CONTENT") && (
                   <Button
                     variant="ghost"
                     disabled={disabled}
@@ -389,6 +390,12 @@ export function CaseView({
             <dd>{d ? human(d.requestedAction) : "Pending"}</dd>
             <dt>Document expectation</dt>
             <dd>{d ? human(d.documentExpectation) : "Pending"}</dd>
+            <dt>Timing classification</dt>
+            <dd>{record.classification?.expectation ? human(record.classification.expectation) : "Pending"}</dd>
+            <dt>Document issue</dt>
+            <dd>{record.classification?.documentIssue ? human(record.classification.documentIssue) : "Pending"}</dd>
+            <dt>SI/BL content in email body</dt>
+            <dd>{record.classification?.bodyDocument ? human(record.classification.bodyDocument) : "Pending"}</dd>
             <dt>Responsibility</dt>
             <dd>
               {d?.requestedAction === "REQUEST_DRAFT"

@@ -4,6 +4,10 @@ export const CategorySchema = z.enum(['BL_COMPARISON', 'SI_REQUEST', 'INVOICE_QU
 export type Category = z.infer<typeof CategorySchema>;
 export const ExpectationSchema = z.enum(['FUTURE_DRAFT', 'VERIFY_NOW', 'REPORTS_MISSING', 'UNCLEAR']);
 export type Expectation = z.infer<typeof ExpectationSchema>;
+export const DocumentIssueSchema = z.enum(['NONE', 'REPORTS_MISSING', 'WRONG_DOCS', 'UNCLEAR']);
+export type DocumentIssue = z.infer<typeof DocumentIssueSchema>;
+export const BodyDocumentSchema = z.enum(['HAS_SI_BL_CONTENT', 'NO_SI_BL_CONTENT', 'UNCLEAR']);
+export type BodyDocument = z.infer<typeof BodyDocumentSchema>;
 export const AttachmentSchema = z.object({
   id: z.string().min(1).max(512), mimeType: z.string().max(200),
   relativePath: z.string().max(1024).optional(), name: z.string().max(512).optional(),
@@ -28,6 +32,8 @@ export type Usage = z.infer<typeof UsageSchema>;
 export const ClassificationSchema = z.object({
   id: z.string(), category: CategorySchema, confidence: probability, probabilities: z.record(probability),
   urgency: UrgencySchema.nullable(), expectation: ExpectationSchema.nullable(), expectationConfidence: probability.nullable(),
+  documentIssue: DocumentIssueSchema.nullable().optional(), documentIssueConfidence: probability.nullable().optional(),
+  bodyDocument: BodyDocumentSchema.nullable().optional(), bodyDocumentConfidence: probability.nullable().optional(),
   model: z.string().min(1), usage: UsageSchema.nullable(), usageRequestId: z.string().optional(), elapsedMs: z.number().finite().nonnegative(),
   questionVersion: z.string().min(1), cached: z.boolean(), raw: z.unknown().optional(),
 });

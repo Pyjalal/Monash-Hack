@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2547103
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: VITAL SOLUTIONS PTE. LTD.
+Notify: ROXCEL TRADING GMBH
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: KOPER, SLOVENIA (SIKOP)
+Total Containers: 1 x 40'HC
+Total Gross Wt (KGS): 20,520 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: MCLSINJEA2547103
+Freight: PREPAID

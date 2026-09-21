@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942538303
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: TOAN LUC PAPER JOINT STOCK COMPANY
+Notify: TOAN LUC PAPER JOINT STOCK COMPANY
+Load Port: SINGAPORE, SINGAPORE (INNSA)
+Discharge Port: AQABA, JORDAN (JOAQB)
+Total Containers: 4 x 40'HC
+Total Gross Wt (KGS): 95,528 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: MSDUL0942538303
+Freight: PREPAID

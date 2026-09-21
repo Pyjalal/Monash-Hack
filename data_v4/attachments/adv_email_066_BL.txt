@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / ONEYSINF48186
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: ROXCEL TRADING GMBH
+Notify: NAGAPPA EXPORTS
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: KOPER, SLOVENIA (LTKLJ)
+Total Containers: 1 x 20'GP
+Total Gross Wt (KGS): 23,098 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: ONEYSINF48186
+Freight: PREPAID

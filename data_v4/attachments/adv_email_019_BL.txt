@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN219085286
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: ORIENT LINKS CO (LLC)
+Notify: 3S PAPER PRODUCTS SDN BHD
+Load Port: IDBUA
+Discharge Port: CLVAP
+Total Containers: 15 x 20'FCL
+Total Gross Wt (KGS): 334,920 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: SIN219085286
+Freight: PREPAID

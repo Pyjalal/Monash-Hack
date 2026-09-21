@@ -1,0 +1,10 @@
+{
+  "email_id": "adv_email_012",
+  "from": "synthetic.ops+012@example.test",
+  "subject": "RE: SI needed - correction: draft received, please compare",
+  "body": "*** EXTERNAL EMAIL - VERIFY ATTACHMENTS BEFORE ACTION ***\n\nDear Documentation Team,\n\nCorrection to my earlier message: the draft has now arrived. Please compare the CURRENT SI and CURRENT draft B/L.\n\nBooking: MSDUL0942567463 | B/L: MEDUUD729306\nTest note from sender: The same gross weight is expressed in kilograms and metric tonnes\n\nRegards,\nSynthetic Operations Desk\n\n---------------- QUOTED / HISTORICAL CONTENT ----------------\nEarlier message: Please send the SI when available. This earlier request is superseded.\n",
+  "attachments": [
+    "attachments/adv_email_012_SI.txt",
+    "attachments/adv_email_012_BL.txt"
+  ]
+}

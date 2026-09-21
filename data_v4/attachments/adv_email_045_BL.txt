@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 94417205
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: INTERNATIONAL FOREST PRODUCTS LLC
+Notify: INTERNATIONAL FOREST PRODUCTS LLC
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: VALPARAISO, CHILE (CLVAP)
+Total Containers: 1 x 40'HC
+Total Gross Wt (KGS): 21,096 KG
+Vessel: PACIFIC SUN 1 V.251073E
+Booking No.: 94417205
+Freight: PREPAID

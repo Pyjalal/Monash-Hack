@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN990151498
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: MOORIM SP CO., LTD
+Notify: MOORIM SP CO., LTD
+Load Port: NANTONG, CHINA (IDBUA)
+Discharge Port: HOUSTON, US (USHOU)
+Total Containers: 15 x 20'GP
+Total Gross Wt (KGS): 344,520 KG
+Vessel: NAP 914 V.BS007
+Booking No.: SIN990151498
+Freight: PREPAID

@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN073064417
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: MOORIM SP CO., LTD
+Notify: NAGAPPA EXPORTS
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: BALTIMORE, US (USBAL)
+Total Containers: 2 x 20'GP
+Total Gross Wt (KGS): 42,446 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: SIN073064417
+Freight: PREPAID
