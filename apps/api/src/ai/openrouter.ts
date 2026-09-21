@@ -2,7 +2,7 @@ import type { Questions } from "@typesafe-ai/sdk";
 import type { Email, Usage } from "@cargolens/shared";
 import { buildClassificationState, buildQuestions, questionVersion, type ClassificationMode, type PromptVariant } from "@cargolens/shared/questions";
 import { InvalidJevResponseError, parseClassification, type Classifier } from "./classify.js";
-import type { BatchClassificationResult } from "./jev-batch.js";
+import { assertPackedBatch, assertPackedContextBudget, packBatchQuestions, packedAnswers, type BatchClassificationResult } from "./jev-batch.js";
 
 const decisionsUrl = "https://openrouter.ai/api/alpha/decisions";
 
@@ -93,24 +93,16 @@ export function createOpenRouterJevBatchProvider(options: OpenRouterJevOptions) 
   const questions = buildQuestions(variant, mode); const version = `${questionVersion(variant, mode)}:packed-v1`;
   const totalTimeoutMs = options.totalTimeoutMs ?? 20_000; const client = createOpenRouterDecisionClient(options);
   return { async classifyBatch(emails: Email[]): Promise<BatchClassificationResult> {
-    if (emails.length < 1 || emails.length > 8 || new Set(emails.map(email => email.id)).size !== emails.length)
-      throw new RangeError("A packed batch must contain 1 to 8 emails with unique IDs");
-    const packedQuestions: Questions = {};
-    emails.forEach((_email, index) => Object.entries(questions).forEach(([key, question]) => {
-      const instructions = String(question.instructions).replaceAll("`email.", `\`emails[${index}].`);
-      packedQuestions[`e${index}_${key}`] = { ...question, instructions: `Evaluate ONLY the message at \`emails[${index}]\`. Ignore every other message in this request. ${instructions}` };
-    }));
+    assertPackedBatch(emails);
+    const packedQuestions = packBatchQuestions(questions, emails);
     const state = { emails: emails.map(email => buildClassificationState(email).email) };
-    const stateBytes = Buffer.byteLength(JSON.stringify(state), "utf8");
-    const longestQuestionBytes = Math.max(...Object.values(packedQuestions).map(question => Buffer.byteLength(JSON.stringify(question), "utf8")));
-    if (stateBytes + longestQuestionBytes > 28_000 || stateBytes + Buffer.byteLength(JSON.stringify(packedQuestions), "utf8") > 56_000)
-      throw new RangeError("Packed request exceeds conservative context budget; split into smaller batches");
+    assertPackedContextBudget(state, packedQuestions);
     const started = performance.now(); const raw = await client.systemOne({ state, questions: packedQuestions }, { signal: AbortSignal.timeout(totalTimeoutMs) });
-    const response = raw as { answers?: unknown; model?: unknown }; const answers = response.answers;
-    if (!answers || typeof answers !== "object" || Array.isArray(answers) || Object.keys(answers).length !== Object.keys(packedQuestions).length || Object.keys(packedQuestions).some(key => !Object.hasOwn(answers, key))) throw new InvalidJevResponseError("packed.answers");
+    const response = raw as { answers?: unknown; model?: unknown };
+    const answers = packedAnswers(response.answers, packedQuestions);
     let usage: Usage | undefined;
     const classifications = emails.map((email, index) => {
-      const selected = Object.fromEntries(Object.keys(questions).map(key => [key, (answers as Record<string, unknown>)[`e${index}_${key}`]]));
+      const selected = Object.fromEntries(Object.keys(questions).map(key => [key, answers[`e${index}_${key}`]]));
       const classification = parseClassification({ ...response, answers: selected }, email, { questions, mode, elapsedMs: performance.now() - started, questionVersion: version });
       usage = classification.usage; const { usage: ignored, raw: ignoredRaw, ...result } = classification; void ignored; void ignoredRaw; return result;
     });
