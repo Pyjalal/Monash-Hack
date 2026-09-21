@@ -56,8 +56,11 @@ describe("independent question variants", () => {
 
   it("states the BL premise in the expectation question and versions variants", () => {
     const questions = buildQuestions("boundaries", "full");
-    expect(Object.keys(questions)).toEqual(["intent", "urgency", "expectation"]);
+    expect(Object.keys(questions)).toEqual(["intent", "urgency", "expectation", "document_issue", "body_document"]);
     expect(JSON.stringify(questions.expectation.instructions)).toMatch(/bill of lading/i);
+    expect(JSON.stringify(questions.expectation.criteria)).not.toContain("REPORTS_MISSING");
+    expect(JSON.stringify(questions.document_issue.criteria)).toContain("WRONG_DOCS");
+    expect(JSON.stringify(questions.body_document.instructions)).toMatch(/seven target fields/i);
     expect(questionVersion("concise", "full")).not.toBe(questionVersion("boundaries", "full"));
     expect(questionVersion("concise", "full")).not.toBe(questionVersion("concise", "intent-only"));
   });

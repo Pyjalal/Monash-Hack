@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942596560
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: NAGAPPA EXPORTS
+Notify: NAGAPPA EXPORTS
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: CONAKRY, GUINEA (GNCKY)
+Total Containers: 4 x 40'HC
+Total Gross Wt (KGS): 82,856 KG
+Vessel: NAP 914 V.BS007
+Booking No.: MSDUL0942596560
+Freight: PREPAID

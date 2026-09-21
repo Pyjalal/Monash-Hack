@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN847732458
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: AL GURG STATIONERY LLC
+Notify: AL GURG STATIONERY LLC
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: KARACHI, PAKISTAN (PKKHI)
+Total Containers: 1 x 20'FCL
+Total Gross Wt (KGS): 23,337 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: SIN847732458
+Freight: PREPAID

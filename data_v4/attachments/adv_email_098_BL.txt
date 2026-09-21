@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 03584647
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: CLIFFORD PAPER INC
+Notify: CLIFFORD PAPER INC
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: APAPA, NIGERIA (NGAPP)
+Total Containers: 3 x 20'FCL
+Total Gross Wt (KGS): 71,427 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: 03584647
+Freight: PREPAID

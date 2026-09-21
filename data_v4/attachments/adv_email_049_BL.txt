@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE5639438
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: ORIENT LINKS CO (LLC)
+Notify: KTP CO., LTD
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: APAPA, NIGERIA (NGAPP)
+Total Containers: 1 x 40'HC
+Total Gross Wt (KGS): 20,792 KG
+Vessel: SOLID 16 V.044NW2
+Booking No.: PSGSE5639438
+Freight: PREPAID

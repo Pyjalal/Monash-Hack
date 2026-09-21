@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / ONEYSINF22387
+
+Shipper (发货人)： APRIL FINE PAPER TRADING
+Consignee (收货人)： PACIFIC OFFICE (M) SDN BHD
+Notify Party (通知方)： PACIFIC OFFICE (M) SDN BHD
+Port of Loading / 装货港： SINGAPORE (SGSIN)
+Port of Discharge / 卸货港： YANGON, MYANMAR (MMRGN)
+Container Count (箱数)： 15 x 20'GP
+Gross Weight 毛重 KGS： 356,415 KG
+Vessel: PACIFIC SUN 1 V.251073E
+Booking No.: ONEYSINF22387
+Freight: PREPAID

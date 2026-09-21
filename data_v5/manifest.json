@@ -1,0 +1,748 @@
+{
+  "schema_version": 1,
+  "name": "CargoLens real-world scenario dataset V5",
+  "seed": "deterministic-v5",
+  "count": 60,
+  "cases": [
+    {
+      "id": "v5_email_001",
+      "family": "match",
+      "formats": [
+        "txt",
+        "txt"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_002",
+      "family": "match",
+      "formats": [
+        "docx",
+        "xlsx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_003",
+      "family": "match",
+      "formats": [
+        "xlsx",
+        "docx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_004",
+      "family": "match",
+      "formats": [
+        "txt",
+        "txt"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_005",
+      "family": "match",
+      "formats": [
+        "docx",
+        "xlsx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_006",
+      "family": "match",
+      "formats": [
+        "xlsx",
+        "docx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_007",
+      "family": "match",
+      "formats": [
+        "txt",
+        "txt"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_008",
+      "family": "match",
+      "formats": [
+        "docx",
+        "xlsx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_009",
+      "family": "match",
+      "formats": [
+        "xlsx",
+        "docx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_010",
+      "family": "match",
+      "formats": [
+        "txt",
+        "txt"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_011",
+      "family": "match",
+      "formats": [
+        "docx",
+        "xlsx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_012",
+      "family": "match",
+      "formats": [
+        "xlsx",
+        "docx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_013",
+      "family": "mismatch",
+      "defect": "shipper",
+      "formats": [
+        "txt",
+        "docx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "shipper"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_014",
+      "family": "mismatch",
+      "defect": "consignee",
+      "formats": [
+        "xlsx",
+        "txt"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "consignee"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_015",
+      "family": "mismatch",
+      "defect": "notify_party",
+      "formats": [
+        "docx",
+        "xlsx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "notify_party"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_016",
+      "family": "mismatch",
+      "defect": "port_of_loading",
+      "formats": [
+        "txt",
+        "docx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_loading"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_017",
+      "family": "mismatch",
+      "defect": "port_of_discharge",
+      "formats": [
+        "xlsx",
+        "txt"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_discharge"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_018",
+      "family": "mismatch",
+      "defect": "container_count",
+      "formats": [
+        "docx",
+        "xlsx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "container_count"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_019",
+      "family": "mismatch",
+      "defect": "gross_weight_kg",
+      "formats": [
+        "txt",
+        "docx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "gross_weight_kg"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_020",
+      "family": "mismatch",
+      "defect": "shipper",
+      "formats": [
+        "xlsx",
+        "txt"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "shipper"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_021",
+      "family": "mismatch",
+      "defect": "consignee",
+      "formats": [
+        "docx",
+        "xlsx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "consignee"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_022",
+      "family": "mismatch",
+      "defect": "notify_party",
+      "formats": [
+        "txt",
+        "docx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "notify_party"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_023",
+      "family": "mismatch",
+      "defect": "port_of_loading",
+      "formats": [
+        "xlsx",
+        "txt"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_loading"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_024",
+      "family": "mismatch",
+      "defect": "port_of_discharge",
+      "formats": [
+        "docx",
+        "xlsx"
+      ],
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "MISMATCH",
+        "review_reason": null,
+        "defect_fields": [
+          "port_of_discharge"
+        ]
+      }
+    },
+    {
+      "id": "v5_email_025",
+      "family": "review",
+      "reason": "missing_attachment",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_026",
+      "family": "review",
+      "reason": "missing_attachment",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_attachment",
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_027",
+      "family": "review",
+      "reason": "wrong_doc_type",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_028",
+      "family": "review",
+      "reason": "wrong_doc_type",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "wrong_doc_type",
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_029",
+      "family": "review",
+      "reason": "unreadable",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable",
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_030",
+      "family": "review",
+      "reason": "unreadable",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "unreadable",
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_031",
+      "family": "review",
+      "reason": "missing_value",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_032",
+      "family": "review",
+      "reason": "missing_value",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "NEEDS_REVIEW",
+        "review_reason": "missing_value",
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_033",
+      "family": "future_draft",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_034",
+      "family": "future_draft",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_035",
+      "family": "future_draft",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_036",
+      "family": "future_draft",
+      "expected": {
+        "category": "BL_COMPARISON",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_037",
+      "family": "si_request",
+      "expected": {
+        "category": "SI_REQUEST",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_038",
+      "family": "si_request",
+      "expected": {
+        "category": "SI_REQUEST",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_039",
+      "family": "si_request",
+      "expected": {
+        "category": "SI_REQUEST",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_040",
+      "family": "si_request",
+      "expected": {
+        "category": "SI_REQUEST",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_041",
+      "family": "si_request",
+      "expected": {
+        "category": "SI_REQUEST",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_042",
+      "family": "si_request",
+      "expected": {
+        "category": "SI_REQUEST",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_043",
+      "family": "si_request",
+      "expected": {
+        "category": "SI_REQUEST",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_044",
+      "family": "si_request",
+      "expected": {
+        "category": "SI_REQUEST",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_045",
+      "family": "invoice",
+      "expected": {
+        "category": "INVOICE_QUERY",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_046",
+      "family": "invoice",
+      "expected": {
+        "category": "INVOICE_QUERY",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_047",
+      "family": "invoice",
+      "expected": {
+        "category": "INVOICE_QUERY",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_048",
+      "family": "invoice",
+      "expected": {
+        "category": "INVOICE_QUERY",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_049",
+      "family": "invoice",
+      "expected": {
+        "category": "INVOICE_QUERY",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_050",
+      "family": "invoice",
+      "expected": {
+        "category": "INVOICE_QUERY",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_051",
+      "family": "general",
+      "expected": {
+        "category": "GENERAL",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_052",
+      "family": "general",
+      "expected": {
+        "category": "GENERAL",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_053",
+      "family": "general",
+      "expected": {
+        "category": "GENERAL",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_054",
+      "family": "general",
+      "expected": {
+        "category": "GENERAL",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_055",
+      "family": "general",
+      "expected": {
+        "category": "GENERAL",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_056",
+      "family": "general",
+      "expected": {
+        "category": "GENERAL",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_057",
+      "family": "spam",
+      "expected": {
+        "category": "SPAM",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_058",
+      "family": "spam",
+      "expected": {
+        "category": "SPAM",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_059",
+      "family": "spam",
+      "expected": {
+        "category": "SPAM",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    },
+    {
+      "id": "v5_email_060",
+      "family": "spam",
+      "expected": {
+        "category": "SPAM",
+        "status": "OK",
+        "review_reason": null,
+        "defect_fields": []
+      }
+    }
+  ]
+}

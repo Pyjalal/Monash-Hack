@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE9985758
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: CLIFFORD PAPER INC
+Notify: KPP-ANTALIS (SINGAPORE) PTE. LTD.
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: CEBU, PHILIPPINES (PHCEB)
+Total Containers: 6 x 40'HC
+Total Gross Wt (KGS): 141,198 KG
+Vessel: VISION 202 V.002
+Booking No.: PSGSE9985758
+Freight: PREPAID

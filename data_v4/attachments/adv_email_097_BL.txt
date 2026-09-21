@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942518474
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: EAST BRIGHT FZ-LLC
+Notify: EAST BRIGHT FZ-LLC
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: LONG BEACH, US (USLGB)
+Total Containers: 6 x 20'FCL
+Total Gross Wt (KGS): 122,736 KG
+Vessel: MARCOPOLO 810 V.BS005
+Booking No.: MSDUL0942518474
+Freight: PREPAID

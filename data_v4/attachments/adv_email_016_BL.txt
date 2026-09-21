@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 64301273
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: TOPKOPY MIDDLE EAST FZE
+Notify: TOPKOPY MIDDLE EAST FZE
+Load Port: IDBUA
+Discharge Port: TRMER
+Total Containers: 3 x 40'HC
+Total Gross Wt (KGS): 71,550 KG
+Vessel: SOLID 16 V.044NW2
+Booking No.: 64301273
+Freight: PREPAID

@@ -19,16 +19,17 @@ let root: string;
 let store: Store;
 let confidence: number;
 let reference: string;
+let referenceLabel: string;
 let mismatch: boolean;
 let duplicate: boolean;
 beforeEach(async () => {
   root = await mkdtemp(join(tmpdir(), 'cargolens-comparison-')); store = new Store(':memory:');
-  confidence = 98; reference = 'SHIP-1234'; mismatch = false; duplicate = false;
+  confidence = 98; reference = 'SHIP-1234'; referenceLabel = 'Shipment reference'; mismatch = false; duplicate = false;
   await writeFile(join(root, 'a.png'), 'synthetic source SI');
   await writeFile(join(root, 'b.png'), 'synthetic source BL');
   vi.spyOn(sidecar, 'runOcrSidecar').mockImplementation(async ({ inputPath }) => {
     const bytes = await readFile(inputPath); const bl = bytes.toString().endsWith('BL');
-    const lines = [bl ? 'DRAFT BILL OF LADING' : 'SHIPPING INSTRUCTIONS', `Shipment reference: ${bl ? reference : 'SHIP-1234'}`, ...fields.map(line => bl && mismatch ? line.replace('12500', '12000') : line), ...(duplicate ? ['Shipper: Different Exporter'] : [])];
+    const lines = [bl ? 'DRAFT BILL OF LADING' : 'SHIPPING INSTRUCTIONS', `${referenceLabel}: ${bl ? reference : 'SHIP-1234'}`, ...fields.map(line => bl && mismatch ? line.replace('12500', '12000') : line), ...(duplicate ? ['Shipper: Different Exporter'] : [])];
     const words = lines.flatMap((line, y) => line.split(' ').map((text, x) => ({ text, confidence, bbox: { x: x * 100, y: y * 40, width: 90, height: 30 } })));
     return { ok: true, input: { path: inputPath, type: 'png', size_bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') },
       engine: { name: 'tesseract', executable: 'fixture' }, summary: { pages_processed: 1, pages_with_text: 1, unresolved_pages: [] },
@@ -51,6 +52,18 @@ it('compares seven recovered fields and revalidates OCR provenance before confir
   await expect(verifyOperationalEvidence(source, forged, root)).rejects.toThrow();
   await writeFile(join(root, 'a.png'), 'changed source');
   await expect(verifyOperationalEvidence(source, comparison.decision, root)).rejects.toThrow();
+});
+it('accepts Booking No. as a verified shipment-pair reference', async () => {
+  referenceLabel = 'Booking No.';
+  const { decision } = await compareDocuments(record(), root);
+  expect(decision.pairValidated).toBe(true);
+  expect(decision.nextAction).toBe('CONFIRM_MATCH');
+});
+it('accepts Booking Ref as a verified shipment-pair reference', async () => {
+  referenceLabel = 'Booking Ref';
+  const { decision } = await compareDocuments(record(), root);
+  expect(decision.pairValidated).toBe(true);
+  expect(decision.nextAction).toBe('CONFIRM_MATCH');
 });
 it('produces an evidence-backed amendment for a recovered mismatch and rejects forged MATCH', async () => {
   mismatch = true; const source = record(); const { decision } = await compareDocuments(source, root);

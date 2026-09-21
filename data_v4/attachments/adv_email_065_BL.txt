@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 070500255188
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: AL GURG STATIONERY LLC
+Notify: SAFQA LIMITED
+Load Port: NANTONG, CHINA (CNNTG)
+Discharge Port: HOUSTON, US (USLGB)
+Total Containers: 15 x 40'HC
+Total Gross Wt (KGS): 358,395 KG
+Vessel: SOLID 16 V.044NW2
+Booking No.: 070500255188
+Freight: PREPAID

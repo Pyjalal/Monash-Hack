@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE2365916
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: CLIFFORD PAPER INC
+Notify: CLIFFORD PAPER INC
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: CEBU, PHILIPPINES (PHCEB)
+Total Containers: 15 x 40'HC
+Total Gross Wt (KGS): 326,700 KG
+Vessel: VISION 202 V.002
+Booking No.: PSGSE2365916
+Freight: PREPAID

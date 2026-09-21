@@ -1,0 +1,20 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / I032621019
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: VITAL SOLUTIONS PTE. LTD.
+Notify: VITAL SOLUTIONS PTE. LTD.
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: KARACHI, PAKISTAN (PKKHI)
+Total Containers: 12 x 20'GP
+Total Gross Wt (KGS): 252,852 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: I032621019
+Freight: PREPAID
+
+--- AMENDMENT HISTORY (SUPERSEDED - DO NOT USE) ---
+Old consignee before customer correction: TOPKOPY MIDDLE EAST FZE
+Old discharge port before amendment: CEBU, PHILIPPINES
+Old gross weight before final VGM: 251,852 KG
+--- END SUPERSEDED HISTORY ---

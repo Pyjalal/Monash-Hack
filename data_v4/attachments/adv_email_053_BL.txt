@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2556173
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: KTP CO., LTD
+Notify: CERIEX
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: HOUSTON, US (USHOU)
+Total Containers: 3 x 40'HC
+Total Gross Wt (KGS): 70,701 KG
+Vessel: SOLID 16 V.044NW2
+Booking No.: MCLSINJEA2556173
+Freight: PREPAID

@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / ONEYSINF60609
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: CERIEX
+Notify: CERIEX
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: KARACHI, PAKISTAN (PKKHI)
+Total Containers: 2 x 20'FCL
+Total Gross Wt (KGS): 68,421 KG
+Vessel: SOLID 16 V.044NW2
+Booking No.: ONEYSINF60609
+Freight: PREPAID

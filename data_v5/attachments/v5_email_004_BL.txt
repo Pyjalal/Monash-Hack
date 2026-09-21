@@ -1,0 +1,11 @@
+DRAFT BILL OF LADING
+Booking Reference: V5BK10004
+Shipper: RIVERLAND EXPORTS PTE LTD.
+Consignee (Non-Negotiable): METRO PRINTING SOLUTIONS BV
+Notify Party: SAME AS CONSIGNEE
+POL: SURABAYA, INDONESIA
+Port of Discharge: NHAVA SHEVA, INDIA
+No. of Containers: 4 x 40' HC
+Gross Weight (KG): 19.625 MT
+Cargo Description: PRINTING PAPER IN REELS
+Freight Terms: PREPAID

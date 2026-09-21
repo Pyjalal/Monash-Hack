@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN137652835
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: AL GURG STATIONERY LLC
+Notify: AL GURG STATIONERY LLC
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: CALLAO, PERU (PECLL)
+Total Containers: 12 x 40'HC
+Total Gross Wt (KGS): 268,296 KG
+Vessel: MMSS 2507 V.257087E
+Booking No.: SIN137652835
+Freight: PREPAID

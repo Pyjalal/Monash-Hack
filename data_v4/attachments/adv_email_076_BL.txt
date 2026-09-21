@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / ONEYSINF68211
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: CLIFFORD PAPER INC
+Notify: CLIFFORD PAPER INC
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: APAPA, NIGERIA (NGAPP)
+Total Containers: 4 x 20'GP
+Total Gross Wt (KGS): 84,744 KG
+Vessel: PACIFIC SUN 1 V.251073E
+Booking No.: ONEYSINF68211
+Freight: PREPAID

@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 18878090
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: UAB NOVAKOPA
+Notify: KTP CO., LTD
+Load Port: CNSHA
+Discharge Port: PECLL
+Total Containers: 6 x 20'GP
+Total Gross Wt (KGS): 141,498 KG
+Vessel: VISION 202 V.002
+Booking No.: 18878090
+Freight: PREPAID

@@ -45,8 +45,9 @@ it('never treats two unknown numeric values as a match', async () => {
   expect((await extract(email, root, vi.fn(), vi.fn(), null)).review_reason).toBe('missing_value');
 });
 
-it('blocks an unresolved semantic difference instead of asserting a defect', async () => {
+it('asserts a defect when field comparison does not confirm equivalence', async () => {
   const { root, email } = await fixture(fields.replace('Shipper: Acme', 'Shipper: Other'));
   const result = await extract(email, root, vi.fn(), async () => ({}), null);
-  expect(result.review_reason).toBe('missing_value'); expect(result.defect_fields).toEqual([]);
+  expect(result.review_reason).toBeNull();
+  expect(result.defect_fields).toEqual(['shipper']);
 });

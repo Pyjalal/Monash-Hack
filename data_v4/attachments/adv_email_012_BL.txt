@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942567463
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: AL GURG STATIONERY LLC
+Notify: VITAL SOLUTIONS PTE. LTD.
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: YANGON, MYANMAR (MMRGN)
+Total Containers: 3 x 40'HC
+Total Gross Wt (KGS): 70.239 METRIC TONNES
+Vessel: VISION 202 V.002
+Booking No.: MSDUL0942567463
+Freight: PREPAID

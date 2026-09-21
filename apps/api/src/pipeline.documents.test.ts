@@ -15,6 +15,8 @@ it('classifies and compares source documents through one pipeline, preserving de
     await writeFile(join(root, 'c.txt'), `DRAFT BILL OF LADING\n${fields.replace('14000', '14500')}`);
     const classifier = vi.fn(async (email: Email): Promise<Classification> => ({ id: email.id, category: 'BL_COMPARISON', confidence: 1,
       probabilities: { BL_COMPARISON: 1 }, urgency: null, expectation: email.body === 'future' ? 'FUTURE_DRAFT' : 'VERIFY_NOW', expectationConfidence: 1,
+      documentIssue: email.body === 'wrong' ? 'WRONG_DOCS' : 'NONE', documentIssueConfidence: 1,
+      bodyDocument: email.subject === 'Inline pair' ? 'HAS_SI_BL_CONTENT' : 'NO_SI_BL_CONTENT', bodyDocumentConfidence: 1,
       model: 'fixture', questionVersion: 'v1', cached: false, elapsedMs: 1, usage: { input_tokens: 1, output_tokens: 1 } }));
     const service = new ClassificationService({ store, classifier, configurationKey: 'fixture:v1:packed-v1' });
     const email: Email = { id: 'match', from: 'ops@example.test', subject: 'Compare', body: 'match', contentScope: 'full_message', attachments: [
@@ -28,6 +30,16 @@ it('classifies and compares source documents through one pipeline, preserving de
     expect(store.getCase('mismatch')?.decision?.knownMismatches).toEqual(['gross_weight_kg']);
     await service.processCase({ ...email, id: 'missing', body: 'missing', attachments: [] }, root);
     expect(store.getCase('missing')?.decision?.blockers).toEqual(['MISSING_ATTACHMENT']);
+    const inlineBody = `SHIPPING INSTRUCTIONS
+${fields}
+
+DRAFT BILL OF LADING
+${fields}`;
+    await service.processCase({ ...email, id: 'inline', subject: 'Inline pair', body: inlineBody, attachments: [] }, root);
+    expect(store.getCase('inline')?.decision?.workflowState).toBe('VERIFIED');
+    expect(store.getDocumentComparison('inline')).not.toBeNull();
+    await service.processCase({ ...email, id: 'wrong', body: 'wrong' }, root);
+    expect(store.getCase('wrong')?.decision?.blockers).toEqual(['WRONG_DOC_TYPE']);
     await service.processCase({ ...email, id: 'future', body: 'future' }, root);
     expect(store.getCase('future')?.decision?.workflowState).toBe('AWAITING_DOCUMENTS');
     expect(store.getDocumentComparison('future')).toBeNull();

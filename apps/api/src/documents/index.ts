@@ -155,6 +155,12 @@ function textResult(sha256: string, text: string, options: CandidateOptions = {}
   return withCandidates({ sha256, text, spans, status: text.trim().length === 0 ? "EMPTY" : "READABLE" }, options);
 }
 
+/** Builds the same evidence contract for SI/BL values embedded in an email body. */
+export function readTextContent(text: string): AttachmentReadResult {
+  const bytes = Buffer.from(text, "utf8");
+  return textResult(digest(bytes), text);
+}
+
 async function readPdf(bytes: Buffer, sha256: string): Promise<AttachmentReadResult> {
   let document: {
     numPages: number;

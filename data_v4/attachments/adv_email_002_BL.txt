@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIJ2920285
+
+Shipper: Asia Pacific Paperboard Trading Pte Ltd
+To the Order of: Al Gurg Stationery Llc
+Notify: Al Gurg Stationery Llc
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: APAPA, NIGERIA (NGAPP)
+Total Containers: 15 x 20'GP
+Total Gross Wt (KGS): 346,350 KG
+Vessel: MMSS 2507 V.257087E
+Booking No.: SIJ2920285
+Freight: PREPAID

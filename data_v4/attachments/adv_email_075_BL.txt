@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2564414
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: UAB NOVAKOPA
+Notify: UAB NOVAKOPA
+Load Port: PORT KLANG (WESTPORT), MALAYSIA (MYPKG)
+Discharge Port: BRISBANE, AUSTRALIA (AUBNE)
+Total Containers: 5 x 20'FCL
+Total Gross Wt (KGS): 62,928 KG
+Vessel: NAP 914 V.BS007
+Booking No.: MCLSINJEA2564414
+Freight: PREPAID

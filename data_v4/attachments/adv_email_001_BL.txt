@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE5154169
+
+Shipper: Asia Pacific Paperboard Trading Pte Ltd
+To the Order of: Safqa Limited
+Notify: International Forest Products Llc
+Load Port: PORT KLANG (WESTPORT), MALAYSIA (MYPKG)
+Discharge Port: BUSAN, SOUTH KOREA (KRPUS)
+Total Containers: 4 x 20'FCL
+Total Gross Wt (KGS): 85,356 KG
+Vessel: SOLID 16 V.044NW2
+Booking No.: PSGSE5154169
+Freight: PREPAID

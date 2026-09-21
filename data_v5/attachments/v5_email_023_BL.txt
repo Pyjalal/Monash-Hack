@@ -1,0 +1,11 @@
+DRAFT BILL OF LADING
+Booking Reference: V5BK10023
+Shipper / Exporter: ASIA PACIFIC RESOURCES INTERNATIONAL
+Consignee: GLOBAL STATIONERY FZE
+Notify: SAME AS CONSIGNEE
+Port of Loading: MANILA, PHILIPPINES
+POD: JEBEL ALI, UAE
+Container Count: 1
+Total Gross Weight KGS: 29750
+Cargo Description: PRINTING PAPER IN REELS
+Freight Terms: PREPAID

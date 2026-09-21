@@ -100,7 +100,7 @@ solely because the benchmark labels it `OK`.
 
 ## Quick start
 
-For a complete teammate walkthrough, including PowerShell, OCR, the dashboard and a no-key synthetic demo, see [Setup and demo](docs/setup.md).
+For the current classification → extraction → comparison flow, browser launch steps, extension setup, LLM routing, examples and evaluation commands, see [Pipeline guide](PIPELINE_GUIDE.md). The longer teammate walkthrough, including OCR and a no-key synthetic demo, remains in [Setup and demo](docs/setup.md).
 
 ### Prerequisites
 

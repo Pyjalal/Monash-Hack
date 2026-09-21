@@ -1,0 +1,10 @@
+{
+  "email_id": "adv_email_013",
+  "from": "synthetic.ops+013@example.test",
+  "subject": "[EXTERNAL] URGENT release check / 请核对提单",
+  "body": "*** EXTERNAL EMAIL - VERIFY ATTACHMENTS BEFORE ACTION ***\n\nDear Documentation Team,\n\n请以本邮件最上方的要求为准. Please verify the attached current shipping instruction against the current draft bill of lading.\n\nBooking: I822099767 | B/L: YMJAI176694612\nTest note from sender: The same gross weight is expressed in kilograms and metric tonnes\n\nRegards,\nSynthetic Operations Desk\n\n---------------- QUOTED / HISTORICAL CONTENT ----------------\nAviso anterior: no comparar todavía. That older instruction is obsolete.\n",
+  "attachments": [
+    "attachments/adv_email_013_SI.txt",
+    "attachments/adv_email_013_BL.txt"
+  ]
+}

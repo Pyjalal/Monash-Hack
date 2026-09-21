@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / PSGSE4539904
+
+Shipper: APRIL FINE PAPER TRADING (MIDDLE EAST) FZE
+To the Order of: ROXCEL TRADING GMBH
+Notify: CLIFFORD PAPER INC
+Load Port: IDBUA
+Discharge Port: KRPUS
+Total Containers: 2 x 20'FCL
+Total Gross Wt (KGS): 45,200 KG
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: PSGSE4539904
+Freight: PREPAID

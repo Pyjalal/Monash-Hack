@@ -15,7 +15,11 @@ const valid = () => ({
       legend: Object.fromEntries(questions.urgency.criteria.map((level: unknown, index: number) => [String(index), level])),
       probabilities: { "0": 0, "1": 0, "2": 0.2, "3": 0.8 } },
     expectation: { type: "choice", choice: "VERIFY_NOW", confidence: 1,
-      probabilities: { FUTURE_DRAFT: 0, VERIFY_NOW: 1, REPORTS_MISSING: 0, UNCLEAR: 0 } },
+      probabilities: { FUTURE_DRAFT: 0, VERIFY_NOW: 1, UNCLEAR: 0 } },
+    document_issue: { type: "choice", choice: "NONE", confidence: 1,
+      probabilities: { NONE: 1, REPORTS_MISSING: 0, WRONG_DOCS: 0, UNCLEAR: 0 } },
+    body_document: { type: "choice", choice: "NO_SI_BL_CONTENT", confidence: 1,
+      probabilities: { HAS_SI_BL_CONTENT: 0, NO_SI_BL_CONTENT: 1, UNCLEAR: 0 } },
   },
 });
 
@@ -23,7 +27,8 @@ describe("Jev response validation", () => {
   it("returns typed classification with provider usage and original correlation ID", () => {
     const result = parseClassification(valid(), email, metadata);
     expect(result).toMatchObject({ id: "record-1", category: "BL_COMPARISON", urgency: { level: "blocking", score: 2.8 },
-      expectation: "VERIFY_NOW", model: "jev-1.13.0", usage: { input_tokens: 101, output_tokens: 30 }, elapsedMs: 123, cached: false });
+      expectation: "VERIFY_NOW", documentIssue: "NONE", bodyDocument: "NO_SI_BL_CONTENT",
+      model: "jev-1.13.0", usage: { input_tokens: 101, output_tokens: 30 }, elapsedMs: 123, cached: false });
   });
 
   it.each([

@@ -1,0 +1,11 @@
+DRAFT BILL OF LADING
+Booking Reference: V5BK10001
+Shipper / Exporter: APRIL FINE PAPER TRADING SDN BHD
+Consignee: PACIFIC PAPER MERCHANTS LLC
+Notify: SAME AS CONSIGNEE
+Port of Loading: PORT KLANG, MALAYSIA
+POD: JEBEL ALI, UAE
+Container Count: 1
+Total Gross Weight KGS: 18500
+Cargo Description: PRINTING PAPER IN REELS
+Freight Terms: PREPAID

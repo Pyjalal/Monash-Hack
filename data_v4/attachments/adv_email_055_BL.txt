@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2545753
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: BALL & DOGGETT AUSTRALIA PTY LTD
+Notify: INTERNATIONAL FOREST PRODUCTS LLC
+Load Port: RUGAO/NANTONG/SHANGHAI, CHINA (CNSHA)
+Discharge Port: MOMBASA, KENYA (KEMBA)
+Total Containers: 2 x 20'FCL
+Total Gross Wt (KGS): 40,900 KG
+Vessel: SOLID 16 V.044NW2
+Booking No.: MCLSINJEA2545753
+Freight: PREPAID

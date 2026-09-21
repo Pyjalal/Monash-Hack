@@ -120,9 +120,11 @@ export class GmailAutomation {
     }
     if (current.decision?.category !== 'BL_COMPARISON') return true;
     if (current.decision.nextAction === 'FETCH_THREAD') {
-      if (attachments.length) {
+      const inlineBodyAvailable = current.classification?.bodyDocument === 'HAS_SI_BL_CONTENT'
+        && (current.classification.bodyDocumentConfidence ?? 0) >= 0.8;
+      if (attachments.length || inlineBodyAvailable) {
         store.saveDecision(caseId, { ...current.decision, decisionVersion: current.decision.decisionVersion + 1, verificationState: 'IN_PROGRESS', workflowState: 'PROCESSING', nextAction: 'RECOVER_FIELDS' });
-        store.emit('evidence.ready', caseId, { sourceVersion: current.sourceVersion, attachments: attachments.length, validatedPair: false, truncated: evidence.truncated });
+        store.emit('evidence.ready', caseId, { sourceVersion: current.sourceVersion, attachments: attachments.length, inlineBody: inlineBodyAvailable, validatedPair: false, truncated: evidence.truncated });
       } else if (!evidence.truncated) {
         const plan = planMissingEvidence({ requestedAction: current.decision.requestedAction, requester: current.email.from, documentationContact: this.options.documentationContact, missingRoles: ['SI', 'BL'], retrievalComplete: true });
         if (plan.replyType) {

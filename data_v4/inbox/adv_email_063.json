@@ -1,0 +1,10 @@
+{
+  "email_id": "adv_email_063",
+  "from": "synthetic.ops+063@example.test",
+  "subject": "[EXTERNAL] URGENT release check / 请核对提单",
+  "body": "*** EXTERNAL EMAIL - VERIFY ATTACHMENTS BEFORE ACTION ***\n\nDear Documentation Team,\n\n请以本邮件最上方的要求为准. Please verify the attached current shipping instruction against the current draft bill of lading.\n\nBooking: SIN990151498 | B/L: SIN258597098\nTest note from sender: A plausible alternate load port is hidden among matching routing details\n\nRegards,\nSynthetic Operations Desk\n\n---------------- QUOTED / HISTORICAL CONTENT ----------------\nAviso anterior: no comparar todavía. That older instruction is obsolete.\n",
+  "attachments": [
+    "attachments/adv_email_063_SI.txt",
+    "attachments/adv_email_063_BL.txt"
+  ]
+}

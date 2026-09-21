@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIJ9316106
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: KTP CO., LTD
+Notify: KTP CO., LTD
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: TUTICORIN, INDIA (INTUT)
+Total Containers: 2 x 20'FCL
+Total Gross Wt (KGS): 40,722 KG
+Vessel: MMSS 2507 V.257087E
+Booking No.: SIJ9316106
+Freight: PREPAID

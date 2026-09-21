@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 070500231767
+
+Shipper: APRIL FINE PAPER TRADING
+To the Order of: 3S PAPER PRODUCTS SDN BHD
+Notify: 3S PAPER PRODUCTS SDN BHD
+Load Port: PORT KLANG (WESTPORT), MALAYSIA (MYPKG)
+Discharge Port: PYEONGTAEK, SOUTH KOREA (KRPTK)
+Total Containers: 14 x 20'GP
+Total Gross Wt (KGS): 250,596 KG
+Vessel: NAP 914 V.BS007
+Booking No.: 070500231767
+Freight: PREPAID

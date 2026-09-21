@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / I822099767
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: KTP CO., LTD
+Notify: UAB NOVAKOPA
+Load Port: PORT KLANG (WESTPORT), MALAYSIA (MYPKG)
+Discharge Port: GDANSK, POLAND (PLGDN)
+Total Containers: 10 x 20'FCL
+Total Gross Wt (KGS): 229.540 METRIC TONNES
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: I822099767
+Freight: PREPAID

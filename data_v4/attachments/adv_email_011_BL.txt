@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MSDUL0942503578
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: CLIFFORD PAPER INC
+Notify: CLIFFORD PAPER INC
+Load Port: BUATAN, INDONESIA (IDBUA)
+Discharge Port: MOMBASA, KENYA (KEMBA)
+Total Containers: 3 x 20'GP
+Total Gross Wt (KGS): 63.792 METRIC TONNES
+Vessel: INDO SUKSES 65 V.51NW1
+Booking No.: MSDUL0942503578
+Freight: PREPAID

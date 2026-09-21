@@ -1,0 +1,17 @@
+COMMERCIAL INVOICE
+========================================
+
+Invoice No.: 5250077649
+Invoice Date: 15-JAN-2026
+Seller: APRIL FAR EAST (M) SDN BHD
+Buyer: CLIFFORD PAPER INC
+Booking Ref: MCLSINJEA2580281
+
+Description                         Qty        Unit Price       Amount (USD)
+PAPERONE DIGITAL COPIER PAPE       200     45.00            9,000
+
+Total Amount: USD 9,000.00
+Payment Terms: 30 days from B/L date
+Incoterms: CFR
+
+*** THIS IS A COMMERCIAL INVOICE - NOT A SHIPPING INSTRUCTION ***

@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN738842520
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: CERIEX
+Notify: CERIEX
+Load Port: NANTONG, CHINA (CNNTG)
+Discharge Port: NEW YORK, US (USNYC)
+Total Containers: TWO (2) CONTAINERS - 20'FCL
+Total Gross Wt (KGS): 47,752 KG
+Vessel: NAP 914 V.BS007
+Booking No.: SIN738842520
+Freight: PREPAID

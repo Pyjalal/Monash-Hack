@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / 31796728
+
+Shipper: Asia Pacific Paperboard Trading Pte Ltd
+To the Order of: Vital Solutions Pte Ltd
+Notify: Vital Solutions Pte Ltd
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: PYEONGTAEK, SOUTH KOREA (KRPTK)
+Total Containers: 5 x 40'HC
+Total Gross Wt (KGS): 100,930 KG
+Vessel: NAP 914 V.BS007
+Booking No.: 31796728
+Freight: PREPAID

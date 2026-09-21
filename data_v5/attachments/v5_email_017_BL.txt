@@ -1,0 +1,11 @@
+DRAFT BILL OF LADING
+Booking Reference: V5BK10017
+Shipper / Exporter: APRIL FINE PAPER TRADING SDN BHD
+Consignee: PACIFIC PAPER MERCHANTS LLC
+Notify: SAME AS CONSIGNEE
+Port of Loading: LAEM CHABANG, THAILAND
+POD: HAMBURG, GERMANY
+Container Count: 5
+Total Gross Weight KGS: 27500
+Cargo Description: PRINTING PAPER IN REELS
+Freight Terms: PREPAID

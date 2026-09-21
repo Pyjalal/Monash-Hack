@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIN853253469
+
+Shipper (发货人)： ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+Consignee (收货人)： ORIENT LINKS CO (LLC)
+Notify Party (通知方)： ORIENT LINKS CO (LLC)
+Port of Loading / 装货港： NANTONG, CHINA (CNNTG)
+Port of Discharge / 卸货港： ASHDOD, ISRAEL (ILASH)
+Container Count (箱数)： 1 x 20'GP
+Gross Weight 毛重 KGS： 23,973 KG
+Vessel: VISION 202 V.002
+Booking No.: SIN853253469
+Freight: PREPAID

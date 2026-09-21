@@ -12,14 +12,16 @@ export type RequestUsage = { requestId: string; model: string; usage: Usage; ela
 export function initialDecision(classification: Classification, sourceVersion: string): OperationalDecision {
   const comparison = classification.category === 'BL_COMPARISON';
   const deferred = comparison && classification.expectation === 'FUTURE_DRAFT' && (classification.expectationConfidence ?? 0) >= 0.8;
-  const immediate = comparison && ['VERIFY_NOW', 'REPORTS_MISSING'].includes(classification.expectation ?? '') && (classification.expectationConfidence ?? 0) >= 0.8;
+  const immediate = comparison && classification.expectation === 'VERIFY_NOW' && (classification.expectationConfidence ?? 0) >= 0.8;
+  const wrongDocuments = comparison && classification.documentIssue === 'WRONG_DOCS' && (classification.documentIssueConfidence ?? 0) >= 0.8;
   const recovery = getClassificationRecoverySignals(classification);
-  const uncertain = recovery.length > 0 || classification.category === 'UNCERTAIN' || comparison && !deferred && !immediate;
+  const uncertain = recovery.length > 0 || classification.category === 'UNCERTAIN' || comparison && !deferred && !immediate && !wrongDocuments;
   return OperationalDecisionSchema.parse({
-    category: classification.category, requestedAction: uncertain ? 'UNCERTAIN' : deferred ? 'REQUEST_DRAFT' : immediate ? 'VERIFY_DOCUMENTS' : 'OTHER',
-    documentExpectation: uncertain ? 'UNCERTAIN' : deferred ? 'DEFERRED' : immediate ? 'EXPECTED_NOW' : 'UNCERTAIN',
-    verificationState: uncertain ? 'BLOCKED' : 'NOT_STARTED', workflowState: uncertain ? 'BLOCKED' : comparison ? 'AWAITING_DOCUMENTS' : 'NOT_APPLICABLE',
-    knownMismatches: [], blockers: uncertain ? [...recovery, 'UNCERTAIN_INTENT'] : [], fieldResults: [], nextAction: recovery.length ? 'RECOVER_FIELDS' : comparison ? 'FETCH_THREAD' : uncertain ? 'REQUEST_CLARIFICATION' : 'NONE', sourceVersion, decisionVersion: 1,
+    category: classification.category, requestedAction: uncertain ? 'UNCERTAIN' : deferred ? 'REQUEST_DRAFT' : immediate || wrongDocuments ? 'VERIFY_DOCUMENTS' : 'OTHER',
+    documentExpectation: uncertain ? 'UNCERTAIN' : deferred ? 'DEFERRED' : immediate || wrongDocuments ? 'EXPECTED_NOW' : 'UNCERTAIN',
+    verificationState: uncertain || wrongDocuments ? 'BLOCKED' : 'NOT_STARTED', workflowState: uncertain || wrongDocuments ? 'BLOCKED' : comparison ? 'AWAITING_DOCUMENTS' : 'NOT_APPLICABLE',
+    knownMismatches: [], blockers: [...recovery, ...(wrongDocuments ? ['WRONG_DOC_TYPE'] : uncertain ? ['UNCERTAIN_INTENT'] : [])],
+    fieldResults: [], nextAction: recovery.length ? 'RECOVER_FIELDS' : wrongDocuments ? 'REQUEST_CLARIFICATION' : comparison ? 'FETCH_THREAD' : uncertain ? 'REQUEST_CLARIFICATION' : 'NONE', sourceVersion, decisionVersion: 1,
   });
 }
 

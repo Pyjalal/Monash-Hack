@@ -1,0 +1,15 @@
+PACKING LIST
+========================================
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+Consignee: CLIFFORD PAPER INC
+Booking Ref: MCLSINJEA2559759
+Commodity: MULTIPURPOSE PAPER - A4 - PAPERONE COPIER
+
+Carton No.      Net Wt (kg)     Gross Wt (kg)     Dimensions
+CTN-001          581             597             120x100x110
+CTN-002          510             634             120x100x110
+CTN-003          459             563             120x100x110
+CTN-004          548             570             120x100x110
+
+*** PACKING LIST ONLY - NO PORT OR VESSEL DETAILS ***

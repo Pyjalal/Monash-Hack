@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / SIJ1876863
+
+Shipper: APRIL FAR EAST (M) SDN BHD
+To the Order of: PACIFIC OFFICE (M) SDN BHD
+Notify: PACIFIC OFFICE (M) SDN BHD
+Load Port: NHAVA SHEVA, INDIA (INNSA)
+Discharge Port: AQABA, JORDAN (JOAQB)
+Total Containers: 10 x 40'HC
+Total Gross Wt (KGS): ２１１６５０ ＫＧ
+Vessel: LE HAVRE V.QI540A
+Booking No.: SIJ1876863
+Freight: PREPAID

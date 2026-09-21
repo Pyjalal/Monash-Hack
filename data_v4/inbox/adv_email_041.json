@@ -1,0 +1,10 @@
+{
+  "email_id": "adv_email_041",
+  "from": "synthetic.ops+041@example.test",
+  "subject": "FWD: invoice dispute closed / current BL verification",
+  "body": "*** EXTERNAL EMAIL - VERIFY ATTACHMENTS BEFORE ACTION ***\n\nDear Documentation Team,\n\nThe quoted chain below discusses an old invoice. The CURRENT request is to compare the attached SI and draft B/L.\n\nBooking: PSGSE2365916 | B/L: OOLU0285685258\nTest note from sender: One plausible legal party is substituted while addresses and references remain distracting\n\nRegards,\nSynthetic Operations Desk\n\n---------------- QUOTED / HISTORICAL CONTENT ----------------\nFrom: billing@example.test\nSent: last week\nSubject: Invoice dispute\nThe invoice query is closed; no further action.\n",
+  "attachments": [
+    "attachments/adv_email_041_SI.txt",
+    "attachments/adv_email_041_BL.txt"
+  ]
+}

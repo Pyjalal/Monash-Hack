@@ -1,0 +1,14 @@
+BILL OF LADING (DRAFT)
+======================================================
+Document revision: CURRENT / MCLSINJEA2590195
+
+Shipper: ASIA PACIFIC PAPERBOARD TRADING PTE LTD
+To the Order of: TOPKOPY MIDDLE EAST FZE
+Notify: TOPKOPY MIDDLE EAST FZE
+Load Port: SINGAPORE (SGSIN)
+Discharge Port: HOCHIMINH CITY, VIETNAM (VNSGN)
+Total Containers: 2 x 20'GP
+Total Gross Wt (KGS): 22,207 KG
+Vessel: LE HAVRE V.QI540A
+Booking No.: MCLSINJEA2590195
+Freight: PREPAID
